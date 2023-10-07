@@ -1,0 +1,19 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program37.Charge1"
+past_ids = ["dev.konstinople.augment.Charge1.bn6"]
+name = "Charge+1"
+description = "MegaBstr\nCharge\n+1"
+charge_boost = 1
+colors = ["white", "blue", "pink"]
+shape = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0]
+]
+byproducts = ["BattleNetwork6.Bugs.BusterBug"]
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.BusterBug"]

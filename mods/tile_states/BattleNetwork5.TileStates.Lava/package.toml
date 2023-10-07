@@ -1,0 +1,8 @@
+[package]
+id = "BattleNetwork5.TileStates.Lava"
+category = "tile_state"
+name = "BN5 Lava Tile"
+state_name = "Lava"
+texture_path = "texture.png"
+animation_path = "animation.animation"
+cleanser_element = "Aqua"

@@ -1,0 +1,19 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program35.Attack1"
+past_ids = ["dev.konstinople.augment.Attack1.bn6"]
+name = "Attack+1"
+description = "MegaBstr\nAttck +1"
+attack_boost = 1
+colors = ["pink", "red", "blue"]
+shape = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0]
+]
+byproducts = ["BattleNetwork6.Bugs.BusterBug"]
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.BusterBug"]

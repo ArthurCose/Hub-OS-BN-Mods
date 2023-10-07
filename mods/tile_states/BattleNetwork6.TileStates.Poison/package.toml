@@ -1,0 +1,7 @@
+[package]
+id = "BattleNetwork6.TileStates.Poison"
+category = "tile_state"
+name = "BN6 Poison Tile"
+state_name = "Poison"
+texture_path = "texture.png"
+animation_path = "animation.animation"

@@ -1,0 +1,7 @@
+[package]
+id = "BattleNetwork4.TileStates.DarkHole"
+category = "tile_state"
+name = "BN4 DarkHole Tile"
+state_name = "DarkHole"
+texture_path = "texture.png"
+animation_path = "animation.animation"

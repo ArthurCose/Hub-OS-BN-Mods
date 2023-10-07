@@ -1,0 +1,16 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program31.BugStop"
+past_ids = ["dev.konstinople.augment.BugStop.bn6"]
+name = "BugStop"
+description = "Prevents\nbugs"
+colors = ["yellow"]
+flat = true
+shape = [
+    [0, 0, 1, 0, 0],
+    [0, 1, 1, 0, 0],
+    [0, 0, 1, 1, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0]
+]
+prevent_byproducts = true

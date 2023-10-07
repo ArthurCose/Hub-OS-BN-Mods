@@ -1,0 +1,9 @@
+# client files
+cache/
+identity
+save.dat
+corrupted_save.dat
+config.ini
+crash.txt
+hub_os.exe
+hub_os

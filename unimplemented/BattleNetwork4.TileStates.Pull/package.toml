@@ -1,0 +1,7 @@
+[package]
+id = "BattleNetwork4.TileStates.Pull"
+category = "tile_state"
+name = "BN4 Pull Tile"
+state_name = "Pull"
+texture_path = "texture.png"
+animation_path = "animation.animation"

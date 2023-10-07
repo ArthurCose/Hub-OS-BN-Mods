@@ -1,0 +1,20 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program15.UnderShirt"
+past_ids = ["dev.konstinople.augment.UnderShirt.bn6"]
+name = "UnderSht"
+description = "Keep 1HP even on hard hit"
+attack_boost = 1
+flat = true
+colors = ["white"]
+shape = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0]
+]
+byproducts = ["BattleNetwork6.Bugs.WarpStep"]
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.WarpStep"]

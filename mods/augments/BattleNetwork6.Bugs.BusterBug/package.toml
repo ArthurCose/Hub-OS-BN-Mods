@@ -1,0 +1,10 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Bugs.BusterBug"
+past_ids = ["dev.konstinople.augment.BusterBug.bn6"]
+name = "BusterBug"
+description = "Chance to jam or hit for 10x"
+tags = ["BUG"]
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.BusterJam"]

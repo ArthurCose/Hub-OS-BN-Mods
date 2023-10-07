@@ -1,0 +1,7 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Bugs.BusterJam"
+past_ids = ["dev.konstinople.augment.BusterJam.bn6"]
+name = "BusterJam"
+description = "Use BusterBug base package for byproducts: BattleNetwork6.Bugs.BusterBug"
+tags = ["BUG"]

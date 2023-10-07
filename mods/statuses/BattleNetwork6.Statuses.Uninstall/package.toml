@@ -1,0 +1,6 @@
+[package]
+category = "status"
+id = "BattleNetwork6.Statuses.Uninstall"
+name = "Uninstall Hit Flag"
+preview_texture_path = "preview.png"
+flag_name = "Uninstall"

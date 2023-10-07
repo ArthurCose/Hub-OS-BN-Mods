@@ -1,0 +1,8 @@
+[package]
+id = "BattleNetwork5.TileStates.Sea"
+category = "tile_state"
+name = "BN5 Sea Tile"
+state_name = "Sea"
+texture_path = "texture.png"
+animation_path = "animation.animation"
+max_lifetime = 900 # 15s, possibly not accurate

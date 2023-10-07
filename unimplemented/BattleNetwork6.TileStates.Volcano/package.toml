@@ -1,0 +1,8 @@
+[package]
+id = "BattleNetwork6.TileStates.Volcano"
+category = "tile_state"
+name = "BN6 Volcano Tile"
+state_name = "Volcano"
+texture_path = "texture.png"
+animation_path = "animation.animation"
+cleanser_element = "Aqua"

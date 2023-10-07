@@ -1,0 +1,19 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program36.Rapid1"
+past_ids = ["dev.konstinople.augment.Rapid1.bn6"]
+name = "Rapid+1"
+description = "MegaBstr\nRapid +1"
+rapid_boost = 1
+colors = ["white", "pink", "green"]
+shape = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0]
+]
+byproducts = ["BattleNetwork6.Bugs.BusterBug"]
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.BusterBug"]

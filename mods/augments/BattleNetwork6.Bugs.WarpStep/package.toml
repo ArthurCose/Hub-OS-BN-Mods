@@ -1,0 +1,7 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Bugs.WarpStep"
+past_ids = ["dev.konstinople.augment.WarpStep.bn6"]
+name = "WarpStep"
+description = "Movement input warps the player to the edge of the field instead of only adjacent tiles."
+tags = ["BUG"]

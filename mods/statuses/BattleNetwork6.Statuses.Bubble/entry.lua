@@ -1,0 +1,144 @@
+local TEXTURE = Resources.load_texture("bubble.png")
+local SFX = Resources.load_audio("pop.ogg")
+
+-- recycling animator
+local animator = Animation.new()
+animator:load("bubble.animation")
+
+-- mashing helper
+local inputs = {}
+
+for _, value in pairs(Input.Pressed) do
+  inputs[#inputs + 1] = value
+end
+
+local function is_mashing(entity)
+  for _, value in ipairs(inputs) do
+    if entity:input_has(value) then
+      return true
+    end
+  end
+
+  return false
+end
+
+local function spawn_alert(parent)
+  local alert_artifact = Alert.new()
+  alert_artifact:sprite():set_never_flip(true)
+
+  local tile_offset = parent:tile_offset()
+  alert_artifact:set_offset(tile_offset.x, tile_offset.y - parent:height())
+
+  parent:field():spawn(alert_artifact, parent:current_tile())
+end
+
+local function spawn_pop(parent)
+  Resources.play_audio(SFX)
+
+  local artifact = Artifact.new()
+  artifact:set_texture(TEXTURE)
+  artifact:sprite():set_never_flip(true)
+
+  local animator = artifact:animation()
+  animator:load("bubble.animation")
+  animator:set_state("STATUS_POP")
+  animator:on_complete(function()
+    artifact:erase()
+  end)
+
+  local parent_offset = parent:offset()
+
+  if parent:facing() == Direction.Left then
+    parent_offset.x = -parent_offset.x
+  end
+
+  local tile_offset = parent:tile_offset()
+  artifact:set_offset(
+    parent_offset.x + tile_offset.x,
+    parent_offset.y + tile_offset.y - parent:height() * 0.5
+  )
+
+  parent:field():spawn(artifact, parent:current_tile())
+
+  return artifact
+end
+
+function status_init(status)
+  Resources.play_audio(SFX)
+
+  local entity = status:owner()
+  local sprite = entity:create_node()
+  sprite:set_texture(TEXTURE)
+  sprite:set_offset(0, -entity:height() / 2)
+  sprite:set_layer(-1)
+
+  local animator_state = "STATUS"
+  local playback = Playback.Loop
+
+  animator:set_state(animator_state)
+  animator:apply(sprite)
+
+  -- this component updates the bubble's animation and handles mashing
+  local component = entity:create_component(Lifetime.Battle)
+  local time = 0
+
+  component.on_update_func = function()
+    sprite:set_offset(0, -entity:height() / 2)
+
+    animator:set_state(animator_state)
+    animator:set_playback(playback)
+    animator:sync_time(time)
+    animator:apply(sprite)
+
+    local tile_offset = entity:tile_offset()
+    local angle = time * (math.pi * 2) / 150;
+    tile_offset.y = tile_offset.y + math.floor(math.sin(angle) * 6)
+
+    entity:set_tile_offset(tile_offset.x, tile_offset.y)
+    time = time + 1
+
+    if is_mashing(entity) then
+      local remaining_time = status:remaining_time()
+      status:set_remaining_time(remaining_time - 1)
+
+      -- speed up animation
+      time = time + 1
+    end
+  end
+
+  -- defense rule to pop on hit and add Elec weakness
+  local defense_rule = DefenseRule.new(DefensePriority.Last, DefenseOrder.CollisionOnly)
+
+  defense_rule.filter_statuses_func = function(hit_props)
+    if hit_props.damage > 0 then
+      status:set_remaining_time(0)
+    end
+
+    if hit_props.element == Element.Elec or hit_props.secondary_element == Element.Elec then
+      hit_props.damage = hit_props.damage * 2
+
+      spawn_alert(entity)
+    end
+
+    -- remove bubble from flags, we ignore getting bubbled again so we can pop out
+    hit_props.flags = hit_props.flags & ~Hit.Bubble
+
+    return hit_props
+  end
+
+  entity:add_defense_rule(defense_rule)
+
+  -- clean up
+  status.on_delete_func = function()
+    entity:remove_defense_rule(defense_rule)
+
+    -- pop
+    local artifact = spawn_pop(entity)
+
+    -- remove sprites after the artifact spawns for a seamless pop
+    artifact.on_spawn_func = function()
+      entity:sprite():remove_node(sprite)
+      component:eject()
+    end
+  end
+end

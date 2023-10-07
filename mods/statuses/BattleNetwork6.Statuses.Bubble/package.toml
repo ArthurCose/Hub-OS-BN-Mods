@@ -1,0 +1,11 @@
+[package]
+category = "status"
+id = "BattleNetwork6.Statuses.Bubble"
+name = "Bubble Status"
+preview_texture_path = "preview.png"
+flag_name = "Bubble"
+blocks_flags = ["Freeze"]
+blocked_by = []
+blocks_actions = true
+blocks_mobility = true
+durations = [150]

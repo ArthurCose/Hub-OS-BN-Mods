@@ -1,0 +1,12 @@
+[package]
+category = "library"
+name = "Conveyor TileStates"
+id = "BattleNetwork6.Libraries.Conveyor"
+
+[dependencies]
+tile_states = [
+  "BattleNetwork6.TileStates.ConveyorLeft",
+  "BattleNetwork6.TileStates.ConveyorRight",
+  "BattleNetwork6.TileStates.ConveyorUp",
+  "BattleNetwork6.TileStates.ConveyorDown"
+]

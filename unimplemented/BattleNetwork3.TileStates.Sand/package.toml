@@ -1,0 +1,8 @@
+[package]
+id = "BattleNetwork3.TileStates.Sand"
+category = "tile_state"
+name = "BN3 Sand Tile"
+state_name = "Sand"
+texture_path = "texture.png"
+animation_path = "animation.animation"
+cleanser_element = "Wind"

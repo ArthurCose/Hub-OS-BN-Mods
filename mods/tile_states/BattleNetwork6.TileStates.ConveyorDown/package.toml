@@ -1,0 +1,12 @@
+[package]
+id = "BattleNetwork6.TileStates.ConveyorDown"
+category = "tile_state"
+name = "BN6 ConveyorDown Tile"
+state_name = "ConveyorDown"
+texture_path = "texture.png"
+animation_path = "animation.animation"
+cleanser_element = "Wood"
+max_lifetime = 1800
+
+[dependencies]
+libraries = ["BattleNetwork6.Libraries.Conveyor"]

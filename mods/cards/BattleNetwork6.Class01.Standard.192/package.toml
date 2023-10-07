@@ -1,0 +1,13 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.192"
+past_ids = ["dev.konstinople.card.WhiCapsl"]
+name = "WhiCapsl"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["*"]
+damage = 0
+time_freeze = false
+element = "none"
+description = "Add an effect: Paralyze"
+can_boost = false
