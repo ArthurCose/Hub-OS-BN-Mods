@@ -50,7 +50,11 @@ function tile_state_init(custom_state)
   end
 
   custom_state.on_entity_stop_func = function(self, entity, prev_tile)
-    if entity:element() == Element.Aqua or entity:ignoring_negative_tile_effects() then
+    if entity:element() == Element.Aqua then
+      return
+    end
+
+    if not entity:is_dragged() and entity:ignoring_negative_tile_effects() then
       return
     end
 

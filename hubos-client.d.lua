@@ -1024,6 +1024,10 @@ function Entity:is_jumping() end
 ---@return boolean
 function Entity:is_teleporting() end
 
+--- Returns true if the entity's current movement was caused by drag.
+---@return boolean
+function Entity:is_dragged() end
+
 --- Calls [entity:on_idle_func()](https://docs.hubos.dev/client/lua-api/entity-api/entity#entityon_idle_func--functionself)
 function Entity:set_idle() end
 
