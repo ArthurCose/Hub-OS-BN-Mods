@@ -889,7 +889,7 @@ function Entity:hide() end
 --- Same as `entity:sprite():reveal()`
 function Entity:reveal() end
 
---- Returns [Color](https://docs.hubos.dev/client/lua-api/resources/sprite#color)
+--- Returns [Color](https://docs.hubos.dev/client/lua-api/resource-api/sprite#color)
 ---
 --- Same as `entity:sprite():color()`
 ---@return Color

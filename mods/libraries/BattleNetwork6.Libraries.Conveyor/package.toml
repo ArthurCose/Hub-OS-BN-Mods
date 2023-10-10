@@ -1,7 +1,9 @@
 [package]
 category = "library"
-name = "Conveyor TileStates"
+name = "Conveyor Tiles"
 id = "BattleNetwork6.Libraries.Conveyor"
+preview_texture_path = "preview.png"
+description = "Provides all Conveyor tile states in a single dependency. Stores shared behavior for conveyor tile states."
 
 [dependencies]
 tile_states = [
