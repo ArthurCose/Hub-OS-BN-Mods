@@ -13,6 +13,7 @@ Lifetime = {
   Local = {},
   Battle = {},
   Scene = {},
+  Nil = {},
 }
 
 --- - `Direction.None`
@@ -415,7 +416,7 @@ Field = {}
 ---@class Augment
 --- Called when the player is deleted or when this augment's level is boosted to <= 0.
 ---@field on_delete_func fun(self: Augment)
---- Overrides [player.movement_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playermovement_func--functionself-direction) also overrides the active form's override.
+--- Overrides [player.movement_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playermovement_func--functionself-direction).
 ---
 --- Used to handle movement input.
 ---@field movement_func fun(self: Augment, direction: Direction)
@@ -427,33 +428,34 @@ Field = {}
 ---
 --- Return true if this augment's `charged_card_func` should be called to handle this card.
 ---@field can_charge_card_func fun(card_properties: CardProperties): boolean
---- Overrides [player.special_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playerspecial_attack_func--functionself-action) also overrides the active form's override.
+--- Overrides [player.special_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playerspecial_attack_func--functionself-action)
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) is expected as a return value.
 ---
 --- Return `nil` to fallback to the next implementation (augment, form, or player).
 ---@field special_attack_func fun(self: Augment): Action|nil
---- Overrides [player.charged_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playercharged_attack_func--functionself-actionnil) also overrides the active form's override.
+--- Overrides [player.charged_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playercharged_attack_func--functionself-actionnil)
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) is expected as a return value.
 ---
 --- Return `nil` to fallback to the next implementation (augment, form, or player).
 ---@field charged_attack_func fun(self: Augment): Action|nil
---- Overrides [player.normal_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playernormal_attack_func--functionself-actionnil) also overrides the active form's override.
+--- Overrides [player.normal_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playernormal_attack_func--functionself-actionnil)
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) is expected as a return value.
 ---
 --- Return `nil` to fallback to the next implementation (augment, form, or player).
 ---@field normal_attack_func fun(self: Augment): Action|nil
---- Overrides [player.calculate_charge_time_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playercalculate_charge_time_func--functionself-number) also overrides the active form's override.
+--- Overrides [player.calculate_charge_time_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playercalculate_charge_time_func--functionself-number)
 ---
---- A numer representing the minimum Shoot button held time in game frames is expected as a return value.
+--- A number representing the minimum Shoot button held time in game frames is expected as a return value.
 ---@field calculate_charge_time_func fun(self: Augment): number
 Augment = {}
 
 --- Created through [player:create_form()](https://docs.hubos.dev/client/lua-api/entity-api/player#playercreate_form)
 ---@class PlayerForm
 --- Overrides [player.movement_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playermovement_func--functionself-direction) when this form is active.
+--- Also overrides any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment)'s override.
 ---
 --- Used to handle movement input.
 ---@field movement_func fun(self: PlayerForm, player: Entity)
@@ -466,26 +468,30 @@ Augment = {}
 --- Return true if this form's `charged_card_func` should be called to handle this card.
 ---@field can_charge_card_func fun(card_properties: CardProperties): boolean
 --- Overrides [player.special_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playerspecial_attack_func--functionself-action) when this form is active.
+--- Also overrides any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment)'s override.
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) is expected as a return value.
 ---
 --- Return `nil` to fallback to the player's implementation.
 ---@field special_attack_func fun(self: PlayerForm, player: Entity): Action|nil
 --- Overrides [player.charged_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playercharged_attack_func--functionself-actionnil) when this form is active.
+--- Also overrides any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment)'s override.
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) is expected as a return value.
 ---
 --- Return `nil` to fallback to the player's implementation.
 ---@field charged_attack_func fun(self: PlayerForm, player: Entity): Action|nil
 --- Overrides [player.normal_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playernormal_attack_func--functionself-actionnil) when this form is active.
+--- Also overrides any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment)'s override.
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) is expected as a return value.
 ---
 --- Return `nil` to fallback to the player's implementation.
 ---@field normal_attack_func fun(self: PlayerForm, player: Entity): Action|nil
 --- Overrides [player.calculate_charge_time_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playercalculate_charge_time_func--functionself-number) when this form is active.
+--- Also overrides any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment)'s override.
 ---
---- A numer representing the minimum Shoot button held time in game frames is expected as a return value.
+--- A number representing the minimum Shoot button held time in game frames is expected as a return value.
 ---@field calculate_charge_time_func fun(self: PlayerForm, player: Entity): number
 --- Called after [player.on_update_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playernormal_attack_func--functionself) when this form is active.
 ---@field on_update_func fun(self: PlayerForm, player: Entity)
@@ -494,6 +500,14 @@ Augment = {}
 --- Called when the form is activated, the player's appearance should be modified here.
 ---@field on_activate_func fun(self: PlayerForm, player: Entity)
 PlayerForm = {}
+
+---
+---@class CardSelectButton
+--- Return true if the button's usage effect was successful. The result will affect the played sound.
+---@field use_func fun(self: CardSelectButton): boolean
+--- Called when any changes are made to [player:staged_items()](https://docs.hubos.dev/client/lua-api/entity-api/player#playerstaged_items)
+---@field on_selection_change_func fun(self: CardSelectButton)
+CardSelectButton = {}
 
 --- See [entity:create_component()](https://docs.hubos.dev/client/lua-api/entity-api/entity#entitycreate_componentlifetime)
 ---@class Component
@@ -598,6 +612,15 @@ Drag.None = nil
 
 HitProps = {}
 
+--- A card sitting in a [Player's](https://docs.hubos.dev/client/lua-api/entity-api/player) deck.
+---@class DeckCard
+--- String, passed to [CardProperties.from_package()](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardpropertiesfrom_packagepackage_id-code).
+---@field code string
+--- String, passed to [CardProperties.from_package()](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardpropertiesfrom_packagepackage_id-code).
+---@field package_id string
+
+DeckCard = {}
+
 ---
 ---@class CardProperties
 --- A list of strings, used by other mods for conditional behavior.
@@ -643,6 +666,25 @@ HitProps = {}
 ---@field package_id string
 
 CardProperties = {}
+
+--- An item displayed as a pending selection in Card Select.
+---@class StagedItem
+--- [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardproperties) for `"card"`
+---
+--- Otherwise: `nil`
+---@field card_properties CardProperties
+--- A number for `"deck_card"`, `"deck_discard"`, and `"form"`
+---
+--- Otherwise `nil`
+---@field index number
+--- - `"deck_card"`
+--- - `"deck_discard"`
+--- - `"card"`
+--- - `"form"`
+--- - `"icon"`
+---@field category undefined
+
+StagedItem = {}
 
 --- Instance of [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity).
 Artifact = {}
@@ -952,6 +994,9 @@ function Entity:load_animation(path) end
 ---   - `Lifetime.Local` when the entity update callback is called (affected by time freeze and status effects)
 ---   - `Lifetime.Battle` after every entity has updated and battle is active as long as time is not frozen.
 ---   - `Lifetime.Scene` near the end of every tick.
+---   - `Lifetime.CardSelectOpen` the frame where card select begins to open.
+---   - `Lifetime.CardSelectClose` the frame where card select completely closes.
+---   - `Lifetime.Nil` never.
 ---
 ---   Returns a [Component](https://docs.hubos.dev/client/lua-api/entity-api/entity#component)
 ---@param lifetime Lifetime
@@ -1254,6 +1299,18 @@ function Entity:set_emotion(state) end
 ---@return boolean
 function Entity:input_has(input_query) end
 
+--- - `path`: file path relative to script file, use values returned from `Resources.load_audio()` for better performance.
+--- - `audio_behavior`: [AudioBehavior](https://docs.hubos.dev/client/lua-api/resource-api/resources#audiobehavior)
+---
+--- Plays an audio file to only this player.
+---
+--- See [Resources.play_audio()](https://docs.hubos.dev/client/lua-api/resource-api/resources#resourcesplay_audiopath-audio_behavior) for playing audio for all players.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param path string
+---@param audio_behavior? AudioBehavior
+function Entity:play_audio(path, audio_behavior) end
+
 --- - `color`: [Color](https://docs.hubos.dev/client/lua-api/resource-api/sprite#color)
 ---
 --- Sets the color of the fully charged sprite.
@@ -1291,6 +1348,165 @@ function Entity:set_slide_when_moving(bool) end
 ---@param tile Tile
 function Entity:queue_default_player_movement(tile) end
 
+--- Returns a bool.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@return boolean
+function Entity:has_regular_card() end
+
+--- Returns a list of [DeckCard](https://docs.hubos.dev/client/lua-api/attack-api/cards#deckcard).
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@return DeckCard[]
+function Entity:deck_cards() end
+
+--- Returns [DeckCard](https://docs.hubos.dev/client/lua-api/attack-api/cards#deckcard) or nil.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param index number
+---@return DeckCard
+function Entity:deck_card(index) end
+
+--- - `index`: number, 1 is the first card in the deck.
+--- - `deck_card`: [DeckCard](https://docs.hubos.dev/client/lua-api/attack-api/cards#deckcard)
+---
+--- If there's no card at this index, nothing happens.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param index number
+---@param deck_card DeckCard
+function Entity:set_deck_card(index, deck_card) end
+
+--- - `index`: number, 1 is the first card in the deck.
+---
+--- Removes a card from the player's deck.
+---
+--- Any [StagedItem](https://docs.hubos.dev/client/lua-api/entity-api/player#stageditem) referencing this card will be dropped.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param index number
+function Entity:remove_deck_card(index) end
+
+--- - `index`: number, 1 is the first card in the deck.
+--- - `deck_card`: [DeckCard](https://docs.hubos.dev/client/lua-api/attack-api/cards#deckcard)
+---
+--- Removes a card from the player's deck.
+---
+--- Any [StagedItem](https://docs.hubos.dev/client/lua-api/entity-api/player#stageditem) referencing this card will be dropped.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param index number
+---@param deck_card DeckCard
+function Entity:insert_deck_card(index, deck_card) end
+
+--- - `card_properties`: [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardproperties)
+--- - The callback will be called when the player removes the StagedItem.
+---
+--- Appends a new [StageItem](https://docs.hubos.dev/client/lua-api/entity-api/player#stageitem) to display in Card Select.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param card_properties CardProperties
+---@param callback? fun()
+function Entity:stage_card(card_properties, callback) end
+
+--- - `deck_index`: number, 1 is the first card in the deck.
+--- - The callback will be called when the player removes the StagedItem.
+---
+--- Appends a new [StageItem](https://docs.hubos.dev/client/lua-api/entity-api/player#stageitem) to display in Card Select.
+---
+--- Any StageItems already referencing `deck_index` will be removed.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param deck_index number
+---@param callback? fun()
+function Entity:stage_deck_card(deck_index, callback) end
+
+--- - `deck_index`: number, 1 is the first card in the deck.
+--- - The callback will be called when the player removes the StagedItem.
+---
+--- Appends a new [StageItem](https://docs.hubos.dev/client/lua-api/entity-api/player#stageitem) to display in Card Select.
+---
+--- Any StageItems already referencing `deck_index` will be removed.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param deck_index number
+---@param callback? fun()
+function Entity:stage_deck_discard(deck_index, callback) end
+
+--- - `form`: [PlayerForm](https://docs.hubos.dev/client/lua-api/entity-api/player#playerform)
+--- - `texture_path`: The texture to use for the icon.
+--- - The callback will be called when the player removes the StagedItem.
+---
+--- Prepends a new [StageItem](https://docs.hubos.dev/client/lua-api/entity-api/player#stageitem) that will be displayed in card select if a texture is set. If a form is already staged this StageItem will replace the existing item.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param form PlayerForm
+---@param texture_path? string
+---@param callback? fun()
+function Entity:stage_form(form, texture_path, callback) end
+
+--- - `texture_path`: The texture to use for the icon.
+--- - The callback will be called when the player removes the StagedItem.
+---
+--- Appends a new [StageItem](https://docs.hubos.dev/client/lua-api/entity-api/player#stageitem) to display in Card Select.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param texture_path string
+---@param callback? fun()
+function Entity:stage_icon(texture_path, callback) end
+
+--- Removes the latest [StagedItem](https://docs.hubos.dev/client/lua-api/entity-api/player#stageditem), calling the undo callback.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+function Entity:pop_staged_item() end
+
+--- Returns a list of [StagedItem](https://docs.hubos.dev/client/lua-api/entity-api/player#stageditem)
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@return StagedItem[]
+function Entity:staged_items() end
+
+--- - `index`: number, starts with 1.
+---
+--- Returns a [StagedItem](https://docs.hubos.dev/client/lua-api/entity-api/player#stageditem) or `nil`.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param index number
+---@return StagedItem|nil
+function Entity:staged_item(index) end
+
+--- - `index`: number, starts with 1.
+---
+--- Returns a string. Represents the path to the StagedItem's icon texture.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param index number
+---@return string
+function Entity:staged_item_texture(index) end
+
+--- Prevents selection in Card Select and hides the cursor.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param bool boolean
+function Entity:set_card_selection_blocked(bool) end
+
+--- Creates a button embedded in the end of the card list in Card Select.
+---
+--- Returns [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton)
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param slot_count number
+---@return CardSelectButton
+function Entity:create_card_button(slot_count) end
+
+--- Creates a button under the "Confirm" button in Card Select.
+---
+--- Returns [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton)
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@return CardSelectButton
+function Entity:create_special_button() end
+
 --- Returns a new [PlayerForm](https://docs.hubos.dev/client/lua-api/entity-api/player#playerform).
 ---
 --- Can be used up to five times before throwing.
@@ -1298,6 +1514,12 @@ function Entity:queue_default_player_movement(tile) end
 --- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
 ---@return PlayerForm
 function Entity:create_form() end
+
+--- Returns a new [PlayerForm](https://docs.hubos.dev/client/lua-api/entity-api/player#playerform).
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@return PlayerForm
+function Entity:create_hidden_form() end
 
 --- Returns an [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment) or `nil` if the player doesn't have an augment with that `package_id`.
 ---
@@ -1399,11 +1621,30 @@ function Entity:calculate_default_charge_time() end
 ---@return number
 function Entity:calculate_charge_time() end
 
+--- Returns a number. Used internally to identify the form.
+---@return number
+function PlayerForm:index() end
+
 --- - `path`: file path relative to script file, use values returned from `Resources.load_texture()` for better performance.
 ---
 --- This texture is used for the form selection menu.
 ---@param path string
-function PlayerForm:set_mugshot_texture_path(path) end
+function PlayerForm:set_mugshot_texture(path) end
+
+--- Creates a button embedded in the end of the card list in Card Select.
+--- Overrides the card button created on the Player and any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment).
+---
+--- Returns [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton)
+---@param slot_count number
+---@return CardSelectButton
+function PlayerForm:create_card_button(slot_count) end
+
+--- Creates a button under the "Confirm" button in Card Select.
+--- Overrides the special button created on the Player and any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment).
+---
+--- Returns [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton)
+---@return CardSelectButton
+function PlayerForm:create_special_button() end
 
 --- Returns the package id of the augment.
 ---@return string
@@ -1423,6 +1664,69 @@ function Augment:owner() end
 ---@param tag string
 ---@return boolean
 function Augment:has_tag(tag) end
+
+--- Creates a button embedded in the end of the card list in Card Select.
+--- Overrides the card button created on the Player.
+---
+--- Returns [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton)
+---@param slot_count number
+---@return CardSelectButton
+function Augment:create_card_button(slot_count) end
+
+--- Creates a button under the "Confirm" button in Card Select.
+--- Overrides the special button created on the Player.
+---
+--- Returns [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton)
+---@return CardSelectButton
+function Augment:create_special_button() end
+
+--- Returns a [Sprite](https://docs.hubos.dev/client/lua-api/resource-api/sprite)
+---@return Sprite
+function CardSelectButton:sprite() end
+
+--- Returns a string.
+---
+--- Same as `button:sprite():texture()`
+---@return string
+function CardSelectButton:texture() end
+
+--- Same as `button:sprite():set_texture(path)`
+---
+--- Use values returned from [Resources.load_texture()](https://docs.hubos.dev/client/lua-api/resource-api/resources#resourcesload_texturepath) for better performance.
+---@param path string
+function CardSelectButton:set_texture(path) end
+
+--- Returns an [Animation](https://docs.hubos.dev/client/lua-api/resource-api/animation)
+---@return Animation
+function CardSelectButton:animation() end
+
+--- Returns a [Sprite](https://docs.hubos.dev/client/lua-api/resource-api/sprite)
+---@return Sprite
+function CardSelectButton:preview_sprite() end
+
+--- Returns a string.
+---
+--- Same as `button:preview_sprite():texture()`
+---@return string
+function CardSelectButton:preview_texture() end
+
+--- Use values returned from [Resources.load_texture()](https://docs.hubos.dev/client/lua-api/resource-api/resources#resourcesload_texturepath) for better performance.
+---
+--- Same as `button:preview_sprite():set_texture(path)`
+---@param path string
+function CardSelectButton:set_preview_texture(path) end
+
+--- Returns an [Animation](https://docs.hubos.dev/client/lua-api/resource-api/animation)
+---@return Animation
+function CardSelectButton:preview_animation() end
+
+--- A method to disable successful button use audio.
+---@param bool boolean
+function CardSelectButton:use_default_audio(bool) end
+
+--- Returns an [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity)
+---@return Entity
+function CardSelectButton:owner() end
 
 --- Returns the entity passed in if the entity is a character or player, otherwise returns `nil`.
 ---@param entity Entity
@@ -1462,7 +1766,7 @@ function Character.from_package(package_id, team, rank) end
 ---@return Rank
 function Entity:rank() end
 
---- Returns a list of [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/card-properties), the first card is the next card that can be used.
+--- Returns a list of [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardproperties), the first card is the next card that can be used.
 ---
 --- Throws if the Entity doesn't pass [Character.from()](https://docs.hubos.dev/client/lua-api/entity-api/character)
 ---@return CardProperties[]
@@ -1470,7 +1774,7 @@ function Entity:field_cards() end
 
 --- - `index`: number, 1 represents the next card that can be used.
 ---
---- Returns [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/card-properties) or nil.
+--- Returns [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardproperties) or nil.
 ---
 --- Throws if the Entity doesn't pass [Character.from()](https://docs.hubos.dev/client/lua-api/entity-api/character)
 ---@param index number
@@ -1478,9 +1782,11 @@ function Entity:field_cards() end
 function Entity:field_card(index) end
 
 --- - `index`: number, 1 represents the next card that can be used.
---- - `card_properties`: [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/card-properties)
+--- - `card_properties`: [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardproperties)
 ---
 --- Changing package_id will cause [card_mutate()](https://docs.hubos.dev/client/packages#cards) to restart or run again next frame.
+---
+--- If there's no card at this index, nothing happens.
 ---
 --- Throws if the Entity doesn't pass [Character.from()](https://docs.hubos.dev/client/lua-api/entity-api/character)
 ---@param index number
@@ -1494,7 +1800,7 @@ function Entity:set_field_card(index, card_properties) end
 function Entity:remove_field_card(index) end
 
 --- - `index`: number, 1 represents the next card that can be used.
---- - `card_properties`: [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/card-properties)
+--- - `card_properties`: [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardproperties)
 ---
 --- Inserts a card at this index, shifting cards at this position and after to the right.
 ---
@@ -1630,6 +1936,8 @@ function Resources.load_audio(path) end
 --- - `audio_behavior`: [AudioBehavior](https://docs.hubos.dev/client/lua-api/resource-api/resources#audiobehavior)
 ---
 --- Plays a sound with the specified priority.
+---
+--- See [player:play_audio()](https://docs.hubos.dev/client/lua-api/entity-api/player#playerplay_audiopath-audio_behavior) for playing audio to a specific player.
 ---@param path string
 ---@param audio_behavior? AudioBehavior
 function Resources.play_audio(path, audio_behavior) end
@@ -2415,7 +2723,7 @@ function CustomTileState:field() end
 function Action.new(entity, state) end
 
 --- - `entity`: the [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity) to tie the action to.
---- - `card_properties`: [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/card-properties)
+--- - `card_properties`: [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardproperties)
 ---@param entity Entity
 ---@param card_properties CardProperties
 function Action.from_card(entity, card_properties) end
@@ -2461,7 +2769,7 @@ function Action:end_action() end
 ---@return CardProperties
 function Action:copy_card_properties() end
 
---- - `card_properties`: [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/card-properties)
+--- - `card_properties`: [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardproperties)
 ---
 --- Sets the the action's card properties, will be overwritten when queued if the action is tied to a card.
 ---
@@ -2580,7 +2888,7 @@ function Status:remaining_time() end
 ---@param duration number
 function Status:set_remaining_time(duration) end
 
---- Returns true if time is frozen from [time freeze](https://docs.hubos.dev/client/lua-api/attack-api/card-properties#card_propertiestime_freeze) [Actions](https://docs.hubos.dev/client/lua-api/attack-api/action).
+--- Returns true if time is frozen from [time freeze](https://docs.hubos.dev/client/lua-api/attack-api/cards#card_propertiestime_freeze) [Actions](https://docs.hubos.dev/client/lua-api/attack-api/action).
 ---@return boolean
 function TurnGauge.frozen() end
 
@@ -2641,7 +2949,9 @@ function DefenseVirusBody.new() end
 --- Prevents damage and statuses from applying to the defending entity.
 function DefenseJudge:block_damage() end
 
+--- Used to mark `Hit.Impact` as handled / retaliated.
 ---
+--- Does not strip `Hit.Impact`.
 function DefenseJudge:block_impact() end
 
 --- Returns true if `judge:block_damage()` was called.
@@ -2818,7 +3128,7 @@ function AuxProp:require_card_hit_flags(hit_flags) end
 function AuxProp:require_card_code(code) end
 
 --- - Body priority
---- - `card_class`: [CardClass](https://docs.hubos.dev/client/lua-api/attack-api/card-properties#card_propertiescard_class)
+--- - `card_class`: [CardClass](https://docs.hubos.dev/client/lua-api/attack-api/cards#card_propertiescard_class)
 ---
 --- The AuxProp will check the next card on the attached entity for matching class.
 ---@param card_class CardClass
