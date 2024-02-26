@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "BattleNetworkRealOperation.Class01.Standard.188"
+name = "CannMode"
+damage = 0
+time_freeze = false
+element = "none"
+description = "Buster becomes Cannon!"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "*" ]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]
+augments = [ "BattleNetworkRealOperation.Augment.CannonMode" ]

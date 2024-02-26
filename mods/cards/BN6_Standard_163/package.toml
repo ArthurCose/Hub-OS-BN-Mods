@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.163"
+name = "Recov300"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "J", "O", "Y" ]
+damage = 0
+recover = 300
+time_freeze = false
+element = "none"
+description = "Restore 300HP to self!"
+card_class = "standard"
+limit = 1
+can_boost = false
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "claris.card.Sword02"
+name = "WideSwrd"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "H", "L", "S", "*" ]
+damage = 80
+time_freeze = false
+element = "sword"
+description = "Cuts enmy in front! Range: 3"
+limit = 5
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

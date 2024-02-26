@@ -1,0 +1,20 @@
+[package] 
+category = "card"
+id = "BattleNetwork6.Class01.Standard.138"
+name = "RockCube"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "*" ]
+damage = 0
+time_freeze = true
+element = "summon"
+description = "Place a RockCube in front"
+can_boost = false
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ "dev.GladeWoodsgrove.BattleNetworkHelpers" ]
+cards = [ ]

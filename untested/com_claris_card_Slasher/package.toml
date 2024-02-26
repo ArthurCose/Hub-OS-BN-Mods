@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "claris.card.Slasher"
+name = "Slasher"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "B", "I", "R" ]
+damage = 240
+time_freeze = false
+element = "sword"
+description = "Cuts when A btn is held!"
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "claris.card.Zapring2"
+name = "Zap Ring2"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "B", "G", "N", "R", "S", "W", "*" ]
+damage = 40
+time_freeze = false
+element = "elec"
+description = "Ring stuns enmy ahead!"
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

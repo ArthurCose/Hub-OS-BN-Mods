@@ -1,0 +1,24 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.088"
+name = "CrakShot"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "A", "G", "T", "*" ]
+damage = 60
+time_freeze = false
+element = "none"
+description = "Throw a panel at an enemy!"
+long_description = "Attack by throwing a panel in front of you forward!"
+can_boost = true
+card_class = "standard"
+limit = 5
+hit_flags = ["Impact", "Flinch"]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ "keristero.battle_helpers" ]
+cards = [ ]

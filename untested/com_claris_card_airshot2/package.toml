@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "claris.card.airshot2"
+name = "AirShot2"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "*" ]
+damage = 30
+time_freeze = false
+element = "wind"
+description = "Push enmy ahead!"
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

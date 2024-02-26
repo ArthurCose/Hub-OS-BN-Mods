@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "Dawn.CardBN1.S105"
+name = "IceCube"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "A", "C", "I", "L", "M" ]
+damage = 0
+time_freeze = true
+element = "aqua"
+description = "Create an ice cube. Range=1"
+can_boost = false
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

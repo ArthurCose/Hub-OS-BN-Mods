@@ -1,0 +1,22 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.002"
+name = "HiCannon"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "L", "M", "N", "*" ]
+damage = 100
+time_freeze = false
+element = "none"
+description = "Cannon attack to 1 enemy!"
+can_boost = true
+limit = 4
+hit_flags = ["Impact", "Flinch", "Flash"]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ "BattleNetwork6.Class01.Standard.001" ]

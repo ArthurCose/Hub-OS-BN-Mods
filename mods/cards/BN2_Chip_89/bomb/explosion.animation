@@ -1,0 +1,19 @@
+imagePath="C:/Users/seven/Desktop/ONB Play/Development/resources/mods/cards/Whirlpool/bomb/explosion.png"
+
+animation state="0"
+frame duration="0.05" x="60" y="90" w="16" h="7" originx="8" originy="3"
+frame duration="0.05" x="2" y="90" w="25" h="11" originx="12" originy="4"
+frame duration="0.05" x="2" y="70" w="32" h="16" originx="16" originy="7"
+frame duration="0.05" x="2" y="26" w="36" h="18" originx="18" originy="8"
+
+animation state="1"
+frame duration="0.05" x="42" y="26" w="40" h="18" originx="20" originy="9"
+frame duration="0.05" x="2" y="48" w="40" h="18" originx="20" originy="9"
+frame duration="0.05" x="2" y="2" w="40" h="20" originx="20" originy="10"
+frame duration="0.05" x="46" y="2" w="40" h="20" originx="20" originy="10"
+
+animation state="2"
+frame duration="0.033" x="46" y="48" w="36" h="18" originx="18" originy="8"
+frame duration="0.033" x="38" y="70" w="32" h="16" originx="16" originy="7"
+frame duration="0.033" x="31" y="90" w="25" h="11" originx="12" originy="4"
+frame duration="0.067" x="74" y="70" w="16" h="7" originx="8" originy="3"

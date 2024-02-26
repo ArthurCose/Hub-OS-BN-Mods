@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.156"
+name = "Recov10"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "A", "L", "*" ]
+damage = 0
+recover = 10
+time_freeze = false
+element = "none"
+description = "Restore 10HP to self!"
+card_class = "standard"
+limit = 5
+can_boost = false
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

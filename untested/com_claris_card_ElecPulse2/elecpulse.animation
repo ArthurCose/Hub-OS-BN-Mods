@@ -1,0 +1,23 @@
+imagePath="C:\Users\seven\Desktop\ONB\resources\mods\cards\ElecPulse1\elecpulse.png"
+
+animation state="WAIT"
+frame duration="0.016" x="0" y="0" w="30" h="30" originx="2" originy="10" flipx="0" flipy="0"
+
+animation state="DISH"
+frame duration="0.048" x="0" y="0" w="30" h="30" originx="2" originy="10" flipx="0" flipy="0"
+frame duration="0.032" x="30" y="0" w="30" h="30" originx="2" originy="10" flipx="0" flipy="0"
+
+animation state="PULSE"
+frame duration="0.032" x="0" y="30" w="90" h="70" originx="-15" originy="29" flipx="0" flipy="0"
+frame duration="0.032" x="0" y="100" w="90" h="70" originx="-15" originy="35" flipx="0" flipy="0"
+frame duration="0.032" x="0" y="170" w="90" h="70" originx="-15" originy="38" flipx="0" flipy="0"
+
+animation state="PULSE 2"
+frame duration="0.032" x="90" y="30" w="90" h="70" originx="15" originy="29" flipx="0" flipy="0"
+frame duration="0.032" x="90" y="100" w="90" h="70" originx="15" originy="35" flipx="0" flipy="0"
+frame duration="0.032" x="90" y="170" w="90" h="70" originx="15" originy="38" flipx="0" flipy="0"
+
+animation state="PULSE 3"
+frame duration="0.032" x="180" y="30" w="90" h="70" originx="-15" originy="29" flipx="0" flipy="0"
+frame duration="0.032" x="180" y="100" w="90" h="70" originx="-15" originy="35" flipx="0" flipy="0"
+frame duration="0.032" x="180" y="170" w="90" h="70" originx="-15" originy="38" flipx="0" flipy="0"

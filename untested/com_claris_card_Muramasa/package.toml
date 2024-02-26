@@ -1,0 +1,22 @@
+[package]
+category = "card"
+id = "claris.card.Muramasa"
+name = "Muramasa"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "M" ]
+damage = 0
+time_freeze = false
+element = "sword"
+description = "Atk pwr equal to lost HP"
+card_class = "mega"
+limit = 1
+can_boost = false
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

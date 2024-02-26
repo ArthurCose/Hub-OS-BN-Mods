@@ -1,0 +1,22 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.007"
+name = "Vulcan3"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "A", "G", "R" ]
+damage = 20
+time_freeze = false
+element = "none"
+description = "5-shot to pierce 1 panel!"
+long_description = "A five-round burst which hits the panel behind the target as well."
+limit = 3
+hit_flags = ["Impact", "Flinch"]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ "keristero.battle_helpers" ]
+cards = [ "BattleNetwork6.Class01.Standard.005" ]

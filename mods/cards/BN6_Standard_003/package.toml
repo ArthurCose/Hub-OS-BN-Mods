@@ -1,0 +1,22 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.003"
+name = "M-Cannon"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "R", "S", "T", "*" ]
+damage = 180
+time_freeze = false
+element = "none"
+description = "Cannon attack to 1 enemy!"
+can_boost = true
+limit = 3
+hit_flags = ["Impact", "Flinch", "Flash"]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ "BattleNetwork6.Class01.Standard.001" ]

@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "BattleNetwork2.Chip.89"
+name = "Whirlpl"
+damage = 0
+time_freeze = false
+element = "none"
+description = "Whirlpool offs weak enemies!"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "A", "C", "E", "G", "I" ]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

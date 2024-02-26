@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "claris.chip.Tornado"
+name = "Tornado"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "T" ]
+damage = 20
+time_freeze = false
+element = "wind"
+description = "8 attack storm 2sq ahead"
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

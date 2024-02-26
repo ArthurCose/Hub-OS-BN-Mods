@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "claris.recovseries.recov9"
+name = "Recov500"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "R" ]
+damage = 0
+recover = 500
+time_freeze = false
+element = "none"
+description = "Restore 500HP to self!"
+card_class = "giga"
+limit = 1
+can_boost = false
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

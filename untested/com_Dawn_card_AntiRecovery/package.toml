@@ -1,0 +1,22 @@
+[package]
+category = "card"
+id = "Dawn.card.AntiRecovery"
+name = "AntiHeal"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "A", "D", "G", "V" ]
+damage = 0
+time_freeze = true
+element = "none"
+description = "Punish fr enmy health up!"
+card_class = "standard"
+limit = 3
+can_boost = false
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

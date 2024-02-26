@@ -1,0 +1,8 @@
+imagePath="artifact_impact_fx_compressed.png"
+
+animation state="BLUE"
+frame duration="0.05" x="46" y="40" w="17" h="21" originx="8" originy="10" flipx="0" flipy="0"
+frame duration="0.05" x="85" y="38" w="34" h="35" originx="16" originy="16" flipx="0" flipy="0"
+frame duration="0.05" x="85" y="0" w="39" h="38" originx="19" originy="18" flipx="0" flipy="0"
+frame duration="0.05" x="46" y="0" w="39" h="40" originx="20" originy="19" flipx="0" flipy="0"
+frame duration="0.05" x="0" y="0" w="46" h="41" originx="23" originy="20" flipx="0" flipy="0"

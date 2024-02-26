@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork3.Class01.Standard.160"
+name = "Geddon2"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "F", "H", "N", "O", "W" ]
+damage = 0
+time_freeze = true
+element = "none"
+description = "Breaks all empty squares!"
+card_class = "standard"
+limit = 5
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [
+    "dev.GladeWoodsgrove.BattleNetworkHelpers"
+]
+cards = [ ]

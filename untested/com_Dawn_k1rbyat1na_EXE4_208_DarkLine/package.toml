@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "Dawn.k1rbyat1na.EXE4-208-DarkLine"
+name = "DarkLine"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "L" ]
+damage = 0
+time_freeze = true
+element = "none"
+description = "Turns rows into DarkHoles!"
+long_description = "Turns all rows you are in into Dark Holes!"
+can_boost = false
+card_class = "mega"
+limit = 1
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

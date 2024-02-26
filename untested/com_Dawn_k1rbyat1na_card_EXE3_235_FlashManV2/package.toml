@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "Dawn.k1rbyat1na.card.EXE3-235-FlashManV2"
+name = "FlashMnV2"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "F" ]
+damage = 70
+time_freeze = true
+can_boost = true
+element = "elec"
+description = "Flash atk paralyzes enemies!"
+long_description = "Flash attack illuminates all! Paralyzes enemies"
+card_class = "mega"
+limit = 1
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

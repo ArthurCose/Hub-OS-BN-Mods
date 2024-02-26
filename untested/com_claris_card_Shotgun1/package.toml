@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "claris.card.Shotgun1"
+name = "Shotgun"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "B", "F", "J", "N", "T", "*" ]
+damage = 30
+time_freeze = false
+element = "none"
+description = "Explodes 1 square behind"
+hit_flags = ["Impact"]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

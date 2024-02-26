@@ -1,0 +1,22 @@
+[package]
+category = "card"
+id = "Dawn.k1rbyat1na.EXE4-296-DarkStage"
+name = "DrkStage"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "D", "S" ]
+damage = 0
+time_freeze = true
+element = "none"
+description = "STAGE OF DARKNESS"
+can_boost = false
+card_class = "dark"
+limit = 1
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

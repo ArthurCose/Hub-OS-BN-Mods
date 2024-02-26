@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.161"
+name = "Recov150"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "J", "M", "T" ]
+damage = 0
+recover = 150
+time_freeze = false
+element = "none"
+description = "Restore 150HP to self!"
+card_class = "standard"
+limit = 2
+can_boost = false
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

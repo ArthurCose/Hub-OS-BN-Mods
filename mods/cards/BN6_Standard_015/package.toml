@@ -1,0 +1,26 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.015"
+name = "GunDelS1"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "C", "M", "T", "*" ]
+time_freeze = false
+element = "none"
+secondary_element = "none"
+limit = 5
+card_class = "standard"
+can_boost = false
+description = "Hits row 2pnl ahd w/sunshne"
+long_description = "Sunshine spread drains HP, breaks obstacles two panels ahead!"
+hit_flags = [ "None", "NoCounter", "PierceInvis" ]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [
+    "dev.GladeWoodsgrove.BattleNetworkHelpers"
+]
+cards = [ ]

@@ -1,0 +1,21 @@
+[package]
+category = "card"
+id = "claris.card.Snake"
+name = "Snake"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "L" ]
+damage = 30
+time_freeze = true
+element = "wood"
+description = "Call out snakes from hole"
+card_class = "standard"
+limit = 3
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

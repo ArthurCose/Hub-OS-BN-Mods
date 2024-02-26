@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "claris.card.MoonBladebn6"
+name = "MoonBld"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "A", "M", "T" ]
+damage = 130
+time_freeze = false
+element = "sword"
+description = "Slices enemies around"
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork3.Class01.Standard.161"
+name = "Geddon3"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "C", "M", "U", "W", "Y" ]
+damage = 0
+time_freeze = true
+element = "none"
+description = "Turns all panels to swamp!"
+card_class = "standard"
+limit = 2
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [
+    "dev.GladeWoodsgrove.BattleNetworkHelpers"
+]
+cards = [ ]

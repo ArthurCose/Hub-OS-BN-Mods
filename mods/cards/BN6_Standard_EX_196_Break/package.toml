@@ -1,0 +1,24 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.EX.196-08.Break"
+name = "Break+20"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "*" ]
+damage = 0
+time_freeze = false
+element = "plus"
+description = "+20 for selected brk chip"
+card_class = "standard"
+limit = 3
+can_boost = false
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [
+    "dev.GladeWoodsgrove.BattleNetworkHelpers"
+]
+cards = [ ]

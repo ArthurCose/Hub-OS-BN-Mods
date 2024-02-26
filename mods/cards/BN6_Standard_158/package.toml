@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.158"
+name = "Recov50"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "C", "*" ]
+damage = 0
+recover = 50
+time_freeze = false
+element = "none"
+description = "Restore 50HP to self!"
+card_class = "standard"
+limit = 5
+can_boost = false
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

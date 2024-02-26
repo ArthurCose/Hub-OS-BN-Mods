@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "louise.claris.card.EXE6-164-PanelSteal"
+name = "PanlStel"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "*" ]
+damage = 0
+time_freeze = true
+element = "none"
+description = "Steals 1 enemy square!"
+long_description = "Repaint 1 panel in front of the enemy area to your area"
+can_boost = false
+card_class = "standard"
+limit = 5
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]
