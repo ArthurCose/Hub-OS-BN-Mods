@@ -1,0 +1,37 @@
+imagePath="C:/Users/seven/Desktop/ONB/resources/mods/enemies/Metrid/virus/mob_move.png"
+
+animation state="NAVI_MOVE"
+frame duration="0.017" x="2" y="66" w="30" h="48" originx="15" originy="25" flipx="0" flipy="0"
+frame duration="0.017" x="118" y="2" w="26" h="53" originx="13" originy="28" flipx="0" flipy="0"
+frame duration="0.017" x="60" y="2" w="25" h="56" originx="13" originy="29" flipx="0" flipy="0"
+frame duration="0.017" x="2" y="2" w="25" h="60" originx="13" originy="32" flipx="0" flipy="0"
+
+animation state="NAVI_APPEAR"
+frame duration="0.017" x="31" y="2" w="25" h="60" originx="13" originy="32" flipx="0" flipy="0"
+frame duration="0.017" x="89" y="2" w="25" h="56" originx="13" originy="29" flipx="0" flipy="0"
+frame duration="0.017" x="148" y="2" w="26" h="53" originx="13" originy="28" flipx="0" flipy="0"
+frame duration="0.017" x="36" y="66" w="30" h="48" originx="15" originy="25" flipx="0" flipy="0"
+
+animation state="MOB_MOVE"
+frame duration="0.017" x="2" y="162" w="30" h="32" originx="15" originy="16" flipx="0" flipy="0"
+frame duration="0.017" x="31" y="118" w="26" h="37" originx="13" originy="18" flipx="0" flipy="0"
+frame duration="0.017" x="128" y="66" w="25" h="40" originx="13" originy="20" flipx="0" flipy="0"
+frame duration="0.017" x="70" y="66" w="25" h="42" originx="13" originy="21" flipx="0" flipy="0"
+
+animation state="MOB_APPEAR"
+frame duration="0.017" x="99" y="66" w="25" h="42" originx="13" originy="21" flipx="0" flipy="0"
+frame duration="0.017" x="2" y="118" w="25" h="40" originx="13" originy="20" flipx="0" flipy="0"
+frame duration="0.017" x="61" y="118" w="26" h="37" originx="13" originy="18" flipx="0" flipy="0"
+frame duration="0.017" x="36" y="162" w="30" h="32" originx="15" originy="16" flipx="0" flipy="0"
+
+animation state="SMALL_MOVE"
+frame duration="0.017" x="124" y="162" w="23" h="24" originx="11" originy="13" flipx="0" flipy="0"
+frame duration="0.017" x="70" y="162" w="23" h="30" originx="11" originy="16" flipx="0" flipy="0"
+frame duration="0.017" x="135" y="118" w="18" h="34" originx="9" originy="18" flipx="0" flipy="0"
+frame duration="0.017" x="91" y="118" w="18" h="36" originx="9" originy="19" flipx="0" flipy="0"
+
+animation state="SMALL_APPEAR"
+frame duration="0.017" x="113" y="118" w="18" h="36" originx="9" originy="19" flipx="0" flipy="0"
+frame duration="0.017" x="157" y="118" w="18" h="34" originx="9" originy="18" flipx="0" flipy="0"
+frame duration="0.017" x="97" y="162" w="23" h="30" originx="11" originy="16" flipx="0" flipy="0"
+frame duration="0.017" x="151" y="162" w="23" h="24" originx="11" originy="13" flipx="0" flipy="0"

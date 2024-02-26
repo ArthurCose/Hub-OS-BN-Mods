@@ -1,0 +1,11 @@
+imagePath="C:/Users/seven/Desktop/ONB Play/Development/resources/mods/enemies/Alpha/virus/pool.png"
+
+animation state="0"
+frame duration="0.117" x="2" y="2" w="80" h="48" originx="45" originy="25" flipx="1"
+frame duration="0.117" x="86" y="2" w="80" h="48" originx="45" originy="25" flipx="1"
+frame duration="0.117" x="2" y="54" w="80" h="48" originx="45" originy="25" flipx="1"
+frame duration="0.117" x="86" y="54" w="80" h="48" originx="45" originy="25" flipx="1"
+frame duration="0.117" x="2" y="106" w="80" h="48" originx="45" originy="25" flipx="1"
+frame duration="0.117" x="86" y="106" w="80" h="48" originx="45" originy="25" flipx="1"
+frame duration="0.117" x="2" y="158" w="80" h="48" originx="45" originy="25" flipx="1"
+frame duration="0.117" x="86" y="158" w="80" h="48" originx="45" originy="25" flipx="1"

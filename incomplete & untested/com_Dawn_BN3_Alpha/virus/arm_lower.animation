@@ -1,0 +1,20 @@
+imagePath="C:/Users/seven/Desktop/ONB/resources/mods/enemies/Alpha/virus/arm_lower.png"
+
+animation state="IDLE_SPAWN"
+frame duration="0.033" x="2" y="82" w="60" h="34" originx="52" originy="33" flipx="1" flipy="0"
+
+animation state="IDLE"
+frame duration="0.05" x="66" y="82" w="60" h="34" originx="52" originy="33" flipx="1" flipy="0"
+frame duration="0.15" x="2" y="120" w="60" h="34" originx="52" originy="32" flipx="1" flipy="0"
+frame duration="0.15" x="66" y="120" w="60" h="34" originx="52" originy="31" flipx="1" flipy="0"
+frame duration="0.15" x="2" y="158" w="60" h="34" originx="52" originy="30" flipx="1" flipy="0"
+frame duration="0.15" x="66" y="158" w="60" h="34" originx="52" originy="31" flipx="1" flipy="0"
+frame duration="0.15" x="2" y="196" w="60" h="34" originx="52" originy="32" flipx="1" flipy="0"
+
+animation state="ATTACK_OMEGA"
+frame duration="0.033" x="2" y="2" w="63" h="36" originx="30" originy="30" flipx="1" flipy="0"
+frame duration="0.033" x="69" y="2" w="63" h="36" originx="30" originy="30" flipx="1" flipy="0"
+frame duration="0.033" x="2" y="42" w="63" h="36" originx="30" originy="30" flipx="1" flipy="0"
+
+animation state="ATTACK"
+frame duration="0.033" x="69" y="42" w="63" h="36" originx="30" originy="30" flipx="1" flipy="0"

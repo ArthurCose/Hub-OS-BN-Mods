@@ -1,0 +1,15 @@
+[package]
+category = "encounter"
+id = "Dawn.BN3.Alpha"
+name = "Alpha"
+description = "The Internet is in danger!"
+preview_texture_path = "preview.png"
+
+[[defines.characters]]
+id = "Dawn.BN3.Alpha.BossFight"
+path = "virus"
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

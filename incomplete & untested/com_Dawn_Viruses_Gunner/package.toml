@@ -1,0 +1,15 @@
+[package]
+category = "encounter"
+id = "Dawn.Viruses.Gunner"
+name = "Gunner"
+description = "Dig the trenches!"
+preview_texture_path = "preview.png"
+
+[[defines.characters]]
+id = "Dawn.Viruses.Enemy.Gunner"
+path = "Gunner"
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

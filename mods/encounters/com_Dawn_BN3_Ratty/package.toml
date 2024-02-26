@@ -1,0 +1,15 @@
+[package]
+category = "encounter"
+id = "BattleNetwork3.Ratty"
+name = "Ratty"
+description = "Go Go Ratton Rangers!"
+preview_texture_path = "preview.png"
+
+[[defines.characters]]
+id = "BattleNetwork3.Ratty.Enemy"
+path = "virus"
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

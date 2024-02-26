@@ -1,0 +1,4 @@
+imagePath="C:/Users/seven/Desktop/ONB Play/Development/resources/mods/enemies/Ratty/virus/ratton_bomb.greyscaled.png"
+
+animation state="0"
+frame duration="0.033" x="2" y="2" w="15" h="18" originx="8" originy="15" flipx="1"

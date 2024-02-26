@@ -1,0 +1,28 @@
+imagePath="C:\Users\seven\Desktop\ONB\resources\mods\enemies\Bladia\virus\bladia.png"
+
+animation state="IDLE"
+frame duration="0.1333" x="156" y="235" w="73" h="64" originx="30" originy="60" flipx="0" flipy="0"
+frame duration="0.1333" x="2" y="235" w="73" h="65" originx="30" originy="61" flipx="0" flipy="0"
+frame duration="0.1333" x="79" y="164" w="73" h="66" originx="30" originy="62" flipx="0" flipy="0"
+frame duration="0.1333" x="146" y="90" w="73" h="67" originx="30" originy="63" flipx="0" flipy="0"
+frame duration="0.1333" x="2" y="164" w="73" h="67" originx="30" originy="63" flipx="0" flipy="0"
+frame duration="0.1333" x="156" y="164" w="73" h="66" originx="30" originy="62" flipx="0" flipy="0"
+frame duration="0.1333" x="79" y="235" w="73" h="65" originx="30" originy="61" flipx="0" flipy="0"
+
+animation state="BLOCK"
+frame duration="0.1333" x="78" y="90" w="64" h="68" originx="22" originy="64" flipx="0" flipy="0"
+point label="tink" x="0" y="0"
+frame duration="0.6667" x="84" y="304" w="48" h="62" originx="20" originy="58" flipx="0" flipy="0"
+point label="tink" x="38" y="35"
+
+animation state="ATTACK"
+frame duration="0.0667" x="2" y="2" w="65" h="84" originx="23" originy="80" flipx="0" flipy="0"
+frame duration="0.4" x="2" y="90" w="72" h="70" originx="53" originy="66" flipx="0" flipy="0"
+frame duration="0.6" x="2" y="90" w="72" h="70" originx="53" originy="66" flipx="0" flipy="0"
+frame duration="0.0667" x="71" y="2" w="74" h="73" originx="54" originy="69" flipx="0" flipy="0"
+frame duration="0.0667" x="149" y="2" w="69" h="72" originx="13" originy="68" flipx="0" flipy="0"
+frame duration="0.0667" x="136" y="304" w="82" h="60" originx="11" originy="56" flipx="0" flipy="0"
+frame duration="1.5333" x="2" y="304" w="78" h="63" originx="13" originy="59" flipx="0" flipy="0"
+
+animation state="SPAWN"
+frame duration="0.1333" x="156" y="235" w="73" h="64" originx="30" originy="60" flipx="0" flipy="0"

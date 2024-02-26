@@ -1,0 +1,20 @@
+[package]
+category = "player"
+id = "Dawn.ChargedShots.Windman"
+name = "WindMan"
+description = "God of Scissor Island"
+preview_texture_path = "preview.png"
+overworld_animation_path = "windman_OW.animation"
+overworld_texture_path = "windmanOW.png"
+icon_texture_path = "windman_face.png"
+mugshot_animation_path = "mug.animation"
+mugshot_texture_path = "mug.png"
+health = 1000
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

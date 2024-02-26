@@ -1,0 +1,9 @@
+imagePath="C:/Users/seven/Desktop/ONB/resources/mods/enemies/Bladia/virus/hit_effect.png"
+
+animation state="DEFAULT"
+frame duration="0.05" x="82" y="104" w="12" h="42" originx="6" originy="48" flipx="0" flipy="0"
+frame duration="0.05" x="46" y="104" w="32" h="63" originx="16" originy="44" flipx="0" flipy="0"
+frame duration="0.05" x="2" y="2" w="12" h="98" originx="6" originy="48" flipx="0" flipy="0"
+frame duration="0.05" x="66" y="2" w="32" h="89" originx="16" originy="44" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="104" w="40" h="87" originx="20" originy="41" flipx="0" flipy="0"
+frame duration="0.033" x="18" y="2" w="44" h="90" originx="22" originy="43" flipx="0" flipy="0"

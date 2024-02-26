@@ -1,0 +1,19 @@
+[package]
+category = "player"
+id = "Dawn.ChargeShots.Searchman"
+name = "SearchMan"
+description = "You're in my sights."
+preview_texture_path = "preview.png"
+overworld_animation_path = "searchmanOW.animation"
+overworld_texture_path = "searchmanOW.png"
+mugshot_animation_path = "mug.animation"
+mugshot_texture_path = "mug.png"
+health = 1000
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

@@ -1,0 +1,15 @@
+imagePath="C:/Users/seven/Desktop/ONB Play/Development/resources/mods/enemies/Alpha/virus/alpha rocket.png"
+
+animation state="IDLE"
+frame duration="0.1" x="2" y="2" w="71" h="50" originx="43" originy="44" flipx="1"
+frame duration="0.067" x="77" y="2" w="71" h="50" originx="42" originy="44" flipx="1"
+
+animation state="TAKEOFF"
+frame duration="0.033" x="2" y="56" w="83" h="50" originx="42" originy="44" flipx="1"
+frame duration="0.033" x="89" y="56" w="85" h="50" originx="42" originy="44" flipx="1"
+frame duration="0.033" x="2" y="110" w="71" h="50" originx="42" originy="44" flipx="1"
+
+animation state="FLIGHT"
+frame duration="0.033" x="77" y="110" w="85" h="31" originx="48" originy="14" flipx="1"
+frame duration="0.033" x="2" y="164" w="83" h="31" originx="48" originy="14" flipx="1"
+frame duration="0.033" x="89" y="164" w="89" h="31" originx="48" originy="14" flipx="1"

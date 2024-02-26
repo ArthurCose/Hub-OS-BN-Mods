@@ -1,0 +1,38 @@
+imagePath="C:/Users/seven/Desktop/ONB Play/Release 1_8_2022_Patch5/resources/mods/enemies/Gunner/Gunner/Gunner.png"
+
+animation state="IDLE"
+frame duration="0.1" x="50" y="0" w="50" h="54" originx="23" originy="50"
+
+animation state="FOE_SPOTTED"
+frame duration="0.05" x="150" y="0" w="50" h="53" originx="23" originy="49"
+frame duration="0.05" x="100" y="0" w="50" h="53" originx="23" originy="49"
+frame duration="0.05" x="0" y="0" w="50" h="55" originx="23" originy="51"
+
+animation state="CURSOR"
+frame duration="0.9" x="37" y="214" w="32" h="32" originx="16" originy="31"
+
+animation state="CURSOR_LOCKON"
+frame duration="0.125" x="69" y="214" w="30" h="30" originx="15" originy="29"
+frame duration="0.125" x="99" y="214" w="28" h="28" originx="14" originy="27"
+frame duration="0.25" x="127" y="214" w="28" h="28" originx="14" originy="27"
+
+animation state="BURST"
+frame duration="0.05" x="155" y="214" w="27" h="14" originx="13" originy="13"
+frame duration="0.05" x="112" y="161" w="38" h="38" originx="23" originy="37"
+frame duration="0.05" x="150" y="161" w="38" h="38" originx="23" originy="36"
+frame duration="0.05" x="0" y="214" w="37" h="38" originx="22" originy="37"
+frame duration="0.05" x="66" y="161" w="46" h="41" originx="26" originy="40"
+
+animation state="ATTACK"
+frame duration="0.033" x="50" y="55" w="72" h="53" originx="22" originy="49"
+frame duration="0.033" x="122" y="55" w="69" h="53" originx="22" originy="49"
+frame duration="0.033" x="0" y="108" w="63" h="53" originx="23" originy="49"
+frame duration="0.033" x="63" y="108" w="72" h="53" originx="22" originy="49"
+frame duration="0.033" x="135" y="108" w="75" h="53" originx="22" originy="49"
+frame duration="0.033" x="0" y="161" w="66" h="53" originx="23" originy="49"
+frame duration="0.033" x="50" y="55" w="72" h="53" originx="22" originy="49"
+frame duration="0.033" x="122" y="55" w="69" h="53" originx="22" originy="49"
+frame duration="0.033" x="0" y="108" w="63" h="53" originx="23" originy="49"
+frame duration="0.033" x="63" y="108" w="72" h="53" originx="22" originy="49"
+frame duration="0.033" x="135" y="108" w="75" h="53" originx="22" originy="49"
+frame duration="0.033" x="0" y="161" w="66" h="53" originx="23" originy="49"

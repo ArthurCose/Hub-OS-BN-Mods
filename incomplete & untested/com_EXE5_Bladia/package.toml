@@ -1,0 +1,39 @@
+[package]
+category = "encounter"
+id = "EXE5.Bladia"
+name = "Bladia"
+description = "And steadily it would decline, in to its solitary shell."
+preview_texture_path = "preview.png"
+
+[[defines.characters]]
+id = "EXE5.Bladia.Enemy"
+path = "shared"
+
+[[defines.characters]]
+id = "EXE5.Bladia.Enemy1"
+path = "1"
+
+[[defines.characters]]
+id = "EXE5.Bladia.Enemy2"
+path = "2"
+
+[[defines.characters]]
+id = "EXE5.Bladia.Enemy3"
+path = "3"
+
+[[defines.characters]]
+id = "EXE5.Bladia.Enemy4"
+path = "4"
+
+[[defines.characters]]
+id = "EXE5.Bladia.Enemy5"
+path = "5"
+
+[[defines.characters]]
+id = "EXE5.Bladia.Enemy6"
+path = "6"
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

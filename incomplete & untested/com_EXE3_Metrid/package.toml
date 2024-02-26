@@ -1,0 +1,15 @@
+[package]
+category = "encounter"
+id = "EXE3.Metrid"
+name = "Metrid"
+description = "I don't care about the NPCs, I CAST METEOR."
+preview_texture_path = "preview.png"
+
+[[defines.characters]]
+id = "EXE3.Metrid.Enemy"
+path = "virus"
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

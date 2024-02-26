@@ -1,0 +1,16 @@
+imagePath="C:/Users/seven/Desktop/ONB Play/Development/resources/mods/enemies/Alpha/virus/red_eyes_delete_projectile.png"
+
+animation state="FORWARD"
+frame duration="0.033" x="2" y="2" w="24" h="32" originx="13" originy="16" flipx="1"
+frame duration="0.033" x="2" y="38" w="24" h="26" originx="13" originy="13" flipx="1"
+frame duration="0.033" x="2" y="68" w="25" h="24" originx="12" originy="12" flipx="1"
+frame duration="0.033" x="30" y="38" w="24" h="26" originx="13" originy="13" flipx="1"
+
+animation state="FORWARD_2"
+frame duration="0.033" x="30" y="2" w="24" h="32" originx="13" originy="16" flipx="1"
+
+animation state="UP"
+frame duration="0.033" x="31" y="68" w="32" h="24" originx="16" originy="11" flipx="1"
+
+animation state="DOWN"
+frame duration="0.033" x="2" y="96" w="32" h="24" originx="16" originy="11" flipx="1"
