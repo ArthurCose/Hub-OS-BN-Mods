@@ -1,0 +1,24 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program46.HP+500"
+name = "HP+500"
+description = "Max HP\n+500!"
+health_boost = 500
+colors = ["white", "pink", "green"]
+shape = [
+    [0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0]
+]
+byproducts = [
+    "BattleNetwork6.Bugs.BattleHPBug",
+    "BattleNetwork6.Bugs.DamageHPBug"
+]
+
+[dependencies]
+augments = [
+    "BattleNetwork6.Bugs.BattleHPBug",
+    "BattleNetwork6.Bugs.DamageHPBug"
+]
