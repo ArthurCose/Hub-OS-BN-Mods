@@ -15,12 +15,19 @@ function augment_init(augment)
   local player = augment:owner()
   local component = player:create_component(Lifetime.CardSelectOpen)
   local turn = 0
+  local boosts = 0
 
   component.on_update_func = function()
     turn = turn + 1
 
     if turn >= min_turn(augment) then
       player:boost_augment("BattleNetwork6.Bugs.Custom-", 1)
+      boosts = boosts + 1
     end
+  end
+
+  augment.on_delete_func = function()
+    component:eject()
+    player:boost_augment("BattleNetwork6.Bugs.Custom-", -boosts)
   end
 end
