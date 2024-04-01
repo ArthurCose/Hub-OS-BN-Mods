@@ -1,0 +1,18 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program12.AirShoes"
+name = "AirShoes"
+description = "Move\novr hole"
+colors = ["white"]
+flat = true
+shape = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 1, 0, 1, 0],
+    [0, 1, 0, 1, 0]
+]
+byproducts = ["BattleNetwork6.Bugs.PanelBug"]
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.PanelBug"]

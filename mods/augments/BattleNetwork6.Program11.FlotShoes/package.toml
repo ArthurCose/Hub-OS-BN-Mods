@@ -1,0 +1,18 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program11.FloatShoes"
+name = "FlotShoe"
+description = "No effct\nfrom\npnl type"
+colors = ["pink"]
+flat = true
+shape = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0],
+    [0, 0, 1, 1, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0]
+]
+byproducts = ["BattleNetwork6.Bugs.PanelBug"]
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.PanelBug"]

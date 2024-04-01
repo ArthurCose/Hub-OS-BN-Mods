@@ -1,0 +1,5 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Bugs.PanelBug"
+name = "PanelBug"
+description = "Adds a chance of cracking the tile under the player, depending on augment level."
