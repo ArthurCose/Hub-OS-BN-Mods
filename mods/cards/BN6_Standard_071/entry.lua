@@ -61,8 +61,9 @@ function create_slash(user, props)
 	spell:set_hit_props(
 		HitProps.new(
 			props.damage,
-			Hit.Impact | Hit.Flinch | Hit.Flash,
-			Element.Sword,
+			props.hit_flags,
+			props.element,
+			props.secondary_element,
 			user:context(),
 			Drag.None
 		)
