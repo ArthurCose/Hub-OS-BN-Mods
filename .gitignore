@@ -1,9 +1,14 @@
 # client files
 cache/
 identity
+resources
 save.dat
 corrupted_save.dat
 config.ini
 crash.txt
 hub_os.exe
 hub_os
+_*
+
+# mods used for testing
+com.discord.Konstinople%237692.player.Man
