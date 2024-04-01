@@ -1,20 +1,15 @@
 [package]
 category = "card"
-id = "claris.card.Sword03"
+id = "BattleNetwork6.Class01.Standard.072"
 name = "LongSwrd"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "H", "L", "S", "*" ]
+codes = ["H", "L", "S", "*"]
 damage = 80
 time_freeze = false
 element = "sword"
 description = "Cuts enmy in front! Depth: 2"
 limit = 4
 
-[defines]
-characters = [ ]
-
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [ ]
+libraries = ["dev.GladeWoodsgrove.BattleNetworkHelpers"]
