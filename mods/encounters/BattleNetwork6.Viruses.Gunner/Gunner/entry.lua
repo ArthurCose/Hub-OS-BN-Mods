@@ -1,6 +1,6 @@
 local noop = function() end
-local texture = nil
-local animation_path = nil
+local texture = Resources.load_texture("gunner.greyscaled.png")
+local animation_path = "gunner.animation"
 
 local Cursor = {}
 
@@ -115,6 +115,7 @@ local function begin_attack(gunner, cursor)
 	-- stop the cursor from scanning for players
 	cursor.spell.on_update_func = noop
 	cursor.spell.on_attack_func = noop
+	cursor.spell.on_collision_func = noop
 
 	local cursor_anim = cursor.spell:animation()
 	cursor_anim:set_state("CURSOR_LOCKON")
@@ -128,7 +129,7 @@ end
 local function spawn_cursor(cursor, gunner, tile)
 	local spell = Spell.new(gunner:team())
 	spell:set_facing(gunner:facing())
-	spell:set_texture(gunner:texture(), true)
+	spell:set_texture(gunner:texture())
 	spell:set_palette(Resources.load_texture("gunner_v1.pallet.png"))
 	spell:sprite():set_layer(-1)
 	spell:set_hit_props(HitProps.new(
@@ -165,7 +166,7 @@ local function spawn_cursor(cursor, gunner, tile)
 		cursor.spell.tile = spell:current_tile()
 		if not spell:is_sliding() then
 			local ref = spell
-			spell:slide(tile, (gunner._frames_per_cursor_movement), (0), function()
+			spell:slide(tile, gunner._frames_per_cursor_movement, function()
 				ref.slide_started = true
 			end)
 		end
@@ -259,11 +260,6 @@ idle_update = function(gunner)
 end
 
 function character_init(gunner)
-	if not texture then
-		texture = Resources.load_texture("gunner.greyscaled.png")
-		animation_path = "Gunner.animation"
-	end
-
 	-- private variables
 	gunner._frames_per_cursor_movement = 15
 	gunner._cursor = nil

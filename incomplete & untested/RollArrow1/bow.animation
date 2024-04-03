@@ -1,9 +1,0 @@
-# @frame_rate 60
-
-imagePath="C:/Users/seven/OneDrive/Desktop/HubOS/client/mods/cards/RollArrow/bow.png"
-
-animation state="FIRE"
-frame duration="1f" x="0" y="8" w="14" h="34" originx="1" originy="15" flipx="0" flipy="0"
-frame duration="1f" x="23" y="8" w="14" h="34" originx="2" originy="15" flipx="0" flipy="0"
-frame duration="1f" x="47" y="8" w="18" h="34" originx="2" originy="15" flipx="0" flipy="0"
-frame duration="2f" x="0" y="8" w="14" h="34" originx="1" originy="15" flipx="0" flipy="0"

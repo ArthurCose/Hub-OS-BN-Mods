@@ -1,12 +1,12 @@
 [package]
 category = "encounter"
-id = "Dawn.Viruses.Gunner"
+id = "BattleNetwork6.Viruses.Gunner"
 name = "Gunner"
 description = "Dig the trenches!"
 preview_texture_path = "preview.png"
 
 [[defines.characters]]
-id = "Dawn.Viruses.Enemy.Gunner"
+id = "BattleNetwork6.Viruses.Gunner.Enemy"
 path = "Gunner"
 
 [dependencies]

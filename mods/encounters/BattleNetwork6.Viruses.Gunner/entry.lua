@@ -1,5 +1,4 @@
-local package_id = "Dawn.Viruses.Gunner"
-local character_id = "Dawn.Viruses.Enemy.Gunner"
+local character_id = "BattleNetwork6.Viruses.Gunner.Enemy"
 
 function encounter_init(mob)
   local field = mob:field()
