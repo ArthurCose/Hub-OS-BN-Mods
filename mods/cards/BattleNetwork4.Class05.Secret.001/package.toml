@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class05.Secret.001"
+name = "RollAro1"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "A", "F", "T" ]
+damage = 50
+time_freeze = false
+element = "none"
+description = "Arrow breaks enmy chip!"
+card_class = "standard"
+limit = 1
+long_description = "Fire an arrow which destroys the enemy's current chip."
+hit_flags = ["Impact", "Flinch", "Flash"]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]
