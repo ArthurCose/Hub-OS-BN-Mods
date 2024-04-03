@@ -12,7 +12,7 @@ function create_soldier_shot(user, props, facing)
         )
     )
     spell.on_update_func = function(self)
-        self:current_tile():attack_entities(self)
+        self:get_tile():attack_entities(self)
         local dest = self:get_tile(self:facing(), 1)
         if not self:is_sliding() then
             if self:current_tile():is_edge() and self.slide_started then
@@ -51,7 +51,7 @@ end
 
 function card_init(actor, props)
     local action = Action.new(actor, "PLAYER_IDLE")
-    action:set_lockout(ActionLockout.new_animation())
+    action:set_lockout(make_animation_lockout())
     action.on_execute_func = function(self)
         local user = action:owner()
         local do_once = true
@@ -105,7 +105,7 @@ function card_init(actor, props)
             local spawn = 1
             local spawned_something = false
 
-            local soldier_handler = user:create_component(Lifetime.Local)
+            local soldier_handler = user:create_component(Lifetimes.Local)
 
             soldier_handler.on_update_func = function()
                 if delay % 9 == 0 then
@@ -132,7 +132,7 @@ function card_init(actor, props)
             end
         end
 
-        local colforce_handler = user:create_component(Lifetime.Battle)
+        local colforce_handler = user:create_component(Lifetimes.Battle)
 
         local delay = 5
         local function tile_checker()

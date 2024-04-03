@@ -7,7 +7,7 @@ local animation_path = bn_helpers.fetch_animation_path("airshot.animation")
 function card_init(actor, props)
     local action = Action.new(actor, "PLAYER_SHOOTING");
 
-    local action_frame_sequence = { { 1, 4 }, { 2, 3 }, { 3, 6 }, { 3, 6 }, { 3, 6 } };
+    local action_frame_sequence = { { 1, 4 }, { 2, 3 }, { 3, 16 } };
 
     action:set_card_properties(props);
 
@@ -20,15 +20,13 @@ function card_init(actor, props)
         -- obtain direction user is facing to not call this more than once
         local facing = user:facing();
 
-        local buster = nil;
-
         -- add action on animation index 1
         self:add_anim_action(1, function()
             -- action starts, enable countering
             user:set_counterable(true);
 
             -- create airshot arm attachment
-            buster = self:create_attachment("BUSTER")
+            local buster = self:create_attachment("BUSTER")
 
             -- obtain the sprite so we don't have to call it more than once
             local buster_sprite = buster:sprite();
@@ -51,23 +49,11 @@ function card_init(actor, props)
             -- attack starts, can no longer counter
             user:set_counterable(false)
 
-            if buster ~= nil then
-                local burst = buster:create_attachment("BURST")
-
-                local attach_sprite = burst:sprite()
-
-                attach_sprite:set_texture(BUSTER_TEXTURE)
-
-                attach_sprite:animation():load(animation_path)
-
-                attach_sprite:animation():set_state("AIR")
-            end
-
             -- create the attack itself
             local airshot = create_attack(user, props, user:context(), facing, field)
 
             -- obtain tile to spawn the attack on and spawn it using the field
-            local tile = user:current_tile()
+            local tile = user:get_tile()
             field:spawn(airshot, tile)
 
             -- play a sound to indicate the attack.
@@ -92,7 +78,7 @@ function create_attack(user, props, context, facing, field)
         )
     )
     -- store starting tile as the user's own tile
-    spell.tile = user:current_tile();
+    spell.tile = user:get_tile();
 
     -- this will be used to teleport 1 frame in.
     spell.first_move = false;

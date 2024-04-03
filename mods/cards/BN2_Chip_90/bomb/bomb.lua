@@ -1,3 +1,5 @@
+
+
 local debug = false
 
 local attachment_texture = Resources.load_texture("attachment.png")
@@ -13,23 +15,23 @@ function debug_print(text)
 end
 
 local bomb = {
-    name = "MiniBomb",
-    damage = 50,
-    element = Element.None,
+    name="MiniBomb",
+    damage=50,
+    element=Element.None,
     description = "Throws a MiniBomb 3sq ahead",
-    codes = { "B", "L", "R", "*" }
+    codes = {"B","L","R","*"}
 }
 
-bomb.card_init = function(user, props)
+bomb.card_init = function(user,props)
     local action = Action.new(user, "PLAYER_THROW")
-    action:set_lockout(ActionLockout.new_animation())
-    local override_frames = { { 1, 4 }, { 2, 4 }, { 3, 4 }, { 4, 4 }, { 5, 4 } }
+	action:set_lockout(make_animation_lockout())
+    local override_frames = {{1,4},{2,4},{3,4},{4,4},{5,4}}
     local frame_data = override_frames
     action:override_animation_frames(frame_data)
 
     local hit_props = HitProps.new(
         10,
-        Hit.Impact | Hit.Flinch | Hit.Flash,
+        Hit.Impact | Hit.Flinch | Hit.Flash, 
         props.element,
         user:context(),
         Drag.None
@@ -48,29 +50,28 @@ bomb.card_init = function(user, props)
         attachment_animation:set_playback(Playback.Loop)
 
         user:set_counterable(true)
-        self:add_anim_action(3, function()
+        self:add_anim_action(3,function()
             attachment_sprite:hide()
             --self.remove_attachment(attachment)
             local tiles_ahead = 3
             local frames_in_air = 40
             local toss_height = 70
             local facing = user:facing()
-            local target_tile = user:get_tile(facing, tiles_ahead)
+            local target_tile = user:get_tile(facing,tiles_ahead)
             if not target_tile then
                 return
             end
-            action.on_landing = function()
+            action.on_landing = function ()
                 if target_tile:is_walkable() then
-                    hit_explosion(user, target_tile, hit_props, explosion_texture, explosion_animation_path)
+                    hit_explosion(user,target_tile,hit_props,explosion_texture,explosion_animation_path)
                 end
             end
-            toss_spell(user, toss_height, attachment_texture, attachment_animation_path, target_tile, frames_in_air,
-                action.on_landing)
-        end)
-        self:add_anim_action(4, function()
+            toss_spell(user,toss_height,attachment_texture,attachment_animation_path,target_tile,frames_in_air,action.on_landing)
+		end)
+        self:add_anim_action(4,function()
             user:set_counterable(false)
-        end)
-        self.on_action_end_func = function()
+		end)
+        self.on_action_end_func = function ()
             user:set_counterable(false)
         end
 
@@ -79,7 +80,7 @@ bomb.card_init = function(user, props)
     return action
 end
 
-function toss_spell(tosser, toss_height, texture, animation_path, target_tile, frames_in_air, arrival_callback)
+function toss_spell(tosser,toss_height,texture,animation_path,target_tile,frames_in_air,arrival_callback)
     local starting_height = -110
     local start_tile = tosser:current_tile()
     local field = tosser:field()
@@ -88,7 +89,7 @@ function toss_spell(tosser, toss_height, texture, animation_path, target_tile, f
     spell_animation:load(animation_path)
     spell_animation:set_state("DEFAULT")
     if tosser:height() > 1 then
-        starting_height = -(tosser:height() * 2)
+        starting_height = -(tosser:height()*2)
     end
 
     spell.jump_started = false
@@ -101,7 +102,7 @@ function toss_spell(tosser, toss_height, texture, animation_path, target_tile, f
     spell.x_offset = spell.starting_x_offset
     local sprite = spell:sprite()
     sprite:set_texture(texture)
-    spell:set_offset(spell.x_offset * 0.5, spell.y_offset * 0.5)
+    spell:set_offset(spell.x_offset * 0.5,spell.y_offset * 0.5)
 
     spell.on_update_func = function(self)
         if not spell.jump_started then
@@ -109,9 +110,9 @@ function toss_spell(tosser, toss_height, texture, animation_path, target_tile, f
             self.jump_started = true
         end
         if self.y_offset < 0 then
-            self.y_offset = self.y_offset + math.abs(self.starting_y_offset / frames_in_air)
-            self.x_offset = self.x_offset - math.abs(self.starting_x_offset / frames_in_air)
-            self:set_offset(self.x_offset * 0.5, self.y_offset * 0.5)
+            self.y_offset = self.y_offset + math.abs(self.starting_y_offset/frames_in_air)
+            self.x_offset = self.x_offset - math.abs(self.starting_x_offset/frames_in_air)
+            self:set_offset(self.x_offset * 0.5,self.y_offset * 0.5)
         else
             arrival_callback()
             self:delete()
@@ -123,7 +124,7 @@ function toss_spell(tosser, toss_height, texture, animation_path, target_tile, f
     field:spawn(spell, start_tile)
 end
 
-function hit_explosion(user, target_tile, props, texture, anim_path)
+function hit_explosion(user,target_tile,props,texture,anim_path)
     local field = user:field()
     local spell = Spell.new(user:team())
     local whirlpool = Spell.new(user:team())
@@ -140,13 +141,13 @@ function hit_explosion(user, target_tile, props, texture, anim_path)
     end)
     whirlpool.is_erasing = false
     whirlpool.on_update_func = function(self)
-        self:current_tile():attack_entities(self)
+        self:get_tile():attack_entities(self)
         if self.cooldown <= 0 and not self.is_erasing then
             self.is_erasing = true
             local anim = self:animation()
             anim:set_state("2")
             anim:on_complete(function()
-                self:erase()
+                self:erase()                
             end)
         else
             self.cooldown = self.cooldown - 1
@@ -163,7 +164,7 @@ function hit_explosion(user, target_tile, props, texture, anim_path)
         hitbox:set_hit_props(
             HitProps.new(
                 hitbox_damage,
-                Hit.Impact | Hit.Flinch | Hit.Flash,
+                Hit.Impact | Hit.Flinch | Hit.Flash, 
                 props.element,
                 nil,
                 Drag.None

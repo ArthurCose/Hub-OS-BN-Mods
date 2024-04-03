@@ -15,7 +15,7 @@ function package_init(package)
     props.element = bomb.element
     props.description = bomb.description
 
-    package:declare_package_id("Dawn.Card.Whirpool2")
+    package:declare_package_id("com.Dawn.Card.Whirpool2")
     package:set_icon_texture_path("icon.png")
     package:set_preview_texture_path("preview.png")
     package:set_codes(bomb.codes)

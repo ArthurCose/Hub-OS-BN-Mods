@@ -1,0 +1,26 @@
+[package]
+category = "card"
+id = "dev.GladeWoodsgrove.ZeroRecovery"
+name = "Zero Recovery"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "*" ]
+damage = 0
+recover = 0
+time_freeze = false
+element = "none"
+description = "Recovery Template!"
+card_class = "standard"
+limit = 0
+conceal = true
+can_boost = false
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [
+    "dev.GladeWoodsgrove.BattleNetworkHelpers"
+]
+cards = [ ]

@@ -3,7 +3,7 @@ local AUDIO = Resources.load_audio("break.ogg")
 function card_init(actor, props)
 	local ParticlePoof = require("BattleNetwork.SmokePoof")
 	local action = Action.new(actor, "PLAYER_IDLE")
-	action:set_lockout(make_sequence_lockout())
+	action:set_lockout(ActionLockout.new_sequence())
 	local field = actor:field()
 	local tile_array = {}
 	local cooldown = 0

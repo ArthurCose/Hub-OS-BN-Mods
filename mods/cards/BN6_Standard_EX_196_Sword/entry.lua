@@ -14,15 +14,13 @@ function card_mutate(player, index)
     end
 end
 
-local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
-
 function card_init(actor, props)
-    local ParticlePoof = bn_helpers.ParticlePoof.new();
+    local ParticlePoof = require("BattleNetwork.SmokePoof")
     local action = Action.new(actor, "PLAYER_IDLE")
-    action.on_execute_func = function(self, user)
-        local fx = bn_helpers.ParticlePoof.new()
-        fx:set_height(user:height() * 2)
-        actor:field():spawn(fx, actor:current_tile())
-    end
-    return action
+	action.on_execute_func = function(self, user)
+		local fx = ParticlePoof.new()
+		fx:set_height(user:height()*2)
+		actor:field():spawn(fx, actor:current_tile())
+	end
+	return action
 end

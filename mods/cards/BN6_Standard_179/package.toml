@@ -19,7 +19,5 @@ characters = [ ]
 
 [dependencies]
 characters = [ ]
-libraries = [
-    "dev.GladeWoodsgrove.BattleNetworkHelpers"
-]
+libraries = [ ]
 cards = [ ]

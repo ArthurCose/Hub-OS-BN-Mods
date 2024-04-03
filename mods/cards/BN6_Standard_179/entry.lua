@@ -1,6 +1,3 @@
-local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
-local Invis_Audio = bn_helpers.load_audio("invis.ogg")
-
 function card_init(player)
     local action = Action.new(player, "PLAYER_IDLE");
     action.on_execute_func = function(self, user)
@@ -11,7 +8,7 @@ function card_init(player)
         intangible_rule.hit_weaknesses = Hit.PierceInvis;
 
         -- Create a rule to cause sprite flickering
-        intangible_rule.flicker = user:create_component(Lifetime.Scene)
+        intangible_rule.flicker = user:create_component(Lifetimes.Scene)
 
         -- Create a timer that ticks down.
         intangible_rule.flicker.timer = 2
@@ -35,9 +32,10 @@ function card_init(player)
         -- Add the rule. Use false to remove a rule, and don't pass a rule in to use a default intangibility.
         user:set_intangible(true, intangible_rule);
 
+
         user:hide()
 
-        Resources.play_audio(Invis_Audio)
+        -- Resources.play_audio(AudioType.Invisible)
     end
     return action
 end

@@ -21,3 +21,6 @@ libraries = [
     "dev.GladeWoodsgrove.BattleNetworkHelpers"
 ]
 cards = [ ]
+tile_states = [
+    "BattleNetwork6.TileStates.Poison"
+]

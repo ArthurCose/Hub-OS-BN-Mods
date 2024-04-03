@@ -71,9 +71,6 @@ function create_attack(owner, props)
     animation:load(yoyo_animation_path)
     animation:set_state("DEFAULT")
     animation:set_playback(Playback.Loop)
-
-    spell:set_elevation(owner:animation():get_point("BUSTER").y)
-
     animation:apply(sprite)
 
     spell.can_move_to_func = function(tile)

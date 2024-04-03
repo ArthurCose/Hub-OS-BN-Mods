@@ -1,7 +1,7 @@
 local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
 
-local TEXTURE = bn_helpers.load_texture("CubeBN6.png")
-local cube_anim = bn_helpers.fetch_animation_path("CubeN6.animation")
+local TEXTURE = bn_helpers.load_texture("cube_bn6.png")
+local cube_anim = bn_helpers.fetch_animation_path("cube_bn6.animation")
 local sfx = Resources.load_audio("sfx.ogg")
 
 function card_init(actor, props)

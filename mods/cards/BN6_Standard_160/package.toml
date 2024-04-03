@@ -20,4 +20,6 @@ characters = [ ]
 [dependencies]
 characters = [ ]
 libraries = [ ]
-cards = [ ]
+cards = [
+    "dev.GladeWoodsgrove.ZeroRecovery"
+]
