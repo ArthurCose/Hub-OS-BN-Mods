@@ -1,0 +1,5 @@
+[package]
+category = "library"
+id = "dev.konstinople.library.sword"
+name = "Sword Library"
+description = "Simplifies sword animations."

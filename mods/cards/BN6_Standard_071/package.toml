@@ -12,4 +12,7 @@ description = "Cuts enmy in front! Range: 3"
 limit = 5
 
 [dependencies]
-libraries = ["dev.GladeWoodsgrove.BattleNetworkHelpers"]
+libraries = [
+  "dev.GladeWoodsgrove.BattleNetworkHelpers",
+  "dev.konstinople.library.sword",
+]
