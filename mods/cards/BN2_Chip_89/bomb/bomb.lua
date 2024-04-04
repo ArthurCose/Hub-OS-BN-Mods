@@ -1,5 +1,3 @@
-
-
 local debug = false
 
 local attachment_texture = Resources.load_texture("attachment.png")
@@ -24,7 +22,7 @@ local bomb = {
 
 bomb.card_init = function(user, props)
     local action = Action.new(user, "PLAYER_THROW")
-    action:set_lockout(make_animation_lockout())
+    action:set_lockout(ActionLockout.new_animation())
     local override_frames = { { 1, 4 }, { 2, 4 }, { 3, 4 }, { 4, 4 }, { 5, 4 } }
     local frame_data = override_frames
     action:override_animation_frames(frame_data)
@@ -72,7 +70,7 @@ bomb.card_init = function(user, props)
         self:add_anim_action(4, function()
             user:set_counterable(false)
         end)
-        self.on_action_end_func = function()
+        self.on_end_func = function()
             user:set_counterable(false)
         end
 

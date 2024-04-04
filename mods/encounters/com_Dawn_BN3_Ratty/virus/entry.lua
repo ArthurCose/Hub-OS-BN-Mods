@@ -11,7 +11,7 @@ function create_ratton(ratty)
     --Load and Set the texture. We're using palettes here, so we use a greyscaled texture. Palette determination comes in a bit.
     --The palette decision is because the bomb changes color depending on the rank of the Ratty.
     local spell_texture = Resources.load_texture("ratton_bomb.greyscaled.png")
-    spell:set_texture(spell_texture, true)
+    spell:set_texture(spell_texture)
     --Get, load, and refresh the animation. You refresh so it doesn't show the entire sheet.
     local spell_anim = spell:animation()
     spell_anim:load("ratton_bomb.animation")
@@ -72,7 +72,7 @@ function create_ratton(ratty)
         else
             --Otherwise, use an explosion animation to get rid of it and play the sound, as it hit something and we want to recognize that.
             local explosion = Artifact.new()
-            explosion:set_texture(Resources.load_texture("boom.png"), true)
+            explosion:set_texture(Resources.load_texture("boom.png"))
             local explosion_animation = explosion:animation()
             explosion_animation:load("boom.animation")
             explosion_animation:set_state("0")
@@ -81,7 +81,7 @@ function create_ratton(ratty)
                 explosion:erase()
             end)
             self:field():spawn(explosion, self:current_tile())
-            Resources.play_audio(Resources.load_audio("explosion.ogg", true))
+            Resources.play_audio(Resources.load_audio("explosion.ogg"))
         end
         self:erase()
     end
@@ -89,7 +89,7 @@ function create_ratton(ratty)
     --That's it, that's the filter. If it matches all those conditions, return true.
     local same_column_query = function(c)
         return not c:deleted() and c:team() ~= spell:team() and c:current_tile():x() == spell:current_tile():x() and
-        c:current_tile():y() ~= spell:current_tile():y()
+            c:current_tile():y() ~= spell:current_tile():y()
     end
     --Can only turn once, so set a boolean to use.
     local has_turned = false
@@ -103,7 +103,7 @@ function create_ratton(ratty)
         --This line is important, it means the spell can attack.
         cur_tile:attack_entities(self)
         --Highlight the tile we're attacking, for a little help in the chaos of some battles.
-        cur_tile:highlight(Highlight.Solid)
+        cur_tile:set_highlight(Highlight.Solid)
         --If it's an edge tile or it's broken, and we're sliding and not already deleted, then self-delete. We'll puff out of existence.
         if (cur_tile:is_edge() or cur_tile:state() == TileState.Broken) and self.slide_started and not self:deleted() then
             self:delete()
@@ -134,7 +134,7 @@ function create_ratton(ratty)
             end
             --Do the slide.
             local ref = self
-            self:slide(dest, (slide_speed), (0), function()
+            self:slide(dest, slide_speed, function()
                 ref.slide_started = true
             end)
         end
@@ -201,7 +201,7 @@ function character_init(self)
     end
     self.can_move_to_func = function(tile)
         return self:is_team(tile:team()) and tile:is_walkable() and not tile:is_edge() and
-        #tile:find_entities(is_occupied) == 0 and not tile:is_reserved({ self:id() })
+            #tile:find_entities(is_occupied) == 0 and not tile:is_reserved({ self:id() })
     end
     local has_changed_pattern = false
     local direction_table = { Direction.Up, Direction.Down, Direction.Left, Direction.Right }
@@ -262,8 +262,8 @@ function character_init(self)
                     if not self:is_sliding() then
                         self:slide(self:get_tile(random_move_direction, 1), (self._slide_speed),
                             (self._pause_between_moves), function()
-                            self._current_moves = self._current_moves + 1
-                        end)
+                                self._current_moves = self._current_moves + 1
+                            end)
                         has_picked_direction = false
                     end
                 end

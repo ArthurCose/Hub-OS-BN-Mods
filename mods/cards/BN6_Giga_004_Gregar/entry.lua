@@ -25,7 +25,7 @@ function create_soldier_shot(user, props, facing)
         end
     end
     spell.on_collision_func = function(self, other)
-        Resources.play_audio(Resources.load_audio("hit.ogg", true))
+        Resources.play_audio(Resources.load_audio("hit.ogg"))
 
         local next_tile = self:get_tile(self:facing(), 1)
         if next_tile then
@@ -45,13 +45,13 @@ function create_soldier_shot(user, props, facing)
     spell.can_move_to_func = function(tile)
         return true
     end
-    Resources.play_audio(Resources.load_audio("gun.ogg", true))
+    Resources.play_audio(Resources.load_audio("gun.ogg"))
     return spell
 end
 
 function card_init(actor, props)
     local action = Action.new(actor, "PLAYER_IDLE")
-    action:set_lockout(make_animation_lockout())
+    action:set_lockout(ActionLockout.new_animation())
     action.on_execute_func = function(self)
         local user = action:owner()
         local do_once = true
@@ -105,7 +105,7 @@ function card_init(actor, props)
             local spawn = 1
             local spawned_something = false
 
-            local soldier_handler = user:create_component(Lifetimes.Local)
+            local soldier_handler = user:create_component(Lifetime.Local)
 
             soldier_handler.on_update_func = function()
                 if delay % 9 == 0 then
@@ -132,7 +132,7 @@ function card_init(actor, props)
             end
         end
 
-        local colforce_handler = user:create_component(Lifetimes.Battle)
+        local colforce_handler = user:create_component(Lifetime.Battle)
 
         local delay = 5
         local function tile_checker()

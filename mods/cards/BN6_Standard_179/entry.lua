@@ -8,7 +8,7 @@ function card_init(player)
         intangible_rule.hit_weaknesses = Hit.PierceInvis;
 
         -- Create a rule to cause sprite flickering
-        intangible_rule.flicker = user:create_component(Lifetimes.Scene)
+        intangible_rule.flicker = user:create_component(Lifetime.Scene)
 
         -- Create a timer that ticks down.
         intangible_rule.flicker.timer = 2
