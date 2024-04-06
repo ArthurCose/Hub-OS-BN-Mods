@@ -1,0 +1,5 @@
+[package]
+category = "library"
+id = "dev.konstinople.library.shield"
+name = "Shield Library"
+description = "Simplifies shield animations.\n\nPlayers can provide a SHIELD state to override generic shields."
