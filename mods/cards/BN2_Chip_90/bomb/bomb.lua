@@ -70,7 +70,7 @@ bomb.card_init = function(user, props)
         self:add_anim_action(4, function()
             user:set_counterable(false)
         end)
-        self.on_end_func = function()
+        self.on_action_end_func = function()
             user:set_counterable(false)
         end
 
