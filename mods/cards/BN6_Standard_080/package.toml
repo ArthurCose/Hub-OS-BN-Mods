@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.080"
+name = "StepSwrd"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["B", "L", "P"]
+hit_flags = ["Impact", "Flinch", "Flash"]
+damage = 160
+element = "sword"
+description = "Use WideSwrd 2sq ahead"
+limit = 4
+
+[dependencies]
+libraries = [
+  "dev.GladeWoodsgrove.BattleNetworkHelpers",
+  "dev.konstinople.library.sword",
+  "dev.konstinople.library.panel_step"
+]

@@ -1,0 +1,5 @@
+[package]
+category = "library"
+id = "dev.konstinople.library.panel_step"
+name = "Panel Step Library"
+description = "Simplifies Step* card animations."

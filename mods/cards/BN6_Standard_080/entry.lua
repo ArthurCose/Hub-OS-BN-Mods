@@ -1,5 +1,10 @@
-local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
+local function debug_print(...)
+	-- print(...)
+end
 
+local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
+---@type PanelStepLib
+local PanelStepLib = require("dev.konstinople.library.panel_step")
 ---@type SwordLib
 local SwordLib = require("dev.konstinople.library.sword")
 
@@ -11,14 +16,23 @@ local SLASH_TEXTURE = bn_helpers.load_texture("sword_slashes.png")
 local SLASH_ANIM_PATH = bn_helpers.fetch_animation_path("sword_slashes.animation")
 local AUDIO = bn_helpers.load_audio("sword.ogg")
 
+local panel_step = PanelStepLib.new_panel_step()
+panel_step:set_return_frame(26)
+
 ---@param user Entity
 function card_init(user, props)
-	return sword:create_action(user, function()
-		local spells = {}
-		spawn_artifact(spells, user, "DEFAULT")
-		create_spell(spells, user, props, 1, 0)
+	return panel_step:create_action(user, function(action)
+		sword:create_action_step(action, function()
+			debug_print("slashing")
 
-		Resources.play_audio(AUDIO)
+			local spells = {}
+			spawn_artifact(spells, user, "WIDE")
+			create_spell(spells, user, props, 1, -1)
+			create_spell(spells, user, props, 1, 0)
+			create_spell(spells, user, props, 1, 1)
+
+			Resources.play_audio(AUDIO)
+		end)
 	end)
 end
 

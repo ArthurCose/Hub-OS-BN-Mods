@@ -4,13 +4,29 @@ local DEFAULT_FRAME_DATA = { { 1, 8 }, { 2, 2 }, { 3, 2 }, { 4, 15 } }
 local Sword = {}
 Sword.__index = Sword
 
+--- If there's no blade texture set and no BLADE state set on the player's animation,
+--- the texture specified here will be used.
+function Sword:set_default_blade_texture(texture)
+  self._default_blade_texture = texture
+end
+
+--- If there's no blade texture set and no BLADE state set on the player's animation,
+--- the animation specified here will be used.
+---
+--- Expects a 4 frame DEFAULT state on the animation.
+function Sword:set_default_blade_animation_path(animation_path)
+  self._default_blade_animation_path = animation_path
+end
+
+--- Specifies a blade texture that must be used.
 function Sword:set_blade_texture(texture)
   self._blade_texture = texture
 end
 
+--- Specifies a blade animation that must be used.
 --- Expects a 4 frame DEFAULT state on the animation.
-function Sword:set_blade_animation_path(texture)
-  self._blade_animation_path = texture
+function Sword:set_blade_animation_path(animation_path)
+  self._blade_animation_path = animation_path
 end
 
 --- Texture for the hilt, uses the actor's texture by default.
@@ -26,54 +42,86 @@ end
 
 --- [frame_number, duration][]
 --- Used for custom timing. Not required, as a default timing is provided.
---- Affects the actor's animation and modified to work with the hilt's animation
---- The hilt will subtract 1 from the frame number to sync with the actor's animation
+--- Affects the user's animation and modified to work with the hilt's animation
+--- The hilt will subtract 1 from the frame number to sync with the user's animation
 function Sword:set_frame_data(frame_data)
-  self._actor_frame_data = frame_data
+  self._user_frame_data = frame_data
   self._hilt_frame_data = {}
 
-  for i = 2, #self._actor_frame_data do
-    local actor_frame = self._actor_frame_data[i]
+  for i = 2, #self._user_frame_data do
+    local user_frame = self._user_frame_data[i]
     self._hilt_frame_data[i - 1] = {
-      actor_frame[1] - 1,
-      actor_frame[2]
+      user_frame[1] - 1,
+      user_frame[2]
     }
   end
 end
 
----@param actor Entity
-function Sword:create_action(actor, spell_callback)
-  local action = Action.new(actor, "PLAYER_SWORD")
+---@param self Sword
+---@param action Action
+---@param user Entity
+local function create_hilt(self, action, user)
+  local hilt = action:create_attachment("HILT")
+  local hilt_sprite = hilt:sprite()
+  hilt_sprite:set_texture(self._hilt_texture or user:texture())
+  hilt_sprite:set_layer(-1)
+
+  if not self._hilt_texture then
+    hilt_sprite:use_root_shader(true)
+  end
+
+  local hilt_anim = hilt:animation()
+
+  if self._hilt_animation_path then
+    hilt_anim:load(self._hilt_animation_path)
+  else
+    hilt_anim:copy_from(user:animation())
+  end
+
+  hilt_anim:set_state("HILT", self._hilt_frame_data)
+
+  return hilt
+end
+
+---@param self Sword
+---@param hilt Attachment
+---@param user Entity
+local function create_blade(self, hilt, user)
+  local blade = hilt:create_attachment("ENDPOINT")
+  local blade_sprite = blade:sprite()
+  blade_sprite:set_layer(-2)
+
+  local blade_anim = blade:animation()
+
+  local actor_animation = user:animation()
+
+  if self._blade_texture then
+    blade_sprite:set_texture(self._blade_texture)
+    blade_anim:load(self._blade_animation_path)
+    blade_anim:set_state("DEFAULT")
+  elseif actor_animation:has_state("BLADE") then
+    blade_sprite:use_root_shader(true)
+    blade_sprite:set_texture(user:texture())
+    blade_anim:copy_from(actor_animation)
+    blade_anim:set_state("BLADE")
+  else
+    blade_sprite:set_texture(self._default_blade_texture)
+    blade_anim:load(self._default_blade_animation_path)
+    blade_anim:set_state("DEFAULT")
+  end
+end
+
+---@param user Entity
+function Sword:create_action(user, spell_callback)
+  local action = Action.new(user, "PLAYER_SWORD")
   action:set_lockout(ActionLockout.new_animation())
-  action:override_animation_frames(self._actor_frame_data)
+  action:override_animation_frames(self._user_frame_data)
 
   action.on_execute_func = function()
     action:add_anim_action(2,
       function()
-        local hilt = action:create_attachment("HILT")
-        local hilt_sprite = hilt:sprite()
-        hilt_sprite:set_texture(self._hilt_texture or actor:texture())
-        hilt_sprite:set_layer(-1)
-        hilt_sprite:use_root_shader(true)
-
-        local hilt_anim = hilt:animation()
-
-        if self._hilt_animation_path then
-          hilt_anim:load(self._hilt_animation_path)
-        else
-          hilt_anim:copy_from(actor:animation())
-        end
-
-        hilt_anim:set_state(hilt_anim:derive_state("HILT", self._hilt_frame_data))
-
-        local blade = hilt:create_attachment("ENDPOINT")
-        local blade_sprite = blade:sprite()
-        blade_sprite:set_texture(self._blade_texture)
-        blade_sprite:set_layer(-2)
-
-        local blade_anim = blade:animation()
-        blade_anim:load(self._blade_animation_path)
-        blade_anim:set_state("DEFAULT")
+        local hilt = create_hilt(self, action, user)
+        create_blade(self, hilt, user)
       end
     )
 
@@ -83,6 +131,37 @@ function Sword:create_action(actor, spell_callback)
   end
 
   return action
+end
+
+---@param action Action
+function Sword:create_action_step(action, spell_callback)
+  local user = action:owner()
+  local step = action:create_step()
+
+  step.on_update_func = function()
+    local animation = user:animation()
+    animation:set_state("PLAYER_SWORD", self._user_frame_data)
+
+    animation:on_frame(2, function()
+      local hilt = create_hilt(self, action, user)
+      create_blade(self, hilt, user)
+    end)
+
+    animation:on_frame(3, function()
+      spell_callback()
+    end)
+
+    local cleanup = function()
+      step:complete_step()
+    end
+
+    animation:on_complete(cleanup)
+    animation:on_interrupt(cleanup)
+
+    step.on_update_func = nil
+  end
+
+  return step
 end
 
 ---@class SwordLib
