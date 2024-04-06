@@ -165,17 +165,23 @@ frame x="463" y="1" w="21" h="40" originx="11" originy="29" duration="0.033"
 animation state="FAINT"
 frame x="235" y="307" w="39" h="32" originx="20" originy="12" duration="0.033"
 
+animation state="POSE_UL"
+frame x="154" y="78" w="41" h="37" originx="12" originy="29" duration="0.033"
+
 animation state="POSE_UR"
 frame x="154" y="39" w="41" h="37" originx="29" originy="29" duration="0.033"
-
-animation state="POSE_DR"
-frame x="1" y="231" w="39" h="36" originx="27" originy="29" duration="0.033"
 
 animation state="POSE_DL"
 frame x="42" y="231" w="39" h="36" originx="12" originy="29" duration="0.033"
 
-animation state="POSE_UL"
-frame x="154" y="78" w="41" h="37" originx="12" originy="29" duration="0.033"
+animation state="POSE_DR"
+frame x="1" y="231" w="39" h="36" originx="27" originy="29" duration="0.033"
+
+animation state="SWING_UL"
+frame x="432" y="311" w="26" h="38" originx="13" originy="29" duration="0.167"
+frame x="52" y="1" w="49" h="37" originx="39" originy="32" duration="0.05"
+frame x="103" y="1" w="49" h="36" originx="40" originy="29" duration="0.067"
+frame x="103" y="39" w="49" h="36" originx="40" originy="30" duration="0.067"
 
 animation state="SWING_UR"
 frame x="432" y="271" w="26" h="38" originx="13" originy="29" duration="0.167"
@@ -183,23 +189,17 @@ frame x="1" y="1" w="49" h="37" originx="10" originy="32" duration="0.05"
 frame x="1" y="40" w="49" h="36" originx="9" originy="29" duration="0.067"
 frame x="52" y="40" w="49" h="36" originx="9" originy="30" duration="0.067"
 
-animation state="SWING_DR"
-frame x="209" y="191" w="24" h="35" originx="12" originy="28" duration="0.167"
-frame x="52" y="78" w="45" h="34" originx="12" originy="29" duration="0.05"
-frame x="154" y="117" w="39" h="32" originx="17" originy="25" duration="0.067"
-frame x="112" y="307" w="39" h="32" originx="17" originy="26" duration="0.067"
-
 animation state="SWING_DL"
 frame x="251" y="231" w="24" h="35" originx="12" originy="28" duration="0.167"
 frame x="99" y="78" w="45" h="34" originx="33" originy="29" duration="0.05"
 frame x="153" y="307" w="39" h="32" originx="22" originy="25" duration="0.067"
 frame x="194" y="307" w="39" h="32" originx="22" originy="26" duration="0.067"
 
-animation state="SWING_UL"
-frame x="432" y="311" w="26" h="38" originx="13" originy="29" duration="0.167"
-frame x="52" y="1" w="49" h="37" originx="39" originy="32" duration="0.05"
-frame x="103" y="1" w="49" h="36" originx="40" originy="29" duration="0.067"
-frame x="103" y="39" w="49" h="36" originx="40" originy="30" duration="0.067"
+animation state="SWING_DR"
+frame x="209" y="191" w="24" h="35" originx="12" originy="28" duration="0.167"
+frame x="52" y="78" w="45" h="34" originx="12" originy="29" duration="0.05"
+frame x="154" y="117" w="39" h="32" originx="17" originy="25" duration="0.067"
+frame x="112" y="307" w="39" h="32" originx="17" originy="26" duration="0.067"
 
 animation state="SHIELD_UR"
 frame x="1" y="78" w="49" h="35" originx="28" originy="29" duration="0.067"

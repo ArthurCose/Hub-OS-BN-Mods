@@ -11,4 +11,11 @@ mugshot_animation_path = "mug.animation"
 health = 1000
 
 [dependencies]
-cards = ["BattleNetwork6.Class01.Standard.071"]
+cards = [
+  "BattleNetwork6.Class01.Standard.071",
+  "BattleNetwork6.Class06.Fixed.006"
+]
+libraries = [
+  "dev.konstinople.library.panel_step",
+  "dev.konstinople.library.shield"
+]
