@@ -13,6 +13,8 @@ Lifetime = {
   Local = {},
   Battle = {},
   Scene = {},
+  CardSelectOpen = {},
+  CardSelectClose = {},
   Nil = {},
 }
 
@@ -127,6 +129,13 @@ Playback = {
 ColorMode = {
   Additive = {},
   Multiply = {},
+}
+
+---@enum SpriteShaderEffect
+SpriteShaderEffect = {
+  None = {},
+  Grayscale = {},
+  Pixelate = {},
 }
 
 --- - `Compare.LT`
@@ -246,9 +255,9 @@ Input = {
 --- Will not be called if there's no matching `charged_card_func`
 ---
 --- Return true if `charged_card_func` should be called to handle this card.
----@field can_charge_card_func fun(card_properties: CardProperties)
+---@field can_charge_card_func fun(card_properties: CardProperties): boolean
 --- Should return an [Action](https://docs.hubos.dev/client/lua-api/attack-api/action)
----@field special_attack_func fun(self: Entity): Action
+---@field special_attack_func fun(self: Entity): Action|nil
 --- Should return an [Action](https://docs.hubos.dev/client/lua-api/attack-api/action)
 ---
 --- Many player mods use [Buster](https://docs.hubos.dev/client/lua-api/attack-api/action#buster) for their return value.
@@ -300,6 +309,10 @@ Input = {
 Entity = {}
 
 ---
+---@class TextStyle
+TextStyle = {}
+
+---
 ---@class Sprite
 Sprite = {}
 
@@ -314,9 +327,9 @@ Animation = {}
 --- Override's the owner's [can_move_to_func](https://docs.hubos.dev/client/lua-api/entity-api/entity/#entitycan_move_to_func--functionself-tile-boolean) while executing.
 ---
 --- Ignored on async actions when the entity regains control.
----@field can_move_to_func fun(tile: Tile)
+---@field can_move_to_func fun(tile: Tile): boolean
 --- Called when the action ends execution.
----@field on_end_func fun(self: Action)
+---@field on_action_end_func fun(self: Action)
 --- Called when the action's animation ends.
 ---@field on_animation_end_func fun(self: Action)
 --- Called while the action is executing.
@@ -381,10 +394,10 @@ DefenseJudge = {}
 Status = {}
 
 ---
----@class Step
+---@class ActionStep
 --- Called every tick while the associated action is active if this step is not marked as complete, and there are no steps created before this step that haven't been marked as complete.
----@field on_update_func fun(self: Step)
-Step = {}
+---@field on_update_func fun(self: ActionStep)
+ActionStep = {}
 
 ---
 ---@class Attachment
@@ -1399,6 +1412,17 @@ function Entity:remove_deck_card(index) end
 ---@param deck_card DeckCard
 function Entity:insert_deck_card(index, deck_card) end
 
+--- Returns true if Card Select can close.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@return boolean
+function Entity:staged_items_confirmed() end
+
+--- Allows Card Select to close.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+function Entity:confirm_staged_items() end
+
 --- - `card_properties`: [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardproperties)
 --- - The callback will be called when the player removes the StagedItem.
 ---
@@ -1484,11 +1508,26 @@ function Entity:staged_item(index) end
 ---@return string
 function Entity:staged_item_texture(index) end
 
+--- Returns `{ package_id?: string, code?: string }`. Cards must match any of the set fields.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@return { package_id?: string, code?: string }
+function Entity:card_select_restriction() end
+
 --- Prevents selection in Card Select and hides the cursor.
 ---
 --- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
 ---@param bool boolean
 function Entity:set_card_selection_blocked(bool) end
+
+--- Dedicates the last card slot in Card Select to the specified card. Internally defined as a [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton).
+---
+--- Returns [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton)
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param card_properties CardProperties
+---@return CardSelectButton
+function Entity:set_fixed_card(card_properties) end
 
 --- Creates a button embedded in the end of the card list in Card Select.
 ---
@@ -1631,6 +1670,18 @@ function PlayerForm:index() end
 ---@param path string
 function PlayerForm:set_mugshot_texture(path) end
 
+--- Sets the description to display when the player requests for info.
+---@param description? string
+function PlayerForm:set_description(description) end
+
+--- Dedicates the last card slot in Card Select to the specified card. Internally defined as a [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton).
+--- Overrides the card button created on the Player and any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment).
+---
+--- Returns [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton)
+---@param card_properties CardProperties
+---@return CardSelectButton
+function PlayerForm:set_fixed_card(card_properties) end
+
 --- Creates a button embedded in the end of the card list in Card Select.
 --- Overrides the card button created on the Player and any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment).
 ---
@@ -1664,6 +1715,14 @@ function Augment:owner() end
 ---@param tag string
 ---@return boolean
 function Augment:has_tag(tag) end
+
+--- Dedicates the last card slot in Card Select to the specified card. Internally defined as a [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton).
+--- Overrides the card button created on the Player.
+---
+--- Returns [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton)
+---@param card_properties CardProperties
+---@return CardSelectButton
+function Augment:set_fixed_card(card_properties) end
 
 --- Creates a button embedded in the end of the card list in Card Select.
 --- Overrides the card button created on the Player.
@@ -1720,13 +1779,36 @@ function CardSelectButton:set_preview_texture(path) end
 ---@return Animation
 function CardSelectButton:preview_animation() end
 
+--- Replaces the set preview sprite and animation with a preview generated by the `card_properties` parameter.
+---@param card_properties CardProperties
+function CardSelectButton:use_card_preview(card_properties) end
+
+--- Changes the cursor (when hovered) from a dynamic cursor based on button width to a fixed card cursor locked to the last card slot.
+---@param bool boolean
+function CardSelectButton:use_fixed_card_cursor(bool) end
+
 --- A method to disable successful button use audio.
 ---@param bool boolean
 function CardSelectButton:use_default_audio(bool) end
 
+--- Sets the description to display when the player requests for info.
+---@param description? string
+function CardSelectButton:set_description(description) end
+
+--- Sets the button's description to match a specified card.
+---@param card_properties CardProperties
+function CardSelectButton:use_card_description(card_properties) end
+
 --- Returns an [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity)
 ---@return Entity
 function CardSelectButton:owner() end
+
+--- Deletes the button.
+function CardSelectButton:delete() end
+
+--- Returns true if the button was deleted.
+---@return boolean
+function CardSelectButton:deleted() end
 
 --- Returns the entity passed in if the entity is a character or player, otherwise returns `nil`.
 ---@param entity Entity
@@ -1947,9 +2029,7 @@ function Resources.play_audio(path, audio_behavior) end
 --- Plays audio stored at `path` as music. Loops by default.
 ---@param path string
 ---@param loops? boolean
----@param start_ms? number
----@param end_ms? number
-function Resources.play_music(path, loops, start_ms, end_ms) end
+function Resources.play_music(path, loops) end
 
 --- Returns a new Animation instance.
 ---@param path? string
@@ -2008,19 +2088,16 @@ function Animation:has_state(state) end
 ---@return string
 function Animation:state() end
 
+--- - `frame_data` a list of frame index and duration pairs.
+---   - When provided, the animation will remap frames and durations to match until the next `set_state` call.
+---   - Frame index starts at 1
+---   - Duration is in game frames (60 per second).
+---
 --- Changes the active state, resets animation progress and settings.
 ---
 --- This function will call and clear interrupt callbacks.
 ---
 --- Internally calls `animation:apply()` unless the animation was created through `Animation.new()`
----@param state string
-function Animation:set_state(state) end
-
---- - `frame_data` a list of frame index and duration pairs.
----   - Frame index starts at 1
----   - Duration is in game frames (60 per second).
----
---- Returns a state name for the derived state.
 ---
 --- ```lua
 --- -- modified example from the built-in buster.lua file
@@ -2041,13 +2118,11 @@ function Animation:set_state(state) end
 --- buster_animation:copy_from(user:animation())
 ---
 --- -- relevant
---- local derived_state = buster_animation:derive_state("BUSTER", frame_data)
---- buster_animation:set_state(derived_state)
+--- buster_animation:set_state("BUSTER", frame_data)
 --- ```
 ---@param state string
----@param frame_data any
----@return string
-function Animation:derive_state(state, frame_data) end
+---@param frame_data? any
+function Animation:set_state(state, frame_data) end
 
 --- Returns true if the current animation frame has a point with this name.
 ---@param name string
@@ -2101,9 +2176,26 @@ function Animation:on_frame(frame_index, callback, do_once) end
 ---@return Sprite
 function Sprite:create_node() end
 
+--- - `text_style`: [TextStyle](https://docs.hubos.dev/client/lua-api/resource-api/sprite#textstyle)
+--- - `text`: The text to render.
+---
+--- Returns a Sprite, similar to `sprite:create_node()`. The returned sprite node has a child for each character in `text`, all with [sprite:use_parent_shader(true)](https://docs.hubos.dev/client/lua-api/resource-api/sprite#spriteuse_parent_shaderenable) set.
+---@param text_style TextStyle
+---@param text string
+---@return Sprite
+function Sprite:create_text_node(text_style, text) end
+
+--- Copies all data from the other sprite, other than children.
+---@param sprite Sprite
+function Sprite:copy_from(sprite) end
+
 --- Deletes the passed sprite if it's a child of the parent.
 ---@param sprite Sprite
 function Sprite:remove_node(sprite) end
+
+--- Returns a list of Sprites.
+---@return Sprite[]
+function Sprite:children() end
 
 --- Returns the path to the sprite's texture.
 ---@return string
@@ -2231,9 +2323,25 @@ function Sprite:never_flip() end
 ---@param never_flip? boolean
 function Sprite:set_never_flip(never_flip) end
 
---- Temporarily adopts the color, color mode, and palette of the root sprite during render.
+--- Returns a SpriteShaderEffect.
+---@return SpriteShaderEffect
+function Sprite:shader_effect() end
+
+--- - `sprite_shader_effect`
+---   - `SpriteShaderEffect.None`
+---   - ``SpriteShaderEffect.Grayscale`
+---   - `SpriteShaderEffect.Pixelate`
+---     - Scales with alpha.
+---@param sprite_shader_effect SpriteShaderEffect
+function Sprite:set_shader_effect(sprite_shader_effect) end
+
+--- Temporarily adopts the color, color mode, palette, and shader effect of the root sprite during render.
 ---@param enable? boolean
 function Sprite:use_root_shader(enable) end
+
+--- Adopts the color, color mode, palette, and shader effect of the parent sprite during render.
+---@param enable? boolean
+function Sprite:use_parent_shader(enable) end
 
 --- Each component is a 0-255 value, `a` defaults to 255.
 ---
@@ -2257,6 +2365,41 @@ function Color.new(r, g, b, a) end
 ---@param progress number
 ---@return Color
 function Color.mix(color_a, color_b, progress) end
+
+--- - `font_name`: The name of the font to use.
+---   - Built in fonts:
+---     - `"THICK"`
+---     - `"THIN"`
+---     - `"THIN_SMALL"`
+---     - `"MENU_TITLE"`
+---     - `"MICRO"`
+---     - `"CONTEXT"`
+---     - `"CODE"`
+---     - `"PLAYER_HP"`
+---     - `"PLAYER_HP_ORANGE"`
+---     - `"PLAYER_HP_GREEN"`
+---     - `"DAMAGE"`
+---     - `"RESULT"`
+---     - `"BATTLE"`
+---     - `"ENTITY_HP"`
+---   - `texture_path`: Required for custom fonts.
+---   - `animation_path`: Required for custom fonts.
+---
+--- For custom fonts, the format `[FONT_NAME]_U+[CHAR_HEX]` is used for mapping characters. Only the first frame in the animation is used to render the character.
+---
+--- Example: An animation file containing the character `A` for the font `COOL_FONT`
+---
+--- ```
+--- animation state="COOL_FONT_U+0041"
+--- frame x="0" y="0" w="7" h="12
+--- ```
+---
+--- Returns TextStyle.
+---@param font_name string
+---@param texture_path? string
+---@param animation_path? string
+---@return TextStyle
+function TextStyle.new(font_name, texture_path, animation_path) end
 
 --- Returns a reference to the sync node's sprite.
 ---@return Sprite
@@ -2724,8 +2867,11 @@ function Action.new(entity, state) end
 
 --- - `entity`: the [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity) to tie the action to.
 --- - `card_properties`: [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardproperties)
+---
+--- Returns Action or `nil`
 ---@param entity Entity
 ---@param card_properties CardProperties
+---@return Action|nil
 function Action.from_card(entity, card_properties) end
 
 --- Returns the [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity) tied to this action
@@ -2736,8 +2882,8 @@ function Action:owner() end
 ---@param lockout ActionLockout
 function Action:set_lockout(lockout) end
 
---- Returns a new [Step](https://docs.hubos.dev/client/lua-api/attack-api/action#step)
----@return Step
+--- Returns a new [ActionStep](https://docs.hubos.dev/client/lua-api/attack-api/action#actionstep)
+---@return ActionStep
 function Action:create_step() end
 
 --- - `point_name`: string, name of a point in the animation to anchor the attachment to
@@ -2747,7 +2893,7 @@ function Action:create_step() end
 ---@return Attachment
 function Action:create_attachment(point_name) end
 
---- See [animation:derive_state()](https://docs.hubos.dev/client/lua-api/resource-api/animation#animationderive_statestate-frame_data)
+--- See [animation:set_state()](https://docs.hubos.dev/client/lua-api/resource-api/animation#animationset_statestate-frame_data)
 ---@param frame_data any
 function Action:override_animation_frames(frame_data) end
 
@@ -2758,7 +2904,7 @@ function Action:override_animation_frames(frame_data) end
 ---@param callback fun()
 function Action:add_anim_action(frame_index, callback) end
 
---- Calls [action.on_end_func](https://docs.hubos.dev/client/lua-api/attack-api/action#actionon_end_func--functionself)
+--- Calls [action.on_action_end_func](https://docs.hubos.dev/client/lua-api/attack-api/action#actionon_action_end_func--functionself)
 ---
 --- Stops execution and deletes the action.
 function Action:end_action() end
@@ -2800,7 +2946,7 @@ function ActionLockout.new_animation() end
 
 --- Returns ActionLockout.
 ---
---- Action completes when the action runs out of [Steps](https://docs.hubos.dev/client/lua-api/attack-api/action#actioncreate_step) to execute
+--- Action completes when the action runs out of [ActionSteps](https://docs.hubos.dev/client/lua-api/attack-api/action#actionstepcreate_step) to execute
 ---@return ActionLockout
 function ActionLockout.new_sequence() end
 
@@ -2812,7 +2958,7 @@ function ActionLockout.new_sequence() end
 function ActionLockout.new_async(duration) end
 
 --- Marks the step as complete.
-function Step:complete_step() end
+function ActionStep:complete_step() end
 
 --- - `player`: [Player](https://docs.hubos.dev/client/lua-api/entity-api/player)
 --- - `charged`: bool, affects hit artifact
@@ -3098,18 +3244,20 @@ function AuxProp:require_card_not_element(element) end
 --- - `damage`: number
 ---
 --- The AuxProp will compare the damage on the next card on the attached entity against the `damage` value.
+---@param compare Compare
 ---@param damage number
 ---@return AuxProp
-function AuxProp:require_card_damage(damage) end
+function AuxProp:require_card_damage(compare, damage) end
 
 --- - Body priority
 --- - `compare`: [Compare](https://docs.hubos.dev/client/lua-api/defense-api/aux-prop#compare)
 --- - `recover`: number
 ---
 --- The AuxProp will compare the recover amount on the next card on the attached entity against the `recover` value.
+---@param compare Compare
 ---@param recover number
 ---@return AuxProp
-function AuxProp:require_card_recover(recover) end
+function AuxProp:require_card_recover(compare, recover) end
 
 --- - Body priority
 --- - `hit_flags`: [Hit](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#hit_propsflags)
@@ -3169,9 +3317,11 @@ function AuxProp:require_projected_health_threshold(expr, compare, percentage) e
 --- - `health`: a number
 ---
 --- The AuxProp will compare the result of the expression against `health`.
+---@param expr string
+---@param compare Compare
 ---@param health number
 ---@return AuxProp
-function AuxProp:require_projected_health(health) end
+function AuxProp:require_projected_health(expr, compare, health) end
 
 --- - HP GE or HP LE priority depending on `compare`
 --- - `compare`: [Compare](https://docs.hubos.dev/client/lua-api/defense-api/aux-prop#compare)
