@@ -1,0 +1,22 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program01.SuperArmor"
+name = "SuprArmr"
+flat = true
+description = "Do not flinch when hit"
+colors = [ "red" ]
+shape = [
+  [ 0, 0, 0, 0, 0 ],
+  [ 0, 0, 1, 0, 0 ],
+  [ 0, 1, 1, 1, 0 ],
+  [ 0, 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0, 0 ]
+]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

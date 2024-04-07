@@ -1,0 +1,26 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program29.BodyPack"
+name = "BodyPack"
+description = "Armr,Air\nFloat,\nShrt set"
+colors = ["pink"]
+flat = true
+shape = [
+    [0, 0, 1, 0, 0],
+    [1, 1, 1, 1, 1],
+    [0, 1, 1, 1, 0],
+    [0, 1, 1, 1, 0],
+    [0, 1, 1, 1, 0]
+]
+byproducts = [
+    "BattleNetwork6.Bugs.WarpStep"
+]
+
+[dependencies]
+augments = [
+    "BattleNetwork6.Program01.SuperArmor",
+    "BattleNetwork6.Program11.FloatShoes",
+    "BattleNetwork6.Program12.AirShoes",
+    "BattleNetwork6.Program15.UnderShirt",
+    "BattleNetwork6.Bugs.WarpStep"
+]

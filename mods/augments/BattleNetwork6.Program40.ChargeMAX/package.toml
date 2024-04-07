@@ -1,0 +1,22 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program40.ChargeMAX"
+name = "ChrgMAX"
+description = "Buster\nCharge\nMAX!"
+colors = ["blue"]
+charge_boost = 5
+shape = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 1, 1, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0]
+]
+byproducts = [
+    "BattleNetwork6.Bugs.BusterBug"
+]
+
+[dependencies]
+augments = [
+    "BattleNetwork6.Bugs.BusterBug"
+]

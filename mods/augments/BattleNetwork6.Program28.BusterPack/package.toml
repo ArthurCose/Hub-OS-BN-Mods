@@ -1,0 +1,25 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program28.BusterPack"
+name = "BustPack"
+description = "Attack+3\nCharge+3\nRapid+3"
+colors = ["red"]
+attack_boost = 3
+charge_boost = 3
+rapid_boost = 3
+flat = true
+shape = [
+    [0, 0, 0, 0, 0],
+    [0, 1, 1, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0]
+]
+byproducts = [
+    "BattleNetwork6.Bugs.BusterBug"
+]
+
+[dependencies]
+augments = [
+    "BattleNetwork6.Bugs.BusterBug"
+]
