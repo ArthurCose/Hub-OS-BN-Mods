@@ -1,0 +1,8 @@
+[package]
+category = "library"
+id = "dev.GladeWoodsgrove.BattleNetworkHelpers"
+name = "MMBN Assets (Old)"
+description = "Use BattleNetwork.Assets instead."
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
