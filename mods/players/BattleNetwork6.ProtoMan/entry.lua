@@ -60,6 +60,7 @@ function player_init(player)
       end
 
       shield_reflect:spawn_spell(player, 50)
+      hit = true
     end)
   end
 
