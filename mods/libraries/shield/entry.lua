@@ -146,8 +146,13 @@ function Shield:create_action(user, impact_callback)
     defense_rule.can_block_func = function(judge, _, _, props)
       if props.flags & Hit.PierceGuard ~= 0 then
         -- pierced
+        user:remove_defense_rule(defense_rule)
+        defense_rule = nil
+        action:end_action()
         return
       end
+
+      judge:block_damage()
 
       if props.flags & Hit.Impact == 0 then
         -- non impact
@@ -159,7 +164,6 @@ function Shield:create_action(user, impact_callback)
       end
 
       judge:block_impact()
-      judge:block_damage()
 
       spawn_impact_particle(self, user)
 
