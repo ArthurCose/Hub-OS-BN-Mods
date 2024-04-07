@@ -1,0 +1,14 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.092"
+name = "Rflectr2"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["B", "G", "Y", "*"]
+damage = 120
+hit_flags = ["Impact"]
+description = "Bounce an attk back at them!"
+limit = 5
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.shield"]

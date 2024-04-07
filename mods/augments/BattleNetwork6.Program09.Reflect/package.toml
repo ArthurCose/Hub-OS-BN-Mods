@@ -1,0 +1,19 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program09.Reflect"
+name = "Reflect"
+description = "Special=\nReflect\nattacks!"
+flat = true
+colors = ["green"]
+shape = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0]
+]
+byproducts = ["BattleNetwork6.Bugs.WarpStep"]
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.WarpStep"]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.shield"]

@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.091"
+name = "Rflectr1"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["A", "C", "P", "*"]
+damage = 60
+hit_flags = ["Impact"]
+description = "Bounce an attk back at them!"
+limit = 5
+
+[dependencies]
+libraries = [
+  "dev.GladeWoodsgrove.BattleNetworkHelpers",
+  "dev.konstinople.library.shield",
+]

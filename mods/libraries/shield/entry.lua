@@ -38,6 +38,10 @@ function Shield:set_default_shield_animation_path(animation_path)
   self._default_shield_animation_path = animation_path
 end
 
+function Shield:set_default_shield_animation_state(state)
+  self._default_shield_animation_state = state
+end
+
 --- Specifies a shield texture that must be used.
 function Shield:set_shield_texture(texture)
   self._shield_texture = texture
@@ -48,8 +52,8 @@ function Shield:set_shield_animation_path(animation_path)
   self._shield_animation_path = animation_path
 end
 
-function Shield:set_shield_animation_state(animation_state)
-  self._shield_animation_state = animation_state
+function Shield:set_shield_animation_state(state)
+  self._shield_animation_state = state
 end
 
 function Shield:set_impact_texture(texture)
@@ -95,7 +99,7 @@ local function spawn_shield_artifact(self, user)
   else
     shield_sprite:set_texture(self._default_shield_texture)
     shield_anim:load(self._default_shield_animation_path)
-    shield_anim:set_state("DEFAULT")
+    shield_anim:set_state(self._default_shield_animation_state or "DEFAULT")
   end
 
   shield.on_spawn_func = function()
