@@ -12,7 +12,7 @@ hidden = true
 
 [dependencies]
 libraries = [
-  "dev.GladeWoodsgrove.BattleNetworkHelpers",
+  "BattleNetwork.Assets",
   "dev.konstinople.library.sword",
   "dev.konstinople.library.panel_step"
 ]

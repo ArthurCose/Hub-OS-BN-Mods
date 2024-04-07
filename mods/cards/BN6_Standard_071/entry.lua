@@ -1,15 +1,15 @@
-local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
+local bn_assets = require("BattleNetwork.Assets")
 
 ---@type SwordLib
 local SwordLib = require("dev.konstinople.library.sword")
 
 local sword = SwordLib.new_sword()
-sword:set_default_blade_texture(bn_helpers.load_texture("sword_blades.png"))
-sword:set_default_blade_animation_path(bn_helpers.fetch_animation_path("sword_blades.animation"))
+sword:set_default_blade_texture(bn_assets.load_texture("sword_blades.png"))
+sword:set_default_blade_animation_path(bn_assets.fetch_animation_path("sword_blades.animation"))
 
-local SLASH_TEXTURE = bn_helpers.load_texture("sword_slashes.png")
-local SLASH_ANIM_PATH = bn_helpers.fetch_animation_path("sword_slashes.animation")
-local AUDIO = bn_helpers.load_audio("sword.ogg")
+local SLASH_TEXTURE = bn_assets.load_texture("sword_slashes.png")
+local SLASH_ANIM_PATH = bn_assets.fetch_animation_path("sword_slashes.animation")
+local AUDIO = bn_assets.load_audio("sword.ogg")
 
 ---@param user Entity
 function card_init(user, props)
