@@ -48,6 +48,10 @@ function Shield:set_shield_animation_path(animation_path)
   self._shield_animation_path = animation_path
 end
 
+function Shield:set_shield_animation_state(animation_state)
+  self._shield_animation_state = animation_state
+end
+
 function Shield:set_impact_texture(texture)
   self._impact_texture = texture
 end
@@ -82,7 +86,7 @@ local function spawn_shield_artifact(self, user)
   if self._shield_texture then
     shield_sprite:set_texture(self._shield_texture)
     shield_anim:load(self._shield_animation_path)
-    shield_anim:set_state("DEFAULT")
+    shield_anim:set_state(self._shield_animation_state or "DEFAULT")
   elseif actor_animation:has_state("SHIELD") then
     shield_sprite:use_root_shader(true)
     shield_sprite:set_texture(user:texture())
@@ -224,7 +228,7 @@ function ShieldReflect:spawn_spell(user, damage)
   spell:set_hit_props(
     HitProps.new(
       damage,
-      Hit.Impact | Hit.Flinch,
+      Hit.Impact,
       Element.None,
       user:context()
     )
