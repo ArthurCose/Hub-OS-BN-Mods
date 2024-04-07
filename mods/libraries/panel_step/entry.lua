@@ -155,7 +155,9 @@ function PanelStep:wrap_action(wrapped_action)
           dest_tile:remove_reservation_for(user)
         end
 
-        lagging_ghost:erase()
+        if lagging_ghost then
+          lagging_ghost:erase()
+        end
 
         if not self._return_frame then
           user:teleport(original_tile, function()
@@ -324,7 +326,9 @@ function PanelStep:create_action(user, create_action_steps)
       dest_tile:remove_reservation_for(user)
     end
 
-    lagging_ghost:erase()
+    if lagging_ghost then
+      lagging_ghost:erase()
+    end
 
     if not self._return_frame then
       user:teleport(original_tile, function()
