@@ -1,0 +1,16 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.076"
+name = "AquaSwrd"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["A", "I", "Y"]
+damage = 160
+hit_flags = ["Impact", "Flinch", "Flash"]
+element = "aqua"
+secondary_element = "sword"
+description = "Cut enmy 3sq fwrd w/aqua!"
+limit = 3
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]

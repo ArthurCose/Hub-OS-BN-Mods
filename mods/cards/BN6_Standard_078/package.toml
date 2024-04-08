@@ -1,0 +1,16 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.078"
+name = "BambSwrd"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["H", "S", "W"]
+damage = 150
+hit_flags = ["Impact", "Flinch", "Flash"]
+element = "wood"
+secondary_element = "sword"
+description = "Cut enmy 3sq fwrd w/wood!"
+limit = 3
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]

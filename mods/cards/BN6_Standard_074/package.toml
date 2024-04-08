@@ -1,0 +1,15 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.074"
+name = "LongBlde"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["B", "M", "V"]
+damage = 150
+hit_flags = ["Impact", "Flinch", "Flash"]
+element = "sword"
+description = "Cuts enmy in front! Depth: 2"
+limit = 3
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]

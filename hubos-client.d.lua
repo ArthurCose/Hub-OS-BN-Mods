@@ -1,3 +1,6 @@
+---@type string
+_folder_path = nil
+
 ---@meta
 -- https://luals.github.io/wiki/annotations/
 ---@diagnostic disable: missing-return, unused-local
