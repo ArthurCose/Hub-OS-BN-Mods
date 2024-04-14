@@ -44,6 +44,7 @@ local function create_bomb(self)
   local bomb_anim = bomb:animation()
   bomb_anim:load(self._bomb_animation_path)
   bomb_anim:set_state(self._bomb_animation_state or "DEFAULT")
+  bomb_anim:set_playback(Playback.Loop)
 
   return bomb
 end
