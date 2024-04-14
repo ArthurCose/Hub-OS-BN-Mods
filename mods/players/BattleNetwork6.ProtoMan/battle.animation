@@ -21,7 +21,9 @@ point label="HILT" x="22" y="10"
 
 animation state="PLAYER_THROW"
 frame x="1" y="217" w="42" h="58" originx="25" originy="53" duration="1f"
+point label="HAND" x="3" y="39"
 frame x="44" y="219" w="49" h="56" originx="24" originy="51" duration="1f"
+point label="HAND" x="19" y="4"
 frame x="94" y="223" w="56" h="52" originx="15" originy="47" duration="1f"
 frame x="151" y="226" w="46" h="49" originx="13" originy="44" duration="1f"
 
