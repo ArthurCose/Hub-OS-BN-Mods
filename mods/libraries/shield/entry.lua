@@ -147,7 +147,9 @@ function Shield:create_action(user, impact_callback)
   local defense_rule
 
   action.on_execute_func = function()
-    Resources.play_audio(self._execute_sfx)
+    if self._execute_sfx then
+      Resources.play_audio(self._execute_sfx)
+    end
 
     defense_rule = DefenseRule.new(DefensePriority.Action, DefenseOrder.CollisionOnly)
 
