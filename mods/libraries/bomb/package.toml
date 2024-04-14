@@ -1,0 +1,5 @@
+[package]
+category = "library"
+id = "dev.konstinople.library.bomb"
+name = "Bomb Library"
+description = "Simplifies bomb animations.\n\nRequires a PLAYER_THROW state on players."
