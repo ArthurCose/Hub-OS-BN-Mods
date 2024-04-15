@@ -23,7 +23,9 @@ local function spawn_explosion(team, hit_props, field, tile)
 
 	-- crack or break tile
 	if tile:state() == TileState.Cracked then
-		tile:set_state(TileState.Broken)
+		if not tile:is_reserved({}) then
+			tile:set_state(TileState.Broken)
+		end
 	else
 		tile:set_state(TileState.Cracked)
 	end
