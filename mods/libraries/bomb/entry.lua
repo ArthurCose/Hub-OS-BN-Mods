@@ -27,6 +27,11 @@ function Bomb:set_bomb_animation_state(animation_state)
   self._bomb_animation_state = animation_state
 end
 
+--- Specifies a bomb animation that must be used.
+function Bomb:set_bomb_held_animation_state(animation_state)
+  self._bomb_held_animation_state = animation_state
+end
+
 --- [frame_number, duration][]
 --- Used for custom timing. Not required, as a default timing is provided.
 function Bomb:set_frame_data(frame_data)
@@ -43,7 +48,7 @@ local function create_bomb(self)
 
   local bomb_anim = bomb:animation()
   bomb_anim:load(self._bomb_animation_path)
-  bomb_anim:set_state(self._bomb_animation_state or "DEFAULT")
+  bomb_anim:set_state(self._bomb_held_animation_state or self._bomb_animation_state or "DEFAULT")
   bomb_anim:set_playback(Playback.Loop)
 
   return bomb
@@ -159,6 +164,13 @@ function Bomb:create_action(user, spell_callback)
 
         -- reset i
         i = 0
+
+        -- update animation
+        if self._bomb_held_animation_state then
+          local bomb_anim = bomb:animation()
+          bomb_anim:set_state(self._bomb_animation_state or "DEFAULT")
+          bomb_anim:set_playback(Playback.Loop)
+        end
 
         rise_func()
         return

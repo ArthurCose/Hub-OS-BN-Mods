@@ -1,0 +1,14 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class01.Standard.037"
+name = "CrakBom"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["C", "R", "V", "*"]
+damage = 80
+hit_flags = ["Impact", "Flinch"]
+description = "Bomb cracks 3sq ahead"
+limit = 5
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.bomb"]
