@@ -30,25 +30,23 @@ function Lib.ParticlePoof.new()
         fx:erase()
     end)
 
-    return fx;
+    return fx
 end
 
 Lib.MobMove = {}
-function Lib.MobMove.new(target)
+function Lib.MobMove.new(state)
     local fx = Artifact.new()
-    local field = target:field()
     local anim = fx:animation()
 
     fx:set_texture(Lib.load_texture("mob_move.png"))
 
     anim:load(Lib.fetch_animation_path("mob_move.animation"))
-    anim:set_state("DEFAULT")
-    anim:apply(fx:sprite())
+    anim:set_state(state)
     anim:on_complete(function()
         fx:erase()
     end)
 
-    field:spawn(fx, target:current_tile())
+    return fx
 end
 
-return Lib;
+return Lib
