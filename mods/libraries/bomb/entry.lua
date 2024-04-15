@@ -1,4 +1,6 @@
 local DEFAULT_FRAME_DATA = { { 1, 5 }, { 2, 4 }, { 3, 3 }, { 4, 5 }, { 5, 4 } }
+local TILE_WIDTH = Tile:width()
+local HALF_TILE_WIDTH = TILE_WIDTH / 2
 
 ---@class Bomb
 local Bomb = {}
@@ -101,12 +103,35 @@ function Bomb:create_action(user, spell_callback)
 
     local PEAK = -60
 
+    local update_tile = function()
+      -- necessary for proper sprite layering
+
+      if x > HALF_TILE_WIDTH then
+        local next_tile = bomb:get_tile(Direction.Right, 1)
+
+        if next_tile then
+          x = x - TILE_WIDTH
+
+          next_tile:add_entity(bomb)
+        end
+      elseif x < -HALF_TILE_WIDTH then
+        local next_tile = bomb:get_tile(Direction.Left, 1)
+
+        if next_tile then
+          x = x + TILE_WIDTH
+          next_tile:add_entity(bomb)
+        end
+      end
+    end
+
     local fall_func = function()
       i = i + 1
       local progress = i / 28
 
       x = x + vel_x
       y = PEAK - PEAK * ease_in(progress)
+
+      update_tile()
 
       bomb:set_offset(x, 0)
       bomb:set_elevation(-y)
@@ -123,6 +148,8 @@ function Bomb:create_action(user, spell_callback)
 
       x = x + vel_x
       y = ease_out(progress) * (PEAK - release_y) + release_y
+
+      update_tile()
 
       bomb:set_offset(x, 0)
       bomb:set_elevation(-y)
