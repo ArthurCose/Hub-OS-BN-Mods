@@ -13,6 +13,7 @@ bomb:set_execute_sfx(bn_assets.load_audio("lob_bomb.ogg"))
 
 local EXPLOSION_TEXTURE = bn_assets.load_texture("crakbom_explosion.png")
 local EXPLOSION_ANIMATION_PATH = bn_assets.load_texture("crakbom_explosion.animation")
+local PANEL_SFX = bn_assets.load_audio("paneldamage.ogg")
 
 ---@param team Team
 ---@param tile? Tile
@@ -53,6 +54,8 @@ function card_init(user, props)
 		if not tile or not tile:is_walkable() then
 			return
 		end
+
+		Resources.play_audio(PANEL_SFX)
 
 		-- spawn explosions
 		local hit_props = HitProps.from_card(
