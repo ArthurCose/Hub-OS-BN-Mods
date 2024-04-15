@@ -39,6 +39,7 @@ function Lib.MobMove.new(state)
     local anim = fx:animation()
 
     fx:set_texture(Lib.load_texture("mob_move.png"))
+    fx:sprite():set_layer(-5)
 
     anim:load(Lib.fetch_animation_path("mob_move.animation"))
     anim:set_state(state)
