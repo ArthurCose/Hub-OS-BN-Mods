@@ -90,6 +90,7 @@ function Bomb:create_action(user, spell_callback)
 
     -- create and spawn bomb
     bomb = create_bomb(self)
+    bomb:set_facing(user:facing())
     field:spawn(bomb, user:current_tile())
 
     -- sync bomb position to hand
