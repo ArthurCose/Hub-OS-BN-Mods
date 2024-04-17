@@ -42,7 +42,7 @@ end
 
 ---@param self Bomb
 local function create_bomb(self)
-  local bomb = Artifact.new()
+  local bomb = Spell.new()
 
   local bomb_sprite = bomb:sprite()
   bomb_sprite:set_texture(self._bomb_texture)
@@ -104,6 +104,10 @@ function Bomb:create_action(user, spell_callback)
 
     local PEAK = -60
 
+    bomb.on_update_func = function()
+      i = i + 1
+    end
+
     local update_tile = function()
       -- necessary for proper sprite layering
 
@@ -126,7 +130,6 @@ function Bomb:create_action(user, spell_callback)
     end
 
     local fall_func = function()
-      i = i + 1
       local progress = i / 28
 
       x = x + vel_x
@@ -144,7 +147,6 @@ function Bomb:create_action(user, spell_callback)
     end
 
     local rise_func = function()
-      i = i + 1
       local progress = i / 12
 
       x = x + vel_x
@@ -164,8 +166,6 @@ function Bomb:create_action(user, spell_callback)
     end
 
     local sync_func = function()
-      i = i + 1
-
       if i == synced_frames then
         -- create shadow
         if self._shadow_texture then
