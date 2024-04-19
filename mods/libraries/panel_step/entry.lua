@@ -133,6 +133,8 @@ function PanelStep:wrap_action(wrapped_action)
 
     -- reserve our destination
     dest_tile:reserve_for(user)
+    -- reserve our return tile
+    original_tile:reserve_for(user)
 
     -- queue our wrapped action to run next
     user:queue_action(wrapped_action)
@@ -161,6 +163,7 @@ function PanelStep:wrap_action(wrapped_action)
 
         if not self._return_frame then
           user:teleport(original_tile, function()
+            original_tile:remove_reservation_for(user)
             debug_print("default returned")
           end)
         end
@@ -198,6 +201,7 @@ function PanelStep:wrap_action(wrapped_action)
         component:eject()
       elseif i == self._return_frame then
         user:teleport(original_tile, function()
+          original_tile:remove_reservation_for(user)
           debug_print("returned")
         end)
         component:eject()
@@ -256,6 +260,8 @@ function PanelStep:create_action(user, create_action_steps)
 
     -- reserve our destination
     dest_tile:reserve_for(user)
+    -- reserve our return tile
+    original_tile:reserve_for(user)
 
     -- create ghosts
     lagging_ghost = create_lagging_ghost(user)
@@ -284,6 +290,7 @@ function PanelStep:create_action(user, create_action_steps)
         component:eject()
       elseif i == self._return_frame then
         user:teleport(original_tile, function()
+          original_tile:remove_reservation_for(user)
           debug_print("returned")
         end)
         component:eject()
@@ -332,6 +339,7 @@ function PanelStep:create_action(user, create_action_steps)
 
     if not self._return_frame then
       user:teleport(original_tile, function()
+        original_tile:remove_reservation_for(user)
         debug_print("default returned")
       end)
     end
