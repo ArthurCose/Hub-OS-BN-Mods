@@ -12,7 +12,7 @@ bomb:set_bomb_shadow(bn_assets.load_texture("bomb_shadow.png"))
 bomb:set_execute_sfx(bn_assets.load_audio("lob_bomb.ogg"))
 
 local EXPLOSION_TEXTURE = bn_assets.load_texture("crakbom_explosion.png")
-local EXPLOSION_ANIMATION_PATH = bn_assets.load_texture("crakbom_explosion.animation")
+local EXPLOSION_ANIMATION_PATH = bn_assets.fetch_animation_path("crakbom_explosion.animation")
 local PANEL_SFX = bn_assets.load_audio("paneldamage.ogg")
 
 ---@param team Team
