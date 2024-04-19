@@ -1,3 +1,4 @@
+---@class BattleNetworkAssetsLib
 local Lib = {}
 
 local images_animations_folder = _folder_path .. "Animations & Images/"
@@ -34,6 +35,8 @@ function Lib.ParticlePoof.new()
 end
 
 Lib.MobMove = {}
+
+---@param state string
 function Lib.MobMove.new(state)
     local fx = Artifact.new()
     local anim = fx:animation()
@@ -48,6 +51,64 @@ function Lib.MobMove.new(state)
     end)
 
     return fx
+end
+
+Lib.MobMoveAction = {}
+
+---@param user Entity
+---@param size_prefix "BIG" | "MEDIUM" | "SMALL"
+---@param target_tile_callback? fun(): Tile?
+function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
+    local action = Action.new(user)
+    action:set_lockout(ActionLockout.new_sequence())
+
+    local field = user:field()
+    local step = action:create_step()
+    local start_poof
+
+    if not target_tile_callback then
+        -- default implementation
+        target_tile_callback = function()
+            local current_tile = user:current_tile()
+            local valid_tiles = field:find_tiles(function(tile)
+                return user:can_move_to(tile) and tile ~= current_tile
+            end)
+
+            return valid_tiles[math.random(#valid_tiles)]
+        end
+    end
+
+    action.on_execute_func = function()
+        start_poof = Lib.MobMove.new(size_prefix .. "_START")
+
+        -- setup final poof early to keep animations in sync
+        local end_poof = Lib.MobMove.new(size_prefix .. "_END")
+        local end_poof_sprite = end_poof:sprite()
+        local end_poof_anim = end_poof:animation()
+        end_poof_anim:pause()
+        end_poof_sprite:set_visible(false)
+
+        local start_tile = user:current_tile()
+        field:spawn(start_poof, start_tile)
+        field:spawn(end_poof, start_tile)
+
+        local start_poof_anim = start_poof:animation()
+        start_poof_anim:on_frame(2, function()
+            step:complete_step()
+            end_poof_anim:resume()
+            end_poof_sprite:set_visible(true)
+
+            local tile = target_tile_callback()
+
+            if tile and user:can_move_to(tile) then
+                tile:add_entity(user)
+            end
+
+            user:current_tile():add_entity(end_poof)
+        end)
+    end
+
+    return action
 end
 
 return Lib
