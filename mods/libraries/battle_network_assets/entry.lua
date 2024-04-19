@@ -85,8 +85,16 @@ function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
         local end_poof = Lib.MobMove.new(size_prefix .. "_END")
         local end_poof_sprite = end_poof:sprite()
         local end_poof_anim = end_poof:animation()
-        end_poof_anim:pause()
+
+        end_poof.on_spawn_func = function()
+            end_poof_anim:pause()
+        end
+
         end_poof_sprite:set_visible(false)
+
+        local y = -user:height() / 2
+        start_poof:set_offset(0, y)
+        end_poof:set_offset(0, y)
 
         local start_tile = user:current_tile()
         field:spawn(start_poof, start_tile)
