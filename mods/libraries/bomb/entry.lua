@@ -214,8 +214,14 @@ function Bomb:create_action(user, spell_callback)
       local point = user_anim:get_point("HAND")
       local user_origin = user_sprite:origin()
 
-      x = user_offset.x + user_tile_offset.x + point.x - user_origin.x
-      y = user_offset.y + user_tile_offset.y + point.y - user_origin.y
+      local scale = user_sprite:scale()
+
+      if user:facing() ~= Direction.Right then
+        scale.x = -scale.x
+      end
+
+      x = user_offset.x + user_tile_offset.x + (point.x - user_origin.x) * scale.x
+      y = user_offset.y + user_tile_offset.y + (point.y - user_origin.y) * scale.y
 
       bomb:set_offset(x, y)
     end
