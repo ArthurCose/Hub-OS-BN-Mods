@@ -74,7 +74,11 @@ function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
                 return user:can_move_to(tile) and tile ~= current_tile
             end)
 
-            return valid_tiles[math.random(0, #valid_tiles)]
+            if #valid_tiles == 0 then
+                return nil
+            end
+
+            return valid_tiles[math.random(#valid_tiles)]
         end
     end
 
