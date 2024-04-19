@@ -110,6 +110,8 @@ function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
             end_poof_anim:resume()
             end_poof_sprite:set_visible(true)
 
+            user:current_tile():remove_reservation_for(user)
+
             local tile = target_tile_callback()
 
             if tile and user:can_move_to(tile) then
