@@ -1,12 +1,13 @@
 [package]
 category = "encounter"
-id = "BattleNetwork3.Viruses.Canodumb"
+id = "BattleNetwork3.Canodumb"
+past_ids = ["BattleNetwork3.Viruses.Canodumb"]
 name = "Canodumb"
 description = ""
 preview_texture_path = "preview.png"
 
 [[defines.characters]]
-id = "BattleNetwork3.Viruses.Canodumb.Enemy"
+id = "BattleNetwork3.Canodumb.Enemy"
 path = "canodumb"
 
 [dependencies]
