@@ -83,6 +83,11 @@ function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
     end
 
     action.on_execute_func = function()
+        if Living.from(user) and user:is_immobile() then
+            step:complete_step()
+            return
+        end
+
         start_poof = Lib.MobMove.new(size_prefix .. "_START")
 
         -- setup final poof early to keep animations in sync
@@ -112,11 +117,24 @@ function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
 
             local tile = target_tile_callback()
 
-            if tile and user:can_move_to(tile) then
+            if tile and user:can_move_to(tile) and (not Living.from(user) or not user:is_immobile()) then
                 local old_tile = user:current_tile()
+
+                if not user:sharing_tile() then
+                    old_tile:remove_reservation_for(user)
+                end
+
                 tile:add_entity(user)
-                tile:reserve_for(user)
-                old_tile:remove_reservation_for(user)
+
+                if not user:sharing_tile() then
+                    old_tile:remove_reservation_for(user)
+                    tile:reserve_for(user)
+
+                    action.on_action_end_func = function()
+                        -- remove extra reservation
+                        tile:remove_reservation_for(user)
+                    end
+                end
             end
 
             user:current_tile():add_entity(end_poof)
