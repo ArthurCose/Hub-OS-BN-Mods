@@ -1,0 +1,19 @@
+[package]
+category = "encounter"
+id = "com.Dawn.Shademan"
+name = "Shademan"
+description = "Don't underestimate the Darkloids!"
+preview_texture_path = "preview.png"
+
+
+[defines]
+characters = [
+  { id = "com.Dawn.Enemy.Shademan", path = "Shademan" },
+  { id = "com.Dawn.Enemy.ShademanAlpha", path = "ShademanAlpha" },
+  { id = "com.Dawn.Enemy.ShademanBeta", path = "ShademanBeta" },
+]
+
+[dependencies]
+characters = [ ]
+libraries = [ "BattleNetwork.SmokePoof" ]
+cards = [ ]

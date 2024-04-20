@@ -1,0 +1,15 @@
+[package]
+category = "encounter"
+id = "com.Dawn.Requested.Catack"
+name = "Catack"
+description = "Battletanx!"
+preview_texture_path = "preview.png"
+
+[[defines.characters]]
+id = "com.Dawn.Requested.Enemy.Catack"
+path = "catack"
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

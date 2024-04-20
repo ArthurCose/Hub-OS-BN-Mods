@@ -1,0 +1,23 @@
+[package]
+category = "encounter"
+id = "BattleNetwork3.Virus.KillerEye"
+name = "KillerEye"
+description = "Bn6 KillerEye Battle!"
+preview_texture_path = "preview.png"
+
+[[defines.characters]]
+id = "BattleNetwork3.enemy.KillerEye"
+path = "KillerEye"
+
+[[defines.characters]]
+id = "BattleNetwork3.enemy.DemonEye"
+path = "DemonEye"
+
+[[defines.characters]]
+id = "BattleNetwork3.enemy.JokerEye"
+path = "JokerEye"
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

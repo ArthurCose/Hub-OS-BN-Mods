@@ -1,0 +1,15 @@
+[package]
+category = "encounter"
+id = "BattleNetwork5.Virus.BigBrute"
+name = "BigBrute"
+description = "BN5 accurate BigBrute"
+preview_texture_path = "preview.png"
+
+[[defines.characters]]
+id = "BattleNetwork5.Character.BigBrute"
+path = "character"
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

@@ -1,0 +1,15 @@
+[package]
+category = "encounter"
+id = "com.Dawn.Viruses.FighterPlane"
+name = "FighterPlane"
+description = "Eyes to the skies!"
+preview_texture_path = "preview.png"
+
+[[defines.characters]]
+id = "com.Dawn.Viruses.Enemy.FighterPlane"
+path = "virus"
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]
