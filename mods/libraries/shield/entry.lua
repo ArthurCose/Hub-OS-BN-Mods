@@ -5,6 +5,7 @@ local function spawn_particle(texture, animation_path, field, tile)
 
   local artifact = Artifact.new()
   artifact:set_texture(texture)
+  artifact:sprite():set_layer(-5)
 
   local animation = artifact:animation()
   animation:load(animation_path)
