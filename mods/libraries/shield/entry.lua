@@ -163,12 +163,12 @@ function Shield:create_action(user, impact_callback)
         return
       end
 
-      judge:block_damage()
-
       if props.flags & Hit.Impact == 0 then
         -- non impact
         return
       end
+
+      judge:block_damage()
 
       if judge:impact_blocked() then
         return
