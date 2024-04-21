@@ -82,6 +82,12 @@ function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
         end
     end
 
+    local cancelled = false
+
+    action.on_action_end_func = function()
+        cancelled = true
+    end
+
     action.on_execute_func = function()
         if Living.from(user) and user:is_immobile() then
             step:complete_step()
@@ -111,28 +117,38 @@ function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
 
         local start_poof_anim = start_poof:animation()
         start_poof_anim:on_frame(2, function()
+            if cancelled then
+                end_poof:erase()
+                return
+            end
+
             step:complete_step()
             end_poof_anim:resume()
             end_poof_sprite:set_visible(true)
 
             local tile = target_tile_callback()
 
-            if tile and user:can_move_to(tile) and (not Living.from(user) or not user:is_immobile()) then
-                local old_tile = user:current_tile()
+            if tile and tile ~= start_tile and user:can_move_to(tile) and (not Living.from(user) or not user:is_immobile()) then
+                local reserve = not user:sharing_tile()
+                local start_reserve_count = start_tile:reserve_count_for(user)
 
-                if not user:sharing_tile() then
-                    old_tile:remove_reservation_for(user)
+                if reserve then
+                    start_tile:remove_reservation_for(user)
                 end
 
                 tile:add_entity(user)
 
-                if not user:sharing_tile() then
-                    old_tile:remove_reservation_for(user)
+                if reserve then
                     tile:reserve_for(user)
 
                     action.on_action_end_func = function()
-                        -- remove extra reservation
+                        -- remove extra reservation from auto reserve
                         tile:remove_reservation_for(user)
+
+                        -- fix double unreserve
+                        if start_reserve_count > 1 then
+                            start_tile:reserve_for(user)
+                        end
                     end
                 end
             end
