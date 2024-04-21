@@ -72,9 +72,7 @@ function Bomb:create_action(user, spell_callback)
   action:override_animation_frames(self._user_frame_data)
 
   local field = user:field()
-  local bomb
-  local component
-  local target_tile
+  local bomb, component, target_tile, cancelled
 
   local synced_frames = 0
 
@@ -166,6 +164,11 @@ function Bomb:create_action(user, spell_callback)
     end
 
     local sync_func = function()
+      if cancelled then
+        bomb:erase()
+        return
+      end
+
       if i == synced_frames then
         -- create shadow
         if self._shadow_texture then
@@ -173,7 +176,9 @@ function Bomb:create_action(user, spell_callback)
           bomb:show_shadow(true)
         end
 
-        -- switch update func
+        -- switch update func and lifetime
+        component:eject()
+        component = bomb:create_component(Lifetime.Local)
         component.on_update_func = rise_func
 
         -- snap to x = 0, adjust y to make sense
@@ -228,6 +233,10 @@ function Bomb:create_action(user, spell_callback)
 
     component = bomb:create_component(Lifetime.Scene)
     component.on_update_func = sync_func
+  end
+
+  action.on_action_end_func = function()
+    cancelled = true
   end
 
   return action
