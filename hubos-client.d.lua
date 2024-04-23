@@ -1,9 +1,9 @@
----@type string
-_folder_path = nil
-
 ---@meta
 -- https://luals.github.io/wiki/annotations/
 ---@diagnostic disable: missing-return, unused-local
+
+---@type string
+_folder_path = nil
 
 ---@class EntityId
 
@@ -652,6 +652,8 @@ DeckCard = {}
 --- Boolean or nil, enables time freeze for the [Action](https://docs.hubos.dev/client/lua-api/attack-api/action).
 ---@field time_freeze boolean
 --- Boolean or nil, used by other mods for conditional behavior.
+---@field can_charge boolean
+--- Boolean or nil, used by other mods for conditional behavior.
 ---@field can_boost boolean
 --- [Hit](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#hit_propsflags), influences generated [HitProps](https://docs.hubos.dev/client/lua-api/attack-api/hit-props)
 ---@field hit_flags number
@@ -698,7 +700,7 @@ CardProperties = {}
 --- - `"card"`
 --- - `"form"`
 --- - `"icon"`
----@field category undefined
+---@field category string
 
 StagedItem = {}
 
@@ -1027,6 +1029,10 @@ function Entity:create_component(lifetime) end
 ---@return EntityContext
 function Entity:context() end
 
+--- Returns true if the entity has an executing action or pending actions.
+---@return boolean
+function Entity:has_actions() end
+
 --- - `action`: [Action](https://docs.hubos.dev/client/lua-api/attack-api/action)
 ---
 --- Note: During time freeze, Actions that freeze time skip to the front of the line.
@@ -1068,6 +1074,9 @@ function Entity:jump(tile, height, duration, callback) end
 --- - `movement`: [Movement](https://docs.hubos.dev/client/lua-api/field-api/movement)
 ---@param movement Movement
 function Entity:queue_movement(movement) end
+
+--- Cancels non-drag movement.
+function Entity:cancel_movement() end
 
 --- Returns true if the entity is moving.
 ---@return boolean
@@ -1130,6 +1139,11 @@ function Component:owner() end
 
 --- Removes the component from the owner.
 function Component:eject() end
+
+--- Returns the entity passed in if the entity is considered living, otherwise returns `nil`.
+---@param entity Entity
+---@return Entity
+function Living.from(entity) end
 
 --- Returns the entity's max health.
 ---
@@ -1266,6 +1280,18 @@ function Entity:set_remaining_status_time(hit_flag, duration) end
 ---@param hit_flag number
 ---@param callback fun()
 function Entity:register_status_callback(hit_flag, callback) end
+
+--- Returns true if status effects that entity processing are applied.
+---
+--- Throws if the Entity doesn't pass [Living.from()](https://docs.hubos.dev/client/lua-api/entity-api/living)
+---@return boolean
+function Entity:is_inactionable() end
+
+--- Returns true if status effects that immobilize are applied.
+---
+--- Throws if the Entity doesn't pass [Living.from()](https://docs.hubos.dev/client/lua-api/entity-api/living)
+---@return boolean
+function Entity:is_immobile() end
 
 --- Returns the entity passed in if the entity is a player, otherwise returns `nil`.
 ---@param entity Entity
@@ -2306,8 +2332,8 @@ function Sprite:color() end
 ---@param color Color
 function Sprite:set_color(color) end
 
---- Returns the color mode.
----@return Color
+--- Returns the ColorMode.
+---@return ColorMode
 function Sprite:color_mode() end
 
 --- - `color_mode`
@@ -2448,49 +2474,49 @@ function Field:get_entity(id) end
 
 --- Returns a list of entities for any entity the callback returned true for.
 ---
---- All spawned [Entities](https://docs.hubos.dev/client/lua-api/entity-api/entity) will be passed to the callback.
+--- All [Entities](https://docs.hubos.dev/client/lua-api/entity-api/entity) on the field and not deleted will be passed to the callback.
 ---@param callback fun(entity: Entity): boolean
 ---@return Entity[]
 function Field:find_entities(callback) end
 
 --- Returns a list of entities for any entity the callback returned true for.
 ---
---- Only spawned [Characters](https://docs.hubos.dev/client/lua-api/entity-api/character) will be passed to the callback, includes [Players](https://docs.hubos.dev/client/lua-api/entity-api/player).
+--- Only [Characters](https://docs.hubos.dev/client/lua-api/entity-api/character) on the field and not deleted will be passed to the callback, includes [Players](https://docs.hubos.dev/client/lua-api/entity-api/player).
 ---@param callback fun(entity: Entity): boolean
 ---@return Entity[]
 function Field:find_characters(callback) end
 
 --- Returns a list of entities for any entity the callback returned true for.
 ---
---- Only spawned [Obstacles](https://docs.hubos.dev/client/lua-api/entity-api/obstacle) will be passed to the callback.
+--- Only [Obstacles](https://docs.hubos.dev/client/lua-api/entity-api/obstacle) on the field and not deleted will be passed to the callback.
 ---@param callback fun(entity: Entity): boolean
 ---@return Entity[]
 function Field:find_obstacles(callback) end
 
 --- Returns a list of entities for any entity the callback returned true for.
 ---
---- Only spawned [Players](https://docs.hubos.dev/client/lua-api/entity-api/player) will be passed to the callback.
+--- Only [Players](https://docs.hubos.dev/client/lua-api/entity-api/player) on the field and not deleted will be passed to the callback.
 ---@param callback fun(entity: Entity): boolean
 ---@return Entity[]
 function Field:find_players(callback) end
 
 --- Returns a list of entities for any entity the callback returned true for.
 ---
---- Only spawned [Spells](https://docs.hubos.dev/client/lua-api/entity-api/spell) will be passed to the callback, excludes [Obstacles](https://docs.hubos.dev/client/lua-api/entity-api/obstacle).
+--- Only [Spells](https://docs.hubos.dev/client/lua-api/entity-api/spell) on the field and not deleted will be passed to the callback, excludes [Obstacles](https://docs.hubos.dev/client/lua-api/entity-api/obstacle).
 ---@param callback fun(entity: Entity): boolean
 ---@return Entity[]
 function Field:find_spells(callback) end
 
 --- Returns a list of entities sorted by distance, for any entity the callback returned true for.
 ---
---- Only spawned [Characters](https://docs.hubos.dev/client/lua-api/entity-api/character) will be passed to the callback, includes [Players](https://docs.hubos.dev/client/lua-api/entity-api/player).
+--- Only [Characters](https://docs.hubos.dev/client/lua-api/entity-api/character) on the field and not deleted will be passed to the callback, includes [Players](https://docs.hubos.dev/client/lua-api/entity-api/player).
 ---@param callback fun(entity: Entity): boolean
 ---@return Entity[]
 function Field:find_nearest_characters(callback) end
 
 --- Returns a list of entities sorted by distance, for any entity the callback returned true for.
 ---
---- Only spawned [Players](https://docs.hubos.dev/client/lua-api/entity-api/player) will be passed to the callback.
+--- Only [Players](https://docs.hubos.dev/client/lua-api/entity-api/player) on the field and not deleted will be passed to the callback.
 ---@param callback fun(entity: Entity): boolean
 ---@return Entity[]
 function Field:find_nearest_players(callback) end
@@ -2556,9 +2582,14 @@ function Tile:is_edge() end
 function Tile:is_walkable() end
 
 --- Returns true if there's any reservations for this tile, excluding [entities with ids](https://docs.hubos.dev/client/lua-api/entity-api/entity#entityid) matching the `exclude_list`.
----@param exclude_list EntityId[]
+---@param exclude_list? EntityId[]
 ---@return boolean
 function Tile:is_reserved(exclude_list) end
+
+--- Returns a number, representing the total reservation count for this [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity).
+---@param entity Entity
+---@return number
+function Tile:reserve_count_for(entity) end
 
 --- Adds a reservation of this tile for this [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity).
 ---@param entity Entity
@@ -2633,28 +2664,28 @@ function Tile:remove_entity_by_id(entity_id) end
 
 --- Returns a list of entities for any entity the callback returned true for.
 ---
---- Only "hittable" [Entities](https://docs.hubos.dev/client/lua-api/entity-api/entity) will be passed to the callback.
+--- Only [Entities](https://docs.hubos.dev/client/lua-api/entity-api/entity) on the field and not marked for deletion will be passed to the callback.
 ---@param callback fun(entity: Entity): boolean
 ---@return Entity[]
 function Tile:find_entities(callback) end
 
 --- Returns a list of entities for any entity the callback returned true for.
 ---
---- Only "hittable" [Characters](https://docs.hubos.dev/client/lua-api/entity-api/character) will be passed to the callback.
+--- Only [Characters](https://docs.hubos.dev/client/lua-api/entity-api/character) on the field and not marked for deletion will be passed to the callback.
 ---@param callback fun(entity: Entity): boolean
 ---@return Entity[]
 function Tile:find_characters(callback) end
 
 --- Returns a list of entities for any entity the callback returned true for.
 ---
---- Only "hittable" [Obstacles](https://docs.hubos.dev/client/lua-api/entity-api/obstacle) will be passed to the callback.
+--- Only [Obstacles](https://docs.hubos.dev/client/lua-api/entity-api/obstacle) on the field and not marked for deletion will be passed to the callback.
 ---@param callback fun(entity: Entity): boolean
 ---@return Entity[]
 function Tile:find_obstacles(callback) end
 
 --- Returns a list of entities for any entity the callback returned true for.
 ---
---- Only "hittable" [Players](https://docs.hubos.dev/client/lua-api/entity-api/player) will be passed to the callback.
+--- Only [Players](https://docs.hubos.dev/client/lua-api/entity-api/player) on the field and not marked for deletion will be passed to the callback.
 ---@param callback fun(entity: Entity): boolean
 ---@return Entity[]
 function Tile:find_players(callback) end
