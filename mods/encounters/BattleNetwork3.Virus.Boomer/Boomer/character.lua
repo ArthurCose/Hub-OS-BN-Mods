@@ -58,8 +58,12 @@ function character_init(self, character_info)
         local attacker_hit_props = attacker:copy_hit_props()
 
         if (self.guard) then
-            if attacker_hit_props.flags & Hit.PierceGuard == Hit.PierceGuard then
+            if attacker_hit_props.flags & Hit.PierceGuard ~= 0 then
                 --cant block breaking hits
+                return
+            end
+            if attacker_hit_props.flags & Hit.Impact == 0 then
+                --cant block non impact hits
                 return
             end
             judge:block_impact()
@@ -103,20 +107,18 @@ function character_init(self, character_info)
     self.action_move = function(frame)
         if (frame == 1) then
             local target_tile = self:get_tile(self.move_direction, 1)
-            if (not is_tile_free_for_movement(target_tile, self)) then
+            if (not self:can_move_to(target_tile)) then
                 if (target_tile:is_edge()) then
                     self.reached_edge = true
+                elseif (not self:can_move_to(self:get_tile(Direction.Up, 1)) and
+                        not self:can_move_to(self:get_tile(Direction.Down, 1))) then
+                    --detect if stuck
+                    self.reached_edge = true
                 else
-                    if (not is_tile_free_for_movement(self:get_tile(Direction.Up, 1), self) and
-                            not is_tile_free_for_movement(self:get_tile(Direction.Down, 1), self)) then
-                        --detect if stuck
-                        self.reached_edge = true
-                    else
-                        self.turn()
-                    end
+                    self.turn()
                 end
             end
-            self:slide(target_tile, (self.move_speed), (0), ActionOrder.Immediate, nil)
+            self:slide(target_tile, self.move_speed, 0, ActionOrder.Immediate, nil)
         end
         if (frame > 2 and not self:is_sliding()) then
             if (self.reached_edge) then
@@ -205,7 +207,6 @@ function character_init(self, character_info)
 
     function boomerang(user)
         local field = user:field()
-        ---@class Spell
         local spell = Spell.new(user:team())
         local spell_animation = spell:animation()
         local start_tile = user:get_tile(user:facing(), 1)
@@ -230,46 +231,52 @@ function character_init(self, character_info)
         spell.direction = user:facing()
         spell.userfacing = user:facing()
         spell.boomer_speed = user.boomer_speed
-        spell.next_tile = start_tile:get_tile(spell.direction, 1)
-        spell.on_update_func = function(self)
-            if (spell.next_tile:is_edge()) then
+        spell.on_update_func = function()
+            spell:current_tile():attack_entities(spell)
+
+            if spell:is_moving() then
+                return
+            end
+
+            local next_tile = spell:get_tile(spell.direction, 1)
+
+            if not next_tile then
+                spell:erase()
+
+                if not user:deleted() then
+                    user.animation:on_complete(function()
+                        user.end_wait = true
+                    end)
+                end
+
+                return
+            end
+
+            if next_tile:is_edge() then
                 ---need to change a direction.
                 if (spell.direction == Direction.Left or spell.direction == Direction.Right) then
-                    local end_of_field =
-                        (spell.userfacing == Direction.Left and spell.next_tile:x() == 7) or
-                        (spell.userfacing == Direction.Right and spell.next_tile:x() == 0)
-                    if (end_of_field) then
-                        spell:erase()
-                        if (not user:deleted()) then
-                            user.animation:on_complete(function()
-                                user.end_wait = true
-                            end)
-                        end
+                    if spell.direction == spell.userfacing then
+                        --next direction is up or down
+                        spell.direction = get_free_direction(spell:current_tile(), Direction.Up, Direction.Down)
                     end
-                    --next direction is up or down
-                    spell.direction = get_free_direction(spell:current_tile(), Direction.Up, Direction.Down)
                 else
                     if (spell.direction == Direction.Up or spell.direction == Direction.Down) then
                         --next direction is left or right
                         spell.direction = get_free_direction(spell:current_tile(), Direction.Left, Direction.Right)
                     end
                 end
+
+                next_tile = spell:get_tile(spell.direction, 1)
             end
-            spell:slide(spell.next_tile, (spell.boomer_speed), (0), ActionOrder.Voluntary, nil)
-            spell.next_tile = spell:current_tile():get_tile(spell.direction, 1)
-            spell:current_tile():attack_entities(self)
+
+            spell:slide(next_tile, spell.boomer_speed)
         end
-        spell.on_collision_func = function(self, other)
-        end
-        spell.on_attack_func = function(self, other)
-            battle_helpers.spawn_visual_artifact(self:field(), self:get_tile(), effects_texture, effects_anim, "WOOD"
+        spell.on_attack_func = function()
+            battle_helpers.spawn_visual_artifact(spell:field(), spell:get_tile(), effects_texture, effects_anim, "WOOD"
             , 0, 0)
         end
-        spell.on_delete_func = function(self)
-            self:erase()
-        end
-        spell.can_move_to_func = function(tile)
-            return true
+        spell.on_delete_func = function()
+            spell:erase()
         end
         field:spawn(spell, start_tile)
     end
@@ -282,35 +289,6 @@ function get_free_direction(tile, direction1, direction2)
     else
         return direction2
     end
-end
-
-function is_tile_free_for_movement(tile, character)
-    --Basic check to see if a tile is suitable for a chracter of a team to move to
-
-    if tile:team() ~= character:team() then
-        return false
-    end
-    if (tile:is_edge()) then
-        return false
-    end
-    local occupants = tile:find_entities( --[[hittable patch--]] function(entity)
-        if not entity:hittable() then return end
-        ( --[[end hittable patch--]] function(ent)
-            if (Character.from(ent) ~= nil or Obstacle.from(ent) ~= nil) then
-                return true
-            else
-                return false
-            end
-        end --[[hittable patch--]])(entity)
-    end --[[end hittable patch--]])
-    if #occupants == 1 and occupants[1]:id() == character:id() then
-        return true
-    end
-    if #occupants > 0 then
-        return false
-    end
-
-    return true
 end
 
 return character_init
