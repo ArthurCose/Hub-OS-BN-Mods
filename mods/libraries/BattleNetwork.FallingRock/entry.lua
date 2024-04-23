@@ -1,6 +1,7 @@
 ---@class FallingRockLib
 local Lib = {}
 
+local ROCK_SFX = Resources.load_audio("rock_shatter.ogg")
 local TEXTURE = Resources.load_texture("rock.png")
 local ANIMATION_PATH = _folder_path .. "rock.animation"
 local BIG_SHADOW = Resources.load_texture("shadow_big.png")
@@ -70,6 +71,7 @@ function Lib.create_falling_rock(team, damage)
     if elevation <= 0 then
       if spell:current_tile():is_walkable() then
         spawn_particles()
+        Resources.play_audio(ROCK_SFX, AudioBehavior.NoOverlap)
       end
 
       spell:erase()
@@ -78,6 +80,7 @@ function Lib.create_falling_rock(team, damage)
 
   spell.on_collision_func = function()
     spawn_particles()
+    Resources.play_audio(ROCK_SFX, AudioBehavior.NoOverlap)
     spell:erase()
   end
 
