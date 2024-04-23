@@ -71,6 +71,10 @@ local function create_lagging_ghost(user)
       return
     end
 
+    if user:deleted() then
+      spawner:erase()
+    end
+
     local ghost = create_ghost(user)
 
     local ghost_i = 0
