@@ -11,7 +11,7 @@ path = "gaia"
 
 [[defines.characters]]
 id = "BattleNetwork4.Gaia+.Enemy"
-path = "gaia+"
+path = "gaia_plus"
 
 [[defines.characters]]
 id = "BattleNetwork4.GaiaMega.Enemy"
