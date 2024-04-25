@@ -20,7 +20,7 @@ function card_init(actor, props)
 	action.on_execute_func = function(self, user)
 		local buster = self:create_attachment("BUSTER")
 		local buster_sprite = buster:sprite()
-		buster_sprite:set_texture(TANKCAN_TEXTURE, true)
+		buster_sprite:set_texture(TANKCAN_TEXTURE)
 		buster_sprite:set_layer(-1)
 		local offset = 0
 
@@ -49,7 +49,7 @@ function card_init(actor, props)
 		end)
 	end
 
-	action.action_end_func = function(self)
+	action.on_action_end_func = function(self)
 		actor:set_offset(0 * 0.5, 0 * 0.5)
 	end
 
@@ -58,7 +58,7 @@ end
 
 function create_basic_effect(field, tile, hit_texture, hit_anim_path, hit_anim_state)
 	local fx = Artifact.new()
-	fx:set_texture(hit_texture, true)
+	fx:set_texture(hit_texture)
 	local fx_sprite = fx:sprite()
 	fx_sprite:set_layer(-3)
 	local fx_anim = fx:animation()
@@ -135,7 +135,7 @@ function create_attack(user, props)
 	spell.slide_started = false
 	spell.do_once = true
 
-	spell.on_update_func = function(self, dt)
+	spell.on_update_func = function(self)
 		local tile = self:current_tile()
 		tile:attack_entities(self)
 
@@ -175,13 +175,14 @@ function create_attack(user, props)
 					end
 				end
 
-				create_basic_effect(field, t, BACKROW_BLAST, BACKROW_BLAST_ANIM, "DEFAULT")
+				local effect = create_basic_effect(field, t, BACKROW_BLAST, BACKROW_BLAST_ANIM, "DEFAULT")
+				effect:set_facing(direction)
 
 				self:delete()
 			end
 
 			local dest = self:get_tile(direction, 1)
-			self:slide(dest, (2), (0), function()
+			self:slide(dest, 2, function()
 				self.slide_started = true
 			end)
 		end
