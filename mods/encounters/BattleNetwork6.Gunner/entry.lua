@@ -1,4 +1,4 @@
-local character_id = "BattleNetwork6.Viruses.Gunner.Enemy"
+local character_id = "BattleNetwork6.Gunner.Enemy"
 
 function encounter_init(mob)
   local field = mob:field()

@@ -1,4 +1,4 @@
-local character_id = "BattleNetwork3.Viruses.Canodumb.Enemy"
+local character_id = "BattleNetwork3.Canodumb.Enemy"
 
 function encounter_init(encounter)
     encounter
