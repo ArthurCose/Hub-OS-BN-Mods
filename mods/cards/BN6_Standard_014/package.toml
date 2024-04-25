@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.014"
+name = "TankCan3"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "B", "M", "P" ]
+damage = 200
+time_freeze = false
+element = "none"
+description = "3sqr blst if hits end row"
+hit_flags = [ "Impact", "Flinch", "Flash", "Drag" ]
+limit = 3
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [
+    "BattleNetwork6.Class01.Standard.012"
+]

@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.012"
+name = "TankCan1"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "A", "G", "R" ]
+damage = 120
+time_freeze = false
+element = "none"
+description = "3sqr blst if hits end row"
+hit_flags = [ "Impact", "Flinch", "Flash", "Drag" ]
+limit = 5
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [
+    "dev.GladeWoodsgrove.BattleNetworkHelpers"
+]
+cards = [ ]

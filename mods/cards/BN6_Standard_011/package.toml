@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.011"
+name = "Spreadr3"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "Q", "R", "S", "*" ]
+damage = 90
+time_freeze = false
+element = "none"
+description = "Spreads damg to adj panls"
+hit_flags = [ "Impact" ]
+limit = 4
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ 
+    "BattleNetwork6.Class01.Standard.009"
+]
