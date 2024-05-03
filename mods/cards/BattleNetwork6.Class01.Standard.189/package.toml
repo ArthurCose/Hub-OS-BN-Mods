@@ -1,0 +1,24 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.189"
+name = "AntiDmg"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "G", "R", "V", "*" ]
+damage = 100
+time_freeze = true
+element = "none"
+secondary_element = "sword"
+description = "Sets trap and throw a star"
+limit = 3
+card_class = "standard"
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [
+    "dev.GladeWoodsgrove.BattleNetworkHelpers"
+]
+cards = [ ]

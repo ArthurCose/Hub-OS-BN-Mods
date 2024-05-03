@@ -1,8 +1,0 @@
-imagePath="burst.png"
-
-animation state="DEFAULT"
-frame duration="0.066" x="46" y="38" w="27" h="14" originx="13" originy="12" flipx="1"
-frame duration="0.05" x="121" y="0" w="38" h="38" originx="23" originy="36" flipx="1"
-frame duration="0.05" x="46" y="0" w="38" h="38" originx="23" originy="36" flipx="1"
-frame duration="0.05" x="84" y="0" w="37" h="38" originx="22" originy="36" flipx="1"
-frame duration="0.05" x="0" y="0" w="46" h="41" originx="27" originy="39" flipx="1"

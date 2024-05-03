@@ -1,0 +1,24 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class01.Standard.063"
+name = "AirHoc1"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "D", "E", "F", "*" ]
+damage = 50
+time_freeze = false
+element = "break"
+description = "Ricochet attack to right"
+long_description = "Bounce the puck off the walls!"
+limit = 4
+hit_flags = ["Impact", "Flinch", "PierceGuard", "Shake"]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [
+    "dev.GladeWoodsgrove.AirHockeyZero"
+]

@@ -1,0 +1,22 @@
+[package]
+category = "card"
+id = "dev.GladeWoodsgrove.AirHockeyZero"
+name = "ZeroHockey"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "*" ]
+damage = 0
+time_freeze = false
+element = "break"
+description = "Template for Air Hockey!"
+limit = 0
+hidden = true
+hit_flags = ["Impact", "Flinch", "PierceGuard", "Shake"]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]
