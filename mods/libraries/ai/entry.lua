@@ -253,7 +253,7 @@ function Lib.find_setup_tiles(entity, tile_suggester, tile_filter, entity_filter
 
   if not entity_filter then
     entity_filter = function(other)
-      return other:team() ~= entity:team() and Character.from(other) ~= nil
+      return other:team() ~= entity:team() and Character.from(other) ~= nil and other:hittable()
     end
   end
 
