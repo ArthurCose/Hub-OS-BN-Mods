@@ -1,10 +1,6 @@
-local package_id = "EXE3.Metrid"
-local character_id = "EXE3.Metrid.Enemy"
+local character_id = "BattleNetwork3.Metrid.Enemy"
 
-
-
-
-
+---@param mob Encounter
 function encounter_init(mob)
     mob:create_spawner(character_id, Rank.V1):spawn_at(4, 1)
     mob:create_spawner(character_id, Rank.V2):spawn_at(4, 3)
