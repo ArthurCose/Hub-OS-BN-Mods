@@ -11,8 +11,7 @@ local EXPLOSION_SFX = Resources.load_audio("sounds/explosion.ogg")
 local LANDING_SFX = bn_assets.load_audio("meteor_land.ogg")
 
 local MobTracker = require("mob_tracker.lua")
-local left_mob_tracker = MobTracker:new()
-local right_mob_tracker = MobTracker:new()
+local mob_tracker = MobTracker:new()
 
 ---@class Metrid : Entity
 ---@field _attack number
@@ -20,39 +19,6 @@ local right_mob_tracker = MobTracker:new()
 ---@field _maximum_meteors number
 ---@field _meteor_cooldown number
 ---@field _accuracy_chance number
-
-local function get_tracker_from_direction(facing)
-    if facing == Direction.Left then
-        return left_mob_tracker
-    elseif facing == Direction.Right then
-        return right_mob_tracker
-    end
-    return left_mob_tracker
-end
-
-local function advance_a_turn_by_facing(facing)
-    local mob_tracker = get_tracker_from_direction(facing)
-    return mob_tracker:advance_a_turn()
-end
-
-local function get_active_mob_id_for_same_direction(facing)
-    local mob_tracker = get_tracker_from_direction(facing)
-    return mob_tracker:get_active_mob()
-end
-
-local function add_enemy_to_tracking(enemy)
-    local facing = enemy:facing()
-    local id = enemy:id()
-    local mob_tracker = get_tracker_from_direction(facing)
-    mob_tracker:add_by_id(id)
-end
-
-local function remove_enemy_from_tracking(enemy)
-    local facing = enemy:facing()
-    local id = enemy:id()
-    local mob_tracker = get_tracker_from_direction(facing)
-    mob_tracker:remove_by_id(id)
-end
 
 ---@param metrid Metrid
 local function create_meteor(metrid)
@@ -173,7 +139,7 @@ local function create_meteor_action(metrid)
             if count <= 0 then
                 metrid_anim:set_state("DRESS")
                 metrid_anim:on_complete(function()
-                    advance_a_turn_by_facing(metrid:facing())
+                    mob_tracker:advance_a_turn()
                     meteor_step:complete_step()
                 end)
                 meteor_component:eject()
@@ -232,6 +198,7 @@ local function create_meteor_action(metrid)
     return action
 end
 
+---@param entity Entity
 local function default_random_tile(entity)
     local tiles = entity:field():find_tiles(function(tile)
         return entity:can_move_to(tile) and tile ~= entity:current_tile()
@@ -247,7 +214,11 @@ end
 ---@param entity Entity
 local function create_move_factory(entity)
     local function target_tile_callback()
-        return default_random_tile(entity)
+        local tile = default_random_tile(entity)
+        if tile then
+            entity:set_facing(tile:facing())
+            return tile
+        end
     end
 
     return function()
@@ -262,7 +233,7 @@ local function setup_random_tile(metrid)
             return false
         end
 
-        local forward_tile = tile:get_tile(metrid:facing(), 1)
+        local forward_tile = tile:get_tile(tile:facing(), 1)
         if not forward_tile then
             return false
         end
@@ -294,7 +265,11 @@ end
 ---@param entity Entity
 local function create_setup_factory(entity)
     local function target_tile_callback()
-        return setup_random_tile(entity)
+        local tile = setup_random_tile(entity)
+        if tile then
+            entity:set_facing(tile:facing())
+            return tile
+        end
     end
 
     return function()
@@ -359,35 +334,12 @@ function character_init(self)
     anim:apply(self:sprite())
     anim:set_playback(Playback.Loop)
 
-
-    -- storing facing direction passed to mob_trackers to prevent tracking issues if we're somehow flipped
-    local tracked_facing
-
-    self.on_battle_end_func = function()
-        left_mob_tracker:clear()
-        right_mob_tracker:clear()
-    end
     self.on_battle_start_func = function()
-        local field = self:field()
-        tracked_facing = self:facing()
-        add_enemy_to_tracking(self)
-        local mob_sort_func = function(a, b)
-            local met_a_tile = field:get_entity(a):current_tile()
-            local met_b_tile = field:get_entity(b):current_tile()
-            local var_a = (met_a_tile:x() * 3) + met_a_tile:y()
-            local var_b = (met_b_tile:x() * 3) + met_b_tile:y()
-            return var_a < var_b
-        end
-        left_mob_tracker:sort_turn_order(mob_sort_func)
-        right_mob_tracker:sort_turn_order(mob_sort_func, true)
+        mob_tracker:add_by_id(self:id())
     end
     self.on_delete_func = function()
-        remove_enemy_from_tracking(self)
+        mob_tracker:remove_by_id(self:id())
         self:default_character_delete()
-    end
-    self.on_spawn_func = function()
-        left_mob_tracker:clear()
-        right_mob_tracker:clear()
     end
     self.on_idle_func = function()
         anim:set_state("IDLE")
@@ -397,26 +349,10 @@ function character_init(self)
     local ai = Ai.new_ai(self)
     local plan = ai:create_plan()
     local move_factory = create_move_factory(self)
+    local idle_factory = Ai.create_idle_action_factory(self, idle_max, idle_max)
     local setup_factory = create_setup_factory(self)
     local attack_factory = function()
         return create_meteor_action(self)
-    end
-    local idle_factory = function()
-        -- idle
-        local action = Action.new(self)
-        local step = action:create_step()
-
-        local remaining_idle = idle_max
-        step.on_update_func = function()
-            if remaining_idle <= 0 then
-                step:complete_step()
-                return
-            end
-
-            remaining_idle = remaining_idle - 1
-        end
-
-        return action
     end
 
     plan:set_action_iter_factory(function()
@@ -431,7 +367,7 @@ function character_init(self)
             Ai.IteratorLib.flatten(Ai.IteratorLib.take(1, function()
                 -- attempt attack
 
-                if get_active_mob_id_for_same_direction(tracked_facing) ~= self:id() then
+                if mob_tracker:get_active_mob() ~= self:id() then
                     -- not our turn, return empty iterator
                     return function() return nil end
                 end

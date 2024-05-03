@@ -821,11 +821,11 @@ function Entity:is_team(team) end
 --- - `direction`: [Direction](https://docs.hubos.dev/client/lua-api/field-api/direction)
 --- - `count`: integer
 ---
---- Returns a tile `count` many tiles in `direction`'s direction.
+--- Returns a tile `count` many tiles in `direction`'s direction or `nil`.
 --- Returns the current tile if any parameters are unset.
 ---@param direction? Direction
 ---@param count? number
----@return Tile
+---@return Tile|nil
 function Entity:get_tile(direction, count) end
 
 --- Returns the tile at the same position as the entity.
