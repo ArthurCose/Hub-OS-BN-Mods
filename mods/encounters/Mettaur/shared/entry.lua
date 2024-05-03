@@ -1,16 +1,19 @@
+---@type BattleNetworkAssetsLib
+local bn_assets = require("BattleNetwork.Assets")
+
 local MobTracker = require("mob_tracker.lua")
 local battle_helpers = require("battle_helpers.lua")
 local left_mob_tracker = MobTracker:new()
 local right_mob_tracker = MobTracker:new()
 
 local wave_texture = Resources.load_texture("shockwave.png")
-local wave_sfx = Resources.load_audio("shockwave.ogg")
+local wave_sfx = bn_assets.load_audio("shockwave.ogg")
 local teleport_animation_path = "teleport.animation"
 local teleport_texture_path = "teleport.png"
 local teleport_texture = Resources.load_texture(teleport_texture_path)
 local guard_hit_effect_texture = Resources.load_texture("guard_hit.png")
 local guard_hit_effect_animation_path = "guard_hit.animation"
-local tink_sfx = Resources.load_audio("tink.ogg")
+local tink_sfx = bn_assets.load_audio("guard.ogg")
 
 local function debug_print(text)
     --print("[mettaur] " .. text)
