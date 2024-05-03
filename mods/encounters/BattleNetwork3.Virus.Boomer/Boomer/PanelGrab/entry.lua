@@ -35,15 +35,13 @@ function panelgrab_chip.card_init(actor)
 		local max = 6
 		local tile_front = nil
 		local check1 = false
-		local check_front = false
-		local check_up = false
-		local check_down = false
+		local check_front = nil
 
 		for i = count, max, 1 do
 			tile_front = tile:get_tile(dir, i)
 
 			check_front = tile_front and user:team() ~= tile_front:team() and not tile_front:is_edge() and
-				tile_front:team() ~= Team.Other and user:is_team(tile_front:get_tile(Direction.reverse(dir), 1):team())
+					tile_front:team() ~= Team.Other and user:is_team(tile_front:get_tile(Direction.reverse(dir), 1):team())
 
 			if check_front then
 				tile_to_grab = tile_front
@@ -67,7 +65,7 @@ end
 
 function MakeTileSplash(user)
 	local artifact = Artifact.new()
-	artifact:sprite():set_texture(TEXTURE, true)
+	artifact:sprite():set_texture(TEXTURE)
 	local anim = artifact:animation()
 	anim:load("areagrab.animation")
 	anim:set_state("FALL")
@@ -80,7 +78,7 @@ function MakeTileSplash(user)
 			if not doOnce then
 				self:set_offset(0.0 * 0.5, 0.0 * 0.5)
 				self:animation():set_state("EXPAND")
-				self:current_tile():set_team(user:team(), false)
+				self:current_tile():set_team(user:team(), user:facing())
 				local hitbox = Hitbox.new(user:team())
 				local props = HitProps.new(
 					10,

@@ -39,9 +39,9 @@ function card_init(actor, props)
 		local tile_up = nil
 		local tile_down = nil
 		local check1 = false
-		local check_front = false
-		local check_up = false
-		local check_down = false
+		local check_front = nil
+		local check_up = nil
+		local check_down = nil
 
 		for i = count, max, 1 do
 			tile_front = tile:get_tile(dir, i)
@@ -49,11 +49,11 @@ function card_init(actor, props)
 			tile_down = tile_front:get_tile(Direction.Down, 1)
 
 			check_front = tile_front and user:team() ~= tile_front:team() and not tile_front:is_edge() and
-				tile_front:team() ~= Team.Other and user:is_team(tile_front:get_tile(Direction.reverse(dir), 1):team())
+					tile_front:team() ~= Team.Other and user:is_team(tile_front:get_tile(Direction.reverse(dir), 1):team())
 			check_up = tile_up and user:team() ~= tile_up:team() and not tile_up:is_edge() and
-				tile_up:team() ~= Team.Other and user:is_team(tile_up:get_tile(Direction.reverse(dir), 1):team())
+					tile_up:team() ~= Team.Other and user:is_team(tile_up:get_tile(Direction.reverse(dir), 1):team())
 			check_down = tile_down and user:team() ~= tile_down:team() and not tile_down:is_edge() and
-				tile_down:team() ~= Team.Other and user:is_team(tile_down:get_tile(Direction.reverse(dir), 1):team())
+					tile_down:team() ~= Team.Other and user:is_team(tile_down:get_tile(Direction.reverse(dir), 1):team())
 
 			if check_front or check_up or check_down then
 				table.insert(tile_array, tile_front)
@@ -80,7 +80,7 @@ end
 
 function MakeTileSplash(user)
 	local artifact = Artifact.new()
-	artifact:sprite():set_texture(TEXTURE, true)
+	artifact:sprite():set_texture(TEXTURE)
 	local anim = artifact:animation()
 	anim:load("areagrab.animation")
 	anim:set_state("FALL")
@@ -93,7 +93,7 @@ function MakeTileSplash(user)
 			if not doOnce then
 				self:set_offset(0.0 * 0.5, 0.0 * 0.5)
 				self:animation():set_state("EXPAND")
-				self:current_tile():set_team(user:team(), false)
+				self:current_tile():set_team(user:team(), user:facing())
 				local hitbox = Hitbox.new(user:team())
 				local props = HitProps.new(
 					10,
