@@ -287,8 +287,8 @@ Input = {
 ---
 --- Not to be confused with [entity.on_counter_func](https://docs.hubos.dev/client/lua-api/entity-api/entity#entityon_counter_func--functionself)
 ---@field on_countered_func fun(self: Entity)
---- This function is pre-set for all entities.
----@field can_move_to_func fun(self: Entity, tile: Tile): boolean
+--- This function is predefined for all entities.
+---@field can_move_to_func fun(tile: Tile): boolean
 --- Called when the battle has completed (win or loss).
 ---
 --- Not implemented.
@@ -588,6 +588,10 @@ Movement = {}
 
 ---
 ---@class Drag
+--- Number, the amount of tiles to drag the entity.
+---@field distance number
+--- Direction, the direction to move the entity.
+---@field direction Direction
 
 Drag = {}
 ---@type Drag
@@ -3044,9 +3048,9 @@ function HitProps.from_card(card_properties, context, drag) end
 
 --- Returns a new Drag instance.
 ---@param direction? Direction
----@param count? number
+---@param distance? number
 ---@return Drag
-function Drag.new(direction, count) end
+function Drag.new(direction, distance) end
 
 --- Returns a new CardProperties table with default values.
 ---@return CardProperties
