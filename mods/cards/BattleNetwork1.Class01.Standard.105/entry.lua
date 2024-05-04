@@ -1,7 +1,7 @@
 ---@type BattleNetwork6.CubesAndBouldersLib
 local CubesAndBouldersLib = require("BattleNetwork6.Libraries.CubesAndBoulders")
 
-local RockCube = CubesAndBouldersLib.new_rock_cube()
+local IceCube = CubesAndBouldersLib.new_ice_cube()
 local sfx = Resources.load_audio("sfx.ogg")
 
 function card_init(user, props)
@@ -11,7 +11,7 @@ function card_init(user, props)
 	action.on_execute_func = function()
 		Resources.play_audio(sfx)
 
-		local cube = RockCube:create_obstacle()
+		local cube = IceCube:create_obstacle()
 		cube:set_facing(user:facing())
 		local anim = cube:animation()
 		anim:set_state("SPAWN")
@@ -19,7 +19,7 @@ function card_init(user, props)
 		anim:on_complete(function()
 			local tile = cube:current_tile()
 			if tile:is_walkable() then
-				anim:set_state("ROCK")
+				anim:set_state("ICE")
 				anim:apply(cube:sprite())
 				anim:set_playback(Playback.Loop)
 			else
@@ -28,6 +28,7 @@ function card_init(user, props)
 		end)
 
 		local desired_tile = user:get_tile(user:facing(), 1)
+
 		if desired_tile and not desired_tile:is_reserved() and not desired_tile:is_edge() then
 			user:field():spawn(cube, desired_tile)
 		end

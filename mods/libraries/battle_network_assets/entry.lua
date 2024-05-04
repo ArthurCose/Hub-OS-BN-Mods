@@ -19,14 +19,16 @@ end
 
 -- Poof support
 Lib.ParticlePoof = {}
-function Lib.ParticlePoof.new()
+
+---@param state? "BIG" | "SMALL" default is BIG
+function Lib.ParticlePoof.new(state)
     local TEXTURE = Lib.load_texture("poof.png")
     local fx = Artifact.new()
     fx:set_texture(TEXTURE)
 
     local fx_animation = fx:animation()
     fx_animation:load(Lib.fetch_animation_path("poof.animation"))
-    fx_animation:set_state("DEFAULT")
+    fx_animation:set_state(state or "BIG")
     fx_animation:on_complete(function()
         fx:erase()
     end)

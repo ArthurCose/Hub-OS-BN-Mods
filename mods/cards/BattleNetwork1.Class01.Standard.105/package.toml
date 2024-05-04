@@ -1,14 +1,14 @@
 [package]
 category = "card"
-id = "BattleNetwork6.Class01.Standard.138"
-name = "RockCube"
+id = "BattleNetwork1.Class01.Standard.105"
+name = "IceCube"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = ["*"]
+codes = ["A", "C", "I", "L", "M"]
 damage = 0
 time_freeze = true
-element = "summon"
-description = "Place a RockCube in front"
+element = "aqua"
+description = "Create an ice cube. Range=1"
 can_boost = false
 
 [dependencies]
