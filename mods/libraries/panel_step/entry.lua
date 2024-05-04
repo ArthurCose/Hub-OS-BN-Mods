@@ -81,7 +81,7 @@ local function create_lagging_ghost(user)
     ghost.on_update_func = function()
       ghost_i = ghost_i + 1
 
-      if ghost_i == 3 then
+      if ghost_i == 2 then
         ghost:erase()
       end
     end
@@ -125,7 +125,7 @@ function PanelStep:wrap_action(wrapped_action)
     original_tile = user:current_tile()
     dest_tile = user:get_tile(user:facing(), 2)
 
-    if test_dest_tile(dest_tile) then
+    if not dest_tile or test_dest_tile(dest_tile) then
       -- invalid dest, return early
       dest_tile = nil
       return
@@ -199,7 +199,7 @@ function PanelStep:wrap_action(wrapped_action)
         -- and another to spawn the artifact
         -- will appear on frame 10
         field:spawn(lagging_ghost, dest_tile)
-      elseif i == 21 then
+      elseif i == 20 then
         static_ghost:erase()
       elseif not self._return_frame and i > 21 then
         component:eject()
@@ -253,7 +253,7 @@ function PanelStep:create_action(user, create_action_steps)
     original_tile = user:current_tile()
     dest_tile = user:get_tile(user:facing(), 2)
 
-    if test_dest_tile(dest_tile) then
+    if not dest_tile or test_dest_tile(dest_tile) then
       dest_tile = nil
       return
     end
@@ -288,7 +288,7 @@ function PanelStep:create_action(user, create_action_steps)
         -- and another to spawn the artifact
         -- will appear on frame 10
         field:spawn(lagging_ghost, dest_tile)
-      elseif i == 21 then
+      elseif i == 20 then
         static_ghost:erase()
       elseif not self._return_frame and i > 21 then
         component:eject()
