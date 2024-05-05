@@ -823,14 +823,14 @@ function Entity:set_team(team) end
 function Entity:is_team(team) end
 
 --- - `direction`: [Direction](https://docs.hubos.dev/client/lua-api/field-api/direction)
---- - `count`: integer
+--- - `distance`: integer
 ---
---- Returns a tile `count` many tiles in `direction`'s direction, or `nil`.
+--- Returns a tile `distance` many tiles in `direction`'s direction, or `nil`.
 --- Returns the current tile if any parameters are unset.
 ---@param direction? Direction
----@param count? number
+---@param distance? number
 ---@return Tile|nil
-function Entity:get_tile(direction, count) end
+function Entity:get_tile(direction, distance) end
 
 --- Returns the tile at the same position as the entity.
 ---@return Tile
@@ -2643,9 +2643,9 @@ function Tile:set_highlight(highlight) end
 ---
 --- Returns a Tile `count` many tiles in `direction`'s direction, or `nil`.
 ---@param direction Direction
----@param count number
+---@param distance number
 ---@return Tile|nil
-function Tile:get_tile(direction, count) end
+function Tile:get_tile(direction, distance) end
 
 --- Queues an attack to occur on this tile by this [Spell](https://docs.hubos.dev/client/lua-api/entity-api/spell).
 ---@param spell Entity
@@ -2819,6 +2819,10 @@ function Movement:is_teleporting() end
 ---@param rank Rank
 ---@return Spawner
 function Encounter:create_spawner(package_id, rank) end
+
+--- Returns a number, the amount of players that will join the battle.
+---@return number
+function Encounter:player_count() end
 
 --- - `player_index`: number, starts at 0
 ---
