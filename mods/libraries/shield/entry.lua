@@ -93,10 +93,15 @@ local function spawn_shield_artifact(self, user)
     shield_anim:load(self._shield_animation_path)
     shield_anim:set_state(self._shield_animation_state or "DEFAULT")
   elseif actor_animation:has_state("SHIELD") then
-    shield_sprite:use_root_shader(true)
     shield_sprite:set_texture(user:texture())
     shield_anim:copy_from(actor_animation)
     shield_anim:set_state("SHIELD")
+
+    local palette = user:palette()
+
+    if palette then
+      shield_sprite:set_palette(palette)
+    end
   else
     shield_sprite:set_texture(self._default_shield_texture)
     shield_anim:load(self._default_shield_animation_path)
@@ -261,7 +266,11 @@ function ShieldReflect:spawn_spell(user, damage)
     end
   end
 
-  field:spawn(spell, user:get_tile(direction, 1))
+  local tile = user:get_tile(direction, 1)
+
+  if tile then
+    field:spawn(spell, tile)
+  end
 end
 
 ---@class ShieldLib
