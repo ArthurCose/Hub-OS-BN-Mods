@@ -1,13 +1,10 @@
+---@param player Entity
 function player_init(player)
-    player:set_name("Roll")
-    player:set_health(1000)
-    player:set_element(Element.None)
     player:set_height(70.0)
     player:load_animation("roll.animation")
-    player:set_texture(Resources.load_texture("navi_roll_atlas.png"), true)
+    player:set_texture(Resources.load_texture("navi_roll_atlas.png"))
     player:set_fully_charged_color(Color.new(255, 200, 200, 255))
-
-    player.on_update_func = function(self) end
+    player:set_charge_position(4, -34)
 
     player.normal_attack_func = function(self)
         return Buster.new(self, false, player:attack_level())
