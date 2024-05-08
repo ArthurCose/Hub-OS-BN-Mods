@@ -692,7 +692,7 @@ end
 function character_init(entity)
     entity:set_name("CrcusMan")
     entity:set_height(60)
-    entity.cage_hit_flags = Hit.Impact | Hit.PierceInvis
+    entity.cage_hit_flags = Hit.Impact | Hit.PierceInvis | Hit.Flinch
 
     local rank = entity:rank()
     if rank == Rank.V1 then
