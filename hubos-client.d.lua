@@ -200,7 +200,7 @@ Hit = {
 ---@type { [string]: {} }
 ---@enum TileState
 TileState = {
-  Hidden = {},
+  Void = {},
   Normal = {},
   PermaHole = {},
   Cracked = {},
@@ -327,7 +327,7 @@ Animation = {}
 ---
 --- [Players](https://docs.hubos.dev/client/lua-api/entity-api/player), [Characters](https://docs.hubos.dev/client/lua-api/entity-api/character), and [Obstacles](https://docs.hubos.dev/client/lua-api/entity-api/obstacle) automatically reserve tiles outside of executing actions.
 ---@class Action
---- Override's the owner's [can_move_to_func](https://docs.hubos.dev/client/lua-api/entity-api/entity/#entitycan_move_to_func--functionself-tile-boolean) while executing.
+--- Override's the owner's [can_move_to_func](https://docs.hubos.dev/client/lua-api/entity-api/entity/#entitycan_move_to_func--functiontile-boolean) while executing.
 ---
 --- Ignored on async actions when the entity regains control.
 ---@field can_move_to_func fun(tile: Tile): boolean
@@ -2121,6 +2121,10 @@ function Animation:has_state(state) end
 ---@return string
 function Animation:state() end
 
+--- Returns a list of available state names.
+---@return string[]
+function Animation:states() end
+
 --- - `frame_data` a list of frame index and duration pairs.
 ---   - When provided, the animation will remap frames and durations to match until the next `set_state` call.
 ---   - Frame index starts at 1
@@ -2568,7 +2572,7 @@ function Tile:height() end
 function Tile:state() end
 
 --- - `tile_state`
----   - `TileState.Hidden`
+---   - `TileState.Void`
 ---   - `TileState.Normal`
 ---   - `TileState.PermaHole`
 ---   - `TileState.Cracked`
@@ -2581,7 +2585,9 @@ function Tile:set_state(tile_state) end
 ---@return boolean
 function Tile:is_edge() end
 
---- Returns true if the tile is not a hole. (`TileState.Broken`, `TileState.Hidden`, `TileState.Empty`)
+--- Returns true if the tile is not a hole.
+---
+--- Examples: `TileState.Broken`, `TileState.Void`, `TileState.Empty`
 ---@return boolean
 function Tile:is_walkable() end
 

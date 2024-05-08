@@ -18,7 +18,7 @@ local PANEL_SFX = bn_assets.load_audio("paneldamage.ogg")
 ---@param team Team
 ---@param tile? Tile
 local function spawn_explosion(team, hit_props, field, tile)
-	if not tile or tile:state() == TileState.Hidden then
+	if not tile or tile:state() == TileState.Void then
 		return
 	end
 
