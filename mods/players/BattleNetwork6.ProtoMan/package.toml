@@ -9,6 +9,8 @@ overworld_texture_path = "overworld.png"
 mugshot_texture_path = "mug.png"
 mugshot_animation_path = "mug.animation"
 health = 1000
+emotions_texture_path = "emotion.png"
+emotions_animation_path = "emotion.animation"
 
 [dependencies]
 cards = [
@@ -17,5 +19,6 @@ cards = [
 ]
 libraries = [
   "dev.konstinople.library.panel_step",
-  "dev.konstinople.library.shield"
+  "dev.konstinople.library.shield",
+  "BattleNetwork.Emotions"
 ]

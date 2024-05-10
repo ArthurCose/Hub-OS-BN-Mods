@@ -1,0 +1,8 @@
+[package]
+category = "library"
+id = "BattleNetwork.Emotions"
+name = "BN Emotions Library"
+description = ""
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

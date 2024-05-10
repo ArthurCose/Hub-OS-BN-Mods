@@ -3,6 +3,8 @@ local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
 local PanelStepLib = require("dev.konstinople.library.panel_step")
 ---@type ShieldLib
 local ShieldLib = require("dev.konstinople.library.shield")
+---@type BattleNetwork.Emotions
+local EmotionsLib = require("BattleNetwork.Emotions")
 
 local panel_step = PanelStepLib.new_panel_step()
 
@@ -106,4 +108,13 @@ function player_init(player)
     card.damage = 60 + attack_level * 20
     button = player:set_fixed_card(card)
   end
+
+  -- emotions
+  player.on_counter_func = function()
+    player:set_emotion("SYNCHRO")
+  end
+
+  local synchro = EmotionsLib.new_synchro()
+  synchro:set_ring_offset(0, -math.floor(player:height() / 2))
+  synchro:implement(player)
 end
