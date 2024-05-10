@@ -27,41 +27,41 @@ function card_init(user, props)
         buster_animation:set_state("DEFAULT")
 
         self:add_anim_action(1, function()
-            user:set_counterable(true);
+            user:set_counterable(true)
         end)
 
         self:add_anim_action(2, function()
             local attack = create_attack(user, props)
             Resources.play_audio(yoyo_sfx, AudioBehavior.Default)
-            local tile = user:current_tile()
-            user:field():spawn(attack, tile)
+            local tile = user:get_tile(user:facing(), 1)
+
+            if tile then
+                user:field():spawn(attack, tile)
+            end
         end)
 
         self:add_anim_action(5, function()
-            user:set_counterable(false);
+            user:set_counterable(false)
         end)
+    end
+
+    action.on_action_end_func = function()
+        user:set_counterable(false)
     end
 
     return action
 end
 
+---@param owner Entity
+---@param props CardProperties
 function create_attack(owner, props)
     local team = owner:team()
     local facing = owner:facing()
 
     local spell = Spell.new(team)
-
     spell:set_facing(facing)
-
     spell:set_hit_props(
-        HitProps.new(
-            props.damage,
-            props.hit_flags,
-            props.element,
-            props.secondary_element,
-            owner:context(),
-            Drag.None
-        )
+        HitProps.from_card(props, owner:context())
     )
 
     local sprite = spell:sprite()
@@ -73,64 +73,64 @@ function create_attack(owner, props)
     animation:set_playback(Playback.Loop)
     animation:apply(sprite)
 
-    spell.can_move_to_func = function(tile)
-        return true
-    end
+    local activity_timer = 0
+    local slide_timer = 8
+    local wait_timer = 0
+    local wait_timer_goal = 20
+    local tiles_passed = 0
+    local lost_tiles = 0
+    local returning = false
+    local direction = facing
 
-    spell.on_attack_func = function()
+    local disabled = false
+
+    spell.on_collision_func = function()
         Resources.play_audio(hit_sfx, AudioBehavior.Default)
+        disabled = true
     end
-
-    spell.on_delete_func = function(self)
-        -- local fx = Explosion.new(1, 1.0)
-        -- self:field():spawn(fx, self:current_tile())
-        self:erase()
-    end
-
-    spell.activity_timer = 0
-    spell.destination_tile = owner:get_tile(facing, 1)
-    spell.slide_timer = 1
-    spell.wait_timer = 0
-    spell.wait_timer_goal = 26
-    spell.tiles_passed = 0
-    spell.delete_self = false
-    spell.facing = facing
 
     spell.on_update_func = function(self)
-        if self.tiles_passed == 3 then
-            if self.delete_self == true then
+        if activity_timer % slide_timer == 0 then
+            disabled = false
+        end
+
+        if not disabled then
+            local tile = self:current_tile()
+            tile:attack_entities(self)
+            tile:set_highlight(Highlight.Solid)
+        end
+
+        if self:is_moving() then
+            return
+        end
+
+
+        if tiles_passed == 2 then
+            if returning == true then
                 self:erase()
-            else
-                if self.wait_timer % 13 == 0 then
-                    self:current_tile():attack_entities(self)
-                end
+                return
+            end
 
-                self.wait_timer = self.wait_timer + 1
+            wait_timer = wait_timer + 1
 
-                if self.wait_timer >= self.wait_timer_goal then
-                    self.tiles_passed = -1
-                    self.delete_self = true;
-                    self.facing = Direction.reverse(self.facing)
-                    self.destination_tile = self.destination_tile:get_tile(self.facing, 1)
-                end
+            if wait_timer >= wait_timer_goal then
+                tiles_passed = lost_tiles
+                returning = true
+                direction = Direction.reverse(direction)
             end
         else
-            if self.activity_timer % self.slide_timer == 0 then
-                self:current_tile():attack_entities(self)
+            local destination_tile = self:get_tile(direction, 1)
+
+            if not destination_tile then
+                destination_tile = self:current_tile()
+                lost_tiles = lost_tiles + 1
             end
-            self:slide(self.destination_tile, self.slide_timer, function()
-                if self.slide_timer == 1 then
-                    self.slide_timer = 4
-                else
-                    self.slide_timer = 7
-                end
 
-                self.tiles_passed = self.tiles_passed + 1
-
-                self.destination_tile = self.destination_tile:get_tile(self.facing, 1)
-            end)
+            self:slide(destination_tile, slide_timer)
+            tiles_passed = tiles_passed + 1
         end
-        self.activity_timer = self.activity_timer + 1
+
+        activity_timer = activity_timer + 1
     end
 
     return spell
