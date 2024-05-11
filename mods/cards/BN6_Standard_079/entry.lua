@@ -16,10 +16,12 @@ local function create_gust(team, direction)
 	local spell = Spell.new(team)
 	spell:set_hit_props(HitProps.new(0, Hit.Drag, Element.Wind, nil, Drag.new(direction, 1)))
 
-	local first_frame = true
 
+	local i = 0
 	spell.on_update_func = function()
 		local tile = spell:current_tile()
+
+		i = i + 1
 
 		local has_obstacles = false
 		tile:find_obstacles(function()
@@ -28,20 +30,15 @@ local function create_gust(team, direction)
 		end)
 
 		if has_obstacles then
-			if first_frame then
-				tile:attack_entities(spell)
-			end
-
 			spell:erase()
 			return
 		end
 
-		tile:attack_entities(spell)
-		first_frame = false
-
 		if spell:is_moving() then
 			return
 		end
+
+		spell:attack_tile(tile)
 
 		local next_tile = tile:get_tile(direction, 1)
 
@@ -71,24 +68,18 @@ local function create_spell(spells, user, props, x_offset, y_offset)
 		return
 	end
 
-	local team = user:team()
-
 	local spell = Spell.new(user:team())
 	spell:set_facing(user:facing())
 	spell:set_hit_props(
 		HitProps.from_card(
 			props,
 			user:context(),
-			Drag.None
+			Drag.new(Direction.Right, field:width())
 		)
 	)
 
-	spell.on_spawn_func = function(self)
-		field:spawn(create_gust(team, self:facing()), self:current_tile())
-	end
-
 	spell.on_update_func = function(self)
-		self:current_tile():attack_entities(self)
+		self:attack_tile()
 	end
 
 	field:spawn(spell, tile)
@@ -128,6 +119,14 @@ function card_init(user, props)
 		create_spell(spells, user, props, 1, -1)
 		create_spell(spells, user, props, 1, 0)
 		create_spell(spells, user, props, 1, 1)
+
+		local team = user:team()
+		local field = user:field()
+		local x = user:get_tile(user:facing(), 1):x()
+
+		for y = 0, field:height() do
+			field:spawn(create_gust(team, user:facing()), x, y)
+		end
 
 		Resources.play_audio(AUDIO)
 	end)
