@@ -14,7 +14,7 @@ local AUDIO = bn_assets.load_audio("windrack.ogg")
 
 local function create_gust(team, direction)
 	local spell = Spell.new(team)
-	spell:set_hit_props(HitProps.new(0, Hit.Drag, Element.None, nil, Drag.new(direction, 1)))
+	spell:set_hit_props(HitProps.new(0, Hit.Drag, Element.Wind, nil, Drag.new(direction, 1)))
 
 	local first_frame = true
 
