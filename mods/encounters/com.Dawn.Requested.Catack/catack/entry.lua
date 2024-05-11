@@ -115,7 +115,7 @@ function character_init(catack)
   catack._continue_offsetting = false
   catack.tile_query = function(ent)
     return ent and Character.from(ent) ~= nil and not ent:deleted() and ent:id() ~= catack:id() or
-    ent and Obstacle.from(ent) ~= nil and not ent:deleted()
+        ent and Obstacle.from(ent) ~= nil and not ent:deleted()
   end
 
   -- meta
@@ -177,7 +177,7 @@ function character_init(catack)
           catack._do_once = false
           Resources.play_audio(on_roll_sound)
           if catack._destination_tile:team() ~= catack:team() then
-            catack._destination_tile:set_team(catack:team(), false)
+            catack._destination_tile:set_team(catack:team(), catack:facing())
           end
           local anim = catack:animation()
           anim:set_state(catack._move_state)
@@ -287,7 +287,7 @@ function character_init(catack)
       catack._current_idle_time = catack._current_idle_time - 1
     end
   end
-  
+
   catack.on_battle_start_func = noop
   catack.on_battle_end_func = noop
   catack.on_spawn_func = noop
