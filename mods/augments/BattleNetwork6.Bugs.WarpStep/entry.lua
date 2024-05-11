@@ -1,3 +1,4 @@
+---@param augment Augment
 function augment_init(augment)
   local owner = augment:owner()
   local field = owner:field()
@@ -11,14 +12,15 @@ function augment_init(augment)
       vector.x = 0
     end
 
-    while true do
-      local next_tile = field:tile_at(dest_tile:x() + vector.x, dest_tile:y() + vector.y)
+    ---@type Tile | nil
+    local next_tile = dest_tile
 
-      if not owner:can_move_to(next_tile) then
-        break
+    while next_tile ~= nil do
+      next_tile = field:tile_at(next_tile:x() + vector.x, next_tile:y() + vector.y)
+
+      if next_tile and owner:can_move_to(next_tile) then
+        dest_tile = next_tile
       end
-
-      dest_tile = next_tile
     end
 
     if start_tile ~= dest_tile then
