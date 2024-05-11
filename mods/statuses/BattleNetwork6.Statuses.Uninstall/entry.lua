@@ -18,10 +18,10 @@ local function spawn_artifact(parent)
     parent_offset.x = -parent_offset.x
   end
 
-  local tile_offset = parent:tile_offset()
+  local movement_offset = parent:movement_offset()
   artifact:set_offset(
-    parent_offset.x + tile_offset.x,
-    parent_offset.y + tile_offset.y - parent:height() * 0.5
+    parent_offset.x + movement_offset.x,
+    parent_offset.y + movement_offset.y - parent:height() * 0.5
   )
 
   parent:field():spawn(artifact, parent:current_tile())

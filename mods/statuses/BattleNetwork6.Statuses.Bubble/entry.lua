@@ -26,8 +26,8 @@ local function spawn_alert(parent)
   local alert_artifact = Alert.new()
   alert_artifact:sprite():set_never_flip(true)
 
-  local tile_offset = parent:tile_offset()
-  alert_artifact:set_offset(tile_offset.x, tile_offset.y - parent:height())
+  local movement_offset = parent:movement_offset()
+  alert_artifact:set_offset(movement_offset.x, movement_offset.y - parent:height())
 
   parent:field():spawn(alert_artifact, parent:current_tile())
 end
@@ -52,10 +52,10 @@ local function spawn_pop(parent)
     parent_offset.x = -parent_offset.x
   end
 
-  local tile_offset = parent:tile_offset()
+  local movement_offset = parent:movement_offset()
   artifact:set_offset(
-    parent_offset.x + tile_offset.x,
-    parent_offset.y + tile_offset.y - parent:height() * 0.5
+    parent_offset.x + movement_offset.x,
+    parent_offset.y + movement_offset.y - parent:height() * 0.5
   )
 
   parent:field():spawn(artifact, parent:current_tile())
@@ -90,11 +90,11 @@ function status_init(status)
     animator:sync_time(time)
     animator:apply(sprite)
 
-    local tile_offset = entity:tile_offset()
+    local movement_offset = entity:movement_offset()
     local angle = time * (math.pi * 2) / 150;
-    tile_offset.y = tile_offset.y + math.floor(math.sin(angle) * 6)
+    movement_offset.y = movement_offset.y + math.floor(math.sin(angle) * 6)
 
-    entity:set_tile_offset(tile_offset.x, tile_offset.y)
+    entity:set_movement_offset(movement_offset.x, movement_offset.y)
     time = time + 1
 
     if is_mashing(entity) then

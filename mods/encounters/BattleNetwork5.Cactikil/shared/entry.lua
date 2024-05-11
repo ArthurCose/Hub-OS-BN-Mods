@@ -80,8 +80,8 @@ local function spawn_teleport_out_artifact(character)
   end)
 
   local char_offset = character:offset()
-  local char_tile_offset = character:tile_offset()
-  artifact:set_offset(char_offset.x + char_tile_offset.x * 0.5, char_offset.y + char_tile_offset.y * 0.5)
+  local char_movement_offset = character:movement_offset()
+  artifact:set_offset(char_offset.x + char_movement_offset.x * 0.5, char_offset.y + char_movement_offset.y * 0.5)
 
   character:field():spawn(artifact, character:get_tile())
 end
@@ -163,7 +163,7 @@ local function begin_rolling(character)
     character:set_offset(0, -40 * math.sin(math.pi * wrapped_counter / 20) * 0.5)
     current_tile:attack_entities(spell)
 
-    local offset = character:tile_offset()
+    local offset = character:movement_offset()
     spell:set_offset(offset.x, offset.y)
 
     spell:get_tile():remove_entity_by_id(spell:id())

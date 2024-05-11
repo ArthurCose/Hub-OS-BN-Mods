@@ -215,7 +215,7 @@ function Bomb:create_action(user, spell_callback)
       end
 
       local user_offset = user_sprite:offset()
-      local user_tile_offset = user:tile_offset()
+      local user_movement_offset = user:movement_offset()
       local point = user_anim:get_point("HAND")
       local user_origin = user_sprite:origin()
 
@@ -225,8 +225,8 @@ function Bomb:create_action(user, spell_callback)
         scale.x = -scale.x
       end
 
-      x = user_offset.x + user_tile_offset.x + (point.x - user_origin.x) * scale.x
-      y = user_offset.y + user_tile_offset.y + (point.y - user_origin.y) * scale.y
+      x = user_offset.x + user_movement_offset.x + (point.x - user_origin.x) * scale.x
+      y = user_offset.y + user_movement_offset.y + (point.y - user_origin.y) * scale.y
 
       bomb:set_offset(x, y)
     end

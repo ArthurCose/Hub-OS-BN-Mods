@@ -55,7 +55,7 @@ function poof_user(user, props)
 
         -- spawn poof
         local poof = bn_helpers.ParticlePoof.new()
-        local poof_position = user:tile_offset()
+        local poof_position = user:movement_offset()
         poof_position.y = poof_position.y - user:height() / 2
         poof:set_offset(poof_position.x, poof_position.y)
         field:spawn(poof, user:current_tile())
