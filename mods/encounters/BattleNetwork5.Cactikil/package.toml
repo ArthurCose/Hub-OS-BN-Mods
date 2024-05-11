@@ -1,0 +1,14 @@
+[package]
+category = "encounter"
+id = "BattleNetwork5.Cactikil"
+past_ids = ["BattleNetwork5.Cactikil.Enemy"]
+name = "Cactikil"
+description = 'Cactikil, known as "Sabotekoron" in Japan, is a cactus'
+preview_texture_path = "preview.png"
+
+[defines]
+characters = [
+  { id = "BattleNetwork5.Cactikil.Enemy", path = "cactikil" },
+  { id = "BattleNetwork5.Cactroll.Enemy", path = "cactroll" },
+  { id = "BattleNetwork5.Cacter.Enemy", path = "cacter" },
+]
