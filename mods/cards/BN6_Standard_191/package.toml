@@ -1,0 +1,18 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.191"
+name = "AntiRecv"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["A", "F", "V", "*"]
+damage = 0
+time_freeze = true
+element = "none"
+description = "Damages enemy in recovery"
+card_class = "standard"
+limit = 3
+can_boost = false
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+tile_states = ["BattleNetwork6.TileStates.Poison"]

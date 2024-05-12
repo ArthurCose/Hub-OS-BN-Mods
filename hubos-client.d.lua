@@ -123,8 +123,10 @@ Team = {
 AudioBehavior = {
   --- Audio will play regardless of other audio.
   Default = {},
-  --- Audio will not play if another instance of itself is playing with NoOverlap.
+  --- Audio will not play if another instance of itself is playing with NoOverlap or LoopSection.
   NoOverlap = {},
+  --- The sound will continue playing if it was already playing. If AudioBehavior.LoopSection was applied, it will stop looping at `end_sample`
+  EndLoop = {},
 }
 
 ---@enum Playback
@@ -2096,6 +2098,16 @@ function Resources.play_audio(path, audio_behavior) end
 ---@param path string
 ---@param loops? boolean
 function Resources.play_music(path, loops) end
+
+--- Audio will play from the beginning (sample 0), looping back to `start_sample` when `end_sample` is reached.
+---
+--- Stops existing playback of the sound if it has `AudioBehavior.NoOverlap`.
+---
+--- Returns an AudioBehavior.
+---@param start_sample number
+---@param end_sample number
+---@return AudioBehavior
+function AudioBehavior.LoopSection(start_sample, end_sample) end
 
 --- Returns a new Animation instance.
 ---@param path? string
