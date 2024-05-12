@@ -47,7 +47,6 @@ function card_init(user)
             wrapped_action.on_execute_func = function()
                 -- use the stolen action
                 user:queue_action(generated_action)
-                uninstall_all()
             end
 
             user:queue_action(wrapped_action)
@@ -59,6 +58,8 @@ function card_init(user)
             alert_sprite:set_layer(-5)
 
             field:spawn(alert_artifact, opponent:current_tile())
+
+            uninstall_all()
         end
 
     local track = function(opponent)
