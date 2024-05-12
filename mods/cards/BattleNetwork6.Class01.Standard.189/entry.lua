@@ -106,10 +106,16 @@ function create_shuriken_spell(user, props)
     spell:set_tile_highlight(Highlight.Solid)
 
     local total_frames = 20
-    local increment_x = -4
+    local increment_x = 4
     local increment_y = 8
+
+    if spell:facing() == Direction.Left then
+        increment_x = -increment_x
+    end
+
     local x = total_frames * -increment_x
     local y = total_frames * -increment_y
+
 
     spell.on_update_func = function()
         x = x + increment_x
