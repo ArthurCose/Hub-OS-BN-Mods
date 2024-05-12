@@ -54,6 +54,7 @@ function card_init(user)
 
             local alert_artifact = TrapAlert.new()
             local alert_sprite = alert_artifact:sprite()
+            alert_sprite:set_never_flip(true)
             alert_sprite:set_offset(0, -opponent:height() / 2)
             alert_sprite:set_layer(-5)
 
