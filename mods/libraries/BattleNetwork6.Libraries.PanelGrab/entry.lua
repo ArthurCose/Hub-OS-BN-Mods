@@ -1,4 +1,4 @@
----@type BattleNetworkAssetsLib
+---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
 local TEXTURE = bn_assets.load_texture("panelgrab.png")
 local ANIMATION_PATH = bn_assets.fetch_animation_path("panelgrab.animation")

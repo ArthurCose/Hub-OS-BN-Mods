@@ -1,4 +1,4 @@
----@type BattleNetwork6.CubesAndBouldersLib
+---@type BattleNetwork6.Libraries.CubesAndBoulders
 local CubesAndBouldersLib = require("BattleNetwork6.Libraries.CubesAndBoulders")
 
 local RockCube = CubesAndBouldersLib.new_rock_cube()

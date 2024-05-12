@@ -1,4 +1,4 @@
----@type BattleNetworkAssetsLib
+---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
 
 local SYNCHRO_TEXTURE = bn_assets.load_texture("synchro_rings.png")
