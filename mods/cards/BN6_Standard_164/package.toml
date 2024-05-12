@@ -1,21 +1,15 @@
 [package]
 category = "card"
-id = "louise.claris.card.panlgrab"
+id = "BattleNetwork6.Class01.Standard.164"
 name = "PanlGrab"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "*" ]
+codes = ["*"]
 damage = 0
 time_freeze = true
 element = "none"
 description = "Steals 1 enemy square!"
-long_description = "Steals 1 enemy square!"
 can_boost = false
 
-[defines]
-characters = [ ]
-
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [ ]
+libraries = ["BattleNetwork6.Libraries.PanelGrab"]

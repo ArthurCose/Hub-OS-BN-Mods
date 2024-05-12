@@ -1,7 +1,6 @@
 -- Imports
 -- BattleHelper
 local battle_helpers = require("battle_helpers.lua")
-local panelgrab_chip = require("PanelGrab/entry.lua")
 -- Animations, Textures and Sounds
 local CHARACTER_ANIMATION = "battle.animation"
 local CHARACTER_TEXTURE = Resources.load_texture("battle.greyscaled.png")
@@ -129,8 +128,9 @@ function character_init(self, character_info)
             else
                 -- keep moving to edge.
                 if (self:get_tile():y() == 2 and self.has_attacked_once and self.panelgrabs > 0) then
-                    local grab = panelgrab_chip.card_init(self)
-                    self:queue_action(grab, ActionOrder.Involuntary)
+                    local card_props = CardProperties.from_package("BattleNetwork6.Class01.Standard.164")
+                    local action = Action.from_card(self, card_props)
+                    self:queue_action(action)
                     self.panelgrabs = self.panelgrabs - 1
                     self.has_attacked_once = false
                 end
@@ -167,6 +167,10 @@ function character_init(self, character_info)
     local actions = { [1] = self.action_idle, [2] = self.action_move, [3] = self.action_wait }
 
     self.on_update_func = function()
+        if self:has_actions() then
+            return
+        end
+
         self.frame_counter = self.frame_counter + 1
         if not self.started then
             --- this runs once the battle is started

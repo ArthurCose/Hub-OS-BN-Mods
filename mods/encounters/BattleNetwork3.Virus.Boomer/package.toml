@@ -13,6 +13,4 @@ characters = [
 ]
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [ ]
+cards = ["BattleNetwork6.Class01.Standard.164"]

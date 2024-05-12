@@ -1,0 +1,8 @@
+[package]
+category = "library"
+id = "BattleNetwork6.Libraries.PanelGrab"
+name = "PanelGrab Lib"
+description = "Shared code for panel grabbing chips."
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
