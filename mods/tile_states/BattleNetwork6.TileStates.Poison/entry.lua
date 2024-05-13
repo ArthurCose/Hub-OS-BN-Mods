@@ -10,7 +10,7 @@ function tile_state_init(custom_state)
       return
     end
 
-    if not entity:ignoring_negative_tile_effects() and not TurnGauge.frozen() then
+    if not entity:ignoring_negative_tile_effects() then
       -- drain one hp immediately
       local aux_prop = AuxProp.new()
           :drain_health(1)

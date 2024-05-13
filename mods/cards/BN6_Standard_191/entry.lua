@@ -51,9 +51,6 @@ function card_init(user)
 		trap_action_props.prevent_time_freeze_counter = true
 		trap_action:set_card_properties(trap_action_props)
 
-		-- toggle poison
-		local original_tile_state = TileState.Normal
-
 		local i = 0
 		local step = trap_action:create_step()
 		local KEEP_FRAMES = 4
@@ -64,14 +61,15 @@ function card_init(user)
 			local tile = opponent:current_tile()
 
 			if math.floor(i / KEEP_FRAMES) % 2 == 0 then
-				tile:set_state(TileState.Poison)
+				tile:set_visible_state(TileState.Poison)
 
 				if i >= TOTAL then
 					step:complete_step()
 					Resources.play_audio(PANEL_COMPLETE_SFX)
+					tile:set_state(TileState.Poison)
 				end
 			else
-				tile:set_state(original_tile_state)
+				tile:set_visible_state(nil)
 			end
 		end
 
@@ -94,9 +92,6 @@ function card_init(user)
 
 			local tile = opponent:current_tile()
 			opponent:field():spawn(artifact, tile)
-
-			-- track original tile state for flickering between states
-			original_tile_state = tile:state()
 		end
 
 		trap_action.on_action_end_func = function()
