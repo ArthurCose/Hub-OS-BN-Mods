@@ -16,7 +16,7 @@ seed_bomb:set_tile_change_texture(bn_assets.load_texture("panelgrab.png"))
 seed_bomb:set_tile_change_animation_path(bn_assets.fetch_animation_path("panelgrab.animation"))
 seed_bomb:set_tile_change_animation_state("GRAB")
 seed_bomb:set_tile_change_sfx(bn_assets.load_audio("break.ogg"))
-seed_bomb:set_tile_state(TileState.Poision)
+seed_bomb:set_tile_state(TileState.Poison)
 
 ---@param user Entity
 ---@param props CardProperties
