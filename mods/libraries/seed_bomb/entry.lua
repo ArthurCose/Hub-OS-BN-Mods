@@ -44,6 +44,8 @@ end
 function SeedBomb:create_panel_change_spell()
   local spell = Spell.new()
   spell:set_texture(self._tile_texture)
+  spell:sprite():set_layer(5)
+
   local animation = spell:animation()
   animation:load(self._tile_animation_path)
   animation:set_state(self._tile_animation_state)
