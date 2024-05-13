@@ -34,6 +34,11 @@ function Bomb:set_bomb_held_animation_state(animation_state)
   self._bomb_held_animation_state = animation_state
 end
 
+---@return [number, number][]
+function Bomb:frame_data()
+  return self._user_frame_data
+end
+
 --- [frame_number, duration][]
 --- Used for custom timing. Not required, as a default timing is provided.
 function Bomb:set_frame_data(frame_data)

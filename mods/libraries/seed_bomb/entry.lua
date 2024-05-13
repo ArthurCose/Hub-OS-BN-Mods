@@ -66,7 +66,7 @@ end
 function SeedBomb:create_action(user, props)
   local field = user:field()
 
-  return self._bomb:create_action(user, function(tile)
+  local action = self._bomb:create_action(user, function(tile)
     if not tile or not tile:is_walkable() then
       return
     end
@@ -114,6 +114,16 @@ function SeedBomb:create_action(user, props)
 
     field:spawn(spell, tile)
   end)
+
+  local duration = 0
+
+  for _, data in ipairs(self._bomb:frame_data()) do
+    duration = duration + data[2]
+  end
+
+  action:set_lockout(ActionLockout.new_async(duration + 20))
+
+  return action
 end
 
 ---@class SeedBombLib
