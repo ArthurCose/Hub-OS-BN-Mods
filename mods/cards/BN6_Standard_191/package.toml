@@ -12,6 +12,7 @@ description = "Damages enemy in recovery"
 card_class = "standard"
 limit = 3
 can_boost = false
+conceal = true
 
 [dependencies]
 libraries = ["BattleNetwork.Assets"]
