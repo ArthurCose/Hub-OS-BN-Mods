@@ -80,7 +80,7 @@ function card_init(user)
 		x = x + test_offset
 
 		-- spawn panel grab at every tile in the column
-		for y = 0, field:height() do
+		for y = 0, field:height() - 1 do
 			local tile = field:tile_at(x, y)
 
 			if tile and not tile:is_edge() then
