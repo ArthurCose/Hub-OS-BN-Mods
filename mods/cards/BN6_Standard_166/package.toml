@@ -1,0 +1,18 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.166"
+name = "GrabBnsh"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["B", "M", "S"]
+damage = 0
+time_freeze = true
+element = "none"
+description = "20 damage for every stolen sq"
+can_boost = false
+
+[defines]
+characters = []
+
+[dependencies]
+libraries = ["BattleNetwork6.Libraries.PanelGrab"]
