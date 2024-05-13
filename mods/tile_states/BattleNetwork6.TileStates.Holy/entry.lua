@@ -39,7 +39,7 @@ function tile_state_init(custom_state)
     tracked_auxprops[entity:id()] = nil
   end
 
-  custom_state.change_request_func = function(self, tile)
+  custom_state.on_replace_func = function(self, tile)
     for id in pairs(tracked_auxprops) do
       local entity = field:get_entity(id)
 
@@ -60,7 +60,5 @@ function tile_state_init(custom_state)
 
       ::continue::
     end
-
-    return true
   end
 end

@@ -563,8 +563,10 @@ ActionLockout = {}
 ---@field on_entity_enter_func fun(self: CustomTileState, entity: Entity)
 --- Called for every tile matching the state while time isn't frozen.
 ---@field on_update_func fun(self: CustomTileState, tile: Tile)
---- Called when [tile:set_state()](https://docs.hubos.dev/client/lua-api/field-api/tile#tileset_statetile_state) is called. Used to accept or deny the change.
----@field change_request_func fun(self: CustomTileState, tile: Tile, tile_state: TileState): boolean
+--- Called when [tile:set_state()](https://docs.hubos.dev/client/lua-api/field-api/tile#tileset_statetile_state) is called and passes [custom_tile_state.can_replace_func](https://docs.hubos.dev/client/lua-api/field-api/custom-tile-state#custom_tile_statecan_replace_func--functionself-tile-tile_state-boolean).
+---@field on_replace_func fun(self: CustomTileState, tile: Tile)
+--- Called when [tile:set_state()](https://docs.hubos.dev/client/lua-api/field-api/tile#tileset_statetile_state) or [tile:can_set_state()](https://docs.hubos.dev/client/lua-api/field-api/tile#tilecan_set_statetile_state) is called. Used to accept or deny the change.
+---@field can_replace_func fun(self: CustomTileState, tile: Tile, tile_state: TileState): boolean
 CustomTileState = {}
 
 --- Colors are tables with an `r`, `g`, `b`, and `a` key, with each value set to a 0-255 integer.
@@ -2625,6 +2627,11 @@ function Tile:state() end
 ---   - [TileState.[state_name]](https://docs.hubos.dev/client/packages#tile-states)
 ---@param tile_state TileState
 function Tile:set_state(tile_state) end
+
+--- Returns true if the currently applied tile state can be replaced with `tile_state`
+---@param tile_state TileState
+---@return boolean
+function Tile:can_set_state(tile_state) end
 
 --- Returns true if the tile is one of the hidden padding tiles around the edge of the field.
 ---@return boolean
