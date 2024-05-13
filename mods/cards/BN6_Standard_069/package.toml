@@ -1,0 +1,15 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.069"
+name = "PoisSeed"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["H", "N", "P", "*"]
+damage = 0
+hit_flags = ["Impact", "Flinch"]
+description = "Makes 9sq poisn swp 3sq ahead"
+limit = 3
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.seed_bomb"]
+tile_states = ["BattleNetwork6.TileStates.Poison"]

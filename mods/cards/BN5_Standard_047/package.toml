@@ -1,0 +1,14 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class01.Standard.047"
+name = "LavaSeed"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["H", "K", "P"]
+hit_flags = ["Impact", "Flinch"]
+description = "Makes 9sq lava zone 3sq ahead"
+limit = 4
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.seed_bomb"]
+tile_states = ["BattleNetwork5.TileStates.Lava"]

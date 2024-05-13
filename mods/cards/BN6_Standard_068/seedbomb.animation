@@ -1,0 +1,8 @@
+animation state="HELD"
+frame x="1" y="1" w="18" h="13" originx="9" originy="7"
+
+animation state="AIR"
+frame x="1" y="1" w="18" h="13" originx="9" originy="7" duration="0.05"
+frame x="20" y="1" w="15" h="15" originx="7" originy="8" duration="0.05"
+frame x="1" y="15" w="15" h="18" originx="7" originy="9" duration="0.05"
+frame x="20" y="17" w="15" h="15" originx="8" originy="8" duration="0.05"
