@@ -2633,6 +2633,14 @@ function Tile:set_state(tile_state) end
 ---@return boolean
 function Tile:can_set_state(tile_state) end
 
+--- Returns a TileState, usually the same as [tile:state()](https://docs.hubos.dev/client/lua-api/field-api/tile#tilestate), unless [tile:set_visible_state()](https://docs.hubos.dev/client/lua-api/field-api/tile#tileset_visible_statetile_state) was called.
+---@return TileState
+function Tile:visible_state() end
+
+--- Overrides the visual for the tile to match a tile state, or set to nil to sync with [tile:state()](https://docs.hubos.dev/client/lua-api/field-api/tile#tilestate)
+---@param tile_state? TileState
+function Tile:set_visible_state(tile_state) end
+
 --- Returns true if the tile is one of the hidden padding tiles around the edge of the field.
 ---@return boolean
 function Tile:is_edge() end

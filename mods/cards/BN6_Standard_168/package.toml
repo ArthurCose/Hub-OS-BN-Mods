@@ -1,0 +1,16 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.168"
+name = "PnlRetrn"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["*"]
+time_freeze = true
+element = "none"
+description = "Fix your area's panels"
+card_class = "standard"
+limit = 5
+can_boost = false
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
