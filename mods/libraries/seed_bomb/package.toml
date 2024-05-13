@@ -3,3 +3,6 @@ category = "library"
 id = "dev.konstinople.library.seed_bomb"
 name = "Seed Bomb Library"
 description = "Shared code for Seed Bomb cards."
+
+[dependencies]
+libraries = ["dev.konstinople.library.bomb"]
