@@ -55,10 +55,7 @@ function SeedBomb:create_panel_change_spell()
 
   spell.on_spawn_func = function()
     local tile = spell:current_tile()
-
-    if tile:state() ~= TileState.Void then
-      tile:set_state(self._tile_state)
-    end
+    tile:set_state(self._tile_state)
   end
 
   return spell
@@ -105,7 +102,7 @@ function SeedBomb:create_action(user, props)
         for x = tile:x() - 1, tile:x() + 1 do
           local tile = field:tile_at(x, y)
 
-          if tile and tile:state() ~= TileState.Void then
+          if tile and tile:can_set_state(self._tile_state) then
             field:spawn(self:create_panel_change_spell(), tile)
           end
         end
