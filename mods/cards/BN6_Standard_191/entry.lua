@@ -1,10 +1,25 @@
 ---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
 
-local TEXTURE = bn_assets.load_texture("antirecov.png")
-local ANIMATION_PATH = bn_assets.fetch_animation_path("antirecov.animation")
 local PANEL_CHANGE_SFX = bn_assets.load_audio("panel_change_indicate.ogg")
 local PANEL_COMPLETE_SFX = bn_assets.load_audio("break.ogg")
+local POOF_COLOR = Color.new(240, 30, 210)
+
+local function create_poof()
+	local poof = bn_assets.ParticlePoof.new()
+	local sprite = poof:sprite()
+	sprite:set_layer(-5)
+
+	poof.on_update_func = function()
+		local offset = poof:offset()
+		poof:set_offset(offset.x, offset.y - 2)
+
+		sprite:set_color_mode(ColorMode.Multiply)
+		sprite:set_color(POOF_COLOR)
+	end
+
+	return poof
+end
 
 function card_init(user)
 	local action = Action.new(user)
@@ -80,18 +95,16 @@ function card_init(user)
 			-- damage for the recovery amount and spawn artifact
 			opponent:set_health(opponent:health() - card.recover)
 
-			local artifact = Artifact.new()
-			artifact:sprite():set_layer(-5)
-			artifact:set_texture(TEXTURE)
-			local animation = artifact:animation()
-			animation:load(ANIMATION_PATH)
-			animation:set_state("DEFAULT")
-			animation:on_complete(function()
-				artifact:erase()
-			end)
+			local poof_a = create_poof()
+			local poof_b = create_poof()
 
 			local tile = opponent:current_tile()
-			opponent:field():spawn(artifact, tile)
+
+			poof_a:set_offset(-tile:width() * 0.5, 0)
+			poof_b:set_offset(tile:width() * 0.5, 0)
+
+			opponent:field():spawn(poof_a, tile)
+			opponent:field():spawn(poof_b, tile)
 		end
 
 		trap_action.on_action_end_func = function()
