@@ -118,14 +118,9 @@ function Sword:create_action(user, spell_callback)
   action:override_animation_frames(self._user_frame_data)
 
   action.on_execute_func = function()
-    action:add_anim_action(2,
-      function()
-        local hilt = create_hilt(self, action, user)
-        create_blade(self, hilt, user)
-      end
-    )
-
-    action:add_anim_action(3, function()
+    action:add_anim_action(2, function()
+      local hilt = create_hilt(self, action, user)
+      create_blade(self, hilt, user)
       spell_callback()
     end)
   end
@@ -145,9 +140,6 @@ function Sword:create_action_step(action, spell_callback)
     animation:on_frame(2, function()
       local hilt = create_hilt(self, action, user)
       create_blade(self, hilt, user)
-    end)
-
-    animation:on_frame(3, function()
       spell_callback()
     end)
 
