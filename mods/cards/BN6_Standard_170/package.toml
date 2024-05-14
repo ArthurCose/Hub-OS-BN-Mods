@@ -1,15 +1,15 @@
 [package]
 category = "card"
-id = "BattleNetwork6.Class01.Standard.171"
-name = "Snctuary"
+id = "BattleNetwork6.Class01.Standard.170"
+name = "HolyPanl"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = ["Z"]
+codes = ["A", "B", "S", "*"]
 time_freeze = true
 element = "none"
-description = "Chng all own panel to holy"
+description = "Creates a HolyPanl in front"
 card_class = "standard"
-limit = 1
+limit = 4
 can_boost = false
 
 [dependencies]
