@@ -4,6 +4,11 @@ local DEFAULT_FRAME_DATA = { { 1, 8 }, { 2, 2 }, { 3, 2 }, { 4, 15 } }
 local Sword = {}
 Sword.__index = Sword
 
+--- Ignores the blade + hilt settings, uses the "HAND" state on the player instead
+function Sword:use_hand()
+  self._use_hand = true
+end
+
 --- If there's no blade texture set and no BLADE state set on the player's animation,
 --- the texture specified here will be used.
 function Sword:set_default_blade_texture(texture)
@@ -44,6 +49,7 @@ end
 --- Used for custom timing. Not required, as a default timing is provided.
 --- Affects the user's animation and modified to work with the hilt's animation
 --- The hilt will subtract 1 from the frame number to sync with the user's animation
+---@param frame_data [number, number][]
 function Sword:set_frame_data(frame_data)
   self._user_frame_data = frame_data
   self._hilt_frame_data = {}
@@ -57,28 +63,47 @@ function Sword:set_frame_data(frame_data)
   end
 end
 
+function Sword:frame_data()
+  return self._user_frame_data
+end
+
+--- The animation frame to call the spell callback at, default is 2
+---@param frame_index number
+function Sword:set_spell_frame_index(frame_index)
+  self._spell_frame_index = frame_index
+end
+
 ---@param self Sword
 ---@param action Action
 ---@param user Entity
 local function create_hilt(self, action, user)
   local hilt = action:create_attachment("HILT")
   local hilt_sprite = hilt:sprite()
-  hilt_sprite:set_texture(self._hilt_texture or user:texture())
   hilt_sprite:set_layer(-1)
-
-  if not self._hilt_texture then
-    hilt_sprite:use_root_shader(true)
-  end
 
   local hilt_anim = hilt:animation()
 
-  if self._hilt_animation_path then
-    hilt_anim:load(self._hilt_animation_path)
-  else
+  if self._use_hand then
+    hilt_sprite:set_texture(user:texture())
     hilt_anim:copy_from(user:animation())
-  end
+    hilt_anim:set_state("HAND", self._hilt_frame_data)
+    hilt_sprite:use_root_shader(true)
+  else
+    hilt_sprite:set_texture(self._hilt_texture or user:texture())
 
-  hilt_anim:set_state("HILT", self._hilt_frame_data)
+    if not self._hilt_texture then
+      hilt_sprite:use_root_shader(true)
+    end
+
+
+    if self._hilt_animation_path then
+      hilt_anim:load(self._hilt_animation_path)
+    else
+      hilt_anim:copy_from(user:animation())
+    end
+
+    hilt_anim:set_state("HILT", self._hilt_frame_data)
+  end
 
   return hilt
 end
@@ -118,10 +143,13 @@ function Sword:create_action(user, spell_callback)
   action:override_animation_frames(self._user_frame_data)
 
   action.on_execute_func = function()
+    action:add_anim_action(self._spell_frame_index, spell_callback)
     action:add_anim_action(2, function()
       local hilt = create_hilt(self, action, user)
-      create_blade(self, hilt, user)
-      spell_callback()
+
+      if not self._use_hand then
+        create_blade(self, hilt, user)
+      end
     end)
   end
 
@@ -136,11 +164,13 @@ function Sword:create_action_step(action, spell_callback)
   step.on_update_func = function()
     local animation = user:animation()
     animation:set_state("PLAYER_SWORD", self._user_frame_data)
-
+    animation:on_frame(self._spell_frame_index, spell_callback)
     animation:on_frame(2, function()
       local hilt = create_hilt(self, action, user)
-      create_blade(self, hilt, user)
-      spell_callback()
+
+      if not self._use_hand then
+        create_blade(self, hilt, user)
+      end
     end)
 
     local cleanup = function()
@@ -165,6 +195,7 @@ function SwordLib.new_sword()
   setmetatable(sword, Sword)
 
   sword:set_frame_data(DEFAULT_FRAME_DATA)
+  sword:set_spell_frame_index(2)
 
   return sword
 end

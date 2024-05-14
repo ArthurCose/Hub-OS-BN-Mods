@@ -1,0 +1,17 @@
+animation state="DOWN"
+frame x="1" y="1" w="51" h="38" originx="25" originy="19" duration="0.05"
+
+animation state="TURN_RIGHT"
+frame x="52" y="71" w="44" h="34" originx="26" originy="16" duration="0.05"
+frame x="53" y="1" w="43" h="35" originx="22" originy="18" duration="0.05"
+frame x="56" y="37" w="40" h="33" originx="20" originy="13" duration="0.017"
+
+animation state="UP"
+frame x="3" y="65" w="46" h="44" originx="23" originy="16" duration="0.017"
+
+animation state="FLAME"
+frame x="18" y="40" w="19" h="24" originx="10" originy="16" duration="0.083"
+frame x="1" y="40" w="16" h="23" originx="8" originy="15" duration="0.083"
+frame x="18" y="40" w="19" h="24" originx="10" originy="16" duration="0.083"
+frame x="38" y="40" w="16" h="24" originx="8" originy="16" duration="0.083"
+

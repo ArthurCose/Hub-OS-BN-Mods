@@ -1,0 +1,15 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.123"
+name = "HeatDrgn"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+description = "Drgn near clst enmy Hit 2rows"
+damage = 140
+element = "fire"
+codes = ['G', 'R', 'T']
+limit = 2
+hit_flags = ["Impact", "Flinch"]
+
+[dependencies]
+libraries = ["dev.konstinople.library.sword"]
