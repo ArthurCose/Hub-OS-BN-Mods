@@ -63,7 +63,7 @@ local function create_dragon(user, props)
   local field = user:field()
 
   local spell = Spell.new(user:team())
-  spell:set_hit_props(HitProps.from_card(props))
+  spell:set_hit_props(HitProps.from_card(props, user:context()))
   spell:set_facing(Direction.Right)
 
   -- we'll reveal after some initial movement
