@@ -4,6 +4,6 @@ id = "BattleNetwork6.Class01.Standard.185"
 name = "MagCoil"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = ["F", "L", "T", "*"]
+codes = ["*"]
 description = "Draw in enmy with mag force"
 limit = 5
