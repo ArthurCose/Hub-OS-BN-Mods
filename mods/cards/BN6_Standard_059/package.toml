@@ -1,0 +1,14 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.059"
+name = "BigBomb"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["O", "P", "V"]
+damage = 140
+hit_flags = ["Impact", "Flinch", "Flash"]
+description = "Throw a 9 panl bomb 3panl fwd"
+limit = 3
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.bomb"]
