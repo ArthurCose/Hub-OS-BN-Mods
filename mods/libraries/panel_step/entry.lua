@@ -3,7 +3,7 @@ local function debug_print(...)
 end
 
 local function can_move_to_func()
-  return true
+  return false
 end
 
 local function test_dest_tile(tile)
@@ -166,10 +166,10 @@ function PanelStep:wrap_action(wrapped_action)
         end
 
         if not self._return_frame then
-          user:teleport(original_tile, function()
-            original_tile:remove_reservation_for(user)
-            debug_print("default returned")
-          end)
+          user:current_tile():remove_entity(user)
+          original_tile:add_entity(user)
+          original_tile:remove_reservation_for(user)
+          debug_print("default returned")
         end
       end
 
@@ -204,10 +204,10 @@ function PanelStep:wrap_action(wrapped_action)
       elseif not self._return_frame and i > 21 then
         component:eject()
       elseif i == self._return_frame then
-        user:teleport(original_tile, function()
-          original_tile:remove_reservation_for(user)
-          debug_print("returned")
-        end)
+        user:current_tile():remove_entity(user)
+        original_tile:add_entity(user)
+        original_tile:remove_reservation_for(user)
+        debug_print("returned")
         component:eject()
       end
     end
@@ -219,19 +219,13 @@ function PanelStep:wrap_action(wrapped_action)
   jump_forward_step.on_update_func = function()
     debug_print("step update")
 
-    user:teleport(dest_tile, function()
-      debug_print("processed stepping forward")
-    end)
+    -- step forward
+    user:current_tile():remove_entity(user)
+    dest_tile:add_entity(user)
 
+    -- wait one frame after stepping forward to complete step
     jump_forward_step.on_update_func = function()
-      if user:is_moving() then
-        return
-      end
-
-      -- wait 1 frame after completing movement to complete the step
-      jump_forward_step.on_update_func = function()
-        jump_forward_step:complete_step()
-      end
+      jump_forward_step:complete_step()
     end
   end
 
@@ -293,10 +287,10 @@ function PanelStep:create_action(user, create_action_steps)
       elseif not self._return_frame and i > 21 then
         component:eject()
       elseif i == self._return_frame then
-        user:teleport(original_tile, function()
-          original_tile:remove_reservation_for(user)
-          debug_print("returned")
-        end)
+        user:current_tile():remove_entity(user)
+        original_tile:add_entity(user)
+        original_tile:remove_reservation_for(user)
+        debug_print("returned")
         component:eject()
       end
     end
@@ -308,19 +302,13 @@ function PanelStep:create_action(user, create_action_steps)
   jump_forward_step.on_update_func = function()
     debug_print("step update")
 
-    user:teleport(dest_tile, function()
-      debug_print("processed stepping forward")
-    end)
+    -- step forward
+    user:current_tile():remove_entity(user)
+    dest_tile:add_entity(user)
 
+    -- wait one frame after stepping forward to complete step
     jump_forward_step.on_update_func = function()
-      if user:is_moving() then
-        return
-      end
-
-      -- wait 1 frame after completing movement to complete the step
-      jump_forward_step.on_update_func = function()
-        jump_forward_step:complete_step()
-      end
+      jump_forward_step:complete_step()
     end
   end
 
@@ -342,10 +330,10 @@ function PanelStep:create_action(user, create_action_steps)
     end
 
     if not self._return_frame then
-      user:teleport(original_tile, function()
-        original_tile:remove_reservation_for(user)
-        debug_print("default returned")
-      end)
+      user:current_tile():remove_entity(user)
+      original_tile:add_entity(user)
+      original_tile:remove_reservation_for(user)
+      debug_print("default returned")
     end
   end
 
