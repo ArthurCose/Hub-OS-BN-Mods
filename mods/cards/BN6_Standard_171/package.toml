@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.170"
+name = "HolyPanl"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["A", "B", "S", "*"]
+time_freeze = true
+element = "none"
+description = "Creates a HolyPanl in front"
+card_class = "standard"
+limit = 4
+can_boost = false
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+tile_states = ["BattleNetwork6.TileStates.Holy"]

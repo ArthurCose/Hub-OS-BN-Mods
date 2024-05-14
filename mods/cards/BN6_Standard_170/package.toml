@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.171"
+name = "Snctuary"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["Z"]
+time_freeze = true
+element = "none"
+description = "Chng all own panel to holy"
+card_class = "standard"
+limit = 1
+can_boost = false
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+tile_states = ["BattleNetwork6.TileStates.Holy"]
