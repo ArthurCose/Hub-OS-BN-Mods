@@ -1,0 +1,15 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.129"
+name = "GolmHit3"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+description = "Hit 3panl area arnd clst enmy"
+damage = 250
+element = "break"
+codes = ['H', 'M', 'V']
+limit = 3
+hit_flags = ["Impact", "Flinch", "Flash", "PierceGuard"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
