@@ -63,6 +63,7 @@ local function spawn_pop(parent)
   return artifact
 end
 
+---@param status Status
 function status_init(status)
   Resources.play_audio(SFX)
 
@@ -81,6 +82,7 @@ function status_init(status)
   -- this component updates the bubble's animation and handles mashing
   local component = entity:create_component(Lifetime.Battle)
   local time = 0
+  local last_added_elevation = 0
 
   component.on_update_func = function()
     sprite:set_offset(0, -entity:height() / 2)
@@ -90,11 +92,16 @@ function status_init(status)
     animator:sync_time(time)
     animator:apply(sprite)
 
-    local movement_offset = entity:movement_offset()
+    -- calculate additional elevation
     local angle = time * (math.pi * 2) / 150;
-    movement_offset.y = movement_offset.y + math.floor(math.sin(angle) * 6)
+    local added_elevation = -math.floor(math.sin(angle) * 6)
 
-    entity:set_movement_offset(movement_offset.x, movement_offset.y)
+    -- subtract the last elevation addition
+    entity:set_elevation(entity:elevation() - last_added_elevation + added_elevation)
+
+    -- store the old elevation addition
+    last_added_elevation = added_elevation
+
     time = time + 1
 
     if is_mashing(entity) then
@@ -131,6 +138,7 @@ function status_init(status)
   -- clean up
   status.on_delete_func = function()
     entity:remove_defense_rule(defense_rule)
+    entity:set_elevation(entity:elevation() - last_added_elevation)
 
     -- pop
     local artifact = spawn_pop(entity)
