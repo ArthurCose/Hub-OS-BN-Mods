@@ -1,0 +1,16 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.027"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "BblStar2"
+description = "Seals an enemy in a bubble."
+codes = ["C", "L", "V"]
+element = "aqua"
+hit_flags = ["Impact", "Flinch", "Bubble"]
+damage = 80
+limit = 3
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+statuses = ["BattleNetwork6.Statuses.Bubble"]
