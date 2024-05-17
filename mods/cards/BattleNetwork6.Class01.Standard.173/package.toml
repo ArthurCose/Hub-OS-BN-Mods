@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.173"
+name = "GoingRd"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "*" ]
+damage = 0
+time_freeze = true
+element = "none"
+description = "Push an enemy to the back"
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]
+tile_states = [
+    "BattleNetwork6.TileStates.ConveyorLeft",
+    "BattleNetwork6.TileStates.ConveyorRight"
+]
