@@ -1,0 +1,21 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.020"
+name = "FireBrn2"
+damage = 110
+time_freeze = false
+element = "fire"
+description = "Crcks 3 sqrs ahd with fire"
+long_description = "Send groundbreaking flames 3 tiles ahead!"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "S", "T", "U" ]
+hit_flags = ["Flinch", "Flash", "Impact"]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ "BattleNetwork6.Class01.Standard.019" ]
