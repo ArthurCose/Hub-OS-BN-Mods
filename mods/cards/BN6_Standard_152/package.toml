@@ -1,0 +1,15 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.152"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "Silence"
+description = "Blinds enemies w/music"
+codes = ["B", "R", "W", "*"]
+element = "summon"
+time_freeze = true
+can_boost = false
+limit = 4
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

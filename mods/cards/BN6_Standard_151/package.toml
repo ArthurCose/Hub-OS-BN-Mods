@@ -1,0 +1,15 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.151"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "Timpani"
+description = "Stop enmy feet with music"
+codes = ["I", "O", "T", "*"]
+element = "summon"
+time_freeze = true
+can_boost = false
+limit = 4
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

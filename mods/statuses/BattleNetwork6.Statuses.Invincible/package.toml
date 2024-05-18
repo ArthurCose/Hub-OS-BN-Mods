@@ -1,0 +1,10 @@
+[package]
+category = "status"
+id = "BattleNetwork6.Statuses.Invincible"
+name = "Invincible Status"
+flag_name = "Invincible"
+blocks_flags = []
+blocked_by = []
+blocks_actions = false
+blocks_mobility = false
+durations = [150]
