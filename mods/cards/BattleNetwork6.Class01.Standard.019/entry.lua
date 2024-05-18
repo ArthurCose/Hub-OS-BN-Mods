@@ -37,8 +37,6 @@ local function create_flame_spell(user, props)
     local sprite = spell:sprite()
     sprite:set_layer(-2)
 
-    spell:set_elevation(user:animation():get_point("BUSTER").y)
-
     animation:apply(sprite)
 
     spell:set_facing(user:facing())
@@ -91,16 +89,9 @@ end
 function card_init(actor, props)
     local action = Action.new(actor, "PLAYER_SHOOTING")
     local field = actor:field()
-    local frame1 = { 1, 1 }
-    local frame2 = { 1, 3 }
-    local frame3 = { 2, 2 }
     local tile_array = {}
     local AUDIO = Resources.load_audio("sfx.ogg")
-    local frames = { frame1,
-        frame2, frame3, frame2, frame3, frame2, frame3, frame2, frame2, frame3, frame2, frame2, frame3, frame2,
-        frame2, frame3, frame2, frame3, frame2, frame3, frame2, frame2, frame3, frame2, frame2, frame3, frame2,
-        frame2, frame3, frame2, frame3, frame2, frame3, frame2, frame2, frame3, frame2, frame2, frame3, frame2
-    }
+    local frames = { { 1, 35 } }
     action:override_animation_frames(frames)
     action:set_lockout(ActionLockout.new_animation())
     action.on_execute_func = function(self, user)
@@ -115,7 +106,7 @@ function card_init(actor, props)
                 table.insert(tile_array, prospective_tile)
             end
         end
-        local get_point = user:animation():get_point("BUSTER")
+
         local buster = self:create_attachment("BUSTER")
         local buster_sprite = buster:sprite()
         buster_sprite:set_texture(user:texture())
@@ -125,67 +116,68 @@ function card_init(actor, props)
         self.flame2 = create_flame_spell(user, props)
         self.flame3 = create_flame_spell(user, props)
 
+        buster_sprite:set_texture(buster_texture)
+        buster_sprite:set_layer(-2)
+
         local buster_anim = buster:animation()
-        buster_anim:copy_from(user:animation())
-        buster_anim:set_state("BUSTER")
+        buster_anim:load(buster_anim_path)
+        buster_anim:set_state("0")
         buster_anim:apply(buster_sprite)
 
-        self:add_anim_action(1, function()
-            buster_sprite:set_texture(buster_texture)
-            buster_sprite:set_layer(-2)
+        local buster_point = user:animation():get_point("BUSTER")
+        local origin = user:sprite():origin()
+        local fire_x = buster_point.x - origin.x + 21 - Tile:width()
+        local fire_y = buster_point.y - origin.y
+        self.flame1:set_offset(fire_x, fire_y)
+        self.flame2:set_offset(fire_x, fire_y)
+        self.flame3:set_offset(fire_x, fire_y)
 
-            buster_anim:load(buster_anim_path)
-            buster_anim:set_state("0")
-            buster_anim:apply(buster_sprite)
-        end)
-        self:add_anim_action(5, function()
-            Resources.play_audio(AUDIO)
-            if #tile_array > 0 then
-                field:spawn(self.flame1, tile_array[1])
-            end
-        end)
+        -- spawn first flame
+        Resources.play_audio(AUDIO)
+        if #tile_array > 0 then
+            field:spawn(self.flame1, tile_array[1])
+        end
 
-        self:add_anim_action(9, function()
-            if #tile_array > 1 then
-                field:spawn(self.flame2, tile_array[2])
-            end
-        end)
+        local time = 0
+        action.on_update_func = function()
+            time = time + 1
 
-        self:add_anim_action(13, function()
-            if #tile_array > 2 then
-                field:spawn(self.flame3, tile_array[3])
+            if time == 5 then
+                if #tile_array > 1 then
+                    -- queue spawn frame 5, should appear frame 6
+                    field:spawn(self.flame2, tile_array[2])
+                end
+            elseif time == 9 then
+                if #tile_array > 2 then
+                    -- queue spawn frame 9, should appear frame 10
+                    field:spawn(self.flame3, tile_array[3])
+                end
+            elseif time == 32 - 7 then
+                if self.flame1.has_spawned then
+                    self.flame1:animation():set_state("1")
+                    self.flame1:animation():apply(self.flame1:sprite())
+                    self.flame1:animation():on_complete(function()
+                        self.flame1:erase()
+                    end)
+                end
+            elseif time == 33 - 7 then
+                if self.flame2.has_spawned then
+                    self.flame2:animation():set_state("1")
+                    self.flame2:animation():apply(self.flame2:sprite())
+                    self.flame2:animation():on_complete(function()
+                        self.flame2:erase()
+                    end)
+                end
+            elseif time == 34 - 7 then
+                if self.flame3.has_spawned then
+                    self.flame3:animation():set_state("1")
+                    self.flame3:animation():apply(self.flame3:sprite())
+                    self.flame3:animation():on_complete(function()
+                        self.flame3:erase()
+                    end)
+                end
             end
-        end)
-
-        self:add_anim_action(32, function()
-            if self.flame1.has_spawned then
-                self.flame1:animation():set_state("1")
-                self.flame1:animation():apply(self.flame1:sprite())
-                self.flame1:animation():on_complete(function()
-                    self.flame1:erase()
-                end)
-            end
-        end)
-
-        self:add_anim_action(36, function()
-            if self.flame2.has_spawned then
-                self.flame2:animation():set_state("1")
-                self.flame2:animation():apply(self.flame2:sprite())
-                self.flame2:animation():on_complete(function()
-                    self.flame2:erase()
-                end)
-            end
-        end)
-
-        self:add_anim_action(40, function()
-            if self.flame3.has_spawned then
-                self.flame3:animation():set_state("1")
-                self.flame3:animation():apply(self.flame3:sprite())
-                self.flame3:animation():on_complete(function()
-                    self.flame3:erase()
-                end)
-            end
-        end)
+        end
     end
     action.on_action_end_func = function(self)
         if not self.flame1:deleted() then self.flame1:erase() end
