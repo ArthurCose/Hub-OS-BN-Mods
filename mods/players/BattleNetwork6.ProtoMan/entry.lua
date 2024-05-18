@@ -1,4 +1,4 @@
-local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
+local bn_assets = require("BattleNetwork.Assets")
 ---@type PanelStepLib
 local PanelStepLib = require("dev.konstinople.library.panel_step")
 ---@type ShieldLib
@@ -8,16 +8,16 @@ local EmotionsLib = require("BattleNetwork.Emotions")
 
 local panel_step = PanelStepLib.new_panel_step()
 
-local shield_impact_sfx = bn_helpers.load_audio("guard.ogg")
+local shield_impact_sfx = bn_assets.load_audio("guard.ogg")
 local shield = ShieldLib.new_shield()
-shield:set_execute_sfx(bn_helpers.load_audio("shield&reflect.ogg"))
-shield:set_impact_texture(bn_helpers.load_texture("shield_impact.png"))
-shield:set_impact_animation_path(bn_helpers.fetch_animation_path("shield_impact.animation"))
+shield:set_execute_sfx(bn_assets.load_audio("shield&reflect.ogg"))
+shield:set_impact_texture(bn_assets.load_texture("shield_impact.png"))
+shield:set_impact_animation_path(bn_assets.fetch_animation_path("shield_impact.animation"))
 shield:set_duration(21)
 
 local shield_reflect = ShieldLib.new_reflect()
-shield_reflect:set_attack_texture(bn_helpers.load_texture("buster_charged_impact.png"))
-shield_reflect:set_attack_animation_path(bn_helpers.fetch_animation_path("buster_charged_impact.animation"))
+shield_reflect:set_attack_texture(bn_assets.load_texture("buster_charged_impact.png"))
+shield_reflect:set_attack_animation_path(bn_assets.fetch_animation_path("buster_charged_impact.animation"))
 
 local FIXED_CARD_ID = "BattleNetwork6.Class06.Fixed.006"
 

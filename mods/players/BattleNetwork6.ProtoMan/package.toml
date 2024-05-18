@@ -20,5 +20,6 @@ cards = [
 libraries = [
   "dev.konstinople.library.panel_step",
   "dev.konstinople.library.shield",
-  "BattleNetwork.Emotions"
+  "BattleNetwork.Emotions",
+  "BattleNetwork.Assets"
 ]
