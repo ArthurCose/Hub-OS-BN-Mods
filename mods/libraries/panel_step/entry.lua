@@ -128,6 +128,7 @@ function PanelStep:wrap_action(wrapped_action)
     if not dest_tile or test_dest_tile(dest_tile) then
       -- invalid dest, return early
       dest_tile = nil
+      start_action:end_action()
       return
     end
 
@@ -249,6 +250,7 @@ function PanelStep:create_action(user, create_action_steps)
 
     if not dest_tile or test_dest_tile(dest_tile) then
       dest_tile = nil
+      action:end_action()
       return
     end
 
