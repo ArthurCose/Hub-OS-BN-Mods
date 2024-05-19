@@ -8,32 +8,36 @@ function card_init(player)
         intangible_rule.hit_weaknesses = Hit.PierceInvis;
 
         -- Create a rule to cause sprite flickering
-        intangible_rule.flicker = user:create_component(Lifetime.Scene)
+        local component = user:create_component(Lifetime.Scene)
 
         -- Create a timer that ticks down.
-        intangible_rule.flicker.timer = 2
+        local timer = 2
+        local visible = false
+        local sprite = user:sprite()
 
         -- Use an update function to tick this forward.
-        intangible_rule.flicker.on_update_func = function(flicker)
-            local owner = flicker:owner()
-            if owner:deleted() then return end
-            flicker.timer = flicker.timer - 1
-            if flicker.timer > 0 then return end
-            local sprite = owner:sprite()
-            sprite:set_visible(not sprite:visible())
-            flicker.timer = 2
+        component.on_update_func = function()
+            if visible then
+                local color = sprite:color()
+                color.a = 0
+                sprite:set_color(color)
+            end
+
+            -- update timer
+            timer = timer - 1
+            if timer > 0 then return end
+            timer = 2
+
+            -- flip visibility
+            visible = not visible
         end
 
         intangible_rule.on_deactivate_func = function()
-            intangible_rule.flicker:eject()
-            user:reveal()
+            component:eject()
         end
 
         -- Add the rule. Use false to remove a rule, and don't pass a rule in to use a default intangibility.
         user:set_intangible(true, intangible_rule);
-
-
-        user:hide()
 
         -- Resources.play_audio(AudioType.Invisible)
     end
