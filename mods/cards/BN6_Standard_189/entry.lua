@@ -16,7 +16,7 @@ function card_init(user, props)
             local hit_props = attacker:copy_hit_props()
 
             --Simulate cursor removing traps
-            if hit_props.element == Element.Cursor then
+            if hit_props.element == Element.Cursor or hit_props.secondary_element == Element.Cursor then
                 defender:remove_defense_rule(antidamage_rule)
                 return
             end
