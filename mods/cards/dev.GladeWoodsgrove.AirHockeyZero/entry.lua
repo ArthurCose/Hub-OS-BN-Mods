@@ -5,14 +5,21 @@ local BOUNCE_AUDIO = Resources.load_audio("puckhit.ogg")
 local MOB_MOVE_TEXTURE = Resources.load_texture("mob_move.png")
 local PARTICLE_TEXTURE = Resources.load_texture("artifact_impact_fx.png")
 
-function card_init(actor, props)
-	local action = Action.new(actor, "PLAYER_SWORD")
+local frame_data = { { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 25 } }
+local hand_frame_data = {}
 
-	local frame_data = { { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 25 } }
+for i = 2, #frame_data do
+	local data = frame_data[i]
+	hand_frame_data[i - 1] = { data[1] - 1, data[2] }
+end
+
+function card_init(user, props)
+	local action = Action.new(user, "PLAYER_SWORD")
+
 	action:override_animation_frames(frame_data)
 	action:set_lockout(ActionLockout.new_async(32))
 
-	action.on_execute_func = function(self, user)
+	action.on_execute_func = function(self)
 		self:add_anim_action(2, function()
 			user:set_counterable(true)
 
@@ -25,21 +32,28 @@ function card_init(actor, props)
 
 			local hilt_anim = hilt:animation()
 			hilt_anim:copy_from(user:animation())
-			hilt_anim:set_state("HAND")
+			hilt_anim:set_state("HAND", hand_frame_data)
 			hilt_anim:apply(hilt_sprite)
 		end)
 
 		self:add_anim_action(3, function()
-			local puck = create_puck(user, props)
 			local dir = user:facing()
 			local tile = user:get_tile(dir, 1)
-			user:field():spawn(puck, tile)
+			if tile then
+				local puck = create_puck(user, props)
+				user:field():spawn(puck, tile)
+			end
 		end)
 
 		self:add_anim_action(4, function()
 			user:set_counterable(false)
 		end)
 	end
+
+	action.on_action_end_func = function()
+		user:set_counterable(false)
+	end
+
 	return action
 end
 
@@ -91,7 +105,7 @@ function create_puck(user, props)
 			local play_bounce
 			dest, play_bounce, direction = Bounce(tile, spell, direction, self_team)
 			if dest then
-				self:slide(dest, (6), (0), nil)
+				self:slide(dest, 6)
 				if play_bounce then
 					Resources.play_audio(BOUNCE_AUDIO)
 				end
@@ -105,7 +119,7 @@ function create_puck(user, props)
 
 	spell.on_collision_func = function(self, other)
 		local fx = Artifact.new()
-		fx:set_texture(PARTICLE_TEXTURE, true)
+		fx:set_texture(PARTICLE_TEXTURE)
 
 		local fx_anim = fx:animation()
 		fx_anim:load("artifact_impact_fx.animation")
@@ -128,7 +142,7 @@ function create_puck(user, props)
 			local fx = Artifact.new()
 
 			local fx_anim = fx:animation()
-			fx:set_texture(MOB_MOVE_TEXTURE, true)
+			fx:set_texture(MOB_MOVE_TEXTURE)
 			fx_anim:load("mob_move.animation")
 			fx_anim:set_state("DEFAULT")
 			fx_anim:apply(fx:sprite())
