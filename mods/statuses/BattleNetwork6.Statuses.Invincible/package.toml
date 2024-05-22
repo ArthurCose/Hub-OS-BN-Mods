@@ -2,6 +2,7 @@
 category = "status"
 id = "BattleNetwork6.Statuses.Invincible"
 name = "Invincible Status"
+icon_texture_path = "icon.png"
 flag_name = "Invincible"
 blocks_flags = []
 blocked_by = []

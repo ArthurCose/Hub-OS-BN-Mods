@@ -2,5 +2,5 @@
 category = "status"
 id = "BattleNetwork6.Statuses.Uninstall"
 name = "Uninstall Hit Flag"
-preview_texture_path = "preview.png"
+icon_texture_path = "icon.png"
 flag_name = "Uninstall"
