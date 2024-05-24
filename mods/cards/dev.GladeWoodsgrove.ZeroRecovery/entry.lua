@@ -6,6 +6,7 @@ local AUDIO = bn_helpers.load_audio("recover.ogg")
 
 function card_init(user, props)
     local action = Action.new(user, "PLAYER_IDLE")
+    action:set_lockout(ActionLockout.new_async(30))
 
     action.on_execute_func = function(self)
         local recov = create_recov(user)
