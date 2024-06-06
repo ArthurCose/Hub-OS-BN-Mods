@@ -34,6 +34,7 @@ local function create_trumpy(user)
   local team = user:team()
 
   local trumpy = Obstacle.new(team)
+  trumpy:set_owner(user)
   trumpy:set_facing(user:facing())
   trumpy:set_texture(TEXTURE)
   trumpy:set_health(60)

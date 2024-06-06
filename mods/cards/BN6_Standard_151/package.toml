@@ -7,6 +7,7 @@ name = "Timpani"
 description = "Stop enmy feet with music"
 codes = ["I", "O", "T", "*"]
 element = "summon"
+hit_flags = ["Root"]
 time_freeze = true
 can_boost = false
 limit = 4

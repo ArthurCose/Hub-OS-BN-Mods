@@ -12,6 +12,7 @@ function card_init(user, props)
 		Resources.play_audio(sfx)
 
 		local cube = IceCube:create_obstacle()
+		cube:set_owner(user:team())
 		cube:set_facing(user:facing())
 		local anim = cube:animation()
 		anim:set_state("SPAWN")

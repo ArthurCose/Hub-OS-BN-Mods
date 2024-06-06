@@ -7,6 +7,7 @@ name = "Silence"
 description = "Blinds enemies w/music"
 codes = ["B", "R", "W", "*"]
 element = "summon"
+hit_flags = ["Blind"]
 time_freeze = true
 can_boost = false
 limit = 4

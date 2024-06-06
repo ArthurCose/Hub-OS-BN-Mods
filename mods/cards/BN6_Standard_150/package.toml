@@ -7,6 +7,7 @@ name = "Discord"
 description = "Confuses enemies w/music"
 codes = ["A", "G", "S", "*"]
 element = "summon"
+hit_flags = ["Confuse"]
 time_freeze = true
 can_boost = false
 limit = 4
