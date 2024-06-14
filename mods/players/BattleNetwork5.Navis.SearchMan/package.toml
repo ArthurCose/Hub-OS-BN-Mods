@@ -1,0 +1,19 @@
+[package]
+category = "player"
+id = "BattleNetwork5.Navis.SearchMan"
+name = "SearchMan"
+description = "You're in my sights."
+preview_texture_path = "preview.png"
+overworld_texture_path = "searchmanOW.png"
+overworld_animation_path = "searchmanOW.animation"
+mugshot_texture_path = "mug.png"
+mugshot_animation_path = "mug.animation"
+health = 1000
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

@@ -1,0 +1,9 @@
+imagePath="C:/Users/seven/OneDrive/Desktop/Games, Engines, and Assets/0 Games/HubOS Release/client/mods/players/Dawn_ChargeShots_Searchman/mug.png"
+
+animation state="TALK"
+frame duration="0.1" x="4" y="4" w="40" h="48" originx="0" originy="0" flipx="0" flipy="0"
+frame duration="0.1" x="48" y="4" w="40" h="48" originx="0" originy="0" flipx="0" flipy="0"
+frame duration="0.1" x="92" y="4" w="40" h="48" originx="0" originy="0" flipx="0" flipy="0"
+
+animation state="IDLE"
+frame duration="0.1" x="4" y="4" w="40" h="48" originx="0" originy="0" flipx="0" flipy="0"
