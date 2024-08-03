@@ -1,0 +1,29 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program03.Custom2"
+name = "Custom2"
+flat = true
+description = "Custom Screen +2 chips"
+colors = [ "white" ]
+shape = [
+  [ 0, 0, 0, 0, 0 ],
+  [ 0, 0, 1, 1, 0 ],
+  [ 0, 0, 1, 1, 0 ],
+  [ 0, 0, 1, 1, 0 ],
+  [ 0, 0, 1, 0, 0 ]
+]
+health_boost = 0 # optional
+attack_boost = 0 # optional
+rapid_boost = 0 # optional
+charge_boost = 0 # optional
+mega_boost = 0 # optional
+giga_boost = 0 # optional
+hand_size_boost = 2 # optional
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

@@ -1,0 +1,29 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program02.Custom1"
+name = "Custom1"
+flat = true
+description = "Custom Screen +1 chip"
+colors = [ "blue" ]
+shape = [
+  [ 0, 0, 0, 0, 0 ],
+  [ 0, 0, 1, 0, 0 ],
+  [ 0, 0, 1, 0, 0 ],
+  [ 0, 0, 1, 1, 0 ],
+  [ 0, 0, 0, 0, 0 ]
+]
+health_boost = 0 # optional
+attack_boost = 0 # optional
+rapid_boost = 0 # optional
+charge_boost = 0 # optional
+mega_boost = 0 # optional
+giga_boost = 0 # optional
+hand_size_boost = 1 # optional
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]
