@@ -9,7 +9,7 @@ damage = 120
 element = "aqua"
 codes = ['H', 'P', 'S']
 limit = 2
-hit_flags = ["Impact", "Flinch"]
+hit_flags = ["Impact", "Flinch", "Flash"]
 
 [dependencies]
 libraries = ["dev.konstinople.library.sword"]
