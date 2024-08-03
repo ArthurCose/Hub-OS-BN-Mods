@@ -40,7 +40,7 @@ function card_init(player, props)
             spell.on_attack_func = function(self, other)
                 local to_remove = other:field_card(1)
                 if to_remove then
-                    other:remove_card(1)
+                    other:remove_field_card(1)
                 end
             end
 
@@ -59,7 +59,7 @@ function card_init(player, props)
         self:add_anim_action(2, do_attack)
         self:add_anim_action(1, function()
             local buster = self:create_attachment("BUSTER")
-            buster:sprite():set_texture(bow_texture, true)
+            buster:sprite():set_texture(bow_texture)
             buster:sprite():set_layer(-1)
 
             local buster_anim = buster:animation()
