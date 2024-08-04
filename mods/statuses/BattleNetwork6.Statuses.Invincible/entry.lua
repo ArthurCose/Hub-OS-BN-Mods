@@ -6,10 +6,9 @@ function status_init(status)
   local entity = status:owner()
 
   -- handle defense
-  local defense_rule = DefenseRule.new(DefensePriority.Last, DefenseOrder.Always)
+  local defense_rule = DefenseRule.new(DefensePriority.Body, DefenseOrder.Always)
   defense_rule.can_block_func = function(judge)
     judge:block_damage()
-    judge:block_impact()
   end
   entity:add_defense_rule(defense_rule)
 
