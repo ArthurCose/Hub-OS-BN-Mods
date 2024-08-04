@@ -210,8 +210,7 @@ function character_init(self)
     local has_picked_direction = false
     self.do_once = true
     local field = nil
-    self.def = DefenseVirusBody.new() -- lua owns this need to keep it alive
-    self:add_defense_rule(self.def)
+    self:add_aux_prop(StandardEnemyAux.new())
     self.on_spawn_func = function(self)
         field = self:field()
     end

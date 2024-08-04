@@ -38,8 +38,7 @@ function character_init(self, character_info)
     self.started = false
     self.state = "attacking"
     self.look_direction = "downtoup"
-    self.defense = DefenseVirusBody.new()
-    self:add_defense_rule(self.defense)
+    self:add_aux_prop(StandardEnemyAux.new())
     self.next_look_anim = nil
     self.animation:set_state("SPAWN")
 

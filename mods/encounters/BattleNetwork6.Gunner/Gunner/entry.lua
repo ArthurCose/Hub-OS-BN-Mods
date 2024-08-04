@@ -294,8 +294,7 @@ function character_init(gunner)
 	anim:set_state("IDLE")
 
 	-- setup defense rules
-	gunner.defense = DefenseVirusBody.new() -- lua owns this need to keep it alive
-	gunner:add_defense_rule(gunner.defense)
+	gunner:add_aux_prop(StandardEnemyAux.new())
 
 	-- setup event hanlders
 	gunner.on_update_func = idle_update

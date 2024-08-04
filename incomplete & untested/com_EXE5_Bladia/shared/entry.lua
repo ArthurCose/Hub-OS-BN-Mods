@@ -225,8 +225,7 @@ function character_init(self, character_info)
         end
         return false
     end
-    self.virus_body = DefenseVirusBody.new()
-    self:add_defense_rule(self.virus_body)
+    self:add_aux_prop(StandardEnemyAux.new())
     local tink = Resources.load_audio("sounds/tink.ogg")
     local guard_texture = Resources.load_texture("guard_hit.png")
     self.pattern_cooldown = self.pattern_cooldown_list[self.pattern_cooldown_index]

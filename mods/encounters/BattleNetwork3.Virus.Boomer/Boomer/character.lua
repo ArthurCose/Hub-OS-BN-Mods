@@ -39,8 +39,7 @@ function character_init(self, character_info)
     --Select Boomer move direction
     self.move_direction = Direction.Up
     self.move_speed = character_info.move_speed
-    self.defense = DefenseVirusBody.new()
-    self:add_defense_rule(self.defense)
+    self:add_aux_prop(StandardEnemyAux.new())
     self.reached_edge = false
     self.has_attacked_once = false
     self.guard = true

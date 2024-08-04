@@ -37,8 +37,7 @@ function character_init(self)
     self:set_offset(0 * 0.5, 0 * 0.5)
 
     --defense rules
-    self.defense = DefenseVirusBody.new()
-    self:add_defense_rule(self.defense)
+    self:add_aux_prop(StandardEnemyAux.new())
 
     -- Initial state
     animation:set_state("IDLE")

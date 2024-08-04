@@ -250,7 +250,7 @@ local function character_init(character)
   character:load_animation(shared_folder_path .. "battle.animation")
   character:animation():set_state("INIT")
 
-  character:add_defense_rule(DefenseVirusBody.new())
+  character:add_aux_prop(StandardEnemyAux.new())
 
   character.can_move_to_func = function(tile)
     if character._attacking then

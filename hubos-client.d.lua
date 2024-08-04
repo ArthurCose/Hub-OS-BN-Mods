@@ -770,7 +770,7 @@ TrapAlert = {}
 Resources = {}
 
 ---
-DefenseVirusBody = {}
+StandardEnemyAux = {}
 
 ---
 TurnGauge = {}
@@ -2112,11 +2112,9 @@ function Poof.new(team) end
 --- Returns a new [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity) instance.
 ---
 --- The entity will play an animation, automatically deletes on completion.
----
---- Throws if the Entity doesn't pass [Alert.from()](https://docs.hubos.dev/client/lua-api/entity-api/alert)
 ---@param team? Team
 ---@return Entity
-function Entity.poof(team) end
+function Alert.new(team) end
 
 --- - `path`: file path relative to script file
 ---
@@ -3239,6 +3237,9 @@ function TurnGauge.set_max_time(time) end
 --- Sets the total elapsed frames required to end a turn to the default (512).
 function TurnGauge.reset_max_time() end
 
+--- Ends the turn, causing Card Select to appear.
+function TurnGauge.complete_turn() end
+
 --- - `priority`
 ---   - `DefensePriority.Barrier`
 ---   - `DefensePriority.Body`
@@ -3261,12 +3262,6 @@ function DefenseRule.new(defense_priority, defense_order) end
 --- Returns true if a DefenseRule with the same priority replaced this rule.
 ---@return boolean
 function DefenseRule:replaced() end
-
---- Returns a DefenseRule with `DefensePriority.Body` and `DefenseOrder.CollisionOnly`.
----
---- Filters `Hit.Flinch` and `Hit.Flash` flags during status filtering.
----@return DefenseRule
-function DefenseVirusBody.new() end
 
 --- Prevents damage and statuses from applying to the defending entity.
 function DefenseJudge:block_damage() end
@@ -3615,3 +3610,7 @@ function AuxProp:drain_health(health) end
 ---@param health number
 ---@return AuxProp
 function AuxProp:recover_health(health) end
+
+--- Returns an AuxProp that provides `Hit.Flash` immunity.
+---@return AuxProp
+function StandardEnemyAux.new() end

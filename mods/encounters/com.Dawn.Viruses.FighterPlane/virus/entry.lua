@@ -169,8 +169,7 @@ function character_init(plane)
     anim:load(animation_path)
     anim:set_state("IDLE")
     -- setup defense rules
-    plane.defense = DefenseVirusBody.new() -- lua owns this need to keep it alive
-    plane:add_defense_rule(plane.defense)
+    plane:add_aux_prop(StandardEnemyAux.new())
 
     plane:ignore_negative_tile_effects(true)
     plane:ignore_hole_tiles(true)
@@ -476,7 +475,7 @@ function character_init(plane)
     end
     plane.on_battle_start_func = noop
     plane.on_battle_end_func = noop
-    plane.on_delete_func = function (self)
+    plane.on_delete_func = function(self)
         self:default_character_delete()
     end
 end

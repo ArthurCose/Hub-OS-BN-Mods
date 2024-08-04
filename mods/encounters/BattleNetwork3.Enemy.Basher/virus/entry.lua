@@ -204,8 +204,7 @@ function character_init(basher)
         return c and c:health() > 0 and (Character.from(c) ~= nil or Player.from(c) ~= nil)
     end
     basher.cursor_table = {}
-    basher.virus_body = DefenseVirusBody.new()
-    basher:add_defense_rule(basher.virus_body)
+    basher:add_aux_prop(StandardEnemyAux.new())
     basher.can_move_to_func = function(tile) return false end
     basher.cooldown = 54
     basher.is_attack = false

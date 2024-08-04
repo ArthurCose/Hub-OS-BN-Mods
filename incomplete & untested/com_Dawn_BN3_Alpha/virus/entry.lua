@@ -554,8 +554,7 @@ local function create_devil_hand(alpha, props, texture_part, is_omega)
     if is_omega then state = "ATTACK_OMEGA" end
     spell:set_health(99999)
     spell:set_hit_props(props)
-    local virus_def = DefenseVirusBody.new()
-    spell:add_defense_rule(virus_def)
+    spell:add_aux_prop(StandardEnemyAux.new())
     spell.spell_defense = create_claw_defense(spell)
     spell:add_defense_rule(spell.spell_defense)
     spell:set_facing(alpha:facing()) --Make sure it's going to face the right way. It's going to be on the "enemy" side compared to the virus.
@@ -726,8 +725,7 @@ function character_init(alpha)
 
     local ref = alpha
 
-    alpha.def = DefenseVirusBody.new() -- lua owns this, so we need to keep it alive
-    alpha:add_defense_rule(alpha.def)
+    alpha:add_aux_prop(StandardEnemyAux.new())
     alpha.goop_defense = DefenseRule.new(DefensePriority.Last, DefenseOrder.CollisionOnly)
     alpha.goop_health = 40
     alpha.previous_goop_health = 40

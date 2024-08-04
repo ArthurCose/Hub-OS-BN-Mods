@@ -165,8 +165,7 @@ function character_init(catack)
   anim:set_state(catack._idle_state)
   anim:set_playback(Playback.Loop)
   -- setup defense rules
-  catack.defense = DefenseVirusBody.new() -- lua owns this need to keep it alive
-  catack:add_defense_rule(catack.defense)
+  catack:add_aux_prop(StandardEnemyAux.new())
 
   -- setup event hanlders
   catack.on_update_func = function(catack)
