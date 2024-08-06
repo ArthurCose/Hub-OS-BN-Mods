@@ -10,6 +10,9 @@ function status_init(status)
   defense_rule.can_block_func = function(judge)
     judge:block_damage()
   end
+  defense_rule.on_replace_func = function()
+    status:set_remaining_time(0)
+  end
   entity:add_defense_rule(defense_rule)
 
   -- handle color

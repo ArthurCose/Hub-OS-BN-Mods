@@ -19,10 +19,14 @@ function status_init(status)
         end
     end
 
+    stone_defense_rule.on_replace_func = function()
+        status:set_remaining_time(0)
+    end
+
     owner:add_defense_rule(stone_defense_rule)
 
     status.on_delete_func = function(self)
         owner:remove_defense_rule(stone_defense_rule)
-        owner:sprite():set_shader_effect(SpriteShaderEffect.Grayscale)
+        owner:sprite():set_shader_effect(SpriteShaderEffect.None)
     end
 end
