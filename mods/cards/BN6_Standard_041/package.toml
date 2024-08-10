@@ -1,0 +1,15 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.041"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "RskyHny3"
+description = "Bees attk whle hive defending"
+codes = ["A", "D", "M"]
+element = "wood"
+hit_flags = ["Impact", "Flinch"]
+damage = 20
+limit = 3
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
