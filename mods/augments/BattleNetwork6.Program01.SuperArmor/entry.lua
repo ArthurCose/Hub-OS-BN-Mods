@@ -1,9 +1,11 @@
+---@param augment Augment
 function augment_init(augment)
 	local player = augment:owner()
-	local super_armor = DefenseRule.new(DefensePriority.Last, DefenseOrder.CollisionOnly)
-	super_armor.filter_statuses_func = function(statuses)
-		statuses.flags = statuses.flags & ~Hit.Flinch
-		return statuses
+
+	local super_armor = AuxProp.new():declare_immunity(Hit.Flinch)
+	player:add_aux_prop(super_armor)
+
+	augment.on_delete_func = function()
+		player:remove_aux_prop(super_armor)
 	end
-	player:add_defense_rule(super_armor)
 end
