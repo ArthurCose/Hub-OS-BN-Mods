@@ -117,6 +117,10 @@ function status_init(status)
   local defense_rule = DefenseRule.new(DefensePriority.Last, DefenseOrder.CollisionOnly)
 
   defense_rule.filter_statuses_func = function(hit_props)
+    if hit_props.flags & Hit.Impact == 0 then
+      return hit_props
+    end
+
     if hit_props.damage > 0 then
       status:set_remaining_time(0)
     end
