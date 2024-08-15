@@ -1,0 +1,38 @@
+[package]
+category = "card"
+id = "BattleNetwork6.ProgramAdvance.019"
+name = "H-Burst"
+icon_texture_path = "icon.png"
+codes = [ "*" ]
+damage = 50
+time_freeze = false
+element = "none"
+description = "Spreads damg to adj panls"
+hit_flags = [ "Impact", "Flinch", "Paralyze" ]
+limit = 0
+card_class = "recipe"
+tags = [
+    "PROGRAM_ADVANCE",
+    "BN6",
+    "EXE6"
+]
+
+recipes = [
+  { id = "BattleNetwork6.Class01.Standard.009", codes = ["L", "M", "N"] },
+  { id = "BattleNetwork6.Class01.Standard.010", codes = ["A", "B", "C"] },
+  { id = "BattleNetwork6.Class01.Standard.011", codes = ["Q", "R", "S"] },
+]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [
+    "dev.GladeWoodsgrove.BattleNetworkHelpers"
+]
+cards = [
+  "BattleNetwork6.Class01.Standard.009",
+  "BattleNetwork6.Class01.Standard.010",
+  "BattleNetwork6.Class01.Standard.011"
+]

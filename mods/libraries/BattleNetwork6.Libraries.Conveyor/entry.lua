@@ -45,11 +45,8 @@ return function(custom_state, direction)
 
   ---@param tile Tile
   custom_state.on_update_func = function(self, tile)
-    tile:find_entities(function(entity)
-      if Character.from(entity) or Obstacle.from(entity) then
-        entity_update(entity)
-      end
-
+    tile:find_characters(function(entity)
+      entity_update(entity)
       return false
     end)
   end
