@@ -578,6 +578,14 @@ CustomTileState = {}
 ---
 --- There's a global table named `Color` with helpers for making new color tables.
 ---@class Color
+--- The alpha or transparency component of the color. Stored as a number in the range [0, 255].
+---@field a number
+--- The blue component of the color. Stored as a number in the range [0, 255].
+---@field b number
+--- The green component of the color. Stored as a number in the range [0, 255].
+---@field g number
+--- The red component of the color. Stored as a number in the range [0, 255].
+---@field r number
 
 Color = {}
 
