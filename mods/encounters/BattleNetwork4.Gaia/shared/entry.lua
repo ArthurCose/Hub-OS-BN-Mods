@@ -181,10 +181,9 @@ return function(character, gaia_props)
 
               -- apply root
               if gaia_props.root then
-                -- todo: move to hit prop when we can change status durations so this only applies for one frame
                 field:find_characters(function(other)
                   if other:team() ~= character:team() then
-                    other:apply_status(Hit.Root, 1)
+                    other:apply_status(Hit.Root, 2)
                   end
                   return false
                 end)
