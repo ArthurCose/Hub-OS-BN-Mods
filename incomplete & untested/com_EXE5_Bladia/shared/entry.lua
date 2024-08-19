@@ -263,12 +263,12 @@ function character_init(self, character_info)
                     anim:on_frame(2, function()
                         self.defense = DefenseRule.new(DefensePriority.Last, DefenseOrder.CollisionOnly)
                         self.defense.owner = self
-                        self.defense.can_block_func = function(judge, attacker, defender)
+                        self.defense.defense_func = function(defense, attacker, defender)
                             --Don't block if has the breaking flag
                             if attacker:copy_hit_props().flags & Hit.PierceGuard == Hit.PierceGuard then return end
                             --If no breaking flag then block, play the sound and animation
-                            judge:block_damage()
-                            judge:block_impact()
+                            defense:block_damage()
+                            defense:block_impact()
                             Resources.play_audio(tink)
                             local xset = math.random(10, 50)
                             local yset = math.random(35, 50)

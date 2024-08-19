@@ -5,7 +5,7 @@ function status_init(status)
 
     local stone_defense_rule = DefenseRule.new(DefensePriority.Body, DefenseOrder.CollisionOnly)
 
-    stone_defense_rule.can_block_func = function(judge, attacker, defender, hit_props)
+    stone_defense_rule.defense_func = function(defense, attacker, defender, hit_props)
         -- Only block if the damage isn't guard piercing.
         if hit_props.flags & Hit.PierceGuard ~= Hit.PierceGuard then
             local stone_bod_aux_prop = AuxProp.new()

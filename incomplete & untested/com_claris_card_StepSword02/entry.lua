@@ -6,7 +6,7 @@ function card_init(actor, props)
 	local desired_tile = actor:get_tile(actor:facing(), 2)
 	local original_team = actor:team()
 	local temp_super_armor = DefenseRule.new(DefensePriority.Last, DefenseOrder.CollisionOnly)
-	temp_super_armor.filter_statuses_func = function(statuses)
+	temp_super_armor.filter_func = function(statuses)
 		statuses.flags = statuses.flags & ~Hit.Flinch
 		return statuses
 	end

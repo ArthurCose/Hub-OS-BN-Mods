@@ -1,6 +1,6 @@
 ---@meta
 -- https://luals.github.io/wiki/annotations/
----@diagnostic disable: missing-return, unused-local
+---@diagnostic disable: missing-return, unused-local, inject-field
 
 ---@type string
 _folder_path = nil
@@ -13,20 +13,20 @@ _folder_path = nil
 
 ---@enum Shadow
 Shadow = {
-  None = {},
-  Small = {},
-  Big = {},
+  None = 0,
+  Small = 0,
+  Big = 0,
 }
 
 ---@enum Lifetime
 Lifetime = {
-  Local = {},
-  Battle = {},
-  Scene = {},
-  CardSelectOpen = {},
-  CardSelectClose = {},
-  CardSelectComplete = {},
-  Nil = {},
+  Local = 0,
+  Battle = 0,
+  Scene = 0,
+  CardSelectOpen = 0,
+  CardSelectClose = 0,
+  CardSelectComplete = 0,
+  Nil = 0,
 }
 
 --- - `Direction.None`
@@ -40,15 +40,15 @@ Lifetime = {
 --- - `Direction.DownRight`
 ---@enum Direction
 Direction = {
-  None = {},
-  Up = {},
-  Left = {},
-  Down = {},
-  Right = {},
-  UpLeft = {},
-  UpRight = {},
-  DownLeft = {},
-  DownRight = {},
+  None = 0,
+  Up = 0,
+  Left = 0,
+  Down = 0,
+  Right = 0,
+  UpLeft = 0,
+  UpRight = 0,
+  DownLeft = 0,
+  DownRight = 0,
 }
 
 --- - `Element.None`
@@ -64,91 +64,91 @@ Direction = {
 --- - `Element.Break`
 ---@enum Element
 Element = {
-  None = {},
-  Fire = {},
-  Aqua = {},
-  Elec = {},
-  Wood = {},
-  Sword = {},
-  Wind = {},
-  Cursor = {},
-  Summon = {},
-  Plus = {},
-  Break = {},
+  None = 0,
+  Fire = 0,
+  Aqua = 0,
+  Elec = 0,
+  Wood = 0,
+  Sword = 0,
+  Wind = 0,
+  Cursor = 0,
+  Summon = 0,
+  Plus = 0,
+  Break = 0,
 }
 
 ---@enum Rank
 Rank = {
-  V1 = {},
-  V2 = {},
-  V3 = {},
-  V4 = {},
-  V5 = {},
-  SP = {},
-  EX = {},
-  Rare1 = {},
-  Rare2 = {},
-  NM = {},
-  RV = {},
-  DS = {},
-  Alpha = {},
-  Beta = {},
-  Omega = {},
-  Sigma = {},
+  V1 = 0,
+  V2 = 0,
+  V3 = 0,
+  V4 = 0,
+  V5 = 0,
+  SP = 0,
+  EX = 0,
+  Rare1 = 0,
+  Rare2 = 0,
+  NM = 0,
+  RV = 0,
+  DS = 0,
+  Alpha = 0,
+  Beta = 0,
+  Omega = 0,
+  Sigma = 0,
 }
 
 ---@enum Highlight
 Highlight = {
-  None = {},
-  Flash = {},
-  Solid = {},
+  None = 0,
+  Flash = 0,
+  Solid = 0,
 }
 
 ---@enum CardClass
 CardClass = {
-  Standard = {},
-  Mega = {},
-  Giga = {},
-  Dark = {},
+  Standard = 0,
+  Mega = 0,
+  Giga = 0,
+  Dark = 0,
 }
 
 ---@enum Team
 Team = {
-  Other = {},
-  Red = {},
-  Blue = {},
+  Other = 0,
+  Red = 0,
+  Blue = 0,
 }
 
 ---
 ---@enum AudioBehavior
 AudioBehavior = {
   --- Audio will play regardless of other audio.
-  Default = {},
+  Default = 0,
   --- Audio will not play if another instance of itself is playing with NoOverlap or LoopSection.
-  NoOverlap = {},
+  NoOverlap = 0,
   --- The sound will continue playing if it was already playing. If AudioBehavior.LoopSection was applied, it will stop looping at `end_sample`
-  EndLoop = {},
+  EndLoop = 0,
 }
 
 ---@enum Playback
 Playback = {
-  Once = {},
-  Loop = {},
-  Bounce = {},
-  Reverse = {},
+  Once = 0,
+  Loop = 0,
+  Bounce = 0,
+  Reverse = 0,
 }
 
 ---@enum ColorMode
 ColorMode = {
-  Additive = {},
-  Multiply = {},
+  Additive = 0,
+  Multiply = 0,
 }
 
 ---@enum SpriteShaderEffect
 SpriteShaderEffect = {
-  None = {},
-  Grayscale = {},
-  Pixelate = {},
+  None = 0,
+  Grayscale = 0,
+  Pixelate = 0,
 }
 
 --- - `Compare.LT`
@@ -165,60 +165,60 @@ SpriteShaderEffect = {
 ---   - Greater Than Equal `>=`
 ---@enum Compare
 Compare = {
-  LT = {},
-  LE = {},
-  EQ = {},
-  NE = {},
-  GT = {},
-  GE = {},
+  LT = 0,
+  LE = 0,
+  EQ = 0,
+  NE = 0,
+  GT = 0,
+  GE = 0,
 }
 
 ---@enum DefensePriority
 DefensePriority = {
-  Barrier = {},
-  Body = {},
-  Action = {},
-  Trap = {},
-  Last = {},
+  Barrier = 0,
+  Body = 0,
+  Action = 0,
+  Trap = 0,
+  Last = 0,
 }
 
 ---@enum DefenseOrder
 DefenseOrder = {
-  Always = {},
-  CollisionOnly = {},
+  Always = 0,
+  CollisionOnly = 0,
 }
 
+---
 ---@enum Hit
-Hit = {
-  RetainIntangible = 0,
-  NoCounter = 0,
-  Drag = 0,
-  Impact = 0,
-  Flinch = 0,
-  Flash = 0,
-  Shake = 0,
-  PierceInvis = 0,
-  PierceGuard = 0,
-  PierceGround = 0,
-  Freeze = 0,
-  Paralyze = 0,
-  Root = 0,
-  Blind = 0,
-  Confuse = 0,
-}
+---@type { [string]: Hit }
+Hit = {}
+Hit.RetainIntangible = Hit._
+Hit.NoCounter = Hit._
+Hit.Drag = Hit._
+Hit.Impact = Hit._
+Hit.Flinch = Hit._
+Hit.Flash = Hit._
+Hit.Shake = Hit._
+Hit.PierceInvis = Hit._
+Hit.PierceGuard = Hit._
+Hit.PierceGround = Hit._
+Hit.Freeze = Hit._
+Hit.Paralyze = Hit._
+Hit.Root = Hit._
+Hit.Blind = Hit._
+Hit.Confuse = Hit._
 
----@type { [string]: {} }
 ---@enum TileState
-TileState = {
-  Void = {},
-  Normal = {},
-  PermaHole = {},
-  Cracked = {},
-  Broken = {},
-}
+---@type { [string]: TileState }
+TileState = {}
+TileState.Void = TileState._
+TileState.Normal = TileState._
+TileState.PermaHole = TileState._
+TileState.Cracked = TileState._
+TileState.Broken = TileState._
 
 ---@enum Input
-local _Input = { _ = {} }
+local _Input = { _ = 0 }
 
 Input = {
   Held = {
@@ -358,19 +358,23 @@ Action = {}
 --- Should return [HitProps](https://docs.hubos.dev/client/lua-api/attack-api/hit-props)
 ---
 --- The return value replaces the HitProps applied to the entity.
----@field filter_statuses_func fun(hit_props: HitProps): HitProps
+---@field filter_func fun(hit_props: HitProps): HitProps
 --- If the defense order is `DefenseOrder.Always`, this function will be called on every hit.
 ---
 --- If the defense order is `DefenseOrder.CollisionOnly`, this function will be called after intangibility is determined to not block the attack.
 ---
---- - `judge`: [DefenseJudge](https://docs.hubos.dev/client/lua-api/defense-api/defense-rule#defensejudge)
+--- - `defense`: [Defense](https://docs.hubos.dev/client/lua-api/defense-api/defense-rule#defense)
 --- - `attacker`: [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity)
 --- - `defender`: [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity)
 --- - `hit_props`: [HitProps](https://docs.hubos.dev/client/lua-api/attack-api/hit-props)
----@field can_block_func fun(judge: DefenseJudge, attacker: Entity, defender: Entity, hit_props: HitProps)
+---@field defense_func fun(defense: Defense, attacker: Entity, defender: Entity, hit_props: HitProps)
 --- Called when a DefenseRule with the same priority replaced this rule.
 ---@field on_replace_func fun()
 DefenseRule = {}
+
+--- Created for each attack resolution and passed through DefenseRule callbacks.
+---@class Defense
+Defense = {}
 
 --- See [living:set_intangible()](https://docs.hubos.dev/client/lua-api/entity-api/living#livingset_intangibleintangible-intangible_rule)
 ---@class IntangibleRule
@@ -395,10 +399,6 @@ IntangibleRule = {}
 --- AuxProps can only be tied to a single entity and can not be updated once bound. To update an AuxProp it must be removed and added again.
 ---@class AuxProp
 AuxProp = {}
-
---- Created for each attack resolution and passed through DefenseRule callbacks.
----@class DefenseJudge
-DefenseJudge = {}
 
 --- See [Status Package Documentation](https://docs.hubos.dev/client/packages#statuses) for creating new statuses.
 ---@class Status
@@ -591,6 +591,8 @@ Color = {}
 
 --- See [entity:queue_movement](https://docs.hubos.dev/client/lua-api/entity-api/entity#entityqueue_movementmovement)
 ---@class Movement
+--- Called when the movement completes or is cancelled.
+---@field on_end_func fun()
 --- Called when the movement begins processing. If the movement is cancelled before executing it won't be called.
 ---@field on_begin_func fun()
 --- The tile where the movement will complete.
@@ -631,6 +633,10 @@ Drag.None = nil
 ---@field secondary_element Element
 --- An [Element](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#element). If element or secondary_element is super effective against an entity's element, this attack will deal 2x damage.
 ---@field element Element
+--- A table that maps frame durations for status hit flags.
+---
+--- See [Hit.duration_for()](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#hitduration_forhit_flag-level)
+---@field status_durations table<Hit, number>
 --- Any of the values below, or combined using bitwise or (`|`)
 ---
 --- - `Hit.None`
@@ -683,6 +689,10 @@ DeckCard = {}
 ---@field can_charge boolean
 --- Boolean or nil, used by other mods for conditional behavior.
 ---@field can_boost boolean
+--- A table that maps frame durations for status hit flags.
+---
+--- See [Hit.duration_for()](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#hitduration_forhit_flag-level)
+---@field status_durations table<Hit, number>
 --- [Hit](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#hit_propsflags), influences generated [HitProps](https://docs.hubos.dev/client/lua-api/attack-api/hit-props)
 ---@field hit_flags number
 --- Any of the values below:
@@ -1288,14 +1298,14 @@ function Entity:remove_aux_prop(aux_prop) end
 --- Queues a status update. If the status is already applied, the remaining time will be updated to use the longer duration.
 ---
 --- Throws if the Entity doesn't pass [Living.from()](https://docs.hubos.dev/client/lua-api/entity-api/living)
----@param hit_flag number
+---@param hit_flag Hit
 ---@param duration number
 function Entity:apply_status(hit_flag, duration) end
 
 --- - `hit_flag` a single hit flag, see [HitProps](https://docs.hubos.dev/client/lua-api/attack-api/hit-props)
 ---
 --- Throws if the Entity doesn't pass [Living.from()](https://docs.hubos.dev/client/lua-api/entity-api/living)
----@param hit_flag number
+---@param hit_flag Hit
 function Entity:remove_status(hit_flag) end
 
 --- - `hit_flag` a single hit flag, see [HitProps](https://docs.hubos.dev/client/lua-api/attack-api/hit-props)
@@ -1303,7 +1313,7 @@ function Entity:remove_status(hit_flag) end
 --- Returns a number representing the amount of battle frames until the status wears off.
 ---
 --- Throws if the Entity doesn't pass [Living.from()](https://docs.hubos.dev/client/lua-api/entity-api/living)
----@param hit_flag number
+---@param hit_flag Hit
 ---@return number
 function Entity:remaining_status_time(hit_flag) end
 
@@ -1313,7 +1323,7 @@ function Entity:remaining_status_time(hit_flag) end
 --- Updates remaining time for a status already applied, or queues a new status update if isn't.
 ---
 --- Throws if the Entity doesn't pass [Living.from()](https://docs.hubos.dev/client/lua-api/entity-api/living)
----@param hit_flag number
+---@param hit_flag Hit
 ---@param duration number
 function Entity:set_remaining_status_time(hit_flag, duration) end
 
@@ -1322,7 +1332,7 @@ function Entity:set_remaining_status_time(hit_flag, duration) end
 --- The callback will be called when the `hit_flag` is applied to the entity.
 ---
 --- Throws if the Entity doesn't pass [Living.from()](https://docs.hubos.dev/client/lua-api/entity-api/living)
----@param hit_flag number
+---@param hit_flag Hit
 ---@param callback fun()
 function Entity:register_status_callback(hit_flag, callback) end
 
@@ -1466,6 +1476,18 @@ function Entity:slide_when_moving() end
 --- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
 ---@param bool? boolean
 function Entity:set_slide_when_moving(bool) end
+
+--- Returns a string, the modified `PLAYER_MOVE` animation state internally used by the engine.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@return string
+function Entity:player_move_state() end
+
+--- Returns a string, the modified `PLAYER_HIT` animation state internally used by the engine.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@return string
+function Entity:player_hit_state() end
 
 --- - `tile`: [Tile](https://docs.hubos.dev/client/lua-api/field-api/tile)
 ---
@@ -3188,6 +3210,15 @@ function HitProps.new(damage, flags, element, context, drag) end
 ---@return HitProps
 function HitProps.from_card(card_properties, context, drag) end
 
+--- -`level`: Starts at level 1, clamps to valid (defined) duration levels.
+--- Durations are specified in [Status Packages](https://docs.hubos.dev/client/packages#statuses)
+---
+--- Returns the duration in frames for a status effect at a specific level, or `1` if no durations are specified.
+---@param hit_flag Hit
+---@param level number
+---@return number
+function Hit.duration_for(hit_flag, level) end
+
 --- Returns a new Drag instance.
 ---@param direction? Direction
 ---@param distance? number
@@ -3272,20 +3303,20 @@ function DefenseRule.new(defense_priority, defense_order) end
 function DefenseRule:replaced() end
 
 --- Prevents damage and statuses from applying to the defending entity.
-function DefenseJudge:block_damage() end
+function Defense:block_damage() end
 
 --- Used to mark `Hit.Impact` as handled / retaliated.
 ---
 --- Does not strip `Hit.Impact`.
-function DefenseJudge:block_impact() end
+function Defense:block_impact() end
 
---- Returns true if `judge:block_damage()` was called.
+--- Returns true if `defense:block_damage()` was called.
 ---@return boolean
-function DefenseJudge:damage_blocked() end
+function Defense:damage_blocked() end
 
---- Returns true if `judge:block_impact()` was called.
+--- Returns true if `defense:block_impact()` was called.
 ---@return boolean
-function DefenseJudge:impact_blocked() end
+function Defense:impact_blocked() end
 
 --- Returns a new IntangibleRule.
 ---@return IntangibleRule
@@ -3562,7 +3593,7 @@ function AuxProp:declare_immunity(hit_flags) end
 --- - `duration`: number, how many game frames the effect should last
 ---
 --- Applies a status to the entity.
----@param hit_flag number
+---@param hit_flag Hit
 ---@param duration number
 ---@return AuxProp
 function AuxProp:apply_status(hit_flag, duration) end
@@ -3571,7 +3602,7 @@ function AuxProp:apply_status(hit_flag, duration) end
 --- - `hit_flag`: [Hit](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#hit_propsflags)
 ---
 --- Removes an existing status on the entity, won't affect incoming hits.
----@param hit_flag number
+---@param hit_flag Hit
 ---@return AuxProp
 function AuxProp:remove_status(hit_flag) end
 

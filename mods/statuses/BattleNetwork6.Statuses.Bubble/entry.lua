@@ -116,7 +116,7 @@ function status_init(status)
   -- defense rule to pop on hit and add Elec weakness
   local defense_rule = DefenseRule.new(DefensePriority.Last, DefenseOrder.CollisionOnly)
 
-  defense_rule.filter_statuses_func = function(hit_props)
+  defense_rule.filter_func = function(hit_props)
     if hit_props.flags & Hit.Impact == 0 then
       return hit_props
     end

@@ -52,7 +52,7 @@ function character_init(self, character_info)
     local defense_texture = Resources.load_texture("guard_hit.png")
     local defense_animation = "guard_hit.animation"
     local defense_audio = Resources.load_audio("tink.ogg")
-    self.defense_rule.can_block_func = function(judge, attacker, defender)
+    self.defense_rule.defense_func = function(defense, attacker, defender)
         local attacker_hit_props = attacker:copy_hit_props()
 
         if (self.guard) then
@@ -64,8 +64,8 @@ function character_init(self, character_info)
                 --cant block non impact hits
                 return
             end
-            judge:block_impact()
-            judge:block_damage()
+            defense:block_impact()
+            defense:block_damage()
             local artifact = Spell.new(self:team())
             artifact:set_texture(defense_texture)
             local anim = artifact:animation()

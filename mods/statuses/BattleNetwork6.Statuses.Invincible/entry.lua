@@ -7,8 +7,8 @@ function status_init(status)
 
   -- handle defense
   local defense_rule = DefenseRule.new(DefensePriority.Body, DefenseOrder.Always)
-  defense_rule.can_block_func = function(judge)
-    judge:block_damage()
+  defense_rule.defense_func = function(defense)
+    defense:block_damage()
   end
   defense_rule.on_replace_func = function()
     status:set_remaining_time(0)

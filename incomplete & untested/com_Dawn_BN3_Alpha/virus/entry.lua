@@ -86,9 +86,9 @@ local function create_claw_defense(spell)
     defense.texture = guard_hit_texture
     defense.animation = "guard_hit.animation"
     defense.audio = tink_sound
-    defense.can_block_func = function(judge, attacker, defender)
-        judge:block_damage()
-        judge:block_impact()
+    defense.defense_func = function(defense, attacker, defender)
+        defense:block_damage()
+        defense:block_impact()
         local artifact = Spell.new(spell:team())
         artifact:set_texture(defense.texture)
         local anim = artifact:animation()
@@ -803,9 +803,9 @@ function character_init(alpha)
 
     alpha.is_vulnerable = false
 
-    alpha.goop_defense.can_block_func = function(judge, attacker, defender)
+    alpha.goop_defense.defense_func = function(defense, attacker, defender)
         if not ref.is_vulnerable then
-            judge:block_damage()
+            defense:block_damage()
             local props = attacker:copy_hit_props()
             props.damage = math.min(20, props.damage)
             attacker:set_hit_props(props)

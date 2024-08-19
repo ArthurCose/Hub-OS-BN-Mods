@@ -223,20 +223,20 @@ function card_init(user, props)
 
     defense_rule = DefenseRule.new(DefensePriority.Action, DefenseOrder.CollisionOnly)
 
-    defense_rule.can_block_func = function(judge, _, _, props)
+    defense_rule.defense_func = function(defense, _, _, props)
       if props.element == Element.Fire or props.secondary_element == Element.Fire then
         -- we can't block fire, but it doesn't remove our defense
         return
       end
 
-      judge:block_damage()
+      defense:block_damage()
 
-      if judge:impact_blocked() or props.flags & Hit.Impact == 0 then
+      if defense:impact_blocked() or props.flags & Hit.Impact == 0 then
         -- non impact
         return
       end
 
-      judge:block_impact()
+      defense:block_impact()
 
       if extra_spawn_cooldown == 0 then
         extra_spawn_cooldown = 10

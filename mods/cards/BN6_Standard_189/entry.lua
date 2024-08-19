@@ -12,7 +12,7 @@ function card_init(user, props)
 
         local has_blocked = false
 
-        antidamage_rule.can_block_func = function(judge, attacker, defender)
+        antidamage_rule.defense_func = function(defense, attacker, defender)
             local hit_props = attacker:copy_hit_props()
 
             --Simulate cursor removing traps
@@ -22,7 +22,7 @@ function card_init(user, props)
             end
 
             if hit_props.damage >= 10 then
-                judge:block_damage()
+                defense:block_damage()
                 if not has_blocked then
                     Player.from(defender):queue_action(poof_user(user, props))
                     defender:remove_defense_rule(antidamage_rule)

@@ -227,7 +227,7 @@ function character_init(plane)
     end
 
     local plane_defense_rule = DefenseRule.new(DefensePriority.Last, DefenseOrder.CollisionOnly)
-    plane_defense_rule.filter_statuses_func = function(statuses)
+    plane_defense_rule.filter_func = function(statuses)
         statuses.flags = statuses.flags & ~Hit.Drag
         return statuses
     end

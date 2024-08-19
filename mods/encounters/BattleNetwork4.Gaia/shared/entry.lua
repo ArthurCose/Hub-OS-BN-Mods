@@ -64,7 +64,7 @@ return function(character, gaia_props)
   local invincible = true
 
   local iron_body_rule = DefenseRule.new(DefensePriority.Action, DefenseOrder.Always)
-  iron_body_rule.can_block_func = function(judge, _, _, hit_props)
+  iron_body_rule.defense_func = function(defense, _, _, hit_props)
     if not invincible then
       return
     end
@@ -79,19 +79,19 @@ return function(character, gaia_props)
       return
     end
 
-    judge:block_damage()
+    defense:block_damage()
 
 
-    if judge:impact_blocked() then
+    if defense:impact_blocked() then
       return
     end
 
-    judge:block_impact()
+    defense:block_impact()
 
     spawn_impact_particle(character)
   end
 
-  iron_body_rule.filter_statuses_func = function(hit_props)
+  iron_body_rule.filter_func = function(hit_props)
     hit_props.flags = hit_props.flags & ~Hit.Flash
     return hit_props
   end

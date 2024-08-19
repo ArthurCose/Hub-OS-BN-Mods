@@ -5,7 +5,5 @@ name = "Cage Status"
 description = "Not accurate, but useful for co-op"
 icon_texture_path = "icon.png"
 flag_name = "Cage"
-blocks_flags = []
-blocked_by = []
 blocks_actions = true
 blocks_mobility = true
