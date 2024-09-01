@@ -1,0 +1,40 @@
+[package]
+category = "card"
+id = "BattleNetwork3.ProgramAdvance.18"
+name = "Evil Cut"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "*" ]
+damage = 150
+time_freeze = false
+element = "none"
+secondary_element = "sword"
+description = "Step up 2 & make 4 attacks!"
+long_description = "Step forward two panels and use Step Sword, Hero Sword, and Step Cross!"
+limit = 0
+card_class = "recipe"
+tags = [
+    "PROGRAM_ADVANCE",
+    "BN3",
+    "EXE3"
+]
+
+recipes = [
+  { mix = [
+    { name = "StepSwrd" },
+    { name = "HeroSwrd" },
+    { name = "StepCros" }
+  ] },
+]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
+cards = [
+    "BattleNetwork6.Class01.Standard.080",
+    "BattleNetwork3.Class01.Standard.042",
+    "BattleNetwork3.Class02.Mega.002"
+]

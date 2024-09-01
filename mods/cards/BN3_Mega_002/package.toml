@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork3.Class02.Mega.002"
+name = "HeroSwrd"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["P"]
+damage = 180
+hit_flags = ["Impact", "Flinch", "Flash"]
+element = "none"
+secondary_element = "sword"
+description = "Legendary swrd cuts 3 sq!"
+limit = 1
+regular_allowed = false
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]

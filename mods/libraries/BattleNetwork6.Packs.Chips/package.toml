@@ -50,6 +50,10 @@ cards = [
   "BattleNetwork6.Class01.Standard.078",
   "BattleNetwork6.Class01.Standard.079",
   "BattleNetwork6.Class01.Standard.080",
+  "BattleNetwork6.Class01.Standard.084",
+  "BattleNetwork6.Class01.Standard.088",
+  "BattleNetwork6.Class01.Standard.089",
+  "BattleNetwork6.Class01.Standard.090",
   "BattleNetwork6.Class01.Standard.091",
   "BattleNetwork6.Class01.Standard.092",
   "BattleNetwork6.Class01.Standard.093",
@@ -93,5 +97,6 @@ cards = [
   "BattleNetwork6.Class01.Standard.197",
   "BattleNetwork6.Class03.Giga.004.Gregar",
   "BattleNetwork6.Class04.Secret.001",
-  "BattleNetwork6.ProgramAdvance.019"
+  "BattleNetwork6.ProgramAdvance.019",
+  "BattleNetwork6.ProgramAdvance.020"
 ]

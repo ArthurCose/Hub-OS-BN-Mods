@@ -1,0 +1,28 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.090"
+name = "TrplShot"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "J", "L", "V", "*" ]
+damage = 100
+time_freeze = false
+element = "none"
+description = "Throw 3 panels at an enemy!"
+long_description = "Attack by throwing 3 panels in front of you forward!"
+can_boost = true
+card_class = "standard"
+limit = 5
+tags = [
+    "BN6",
+    "EXE6",
+    "CRACKSHOOT_TYPE_TRIPLE"
+]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ "BattleNetwork6.Class01.Standard.088" ]

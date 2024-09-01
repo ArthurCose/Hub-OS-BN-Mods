@@ -1,0 +1,47 @@
+[package]
+category = "card"
+id = "BattleNetwork6.ProgramAdvance.020"
+name = "Life Sword"
+icon_texture_path = "icon.png"
+codes = [ "*" ]
+damage = 400
+time_freeze = false
+element = "none"
+description = ""
+hit_flags = [ "Impact", "Flash", "Flinch" ]
+limit = 0
+card_class = "recipe"
+tags = [
+    "PROGRAM_ADVANCE",
+    "BN6",
+    "EXE6"
+]
+
+recipes = [
+  {mix = [
+    { name = "Sword" },
+    { name = "WideSwrd" },
+    { name = "LongSwrd" }
+  ]},
+   {mix = [
+    { name = "Sword" },
+    { name = "WideBlde" },
+    { name = "LongBlde" }
+  ]}
+]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [
+    "BattleNetwork.Assets"
+]
+cards = [
+  "BattleNetwork6.Class01.Standard.070",
+  "BattleNetwork6.Class01.Standard.071",
+  "BattleNetwork6.Class01.Standard.072",
+  "BattleNetwork6.Class01.Standard.073",
+  "BattleNetwork6.Class01.Standard.074"
+]
