@@ -7,5 +7,6 @@ function card_init(actor, props)
 
 	-- Change name as well
 	card_properties.short_name = props.short_name;
+
 	return Action.from_card(actor, card_properties);
 end

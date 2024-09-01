@@ -1,4 +1,4 @@
-local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
+local bn_helpers = require("BattleNetwork.Assets")
 
 local attachment_animation_path = bn_helpers.fetch_animation_path("cannon_series_bn6.animation")
 local explosion_animation_path = bn_helpers.fetch_animation_path("spell_explosion.animation")

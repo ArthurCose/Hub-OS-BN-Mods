@@ -1,4 +1,4 @@
-local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
+local bn_helpers = require("BattleNetwork.Assets")
 
 local BUSTER_TEXTURE = bn_helpers.load_texture("AirShot.png")
 local AUDIO = bn_helpers.load_audio("spreader.ogg")

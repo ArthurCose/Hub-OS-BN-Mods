@@ -1,0 +1,17 @@
+[package]
+category = "library" # accepts "library" and "pack"
+id = "Battle.Helpers" # must be unique
+name = "Battle Helpers"
+description = "Tools for making battle mods easily"
+
+# this section is optional, see the Battle section for an example
+[defines]
+characters = []
+
+# this section is optional
+[dependencies]
+augments = [] # optional, list of package ids
+encounters = [] # optional, list of package ids
+cards = [] # optional, list of package ids, must also depend on defining package
+characters = [] # optional, list of package ids
+libraries = [] # optional, list of package ids

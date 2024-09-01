@@ -29,7 +29,7 @@ characters = [ ]
 [dependencies]
 characters = [ ]
 libraries = [
-    "dev.GladeWoodsgrove.BattleNetworkHelpers"
+    "BattleNetwork.Assets"
 ]
 cards = [
   "BattleNetwork6.Class01.Standard.009",

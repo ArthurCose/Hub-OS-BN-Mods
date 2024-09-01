@@ -18,5 +18,5 @@ characters = [ ]
 
 [dependencies]
 characters = [ ]
-libraries = [ "keristero.battle_helpers" ]
+libraries = [ "Battle.Helpers" ]
 cards = [ "BattleNetwork6.Class01.Standard.005" ]

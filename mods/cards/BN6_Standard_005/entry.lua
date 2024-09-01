@@ -1,5 +1,5 @@
-local battle_helpers = require("keristero.battle_helpers")
-local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
+local battle_helpers = require("Battle.Helpers")
+local bn_helpers = require("BattleNetwork.Assets")
 
 local attachment_texture = bn_helpers.load_texture("vulcan_attachment.png")
 local attachment_animation_path = bn_helpers.fetch_animation_path("vulcan_attachment.animation")

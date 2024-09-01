@@ -1,4 +1,4 @@
-local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
+local bn_helpers = require("BattleNetwork.Assets")
 
 local buster_texture = bn_helpers.load_texture("yoyo_buster.png")
 local yoyo_texture = bn_helpers.load_texture("yoyo_projectile.png")

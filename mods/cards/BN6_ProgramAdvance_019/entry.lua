@@ -1,4 +1,4 @@
-local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
+local bn_helpers = require("BattleNetwork.Assets")
 
 local BUSTER_TEXTURE = bn_helpers.load_texture("spread_buster.png")
 local BUSTER_ANIM_PATH = bn_helpers.fetch_animation_path("spread_buster.animation")

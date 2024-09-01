@@ -11,6 +11,11 @@ icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
 codes = [ "F", "G", "H", "*" ]
 hit_flags = ["Flinch", "Flash", "Impact"]
+tags = [
+    "EXE6",
+    "BN6",
+    "CHIP"
+]
 
 [defines]
 characters = [ ]
@@ -18,6 +23,6 @@ characters = [ ]
 [dependencies]
 characters = [ ]
 libraries = [
-    "dev.GladeWoodsgrove.BattleNetworkHelpers"
+    "BattleNetwork.Assets"
 ]
 cards = [ ]

@@ -12,6 +12,6 @@ limit = 5
 
 [dependencies]
 libraries = [
-  "dev.GladeWoodsgrove.BattleNetworkHelpers",
+  "BattleNetwork.Assets",
   "dev.konstinople.library.shield",
 ]

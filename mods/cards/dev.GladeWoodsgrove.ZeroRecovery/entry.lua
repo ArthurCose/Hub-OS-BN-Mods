@@ -1,4 +1,4 @@
-local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
+local bn_helpers = require("BattleNetwork.Assets")
 
 local TEXTURE = bn_helpers.load_texture("recover.png")
 local ANIMATION = bn_helpers.fetch_animation_path("recover.animation")
@@ -11,7 +11,6 @@ function card_init(user, props)
     action.on_execute_func = function(self)
         local recov = create_recov(user)
         user:field():spawn(recov, user:current_tile())
-        print(props.recover)
         user:set_health(user:health() + props.recover)
         self:end_action()
     end

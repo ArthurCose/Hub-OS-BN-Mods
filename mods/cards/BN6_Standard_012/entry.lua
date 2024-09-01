@@ -1,4 +1,4 @@
-local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
+local bn_helpers = require("BattleNetwork.Assets")
 
 local TANKCAN_TEXTURE = bn_helpers.load_texture("tank_cannon.png")
 local TANKCAN_ANIM = bn_helpers.fetch_animation_path("tank_cannon.animation")

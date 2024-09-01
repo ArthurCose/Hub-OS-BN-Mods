@@ -1,4 +1,4 @@
-local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
+local bn_helpers = require("BattleNetwork.Assets")
 local AUDIO = bn_helpers.load_audio("antidmg.ogg")
 local SHURIKEN_TEXTURE = Resources.load_texture("shuriken.png")
 local SHURIKEN_ANIMATON_PATH = "shuriken.animation"

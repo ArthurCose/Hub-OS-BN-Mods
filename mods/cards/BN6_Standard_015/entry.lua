@@ -1,4 +1,4 @@
-local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
+local bn_helpers = require("BattleNetwork.Assets")
 
 local gunhilt_texture = bn_helpers.load_texture("gun_del_sol_buster.png")
 local gunhilt_anim_path = bn_helpers.fetch_animation_path("gun_del_sol_buster.animation")

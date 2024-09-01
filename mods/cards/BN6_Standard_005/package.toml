@@ -19,7 +19,7 @@ characters = [ ]
 [dependencies]
 characters = [ ]
 libraries = [
-    "keristero.battle_helpers",
-    "dev.GladeWoodsgrove.BattleNetworkHelpers"
+    "Battle.Helpers",
+    "BattleNetwork.Assets"
 ]
 cards = [ ]

@@ -15,4 +15,4 @@ card_class = "standard"
 conceal = true
 
 [dependencies]
-libraries = ["dev.GladeWoodsgrove.BattleNetworkHelpers"]
+libraries = ["BattleNetwork.Assets"]

@@ -1,4 +1,4 @@
-local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
+local bn_helpers = require("BattleNetwork.Assets")
 
 local buster_texture = bn_helpers.load_texture("bn6_flame_buster.png")
 local buster_anim_path = bn_helpers.fetch_animation_path("bn6_flame_buster.animation")
@@ -43,16 +43,17 @@ local function create_flame_spell(user, props)
 
     spell.has_spawned = false
 
-
     spell.on_spawn_func = function(self)
         tile = self:current_tile()
+
         self.has_spawned = true
-        if tile:is_walkable() then
-            if tile:state() == TileState.Cracked then
-                tile:set_state(TileState.Broken)
-            else
-                tile:set_state(TileState.Cracked)
-            end
+
+        if not tile:is_walkable() then return end
+
+        if tile:state() == TileState.Cracked then
+            tile:set_state(TileState.Broken)
+        else
+            tile:set_state(TileState.Cracked)
         end
     end
 
@@ -84,6 +85,19 @@ local function create_flame_spell(user, props)
     return spell
 end
 
+local function despawn_flame(flame)
+    -- Do nothing if the flame never appeared.
+    if flame.has_spawned ~= true then return end
+
+    -- Change the animation and erase on completion.
+    local anim = flame:animation()
+    anim:set_playback(Playback.Once)
+    anim:set_state("1")
+    anim:apply(flame:sprite())
+    anim:on_complete(function()
+        flame:erase()
+    end)
+end
 
 
 function card_init(actor, props)
@@ -96,12 +110,10 @@ function card_init(actor, props)
     action:set_lockout(ActionLockout.new_animation())
     action.on_execute_func = function(self, user)
         local self_tile = user:current_tile()
-        local y = self_tile:y()
-        local x = self_tile:x()
-        local increment = 1
-        if user:facing() == Direction.Left then increment = -1 end
+        local facing = user:facing()
+
         for i = 1, 3, 1 do
-            local prospective_tile = field:tile_at(x + (i * increment), y)
+            local prospective_tile = self_tile:get_tile(facing, i)
             if prospective_tile and not prospective_tile:is_edge() then
                 table.insert(tile_array, prospective_tile)
             end
@@ -128,6 +140,11 @@ function card_init(actor, props)
         local origin = user:sprite():origin()
         local fire_x = buster_point.x - origin.x + 21 - Tile:width()
         local fire_y = buster_point.y - origin.y
+        print(fire_y)
+        print("===")
+        print(buster_point.y)
+        print("......")
+        print(origin.y)
         self.flame1:set_offset(fire_x, fire_y)
         self.flame2:set_offset(fire_x, fire_y)
         self.flame3:set_offset(fire_x, fire_y)
@@ -152,30 +169,12 @@ function card_init(actor, props)
                     -- queue spawn frame 9, should appear frame 10
                     field:spawn(self.flame3, tile_array[3])
                 end
-            elseif time == 32 - 7 then
-                if self.flame1.has_spawned then
-                    self.flame1:animation():set_state("1")
-                    self.flame1:animation():apply(self.flame1:sprite())
-                    self.flame1:animation():on_complete(function()
-                        self.flame1:erase()
-                    end)
-                end
-            elseif time == 33 - 7 then
-                if self.flame2.has_spawned then
-                    self.flame2:animation():set_state("1")
-                    self.flame2:animation():apply(self.flame2:sprite())
-                    self.flame2:animation():on_complete(function()
-                        self.flame2:erase()
-                    end)
-                end
-            elseif time == 34 - 7 then
-                if self.flame3.has_spawned then
-                    self.flame3:animation():set_state("1")
-                    self.flame3:animation():apply(self.flame3:sprite())
-                    self.flame3:animation():on_complete(function()
-                        self.flame3:erase()
-                    end)
-                end
+            elseif time == 25 then
+                despawn_flame(self.flame1)
+            elseif time == 26 then
+                despawn_flame(self.flame2)
+            elseif time == 27 then
+                despawn_flame(self.flame3)
             end
         end
     end
