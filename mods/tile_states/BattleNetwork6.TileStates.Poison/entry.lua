@@ -41,7 +41,7 @@ function tile_state_init(custom_state)
       return
     end
 
-    if entity:current_tile():state() == TileState.Sea then
+    if entity:current_tile():state() == TileState.Poison then
       -- no need to remove aux props
       return
     end
