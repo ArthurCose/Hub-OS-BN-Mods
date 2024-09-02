@@ -21,7 +21,7 @@ local bomb = {
 }
 
 bomb.card_init = function(user, props)
-    local action = Action.new(user, "PLAYER_THROW")
+    local action = Action.new(user, "CHARACTER_THROW")
     action:set_lockout(ActionLockout.new_animation())
     local override_frames = { { 1, 4 }, { 2, 4 }, { 3, 4 }, { 4, 4 }, { 5, 4 } }
     local frame_data = override_frames

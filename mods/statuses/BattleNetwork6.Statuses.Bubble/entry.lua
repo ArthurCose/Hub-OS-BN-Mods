@@ -68,10 +68,21 @@ function status_init(status)
   Resources.play_audio(SFX)
 
   local entity = status:owner()
+  local entity_animation = entity:animation()
   local sprite = entity:create_node()
   sprite:set_texture(TEXTURE)
   sprite:set_offset(0, -entity:height() / 2)
   sprite:set_layer(-1)
+
+  if entity_animation:has_state("CHARACTER_HIT") then
+    entity:cancel_actions()
+    entity:cancel_movement()
+
+    entity_animation:set_state("CHARACTER_HIT", { { 1, 1 } })
+    entity_animation:on_complete(function()
+      entity:set_idle()
+    end)
+  end
 
   local animator_state = "STATUS"
   local playback = Playback.Loop
@@ -80,7 +91,7 @@ function status_init(status)
   animator:apply(sprite)
 
   -- this component updates the bubble's animation and handles mashing
-  local component = entity:create_component(Lifetime.Battle)
+  local component = entity:create_component(Lifetime.ActiveBattle)
   local time = 0
   local last_added_elevation = 0
 

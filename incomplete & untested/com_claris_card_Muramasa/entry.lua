@@ -8,7 +8,7 @@ local AUDIO = Resources.load_audio("sfx.ogg")
 
 
 function card_init(actor, props)
-	local action = Action.new(actor, "PLAYER_SWORD")
+	local action = Action.new(actor, "CHARACTER_SWING")
 	action:set_lockout(ActionLockout.new_animation())
 	action.on_execute_func = function(self, user)
 		self:add_anim_action(2,

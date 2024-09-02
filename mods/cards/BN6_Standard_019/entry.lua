@@ -16,11 +16,8 @@ local function create_flame_spell(user, props)
     local animation = spell:animation()
 
     spell:set_hit_props(
-        HitProps.new(
-            props.damage,
-            props.hit_flags,
-            props.element,
-            props.secondary_element,
+        HitProps.from_card(
+            props,
             user:context(),
             Drag.None
         )
@@ -101,7 +98,7 @@ end
 
 
 function card_init(actor, props)
-    local action = Action.new(actor, "PLAYER_SHOOTING")
+    local action = Action.new(actor, "CHARACTER_SHOOT")
     local field = actor:field()
     local tile_array = {}
     local AUDIO = Resources.load_audio("sfx.ogg")

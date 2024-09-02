@@ -17,7 +17,7 @@ function card_init(actor, props)
 	if props.crackshoot_type == nil then
 		props.crackshoot_type = 1
 	end
-	local action = Action.new(actor, "PLAYER_SWORD")
+	local action = Action.new(actor, "CHARACTER_SWING")
 	local dark_query = function(o)
 		return Obstacle.from(o) ~= nil and o:health() > 0
 	end

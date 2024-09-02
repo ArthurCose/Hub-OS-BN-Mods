@@ -48,7 +48,7 @@ local function create_ghost(user)
     end
   end
 
-  local component = ghost:create_component(Lifetime.Battle)
+  local component = ghost:create_component(Lifetime.ActiveBattle)
   local sprite = ghost:sprite()
   component.on_update_func = function()
     sprite:set_color_mode(ColorMode.Multiply)

@@ -5,7 +5,7 @@ local RockCube = CubesAndBouldersLib.new_rock_cube()
 local sfx = Resources.load_audio("sfx.ogg")
 
 function card_init(user, props)
-	local action = Action.new(user, "PLAYER_IDLE")
+	local action = Action.new(user, "CHARACTER_IDLE")
 	action:set_lockout(ActionLockout.new_sequence())
 
 	action.on_execute_func = function()

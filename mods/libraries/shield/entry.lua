@@ -145,7 +145,7 @@ end
 ---@param user Entity
 ---@param impact_callback? fun()
 function Shield:create_action(user, impact_callback)
-  local action = Action.new(user, "PLAYER_IDLE")
+  local action = Action.new(user, "CHARACTER_IDLE")
   action:set_lockout(ActionLockout.new_animation())
   action:override_animation_frames({ { 1, self._duration } })
 

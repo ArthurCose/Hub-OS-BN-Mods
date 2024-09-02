@@ -1,7 +1,7 @@
 local Buster_Action = {}
 
 Buster_Action.new = function(user, charged, damage, action_user)
-    local action = Action.new(action_user, "PLAYER_SHOOTING")
+    local action = Action.new(action_user, "CHARACTER_SHOOT")
     local context = action_user:context()
     local rapid_level = user:rapid_level()
 

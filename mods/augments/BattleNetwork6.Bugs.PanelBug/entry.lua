@@ -1,7 +1,7 @@
 ---@param augment Augment
 function augment_init(augment)
   local player = augment:owner()
-  local component = player:create_component(Lifetime.Battle)
+  local component = player:create_component(Lifetime.ActiveBattle)
   ---@type Tile?
   local last_tile = nil
 

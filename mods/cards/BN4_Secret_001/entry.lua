@@ -2,7 +2,7 @@ local arrow_texture = Resources.load_texture("roll_arrow.png")
 local bow_texture = Resources.load_texture("bow.png")
 
 function card_init(player, props)
-    local action = Action.new(player, "PLAYER_SHOOTING")
+    local action = Action.new(player, "CHARACTER_SHOOT")
     action:set_lockout(ActionLockout.new_animation())
     action.on_execute_func = function(self, user)
         local facing = user:facing()
@@ -14,10 +14,8 @@ function card_init(player, props)
             spell.slide_started = false
             local direction = facing
             spell:set_hit_props(
-                HitProps.new(
-                    props.damage,
-                    props.hit_flags,
-                    props.element,
+                HitProps.from_card(
+                    props,
                     user:context(),
                     Drag.None
                 )

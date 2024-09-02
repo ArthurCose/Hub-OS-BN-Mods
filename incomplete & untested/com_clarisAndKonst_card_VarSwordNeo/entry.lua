@@ -170,7 +170,7 @@ end
 
 -- actual attacks
 function take_default_action(actor, props)
-	local action = Action.new(actor, "PLAYER_SWORD")
+	local action = Action.new(actor, "CHARACTER_SWING")
 	action:set_lockout(ActionLockout.new_animation())
 	action:add_anim_action(2, function()
 		local hilt = action:create_attachment("HILT")
@@ -213,7 +213,7 @@ function take_default_action(actor, props)
 end
 
 function take_cross_action(actor, props)
-	local action = Action.new(actor, "PLAYER_SWORD")
+	local action = Action.new(actor, "CHARACTER_SWING")
 	local field = actor:field()
 	action:set_lockout(ActionLockout.new_animation())
 	action:add_anim_action(2, function()
@@ -284,7 +284,7 @@ function take_cross_action(actor, props)
 end
 
 function take_super_action(actor, props)
-	local action = Action.new(actor, "PLAYER_SWORD")
+	local action = Action.new(actor, "CHARACTER_SWING")
 	action:set_lockout(ActionLockout.new_animation())
 	action:add_anim_action(2, function()
 		local hilt = action:create_attachment("HILT")
@@ -318,7 +318,7 @@ function take_super_action(actor, props)
 end
 
 function take_dream_action(actor, props)
-	local action = Action.new(actor, "PLAYER_SWORD")
+	local action = Action.new(actor, "CHARACTER_SWING")
 	action:set_lockout(ActionLockout.new_animation())
 	action:add_anim_action(2, function()
 		local hilt = action:create_attachment("HILT")
@@ -359,7 +359,7 @@ function take_dream_action(actor, props)
 	end)
 	actor:queue_action(action)
 	action.on_action_end_func = function(self)
-		local action2 = Action.new(actor, "PLAYER_SWORD")
+		local action2 = Action.new(actor, "CHARACTER_SWING")
 		action2:set_lockout(ActionLockout.new_animation())
 		action2:add_anim_action(3, function()
 			local hilt = action2:create_attachment("HILT")

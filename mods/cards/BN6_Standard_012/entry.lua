@@ -12,7 +12,7 @@ local CANNON = bn_helpers.load_audio("cannon.ogg")
 local frame_data = ({ { 1, 37 } })
 
 function card_init(actor, props)
-	local action = Action.new(actor, "PLAYER_SHOOTING")
+	local action = Action.new(actor, "CHARACTER_SHOOT")
 	local field = actor:field()
 	action:override_animation_frames(frame_data)
 	action:set_lockout(ActionLockout.new_animation())

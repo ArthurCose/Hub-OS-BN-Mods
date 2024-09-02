@@ -9,7 +9,7 @@ local SNAKE_FINISHED = true
 
 
 function card_init(actor, props)
-	local action = Action.new(actor, "PLAYER_IDLE")
+	local action = Action.new(actor, "CHARACTER_IDLE")
 
 	action:set_lockout(ActionLockout.new_sequence())
 	local anim_ended = false

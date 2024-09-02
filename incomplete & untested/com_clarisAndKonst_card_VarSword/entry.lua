@@ -190,7 +190,7 @@ end
 
 -- actual attacks
 function take_default_action(actor, props)
-	local action = Action.new(actor, "PLAYER_SWORD")
+	local action = Action.new(actor, "CHARACTER_SWING")
 	action:set_lockout(ActionLockout.new_animation())
 	action:add_anim_action(2, function()
 		local hilt = action:create_attachment("HILT")
@@ -233,7 +233,7 @@ function take_default_action(actor, props)
 end
 
 function take_wide_action(actor, props)
-	local action = Action.new(actor, "PLAYER_SWORD")
+	local action = Action.new(actor, "CHARACTER_SWING")
 	action:set_lockout(ActionLockout.new_animation())
 	action:add_anim_action(2, function()
 		local hilt = action:create_attachment("HILT")
@@ -276,7 +276,7 @@ function take_wide_action(actor, props)
 end
 
 function take_sonic_action(actor, props)
-	local action = Action.new(actor, "PLAYER_SWORD")
+	local action = Action.new(actor, "CHARACTER_SWING")
 	action:set_lockout(ActionLockout.new_animation())
 	action:add_anim_action(2, function()
 		local hilt = action:create_attachment("HILT")
@@ -310,7 +310,7 @@ function take_sonic_action(actor, props)
 end
 
 function take_long_action(actor, props)
-	local action = Action.new(actor, "PLAYER_SWORD")
+	local action = Action.new(actor, "CHARACTER_SWING")
 	action:set_lockout(ActionLockout.new_animation())
 	action:add_anim_action(2, function()
 		local hilt = action:create_attachment("HILT")
@@ -353,7 +353,7 @@ function take_long_action(actor, props)
 end
 
 function take_fighter_action(actor, props)
-	local action = Action.new(actor, "PLAYER_SWORD")
+	local action = Action.new(actor, "CHARACTER_SWING")
 	action:set_lockout(ActionLockout.new_animation())
 	action:add_anim_action(2, function()
 		local hilt = action:create_attachment("HILT")
@@ -396,7 +396,7 @@ function take_fighter_action(actor, props)
 end
 
 function take_dream_action(actor, props)
-	local action = Action.new(actor, "PLAYER_SWORD")
+	local action = Action.new(actor, "CHARACTER_SWING")
 	action:set_lockout(ActionLockout.new_animation())
 	action:add_anim_action(2, function()
 		local hilt = action:create_attachment("HILT")

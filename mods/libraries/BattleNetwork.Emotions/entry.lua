@@ -45,7 +45,7 @@ function Synchro:implement(player)
 
   local hit_aux_prop = AuxProp.new()
       :require_emotion(EMOTION_NAME)
-      :require_hit_flag(Hit.Impact)
+      :require_hit_flags(Hit.Impact)
       :require_hit_damage(Compare.GT, 0)
       :with_callback(function()
         player:set_emotion("DEFAULT")
@@ -69,7 +69,7 @@ function Synchro:implement(player)
   animation:set_playback(Playback.Loop)
   animation:apply(ring_sprite)
 
-  local component = player:create_component(Lifetime.Battle)
+  local component = player:create_component(Lifetime.ActiveBattle)
 
   component.on_update_func = function()
     ring_sprite:set_visible(player:emotion() == EMOTION_NAME)

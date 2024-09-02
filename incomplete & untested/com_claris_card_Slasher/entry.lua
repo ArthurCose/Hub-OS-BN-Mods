@@ -8,7 +8,7 @@ local AUDIO = Resources.load_audio("sfx.ogg")
 
 
 function card_init(actor, props)
-	local action = Action.new(actor, "PLAYER_IDLE")
+	local action = Action.new(actor, "CHARACTER_IDLE")
 	action:set_lockout(ActionLockout.new_sequence())
 	action.on_execute_func = function(self, user)
 		local step1 = self:create_step()
@@ -36,7 +36,7 @@ function card_init(actor, props)
 						local triggered = #tile_array[k]:find_characters(query) > 0
 						if triggered and not tile_array[k]:contains_entity(user) then
 							if do_once then
-								local action2 = Action.new(user, "PLAYER_SWORD")
+								local action2 = Action.new(user, "CHARACTER_SWING")
 								action2:set_lockout(ActionLockout.new_animation())
 								slashed = true
 								action2.on_execute_func = function(self, user2)

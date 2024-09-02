@@ -16,7 +16,7 @@ function status_init(status)
   entity:add_defense_rule(defense_rule)
 
   -- handle color
-  local component = entity:create_component(Lifetime.Battle)
+  local component = entity:create_component(Lifetime.ActiveBattle)
   local sprite = entity:sprite()
   local time = 16
 

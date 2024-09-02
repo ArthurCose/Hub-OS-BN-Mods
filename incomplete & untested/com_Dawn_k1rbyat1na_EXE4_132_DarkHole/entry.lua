@@ -5,7 +5,7 @@ local AUDIO_DARKHOLE = Resources.load_audio("darkhole.ogg")
 
 
 function card_init(actor, props)
-	local action = Action.new(actor, "PLAYER_IDLE")
+	local action = Action.new(actor, "CHARACTER_IDLE")
 	action:set_lockout(ActionLockout.new_sequence())
 	local TEXTURE = Resources.load_texture("Hole.png")
 	action.on_execute_func = function(self, user)

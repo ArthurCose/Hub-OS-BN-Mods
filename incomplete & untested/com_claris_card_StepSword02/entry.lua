@@ -1,5 +1,5 @@
 function card_init(actor, props)
-	local alt_action = Action.new(actor, "PLAYER_IDLE")
+	local alt_action = Action.new(actor, "CHARACTER_IDLE")
 	--Override the alternate idle action to be very fast so the user can keep playing on a failed chip use.
 	alt_action:override_animation_frames({ { 1, 1 } })
 	local original_tile = actor:current_tile()
@@ -24,7 +24,7 @@ function card_init(actor, props)
 		end
 		alt_action.on_animation_end_func = function(self)
 			actor:teleport(desired_tile, function()
-				local action = Action.new(actor, "PLAYER_SWORD")
+				local action = Action.new(actor, "CHARACTER_SWING")
 				action:set_lockout(ActionLockout.new_animation())
 				local SLASH_TEXTURE = Resources.load_texture("spell_sword_slashes.png")
 				local BLADE_TEXTURE = Resources.load_texture("spell_sword_blades.png")

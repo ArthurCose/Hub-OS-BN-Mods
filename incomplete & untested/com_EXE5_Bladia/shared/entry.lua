@@ -64,7 +64,7 @@ local function warp(self, anim_state)
         end
     end
     field:spawn(smoke, self:current_tile())
-    local c = self:create_component(Lifetime.Battle)
+    local c = self:create_component(Lifetime.ActiveBattle)
     c.duration = 60
     c.start_tile = self:current_tile()
     c.target_tile = self.warp_tile

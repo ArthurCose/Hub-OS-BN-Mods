@@ -22,7 +22,7 @@ local function vampyric_bite(shademan, anim, target, check_tile)
         action:override_animation_frames(frames)
         action:set_lockout(make_animation_lockout())
 
-        local target_action = Action.new(target, "PLAYER_HIT")
+        local target_action = Action.new(target, "CHARACTER_HIT")
         target_action:override_animation_frames(target_frames)
         target_action:set_lockout(make_animation_lockout())
 

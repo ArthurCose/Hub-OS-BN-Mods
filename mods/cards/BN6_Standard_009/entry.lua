@@ -7,7 +7,7 @@ local BURST_ANIM_PATH = bn_helpers.fetch_animation_path("spread_impact.animation
 local AUDIO = bn_helpers.load_audio("spreader.ogg")
 
 function card_init(actor, props)
-	local action = Action.new(actor, "PLAYER_SHOOTING")
+	local action = Action.new(actor, "CHARACTER_SHOOT")
 
 	action:set_lockout(ActionLockout.new_animation())
 

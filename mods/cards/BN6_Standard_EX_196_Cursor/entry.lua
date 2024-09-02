@@ -16,11 +16,11 @@ end
 
 function card_init(actor, props)
     local ParticlePoof = require("BattleNetwork.SmokePoof")
-    local action = Action.new(actor, "PLAYER_IDLE")
-	action.on_execute_func = function(self, user)
-		local fx = ParticlePoof.new()
-		fx:set_height(user:height()*2)
-		actor:field():spawn(fx, actor:current_tile())
-	end
-	return action
+    local action = Action.new(actor, "CHARACTER_IDLE")
+    action.on_execute_func = function(self, user)
+        local fx = ParticlePoof.new()
+        fx:set_height(user:height() * 2)
+        actor:field():spawn(fx, actor:current_tile())
+    end
+    return action
 end

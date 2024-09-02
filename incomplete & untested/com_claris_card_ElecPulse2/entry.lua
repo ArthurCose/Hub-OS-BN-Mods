@@ -2,7 +2,7 @@ function card_init(actor, props)
 	local TEXTURE = Resources.load_texture("elecpulse.png")
 	local FRAMES = { { 1, 11 } }
 	local audio = Resources.load_audio("sfx.ogg")
-	local action = Action.new(actor, "PLAYER_SHOOTING")
+	local action = Action.new(actor, "CHARACTER_SHOOT")
 	action:override_animation_frames(FRAMES)
 	action:set_lockout(ActionLockout.new_animation())
 
@@ -30,7 +30,7 @@ function card_init(actor, props)
 		pulse_anim:set_state("PULSE")
 		pulse_anim:apply(pulse_visual)
 		pulse_anim:set_playback(Playback.Loop)
-		self.animate_component = user:create_component(Lifetime.Battle)
+		self.animate_component = user:create_component(Lifetime.ActiveBattle)
 		self.animate_component.count = 0
 		local ref = self
 		self.animate_component.on_update_func = function(self)

@@ -1,7 +1,7 @@
 local TEXTURE = Resources.load_texture("Lightning Cross.png")
 
 function card_init(actor, props)
-	local action = Action.new(actor, "PLAYER_HIT")
+	local action = Action.new(actor, "CHARACTER_HIT")
 	local FRAME1 = { 2, 45 }
 	local long_frame = { FRAME1 }
 	action:override_animation_frames(long_frame)

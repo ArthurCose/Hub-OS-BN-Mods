@@ -3,7 +3,7 @@ local PanelGrabLib = require("BattleNetwork6.Libraries.PanelGrab")
 
 ---@param user Entity
 function card_init(user)
-	local action = Action.new(user, "PLAYER_IDLE")
+	local action = Action.new(user, "CHARACTER_IDLE")
 	action:override_animation_frames({ { 1, 1 } })
 	action:set_lockout(ActionLockout.new_sequence())
 

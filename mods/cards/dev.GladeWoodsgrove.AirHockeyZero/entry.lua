@@ -14,7 +14,7 @@ for i = 2, #frame_data do
 end
 
 function card_init(user, props)
-	local action = Action.new(user, "PLAYER_SWORD")
+	local action = Action.new(user, "CHARACTER_SWING")
 
 	action:override_animation_frames(frame_data)
 	action:set_lockout(ActionLockout.new_async(32))

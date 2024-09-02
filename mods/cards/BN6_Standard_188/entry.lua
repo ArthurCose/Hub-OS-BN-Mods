@@ -33,7 +33,7 @@ function card_init(user)
             end
 
             -- create a new action to notify opponents about AntiNavi
-            local wrapped_action = Action.new(user, "PLAYER_IDLE")
+            local wrapped_action = Action.new(user, "CHARACTER_IDLE")
 
             -- never complete, force the generated_action to kick us out
             wrapped_action:set_lockout(ActionLockout.new_sequence())

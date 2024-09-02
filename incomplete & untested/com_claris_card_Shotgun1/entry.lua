@@ -3,7 +3,7 @@ local BURST_TEXTURE = Resources.load_texture("spread_impact.png")
 local AUDIO = Resources.load_audio("sfx.ogg")
 
 function card_init(actor, props)
-	local action = Action.new(actor, "PLAYER_SHOOTING")
+	local action = Action.new(actor, "CHARACTER_SHOOT")
 
 	action:set_lockout(ActionLockout.new_animation())
 

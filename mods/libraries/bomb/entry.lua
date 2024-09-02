@@ -72,7 +72,7 @@ end
 ---@param user Entity
 ---@param spell_callback fun(tile?: Tile)
 function Bomb:create_action(user, spell_callback)
-  local action = Action.new(user, "PLAYER_THROW")
+  local action = Action.new(user, "CHARACTER_THROW")
   action:set_lockout(ActionLockout.new_animation())
   action:override_animation_frames(self._user_frame_data)
 

@@ -43,7 +43,7 @@ end
 
 ---@param user Entity
 function card_init(user)
-    local action = Action.new(user, "PLAYER_SHOOTING")
+    local action = Action.new(user, "CHARACTER_SHOOT")
     action:override_animation_frames({ { 1, 16 } })
 
     local attachment = action:create_attachment("BUSTER")

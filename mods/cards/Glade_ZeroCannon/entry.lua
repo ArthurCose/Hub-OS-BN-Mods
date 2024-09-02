@@ -11,7 +11,7 @@ local AUDIO = bn_helpers.load_audio("cannon.ogg")
 function card_init(actor, props)
 	local context = actor:context();
 
-	local action = Action.new(actor, "PLAYER_SHOOTING");
+	local action = Action.new(actor, "CHARACTER_SHOOT");
 
 	local action_frame_sequence = {
 		{ 1, 4 }, { 2, 3 },

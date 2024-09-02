@@ -2,7 +2,7 @@
 local JammedBuster = {}
 
 JammedBuster.new = function(user)
-  local card_action = Action.new(user, "PLAYER_SHOOTING")
+  local card_action = Action.new(user, "CHARACTER_SHOOT")
   local context = user:context()
   local rapid_level = user:rapid_level()
 

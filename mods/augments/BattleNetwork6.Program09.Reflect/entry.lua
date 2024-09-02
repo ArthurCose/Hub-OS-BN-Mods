@@ -22,7 +22,7 @@ function augment_init(augment)
   local entity = augment:owner()
 
   local shield_cooldown = 0
-  local component = entity:create_component(Lifetime.Battle)
+  local component = entity:create_component(Lifetime.ActiveBattle)
 
   component.on_update_func = function()
     if shield_cooldown > 0 then

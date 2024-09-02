@@ -10,8 +10,8 @@ function tile_state_init(custom_state)
 
     local aux_prop = AuxProp.new()
         :require_hit_element(Element.Aqua)
-        :apply_status(Hit.Freeze, 150)
         :with_callback(function()
+          entity:apply_status(Hit.Freeze, 150)
           entity:current_tile():set_state(TileState.Normal)
         end)
 

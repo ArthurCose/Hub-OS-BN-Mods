@@ -50,7 +50,7 @@ function create_soldier_shot(user, props, facing)
 end
 
 function card_init(actor, props)
-    local action = Action.new(actor, "PLAYER_IDLE")
+    local action = Action.new(actor, "CHARACTER_IDLE")
     action:set_lockout(ActionLockout.new_animation())
     action.on_execute_func = function(self)
         local user = action:owner()
@@ -132,7 +132,7 @@ function card_init(actor, props)
             end
         end
 
-        local colforce_handler = user:create_component(Lifetime.Battle)
+        local colforce_handler = user:create_component(Lifetime.ActiveBattle)
 
         local delay = 5
         local function tile_checker()

@@ -2,4 +2,4 @@
 category = "library"
 id = "dev.konstinople.library.sword"
 name = "Sword Library"
-description = "Simplifies sword animations.\n\nRequires PLAYER_SWORD and HILT states on players. Players can also provide a BLADE state, but it is not required."
+description = "Simplifies sword animations.\n\nRequires CHARACTER_SWING and HILT states on players. Players can also provide a BLADE state, but it is not required."

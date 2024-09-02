@@ -3,7 +3,7 @@ local FWISH = Resources.load_audio("attack.ogg")
 local TEXTURE = Resources.load_texture("snake.png")
 
 function card_init(actor, props)
-	local action = Action.new(actor, "PLAYER_IDLE")
+	local action = Action.new(actor, "CHARACTER_IDLE")
 
 	action:set_lockout(ActionLockout.new_async(300))
 
@@ -63,10 +63,8 @@ function spawn_snake(user, props)
 	spell.slide_started = false
 
 	spell:set_hit_props(
-		HitProps.new(
-			props.damage,
-			props.hit_flags,
-			props.element,
+		HitProps.from_card(
+			props,
 			user:context(),
 			Drag.None
 		)

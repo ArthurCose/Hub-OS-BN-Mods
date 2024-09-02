@@ -10,7 +10,7 @@ local yoyo_sfx = bn_helpers.load_audio("yoyo_sfx.ogg")
 local hit_sfx = bn_helpers.load_audio("hit_impact.ogg")
 
 function card_init(user, props)
-    local action = Action.new(user, "PLAYER_SHOOTING")
+    local action = Action.new(user, "CHARACTER_SHOOT")
 
     action:set_lockout(ActionLockout.new_async(60))
     local FRAMES = { { 1, 1 }, { 1, 4 }, { 1, 7 }, { 1, 2 }, { 1, 26 }, { 1, 7 }, { 1, 7 }, { 1, 7 }, { 1, 2 } }

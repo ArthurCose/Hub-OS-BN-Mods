@@ -8,7 +8,7 @@ local AUDIO = bn_helpers.load_audio("spreader.ogg")
 local HIT_AUDIO = bn_helpers.load_audio("hit_impact.ogg")
 
 function card_init(actor, props)
-	local action = Action.new(actor, "PLAYER_SHOOTING")
+	local action = Action.new(actor, "CHARACTER_SHOOT")
 
 	action:set_lockout(ActionLockout.new_animation())
 

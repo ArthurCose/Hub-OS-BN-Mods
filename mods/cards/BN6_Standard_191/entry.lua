@@ -56,7 +56,7 @@ function card_init(user)
 		end
 
 		-- create a new action to notify opponents about the trap
-		local trap_action = Action.new(user, "PLAYER_IDLE")
+		local trap_action = Action.new(user, "CHARACTER_IDLE")
 		trap_action:set_lockout(ActionLockout.new_sequence())
 
 		-- set display details

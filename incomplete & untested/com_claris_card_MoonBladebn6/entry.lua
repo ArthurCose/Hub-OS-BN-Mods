@@ -2,7 +2,7 @@ local TEXTURE = Resources.load_texture("Moonblade.png")
 local AUDIO = Resources.load_audio("sfx.ogg")
 
 function card_init(actor, props)
-	local action = Action.new(actor, "PLAYER_SWORD")
+	local action = Action.new(actor, "CHARACTER_SWING")
 
 	action:set_lockout(ActionLockout.new_animation())
 

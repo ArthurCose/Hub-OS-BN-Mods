@@ -165,7 +165,7 @@ end
 ---@param user Entity
 ---@param props CardProperties
 function card_init(user, props)
-  local action = Action.new(user, "PLAYER_SHOOTING")
+  local action = Action.new(user, "CHARACTER_SHOOT")
   action:override_animation_frames(frame_data)
 
   local cursor

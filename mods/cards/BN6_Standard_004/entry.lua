@@ -5,7 +5,7 @@ local AUDIO = bn_helpers.load_audio("spreader.ogg")
 local animation_path = bn_helpers.fetch_animation_path("airshot.animation")
 
 function card_init(actor, props)
-    local action = Action.new(actor, "PLAYER_SHOOTING");
+    local action = Action.new(actor, "CHARACTER_SHOOT");
 
     local action_frame_sequence = { { 1, 4 }, { 2, 3 }, { 3, 16 } };
 

@@ -1,5 +1,5 @@
 function card_init(actor, props)
-    local action = Action.new(actor, "PLAYER_HIT")
+    local action = Action.new(actor, "CHARACTER_HIT")
 
     action:set_lockout(ActionLockout.new_animation())
 

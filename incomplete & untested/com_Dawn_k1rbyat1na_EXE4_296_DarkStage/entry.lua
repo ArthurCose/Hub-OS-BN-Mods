@@ -45,7 +45,7 @@ function create_dark_hole(user, tile)
 end
 
 function card_init(actor, props)
-	local action = Action.new(actor, "PLAYER_IDLE")
+	local action = Action.new(actor, "CHARACTER_IDLE")
 	action:set_lockout(ActionLockout.new_sequence())
 	action.on_execute_func = function(self, user)
 		local tile_count = 0
@@ -88,7 +88,7 @@ function card_init(actor, props)
 						local dark_check = all_red_tiles[i]:find_obstacles(dark_hole_query)
 						if dark_hole ~= nil and #dark_check <= 0 then
 							all_red_tiles[i]:set_state(TileState.Normal); field:spawn(dark_hole, all_red_tiles[i]); table
-								.insert(dark_hole_list, dark_hole)
+									.insert(dark_hole_list, dark_hole)
 						end
 					end
 					for j = 1, other_tile_count, 1 do

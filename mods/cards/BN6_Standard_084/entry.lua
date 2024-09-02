@@ -15,7 +15,7 @@ local track_health = nil;
 
 function card_mutate(user, card_index)
 	if track_health == nil then
-		track_health = user:create_component(Lifetime.Battle)
+		track_health = user:create_component(Lifetime.ActiveBattle)
 		track_health._stored_value = 0
 		track_health._is_update_value = true
 		track_health.on_update_func = function(self)

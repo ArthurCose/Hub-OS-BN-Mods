@@ -1,5 +1,5 @@
 function card_init(player)
-    local action = Action.new(player, "PLAYER_IDLE");
+    local action = Action.new(player, "CHARACTER_IDLE");
     action.on_execute_func = function(self, user)
         local intangible_rule = IntangibleRule.new();
         -- 6 seconds at 60 frames per second.

@@ -15,7 +15,7 @@ local EFFECT_TEXTURE = bn_assets.load_texture("bn6_hit_effects.png")
 local EFFECT_ANIMPATH = bn_assets.fetch_animation_path("bn6_hit_effects.animation")
 
 function card_init(actor, props)
-	local action = Action.new(actor, "PLAYER_SWORD")
+	local action = Action.new(actor, "CHARACTER_SWING")
 
 	local query = function(o)
 		return Living.from(o) == nil and not o:hittable()

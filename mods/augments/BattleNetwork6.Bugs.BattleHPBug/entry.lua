@@ -1,7 +1,7 @@
 ---@param augment Augment
 function augment_init(augment)
   local player = augment:owner()
-  local component = player:create_component(Lifetime.Battle)
+  local component = player:create_component(Lifetime.ActiveBattle)
   local time = 0
 
   component.on_update_func = function()

@@ -138,7 +138,7 @@ end
 
 ---@param user Entity
 function Sword:create_action(user, spell_callback)
-  local action = Action.new(user, "PLAYER_SWORD")
+  local action = Action.new(user, "CHARACTER_SWING")
   action:set_lockout(ActionLockout.new_animation())
   action:override_animation_frames(self._user_frame_data)
 
@@ -163,7 +163,7 @@ function Sword:create_action_step(action, spell_callback)
 
   step.on_update_func = function()
     local animation = user:animation()
-    animation:set_state("PLAYER_SWORD", self._user_frame_data)
+    animation:set_state("CHARACTER_SWING", self._user_frame_data)
     animation:on_frame(self._spell_frame_index, spell_callback)
     animation:on_frame(2, function()
       local hilt = create_hilt(self, action, user)

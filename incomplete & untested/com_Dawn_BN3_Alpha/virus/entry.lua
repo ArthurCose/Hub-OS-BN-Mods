@@ -729,7 +729,7 @@ function character_init(alpha)
     alpha.goop_defense = DefenseRule.new(DefensePriority.Last, DefenseOrder.CollisionOnly)
     alpha.goop_health = 40
     alpha.previous_goop_health = 40
-    alpha.regen_component = alpha:create_component(Lifetime.Battle)
+    alpha.regen_component = alpha:create_component(Lifetime.ActiveBattle)
     alpha.regen_component.cooldown = 0
     alpha.regen_component.cooldown_max = 240
     alpha.regen_component.on_update_func = function(self)
@@ -759,7 +759,7 @@ function character_init(alpha)
 
         return false
     end
-    alpha.goop_animation = alpha:create_component(Lifetime.Battle)
+    alpha.goop_animation = alpha:create_component(Lifetime.ActiveBattle)
     alpha.goop_animation.on_update_func = function(self)
         check_state = ref.core_anim:state()
         if not ref.sigma_attack and not ref.omega_attack and not is_any(check_state, state_table) then

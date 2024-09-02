@@ -12,7 +12,7 @@ local FRAMES = { FRAME1, FRAME3, FRAME2, FRAME3, FRAME2, FRAME3, FRAME2, FRAME3,
 	FRAME2, FRAME3, FRAME2 }
 
 function card_init(actor, props)
-	local action = Action.new(actor, "PLAYER_SHOOTING")
+	local action = Action.new(actor, "CHARACTER_SHOOT")
 	action:override_animation_frames(FRAMES)
 	action:set_lockout(ActionLockout.new_animation())
 	action.on_execute_func = function(self, user)

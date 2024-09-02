@@ -13,7 +13,7 @@ local bullet_hit_animation_path = bn_helpers.fetch_animation_path("vulcan_bullet
 local gun_sfx = bn_helpers.load_audio("vulcan.ogg")
 
 function card_init(user, props)
-    local action = Action.new(user, "PLAYER_SHOOTING")
+    local action = Action.new(user, "CHARACTER_SHOOT")
     local shots_animated = 1
     local hits = 0
     if props.short_name == "Vulcan1" then
@@ -36,11 +36,8 @@ function card_init(user, props)
     local f_padding = { 1, 2 }
     local frames = { f_padding, f_padding, f_padding, f_padding, f_padding, f_padding, f_padding }
 
-    local hit_props = HitProps.new(
-        props.damage,
-        props.hit_flags,
-        props.element,
-        props.secondary_element,
+    local hit_props = HitProps.from_card(
+        props,
         user:context(),
         Drag.None
     )

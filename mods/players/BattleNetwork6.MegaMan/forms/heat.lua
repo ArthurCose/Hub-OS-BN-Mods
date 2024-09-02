@@ -85,7 +85,7 @@ local function create_flame_spell(user, props)
 end
 
 local function charged_buster(user, props)
-  local action = Action.new(user, "PLAYER_SHOOTING")
+  local action = Action.new(user, "CHARACTER_SHOOT")
   local field = user:field()
   local tile_array = {}
   local AUDIO = Resources.load_audio("sfx.ogg")
