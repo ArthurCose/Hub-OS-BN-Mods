@@ -1,7 +1,7 @@
 local AUDIO = Resources.load_audio("break.ogg")
 
 function card_init(actor, props)
-	local bn_helpers = require("dev.GladeWoodsgrove.BattleNetworkHelpers")
+	local bn_helpers = require("BattleNetwork.Assets")
 	local action = Action.new(actor, "CHARACTER_IDLE")
 	action:set_lockout(ActionLockout.new_sequence())
 	local field = actor:field()

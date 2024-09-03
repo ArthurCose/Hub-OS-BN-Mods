@@ -24,4 +24,7 @@ augments = [] # optional, list of package ids
 encounters = [] # optional, list of package ids
 cards = [] # optional, list of package ids, must also depend on defining package
 characters = [] # optional, list of package ids
-libraries = [ "BattleNetwork.Assets" ] # optional, list of package ids
+libraries = [
+    "BattleNetwork.Assets",
+    "Battle.Helpers"
+]

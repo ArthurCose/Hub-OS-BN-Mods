@@ -18,7 +18,7 @@ characters = [ ]
 [dependencies]
 characters = [ ]
 libraries = [
-    "dev.GladeWoodsgrove.BattleNetworkHelpers"
+    "BattleNetwork.Assets"
 ]
 cards = [ ]
 tile_states = [

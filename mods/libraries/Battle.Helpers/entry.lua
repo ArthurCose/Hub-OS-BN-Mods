@@ -128,4 +128,88 @@ function battle_helpers.create_effect(effect_facing, effect_texture, effect_anim
     return hitfx
 end
 
+function battle_helpers.create_lagging_ghost(user, color)
+    local spawner = Artifact.new()
+    local field = user:field()
+
+    local i = 0
+    spawner.on_update_func = function()
+        i = i + 1
+
+        if i % 4 ~= 1 then
+            return
+        end
+
+        if user:deleted() then
+            spawner:erase()
+        end
+
+        local ghost = battle_helpers.create_ghost(user, color)
+
+        local ghost_i = 0
+        ghost.on_update_func = function()
+            ghost_i = ghost_i + 1
+
+            if ghost_i == 2 then
+                ghost:erase()
+            end
+        end
+
+        local tile = spawner:current_tile()
+        field:spawn(ghost, tile)
+    end
+
+    return spawner
+end
+
+function battle_helpers.create_static_blinking_ghost(user, color)
+    local ghost = battle_helpers.create_ghost(user, color)
+    local ghost_sprite = ghost:sprite()
+
+    local i = 0
+    ghost.on_update_func = function()
+        ghost_sprite:set_visible(math.floor(i / 2) % 2 == 0)
+
+        i = i + 1
+    end
+
+    return ghost
+end
+
+function battle_helpers.create_ghost(user, color)
+    local ghost = Artifact.new()
+    ghost:set_facing(user:facing())
+
+    local queue = { { user:sprite(), ghost:sprite() } }
+    while #queue > 0 do
+        local item = queue[1]
+
+        -- swap remove to avoid shifting
+        queue[1] = queue[#queue]
+        queue[#queue] = nil
+
+        -- process
+        local user_sprite = item[1]
+        local ghost_sprite = item[2]
+
+        ghost_sprite:copy_from(user_sprite)
+        ghost_sprite:set_shader_effect(SpriteShaderEffect.Grayscale)
+        ghost_sprite:set_color_mode(ColorMode.Multiply)
+        ghost_sprite:set_color(color)
+
+        for _, user_child_sprite in ipairs(user_sprite:children()) do
+            queue[#queue + 1] = { user_child_sprite, ghost_sprite:create_node() }
+        end
+    end
+
+    local component = ghost:create_component(Lifetime.ActiveBattle)
+    local sprite = ghost:sprite()
+    component.on_update_func = function()
+        sprite:set_color_mode(ColorMode.Multiply)
+        sprite:set_color(color)
+    end
+
+    return ghost
+end
+
 return battle_helpers
