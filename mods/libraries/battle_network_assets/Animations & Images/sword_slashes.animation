@@ -41,3 +41,24 @@ frame duration="0.1" x="472" y="235" w="95" h="80" originx="31" originy="40" fli
 frame duration="0.05" x="472" y="319" w="95" h="64" originx="31" originy="24" flipx="0" flipy="0"
 frame duration="0.033" x="472" y="387" w="95" h="39" originx="31" originy="-1" flipx="0" flipy="0"
 frame duration="0.017" x="460" y="431" w="82" h="19" originx="31" originy="-20" flipx="0" flipy="0"
+
+animation state="SONIC"
+frame duration="0.05" x="146" y="5" w="47" h="75" originx="24" originy="52" flipx="0" flipy="0"
+
+animation state="DARK"
+frame duration="0.1" x="596" y="235" w="95" h="80" originx="31" originy="40" flipx="0" flipy="0"
+frame duration="0.067" x="596" y="319" w="95" h="64" originx="31" originy="40" flipx="0" flipy="0"
+frame duration="0.05" x="596" y="387" w="95" h="39" originx="31" originy="40" flipx="0" flipy="0"
+frame duration="0.033" x="596" y="430" w="82" h="19" originx="31" originy="40" flipx="0" flipy="0"
+
+animation state="SONIC_FIRE"
+frame duration="0.05" x="65" y="234" w="47" h="75" originx="24" originy="52" flipx="0" flipy="0"
+
+animation state="SONIC_ELEC"
+frame duration="0.05" x="153" y="234" w="47" h="75" originx="24" originy="52" flipx="0" flipy="0"
+
+animation state="SONIC_AQUA"
+frame duration="0.05" x="110" y="234" w="47" h="75" originx="24" originy="52" flipx="0" flipy="0"
+
+animation state="SONIC_WOOD"
+frame duration="0.05" x="153" y="234" w="47" h="75" originx="24" originy="52" flipx="0" flipy="0"

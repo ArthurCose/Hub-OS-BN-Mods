@@ -1,0 +1,22 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class04.Dark.001"
+name = "DarkSwrd"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "Z" ]
+damage = 400
+time_freeze = false
+regular_allowed = false
+element = "sword"
+description = "USE LARGE SWORD AND SLICE"
+card_class = "dark"
+limit = 1
+long_description = "A Dark Chip. Slashes 3x2 and forces forward movement."
+can_boost = false
+
+[dependencies]
+libraries = [
+    "BattleNetwork.Assets",
+    "dev.konstinople.library.sword"
+]
