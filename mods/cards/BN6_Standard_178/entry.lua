@@ -39,7 +39,7 @@ local WHITE = Color.new(255, 255, 255, 255)
 
 ---@param user Entity
 function card_init(user)
-  local action = Action.new(user)
+  local action = Action.new(user, "CHARACTER_IDLE")
   action:set_lockout(ActionLockout.new_sequence())
 
   local i = 1
