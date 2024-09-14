@@ -37,7 +37,7 @@ function card_init(user)
 			end
 
 			if column_stolen then
-				field:reclaim_column(x)
+				field:reclaim_column(x, team)
 			end
 		end
 
