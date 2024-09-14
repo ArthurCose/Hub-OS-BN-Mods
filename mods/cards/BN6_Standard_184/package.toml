@@ -1,0 +1,21 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.184.LifeAura"
+name = "LifeAura"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "U" ]
+damage = 0
+can_boost = false
+time_freeze = true
+element = "none"
+description = "Repels all attacks under200"
+long_description = "Grants the user an Aura that nullifies attacks dealing less than 200 damage."
+limit = 1
+card_class = "standard"
+regular_allowed = false
+
+[dependencies]
+libraries = [
+    "BattleNetwork.Assets"
+]

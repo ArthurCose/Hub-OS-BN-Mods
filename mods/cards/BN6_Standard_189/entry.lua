@@ -1,5 +1,5 @@
-local bn_helpers = require("BattleNetwork.Assets")
-local AUDIO = bn_helpers.load_audio("antidmg.ogg")
+local bn_assets = require("BattleNetwork.Assets")
+local AUDIO = bn_assets.load_audio("antidmg.ogg")
 local SHURIKEN_TEXTURE = Resources.load_texture("shuriken.png")
 local SHURIKEN_ANIMATON_PATH = "shuriken.animation"
 
@@ -54,7 +54,7 @@ function poof_user(user, props)
         user:enable_hitbox(false)
 
         -- spawn poof
-        local poof = bn_helpers.ParticlePoof.new()
+        local poof = bn_assets.ParticlePoof.new()
         local poof_position = user:movement_offset()
         poof_position.y = poof_position.y - user:height() / 2
         poof:set_offset(poof_position.x, poof_position.y)

@@ -178,14 +178,8 @@ function card_init(actor, props)
 	step2.on_update_func = function()
 		local attack_name = get_first_completed_recipe(matching)
 
-		local sword_action = sword:create_action(actor, function()
-			spawn_attack(actor, props, "DEFAULT", { {} })
-
-			Resources.play_audio(AUDIO)
-		end)
-
 		if attack_name == "wide" then
-			sword_action = sword:create_action(actor, function()
+			actor:queue_action(sword:create_action(actor, function()
 				spawn_attack(actor, props, "WIDE",
 					{
 						{ x = 0, y = -1 },
@@ -194,9 +188,9 @@ function card_init(actor, props)
 				)
 
 				Resources.play_audio(AUDIO)
-			end)
+			end))
 		elseif attack_name == "sonic" then
-			sword_action = sword:create_action(actor, function()
+			actor:queue_action(sword:create_action(actor, function()
 				spawn_attack(actor, props, "SONIC",
 					{
 						{ x = 0, y = -1 },
@@ -206,7 +200,7 @@ function card_init(actor, props)
 				)
 
 				Resources.play_audio(AUDIO)
-			end)
+			end))
 
 			actor:queue_action(sword:create_action(actor, function()
 				spawn_attack(actor, props, "SONIC",
@@ -242,7 +236,7 @@ function card_init(actor, props)
 				Resources.play_audio(AUDIO)
 			end)
 		elseif attack_name == "dream" then
-			sword_action = sword:create_action(actor, function()
+			actor:queue_action(sword:create_action(actor, function()
 				spawn_attack(actor, props, "DREAM",
 					{
 						{ x = 0, y = -1 },
@@ -254,18 +248,18 @@ function card_init(actor, props)
 				)
 
 				Resources.play_audio(DREAM_AUDIO)
-			end)
+			end))
 		elseif attack_name == "fighter" then
-			sword_action = sword:create_action(actor, function()
+			actor:queue_action(sword:create_action(actor, function()
 				spawn_attack(actor, props, "BIG", {
 					{ x = 1, y = 0 },
 					{ x = 2, y = 0 }
 				})
 
 				Resources.play_audio(AUDIO)
-			end)
+			end))
 		elseif attack_name == "elemental sonic" then
-			sword_action = sword:create_action(actor, function()
+			actor:queue_action(sword:create_action(actor, function()
 				props.hit_flags = props.hit_flags & ~Hit.Flash
 				spawn_attack(actor, props, "SONIC_FIRE",
 					{
@@ -276,44 +270,52 @@ function card_init(actor, props)
 				)
 
 				Resources.play_audio(AUDIO)
-				actor:queue_action(sword:create_action(actor, function()
-					spawn_attack(actor, props, "SONIC_AQUA",
-						{
-							{ x = 0, y = -1 },
-							{ x = 0, y = 1 }
-						},
-						true, false
-					)
+			end))
 
-					Resources.play_audio(AUDIO)
-				end))
-				actor:queue_action(sword:create_action(actor, function()
-					spawn_attack(actor, props, "SONIC_ELEC",
-						{
-							{ x = 0, y = -1 },
-							{ x = 0, y = 1 }
-						},
-						true, false
-					)
+			actor:queue_action(sword:create_action(actor, function()
+				spawn_attack(actor, props, "SONIC_AQUA",
+					{
+						{ x = 0, y = -1 },
+						{ x = 0, y = 1 }
+					},
+					true, false
+				)
 
-					Resources.play_audio(AUDIO)
-				end))
-				actor:queue_action(sword:create_action(actor, function()
-					props.hit_flags = props.hit_flags | Hit.Flash
-					spawn_attack(actor, props, "SONIC_WOOD",
-						{
-							{ x = 0, y = -1 },
-							{ x = 0, y = 1 }
-						},
-						true, false
-					)
+				Resources.play_audio(AUDIO)
+			end))
 
-					Resources.play_audio(AUDIO)
-				end))
-			end)
+			actor:queue_action(sword:create_action(actor, function()
+				spawn_attack(actor, props, "SONIC_ELEC",
+					{
+						{ x = 0, y = -1 },
+						{ x = 0, y = 1 }
+					},
+					true, false
+				)
+
+				Resources.play_audio(AUDIO)
+			end))
+
+			actor:queue_action(sword:create_action(actor, function()
+				props.hit_flags = props.hit_flags | Hit.Flash
+				spawn_attack(actor, props, "SONIC_WOOD",
+					{
+						{ x = 0, y = -1 },
+						{ x = 0, y = 1 }
+					},
+					true, false
+				)
+
+				Resources.play_audio(AUDIO)
+			end))
+		else
+			actor:queue_action(sword:create_action(actor, function()
+				spawn_attack(actor, props, "DEFAULT", { {} })
+
+				Resources.play_audio(AUDIO)
+			end))
 		end
 
-		actor:queue_action(sword_action)
 		step2:complete_step()
 	end
 

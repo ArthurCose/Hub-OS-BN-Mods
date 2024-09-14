@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.180.Barrier"
+name = "Barrier"
+icon_texture_path = "icon1.png"
+preview_texture_path = "preview1.png"
+codes = [ "A", "F", "R", "*" ]
+damage = 0
+time_freeze = true
+element = "none"
+description = "Nullifies\n10 HP of\ndamage"
+long_description = "Grants the user a Barrier with 10 Health."
+limit = 5
+card_class = "standard"
+regular_allowed = true
+
+[dependencies]
+libraries = [
+    "BattleNetwork.Assets"
+]
