@@ -3,6 +3,7 @@ category = "augment"
 id = "BattleNetwork6.Bugs.DamageHPBug"
 name = "DamageHPBug"
 description = "Boosts BattleHPBug when the player is flinched or dragged."
+tags = ["BUG"]
 
 [dependencies]
 augments = ["BattleNetwork6.Bugs.BattleHPBug"]

@@ -1,0 +1,16 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.178"
+name = "BugFix"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["K", "P", "Z", "*"]
+time_freeze = true
+description = "Repairs & removes bugs"
+card_class = "standard"
+limit = 1
+can_boost = false
+regular_allowed = false
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

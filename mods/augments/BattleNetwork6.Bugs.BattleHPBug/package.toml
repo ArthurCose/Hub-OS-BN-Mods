@@ -3,3 +3,4 @@ category = "augment"
 id = "BattleNetwork6.Bugs.BattleHPBug"
 name = "BattleHPBug"
 description = "Takes 1 HP with faster rates at higher levels."
+tags = ["BUG"]

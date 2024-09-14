@@ -4,3 +4,4 @@ id = "BattleNetwork6.Bugs.Custom-"
 name = "Custom-"
 description = "Removes a card slot for each augment level."
 hand_size_boost = -1
+tags = ["BUG"]
