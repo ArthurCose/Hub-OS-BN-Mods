@@ -1,6 +1,0 @@
-imagePath="D:/EverythingOpenBN/ClientServer_4_14_2021/Release_5_5_2021/resources/mods/players/searchman/mug.png"
-
-animation state="TALK"
-frame duration="0.1" x="5" y="5" w="38" h="46" originx="0" originy="0"
-frame duration="0.1" x="49" y="5" w="38" h="46" originx="0" originy="0"
-frame duration="0.1" x="93" y="5" w="38" h="46" originx="0" originy="0"

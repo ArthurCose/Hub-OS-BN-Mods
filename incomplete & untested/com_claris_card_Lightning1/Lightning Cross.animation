@@ -1,8 +1,0 @@
-imagePath="C:/Users/seven/Downloads/Lightning Cross.png"
-
-animation state="DEFAULT"
-frame duration="0.06" x="0" y="18" w="56" h="48" originx="28" originy="24"
-frame duration="0.06" x="65" y="9" w="80" h="64" originx="40" originy="32"
-frame duration="0.06" x="154" y="0" w="116" h="80" originx="58" originy="40"
-frame duration="0.06" x="280" y="4" w="108" h="72" originx="54" originy="36"
-frame duration="0.06" x="396" y="4" w="108" h="72" originx="54" originy="36"
