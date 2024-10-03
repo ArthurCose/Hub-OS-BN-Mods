@@ -90,7 +90,7 @@ function card_init(user)
 
 		trap_action.on_execute_func = function()
 			local SAMPLE_RATE = 44100
-			Resources.play_audio(PANEL_CHANGE_SFX, AudioBehavior.LoopSection(0, SAMPLE_RATE / 60 * 8))
+			Resources.play_audio(PANEL_CHANGE_SFX, AudioBehavior.LoopSection(0, SAMPLE_RATE / 60 * 4))
 
 			-- damage for the recovery amount and spawn artifact
 			opponent:set_health(opponent:health() - card.recover)

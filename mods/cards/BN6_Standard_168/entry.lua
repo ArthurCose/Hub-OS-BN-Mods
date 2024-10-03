@@ -46,7 +46,7 @@ function card_init(user)
 
 	action.on_execute_func = function()
 		local SAMPLE_RATE = 44100
-		Resources.play_audio(PANEL_CHANGE_SFX, AudioBehavior.LoopSection(0, SAMPLE_RATE / 60 * 8))
+		Resources.play_audio(PANEL_CHANGE_SFX, AudioBehavior.LoopSection(0, SAMPLE_RATE / 60 * 4))
 
 		tiles = user:field():find_tiles(function(tile)
 			return tile:team() == user:team() and tile:can_set_state(TileState.Normal)
