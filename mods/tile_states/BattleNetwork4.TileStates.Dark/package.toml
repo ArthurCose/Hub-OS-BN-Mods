@@ -1,0 +1,7 @@
+[package]
+id = "BattleNetwork4.TileStates.Dark"
+category = "tile_state"
+name = "BN4 Dark Panel"
+state_name = "Dark"
+texture_path = "Hole.png"
+animation_path = "Hole.animation"

@@ -62,6 +62,7 @@ function create_barrier(user)
 	barrier_defense_rule.on_replace_func = function()
 		aura_animate_component:eject()
 		aura_destroy_component:eject()
+		user:remove_node(barrier)
 	end
 
 	aura_destroy_component.on_update_func = function(self)

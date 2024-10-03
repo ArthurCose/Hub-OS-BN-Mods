@@ -1,0 +1,12 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Medicine.Black"
+name = "BlkCapsl"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["*"]
+damage = 0
+time_freeze = false
+element = "none"
+description = "Add an effect: Blind"
+can_boost = false

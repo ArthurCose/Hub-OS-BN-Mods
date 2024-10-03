@@ -1,4 +1,4 @@
-imagePath="C:\Users\seven\OneDrive\Desktop\Games, Engines, and Assets\0 Games\HubOS Release\client\mods\libraries\battle_network_helpers\Animations & Images\sword_slashes.png"
+imagePath="C:/Users/seven/OneDrive/Desktop/Games, Engines, and Assets/0 Games/HubOS Release/client/mods/libraries/BattleNetwork.Assets/Animations & Images/sword_slashes.png"
 
 animation state="WIDE"
 frame duration="0.05" x="146" y="5" w="47" h="75" originx="24" originy="52" flipx="0" flipy="0"
@@ -62,3 +62,18 @@ frame duration="0.05" x="110" y="234" w="47" h="75" originx="24" originy="52" fl
 
 animation state="SONIC_WOOD"
 frame duration="0.05" x="153" y="234" w="47" h="75" originx="24" originy="52" flipx="0" flipy="0"
+
+animation state="DARK_WIDE"
+frame duration="0.05" x="646" y="5" w="47" h="75" originx="24" originy="52" flipx="0" flipy="0"
+frame duration="0.05" x="696" y="5" w="30" h="58" originx="10" originy="52" flipx="0" flipy="0"
+frame duration="0.05" x="736" y="4" w="29" h="30" originx="9" originy="53" flipx="0" flipy="0"
+
+animation state="DARK_LONG"
+frame duration="0.05" x="607" y="88" w="75" h="45" originx="29" originy="36" flipx="0" flipy="0"
+frame duration="0.05" x="687" y="88" w="54" h="38" originx="7" originy="36" flipx="0" flipy="0"
+frame duration="0.05" x="746" y="87" w="54" h="22" originx="9" originy="37" flipx="0" flipy="0"
+
+animation state="DARK_DEFAULT"
+frame duration="0.05" x="644" y="142" w="39" h="25" originx="29" originy="34" flipx="0" flipy="0"
+frame duration="0.05" x="689" y="141" w="35" h="22" originx="20" originy="35" flipx="0" flipy="0"
+frame duration="0.05" x="729" y="141" w="33" h="18" originx="21" originy="35" flipx="0" flipy="0"

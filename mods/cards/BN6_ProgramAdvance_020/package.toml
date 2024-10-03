@@ -36,7 +36,8 @@ characters = [ ]
 [dependencies]
 characters = [ ]
 libraries = [
-    "BattleNetwork.Assets"
+    "BattleNetwork.Assets",
+    "dev.konstinople.library.sword"
 ]
 cards = [
   "BattleNetwork6.Class01.Standard.070",

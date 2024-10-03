@@ -1,0 +1,18 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class01.Standard.132.DarkHole"
+name = "DarkHole"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "*" ]
+damage = 0
+time_freeze = true
+element = "none"
+description = "DarkHole appears in front!"
+long_description = "Turns the tile in front of you to the Dark tile state."
+can_boost = false
+card_class = "standard"
+limit = 4
+
+[dependencies]
+tile_states = ["BattleNetwork4.TileStates.Dark"]

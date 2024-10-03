@@ -43,7 +43,6 @@ function create_barrier(user)
 		local attacker_hit_props = attacker:copy_hit_props()
 		HP = HP - attacker_hit_props.damage
 
-
 		defense:block_damage()
 
 		if attacker_hit_props.element == Element.Wind then isWind = true end
@@ -61,8 +60,10 @@ function create_barrier(user)
 	local destroy_aura = false
 
 	barrier_defense_rule.on_replace_func = function()
+		aura_fade_component:eject()
 		aura_animate_component:eject()
 		aura_destroy_component:eject()
+		user:remove_node(barrier)
 	end
 
 	aura_destroy_component.on_update_func = function(self)

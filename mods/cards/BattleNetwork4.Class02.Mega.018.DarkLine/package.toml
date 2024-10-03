@@ -1,0 +1,18 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class02.Mega.018.DarkLine"
+name = "DarkLine"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "L", "*" ]
+damage = 0
+time_freeze = true
+element = "none"
+description = "Turns all rows into Holes"
+long_description = "Every panel in the current row is changed to the Dark tile state."
+can_boost = false
+card_class = "mega"
+limit = 1
+
+[dependencies]
+tile_states = ["BattleNetwork4.TileStates.Dark"]

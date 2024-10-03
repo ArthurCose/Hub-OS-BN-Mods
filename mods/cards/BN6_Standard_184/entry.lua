@@ -69,6 +69,7 @@ function create_barrier(user)
 		barrier_animation:update()
 	end
 
+
 	local aura_fade_countdown = 3000
 	local aura_fade_component = user:create_component(Lifetime.ActiveBattle)
 	aura_fade_component.on_update_func = function(self)
@@ -132,6 +133,13 @@ function create_barrier(user)
 				end)
 			end
 		end
+	end
+
+	barrier_defense_rule.on_replace_func = function()
+		aura_fade_component:eject()
+		aura_animate_component:eject()
+		aura_destroy_component:eject()
+		user:remove_node(barrier)
 	end
 
 	user:add_defense_rule(barrier_defense_rule)

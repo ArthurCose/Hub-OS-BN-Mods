@@ -1,0 +1,21 @@
+[package]
+category = "player"
+id = "BattleNetwork5.Player.Meddy"
+name = "Meddy"
+description = "Dass what I'm talking about!"
+health = 1000
+icon_texture_path = ""
+preview_texture_path = "preview.png"
+overworld_animation_path = "overworld.animation"
+overworld_texture_path = "overworld.png"
+mugshot_texture_path = "mug.png"
+mugshot_animation_path = "mug.animation"
+
+[dependencies]
+cards = [
+    "BattleNetwork6.Class01.Standard.192",
+    "BattleNetwork5.Medicine.Yellow",
+    "BattleNetwork5.Medicine.Black",
+    "BattleNetwork5.Medicine.Pink",
+    "BattleNetwork5.Medicine.Purple"
+]
