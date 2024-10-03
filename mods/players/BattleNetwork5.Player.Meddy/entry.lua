@@ -28,7 +28,8 @@ function player_init(player)
         { range = 16, wound_range = 16, id = "BattleNetwork5.Medicine.Pink" }
     }
 
-    local function get_random_pill(number, is_wounded)
+    local function get_random_pill(is_wounded)
+        local number = math.random(1, 16)
         local pill;
         local range;
         for index, value in ipairs(pill_list) do
@@ -41,16 +42,13 @@ function player_init(player)
         return pill
     end
 
-    local button;
-
     pill_component.on_update_func = function(self)
-        if button ~= nil and button:deleted() == false then button:delete() end
         local is_wounded = false
         if player:health() <= math.floor(player:max_health() / 2) then is_wounded = true end
-        local number = math.floor(math.random(1, 16))
 
-        button = player:set_fixed_card(CardProperties.from_package(get_random_pill(number, is_wounded)))
-        -- button:use_fixed_card_cursor(false)
+        for i = 1, 2 do
+            player:set_fixed_card(CardProperties.from_package(get_random_pill(is_wounded), "*"), i)
+        end
     end
 
     -- Example of a form that makes the player very tall.
