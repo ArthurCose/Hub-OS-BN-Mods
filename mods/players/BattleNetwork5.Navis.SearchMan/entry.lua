@@ -21,7 +21,7 @@ function player_init(player)
     player.charged_attack_func = function()
         local field = player:field()
         local enemy_filter = function(character)
-            return character:team() ~= player:team()
+            return character:team() ~= player:team() and character:hittable()
         end
         --Find an enemy to attack.
         local enemy_list = field:find_nearest_characters(player, enemy_filter)

@@ -164,7 +164,7 @@ function targeting(user, field)
     local tile;
 
     local enemy_filter = function(character)
-        return character:team() ~= user:team()
+        return character:team() ~= user:team() and character:hittable()
     end
 
     local enemy_list = nil

@@ -66,13 +66,13 @@ function card_init(user)
 
 		-- prioritize nearest opponent player
 		local target = field:find_nearest_players(user, function(player)
-			return player:team() ~= user:team()
+			return player:team() ~= user:team() and player:hittable()
 		end)[1]
 
 		if not target then
 			-- switch to nearest opponent character
 			target = field:find_nearest_characters(user, function(character)
-				return character:team() ~= user:team()
+				return character:team() ~= user:team() and character:hittable()
 			end)[1]
 		end
 
