@@ -67,10 +67,16 @@ function player_init(player)
   end
 
   -- 2x sword chips
-  player.can_charge_card_func = function(card)
-    return not card.time_freeze and
+  player.calculate_card_charge_time_func = function(self, card)
+    local can_charge = not card.time_freeze and
         (card.element == Element.Sword or card.secondary_element == Element.Sword) and
         card.package_id ~= FIXED_CARD_ID
+
+    if not can_charge then
+      return
+    end
+
+    return 50
   end
 
   player.charged_card_func = function(self, card)

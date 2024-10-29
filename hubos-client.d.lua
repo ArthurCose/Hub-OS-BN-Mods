@@ -7,8 +7,6 @@ _folder_path = nil
 
 ---@class EntityId
 
----@class EntityContext
-
 ---@class Namespace
 
 ---@enum Shadow
@@ -189,6 +187,16 @@ DefenseOrder = {
   CollisionOnly = 0,
 }
 
+---@enum ActionType
+ActionType = {
+  All = 0,
+  Normal = 0,
+  Charged = 0,
+  Special = 0,
+  Card = 0,
+  Scripted = 0,
+}
+
 ---
 ---@enum Hit
 ---@type { [string]: Hit }
@@ -234,6 +242,8 @@ Input = {
     FaceRight = _Input._,
     LeftShoulder = _Input._,
     RightShoulder = _Input._,
+    Confirm = _Input._,
+    Cancel = _Input._,
     EndTurn = _Input._,
     Ready = _Input._,
   },
@@ -249,6 +259,25 @@ Input = {
     FaceRight = _Input._,
     LeftShoulder = _Input._,
     RightShoulder = _Input._,
+    Confirm = _Input._,
+    Cancel = _Input._,
+    EndTurn = _Input._,
+    Ready = _Input._,
+  },
+  Pulsed = {
+    Up = _Input._,
+    Left = _Input._,
+    Right = _Input._,
+    Down = _Input._,
+    Use = _Input._,
+    Special = _Input._,
+    Shoot = _Input._,
+    FaceLeft = _Input._,
+    FaceRight = _Input._,
+    LeftShoulder = _Input._,
+    RightShoulder = _Input._,
+    Confirm = _Input._,
+    Cancel = _Input._,
     EndTurn = _Input._,
     Ready = _Input._,
   },
@@ -262,14 +291,14 @@ Input = {
 ---@field on_collision_func fun(self: Entity, entity: Entity)
 --- Used to handle movement input, setting this overrides the default handling.
 ---@field movement_func fun(self: Entity, direction: Direction)
---- Will not be called if there's no matching `can_charge_card_func`
+--- Will not be called if there's no matching `calculate_card_charge_time_func`
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) or `nil` is expected as a return value.
 ---@field charged_card_func fun(self: Entity, card_properties: CardProperties): Action|nil
 --- Will not be called if there's no matching `charged_card_func`
 ---
---- Return true if `charged_card_func` should be called to handle this card.
----@field can_charge_card_func fun(card_properties: CardProperties): boolean
+--- Return a number representing the minimum amount of time the card use button must be held for `charged_card_func` to be called to handle this card.
+---@field calculate_card_charge_time_func fun(self: Entity, card_properties: CardProperties): number|nil
 --- Should return an [Action](https://docs.hubos.dev/client/lua-api/attack-api/action)
 ---@field special_attack_func fun(self: Entity): Action|nil
 --- Should return an [Action](https://docs.hubos.dev/client/lua-api/attack-api/action)
@@ -310,7 +339,7 @@ Input = {
 ---
 --- This function is pre-set for all entities.
 ---@field on_delete_func fun(self: Entity)
---- Called when an attack using this entity's [context](https://docs.hubos.dev/client/lua-api/entity-api/entity#entitycontext) counters another entity.
+--- Called when an attack using this entity's [context](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#attackcontext) counters another entity.
 ---
 --- Not to be confused with [living.on_countered_func](https://docs.hubos.dev/client/lua-api/entity-api/living#livingon_countered_func--functionself)
 ---@field on_counter_func fun(self: Entity)
@@ -322,9 +351,22 @@ Input = {
 ---@field on_spawn_func fun(self: Entity)
 Entity = {}
 
+--- Data tracking the attacker and [HitProps](https://docs.hubos.dev/client/lua-api/attack-api/hit-props) overrides.
+--- Obtained by [entity:context()](https://docs.hubos.dev/client/lua-api/entity-api/entity#entitycontext) and passed through HitProps.
+--- Updates when a player or character starts an attack, or when HitProps are set on an entity.
+--- By default, the context is used by the engine to pass flags related to countering, see [living:set_counterable()](https://docs.hubos.dev/client/lua-api/entity-api/living#livingset_counterableenabled).
+---@class AttackContext
+--- [Drag](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#drag)
+---@field drag Drag
+--- A table that maps frame durations for status hit flags.
 ---
----@class TextStyle
-TextStyle = {}
+--- See [Hit.duration_for()](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#hitduration_forhit_flag-level)
+---@field status_durations table<Hit, number>
+--- See [HitProps.flags](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#hit_propsflags)
+---@field flags Hit | number
+--- The EntityId of the attacking entity.
+---@field aggressor Entity
+AttackContext = {}
 
 ---
 ---@class Sprite
@@ -447,14 +489,14 @@ Field = {}
 ---
 --- Used to handle movement input.
 ---@field movement_func fun(self: Augment, direction: Direction)
---- Will not be called if there's no matching `can_charge_card_func`
+--- Will not be called if there's no matching `calculate_card_charge_time_func`
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) or `nil` is expected as a return value.
 ---@field charged_card_func fun(self: Augment, card_properties: CardProperties): Action|nil
 --- Will not be called if there's no matching `charged_card_func`
 ---
---- Return true if this augment's `charged_card_func` should be called to handle this card.
----@field can_charge_card_func fun(card_properties: CardProperties): boolean
+--- Return a number representing the minimum amount of time the card use button must be held for this augment's `charged_card_func` to be called to handle this card.
+---@field calculate_card_charge_time_func fun(self: Augment, card_properties: CardProperties): number|nil
 --- Overrides [player.special_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playerspecial_attack_func--functionself-actionnil)
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) is expected as a return value.
@@ -485,51 +527,51 @@ Augment = {}
 --- Also overrides any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment)'s override.
 ---
 --- Used to handle movement input.
----@field movement_func fun(self: PlayerForm, player: Entity)
---- Will not be called if there's no matching `can_charge_card_func`
+---@field movement_func fun(self: PlayerForm)
+--- Will not be called if there's no matching `calculate_card_charge_time_func`
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) or `nil` is expected as a return value.
 ---@field charged_card_func fun(self: PlayerForm, card_properties: CardProperties): Action|nil
 --- Will not be called if there's no matching `charged_card_func`
 ---
---- Return true if this form's `charged_card_func` should be called to handle this card.
----@field can_charge_card_func fun(card_properties: CardProperties): boolean
+--- Return a number representing the minimum amount of time the card use button must be held for this form's `charged_card_func` to be called to handle this card.
+---@field calculate_card_charge_time_func fun(self: PlayerForm, card_properties: CardProperties): number|nil
 --- Overrides [player.special_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playerspecial_attack_func--functionself-actionnil) when this form is active.
 --- Also overrides any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment)'s override.
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) is expected as a return value.
 ---
 --- Return `nil` to fallback to the player's implementation.
----@field special_attack_func fun(self: PlayerForm, player: Entity): Action|nil
+---@field special_attack_func fun(self: PlayerForm): Action|nil
 --- Overrides [player.charged_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playercharged_attack_func--functionself-actionnil) when this form is active.
 --- Also overrides any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment)'s override.
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) is expected as a return value.
 ---
 --- Return `nil` to fallback to the player's implementation.
----@field charged_attack_func fun(self: PlayerForm, player: Entity): Action|nil
+---@field charged_attack_func fun(self: PlayerForm): Action|nil
 --- Overrides [player.normal_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playernormal_attack_func--functionself-actionnil) when this form is active.
 --- Also overrides any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment)'s override.
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) is expected as a return value.
 ---
 --- Return `nil` to fallback to the player's implementation.
----@field normal_attack_func fun(self: PlayerForm, player: Entity): Action|nil
+---@field normal_attack_func fun(self: PlayerForm): Action|nil
 --- Overrides [player.calculate_charge_time_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playercalculate_charge_time_func--functionself-number) when this form is active.
 --- Also overrides any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment)'s override.
 ---
 --- A number representing the minimum Shoot button held time in game frames is expected as a return value.
----@field calculate_charge_time_func fun(self: PlayerForm, player: Entity): number
+---@field calculate_charge_time_func fun(self: PlayerForm): number
 --- Called after [player.on_update_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playernormal_attack_func--functionself-actionnil) when this form is active.
----@field on_update_func fun(self: PlayerForm, player: Entity)
+---@field on_update_func fun(self: PlayerForm)
 --- Called when the form is deactivated, the player's appearance should be reverted here.
----@field on_deactivate_func fun(self: PlayerForm, player: Entity)
+---@field on_deactivate_func fun(self: PlayerForm)
 --- Called when the form is activated, the player's appearance should be modified here.
----@field on_activate_func fun(self: PlayerForm, player: Entity)
+---@field on_activate_func fun(self: PlayerForm)
 --- Called when the form is deselected or unstaged, the player's emotions should be reverted here.
----@field on_deselect_func fun(self: PlayerForm, player: Entity)
+---@field on_deselect_func fun(self: PlayerForm)
 --- Called when the form is selected or staged, the player's emotions should be modified here.
----@field on_select_func fun(self: PlayerForm, player: Entity)
+---@field on_select_func fun(self: PlayerForm)
 PlayerForm = {}
 
 ---
@@ -575,6 +617,14 @@ ActionLockout = {}
 ---@field can_replace_func fun(self: CustomTileState, tile: Tile, tile_state: TileState): boolean
 CustomTileState = {}
 
+--- A global sprite node, used to add sprites to the HUD.
+---
+--- ```lua
+--- local sprite = Hud:create_node()
+--- ```
+---@class Hud: Sprite
+Hud = {}
+
 --- Colors are tables with an `r`, `g`, `b`, and `a` key, with each value set to a 0-255 integer.
 ---
 --- There's a global table named `Color` with helpers for making new color tables.
@@ -589,6 +639,34 @@ CustomTileState = {}
 ---@field r number
 
 Color = {}
+
+---
+---@class TextStyle
+--- Number or nil. Additional vertical space given to new lines. Line height is calculated using the height of either the space character or `A`, added to the line spacing.
+---
+--- When unset the text style will use the engine default value of 1.
+---@field line_spacing number|nil
+--- Number or nil. Additional horizontal space between glyphs.
+---
+--- When unset the text style will use the engine default value of 1.
+---@field letter_spacing number|nil
+--- Number or nil. The minimum amount of space allocated for a single glyph for resolving glyph placement.
+---
+--- When unset the text style will use the engine default value of 0.
+---@field min_glyph_width number|nil
+--- Boolean or nil. When set to true, text created using this text style will use the width of either the space character or `A` to decide how much width will be allocated for a single glyph, instead of the width of the glyph itself.
+---@field monospace boolean|nil
+
+TextStyle = {}
+
+---
+---@class TextMetrics
+--- The height of the text.
+---@field height number
+--- The width of the text.
+---@field width number
+
+TextMetrics = {}
 
 --- See [entity:queue_movement](https://docs.hubos.dev/client/lua-api/entity-api/entity#entityqueue_movementmovement)
 ---@class Movement
@@ -626,8 +704,8 @@ Drag.None = nil
 
 --- See [spell:set_hit_props()](https://docs.hubos.dev/client/lua-api/entity-api/spell#spellset_hit_propshit_props)
 ---@class HitProps
---- Context obtained by [entity:context()](https://docs.hubos.dev/client/lua-api/entity-api/entity#entitycontext)
----@field context EntityContext
+--- The [AttackContext](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#attackcontext) obtained by [entity:context()](https://docs.hubos.dev/client/lua-api/entity-api/entity#entitycontext)
+---@field context AttackContext
 --- [Drag](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#drag)
 ---@field drag Drag
 --- An [Element](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#element). If element or secondary_element is super effective against an entity's element, this attack will deal 2x damage.
@@ -1083,7 +1161,7 @@ function Entity:create_component(lifetime) end
 --- Countering an attack can be achieved by hitting an enemy with [HitProps](https://docs.hubos.dev/client/lua-api/attack-api/hit-props) containing context obtained during [card_init](https://docs.hubos.dev/client/packages#cards) or within [action.on_execute_func](https://docs.hubos.dev/client/lua-api/attack-api/action#actionon_execute_func--functionself-owner)
 ---
 --- Make sure to obtain context in card_init and not within a callback for countering.
----@return EntityContext
+---@return AttackContext
 function Entity:context() end
 
 --- Returns true if the entity has an executing action or pending actions.
@@ -1248,7 +1326,7 @@ function Entity:enable_hitbox(enabled) end
 ---@return boolean
 function Entity:counterable() end
 
---- Allows the entity to be countered when hit by an attack with a [context](https://docs.hubos.dev/client/lua-api/entity-api/entity#entitycontext) created in [card_init](https://docs.hubos.dev/client/packages/#cards)
+--- Allows the entity to be countered when hit by an attack with a [context](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#attackcontext) created in [card_init](https://docs.hubos.dev/client/packages/#cards)
 ---
 --- Throws if the Entity doesn't pass [Living.from()](https://docs.hubos.dev/client/lua-api/entity-api/living)
 ---@param enabled? boolean
@@ -1418,6 +1496,7 @@ function Entity:load_emotions_animation(path) end
 --- - `input_query`
 ---   - `Input.Held.*`
 ---   - `Input.Pressed.*`
+---   - `Input.Pulsed.*`
 ---     - `Left`
 ---     - `Right`
 ---     - `Down`
@@ -1428,6 +1507,8 @@ function Entity:load_emotions_animation(path) end
 ---     - `FaceRight`
 ---     - `LeftShoulder`
 ---     - `RightShoulder`
+---     - `Confirm`
+---     - `Cancel`
 ---     - `EndTurn`
 ---     - `Ready`
 ---
@@ -1529,9 +1610,7 @@ function Entity:remove_deck_card(index) end
 --- - `index`: number, 1 is the first card in the deck.
 --- - `deck_card`: [DeckCard](https://docs.hubos.dev/client/lua-api/attack-api/cards#deckcard)
 ---
---- Removes a card from the player's deck.
----
---- Any [StagedItem](https://docs.hubos.dev/client/lua-api/entity-api/player#stageditem) referencing this card will be dropped.
+--- Inserts a card into the player's deck.
 ---
 --- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
 ---@param index number
@@ -1646,14 +1725,15 @@ function Entity:card_select_restriction() end
 ---@param bool boolean
 function Entity:set_card_selection_blocked(bool) end
 
---- Dedicates the last card slot in Card Select to the specified card. Internally defined as a [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton).
+--- Dedicates a button slot in Card Select to the specified card. Internally defined as a [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton).
 ---
 --- Returns [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton)
 ---
 --- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
 ---@param card_properties CardProperties
+---@param card_button_slot? number
 ---@return CardSelectButton
-function Entity:set_fixed_card(card_properties) end
+function Entity:set_fixed_card(card_properties, card_button_slot) end
 
 --- Creates a button embedded in the end of the card list in Card Select.
 ---
@@ -1661,8 +1741,9 @@ function Entity:set_fixed_card(card_properties) end
 ---
 --- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
 ---@param slot_count number
+---@param card_button_slot? number
 ---@return CardSelectButton
-function Entity:create_card_button(slot_count) end
+function Entity:create_card_button(slot_count, card_button_slot) end
 
 --- Creates a button under the "Confirm" button in Card Select.
 ---
@@ -1800,21 +1881,23 @@ function PlayerForm:set_mugshot_texture(path) end
 ---@param description? string
 function PlayerForm:set_description(description) end
 
---- Dedicates the last card slot in Card Select to the specified card. Internally defined as a [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton).
+--- Dedicates a button slot in Card Select to the specified card. Internally defined as a [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton).
 --- Overrides the card button created on the Player and any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment).
 ---
 --- Returns [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton)
 ---@param card_properties CardProperties
+---@param card_button_slot? number
 ---@return CardSelectButton
-function PlayerForm:set_fixed_card(card_properties) end
+function PlayerForm:set_fixed_card(card_properties, card_button_slot) end
 
 --- Creates a button embedded in the end of the card list in Card Select.
---- Overrides the card button created on the Player and any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment).
+--- Overrides card buttons created on the Player and any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment).
 ---
 --- Returns [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton)
 ---@param slot_count number
+---@param card_button_slot? number
 ---@return CardSelectButton
-function PlayerForm:create_card_button(slot_count) end
+function PlayerForm:create_card_button(slot_count, card_button_slot) end
 
 --- Creates a button under the "Confirm" button in Card Select.
 --- Overrides the special button created on the Player and any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment).
@@ -1842,21 +1925,23 @@ function Augment:owner() end
 ---@return boolean
 function Augment:has_tag(tag) end
 
---- Dedicates the last card slot in Card Select to the specified card. Internally defined as a [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton).
+--- Dedicates a button slot in Card Select to the specified card. Internally defined as a [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton).
 --- Overrides the card button created on the Player.
 ---
 --- Returns [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton)
 ---@param card_properties CardProperties
+---@param card_button_slot? number
 ---@return CardSelectButton
-function Augment:set_fixed_card(card_properties) end
+function Augment:set_fixed_card(card_properties, card_button_slot) end
 
 --- Creates a button embedded in the end of the card list in Card Select.
---- Overrides the card button created on the Player.
+--- Overrides card buttons created on the Player.
 ---
 --- Returns [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton)
 ---@param slot_count number
+---@param card_button_slot? number
 ---@return CardSelectButton
-function Augment:create_card_button(slot_count) end
+function Augment:create_card_button(slot_count, card_button_slot) end
 
 --- Creates a button under the "Confirm" button in Card Select.
 --- Overrides the special button created on the Player.
@@ -2559,6 +2644,19 @@ function Color.mix(color_a, color_b, progress) end
 ---@return TextStyle
 function TextStyle.new(font_name, texture_path, animation_path) end
 
+--- Returns TextStyle, see [TextStyle.new()](https://docs.hubos.dev/client/lua-api/resource-api/sprite#textstylenewfont_name-texture_path-animation_path)
+---@param font_name string
+---@param texture_path? string
+---@param animation_path? string
+---@return TextStyle
+function TextStyle.new_monospace(font_name, texture_path, animation_path) end
+
+--- Returns TextMetrics
+---@param text_style TextStyle
+---@param text string
+---@return TextMetrics
+function TextStyle.measure(text_style, text) end
+
 --- Returns a reference to the sync node's sprite.
 ---@return Sprite
 function SyncNode:sprite() end
@@ -3003,6 +3101,10 @@ function Encounter:set_background(texture_path, animation_path, vel_x, vel_y) en
 ---@param tile_height number
 function Encounter:set_panels(texture_paths, animation_path, tile_width, tile_height) end
 
+--- Sets the initial battle music. Use [Resources.play_music()](https://docs.hubos.dev/client/lua-api/resource-api/resources#resourcesplay_musicpath-loops) to change the music in the middle of the battle
+---@param path string
+function Encounter:set_music(path) end
+
 --- Returns [Field](https://docs.hubos.dev/client/lua-api/field-api/field)
 ---@return Field
 function Encounter:field() end
@@ -3170,7 +3272,7 @@ function Buster.new(player, charged, damage) end
 --- - `flags`: See [flags](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#hit_propsflags)
 --- - `element`: [Element](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#element)
 --- - `secondary_element`: [Element](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#element)
---- - `context`: The value obtained by [entity:context()](https://docs.hubos.dev/client/lua-api/entity-api/entity#entitycontext)
+--- - `context`: An [AttackContext](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#attackcontext) (obtained by [entity:context()](https://docs.hubos.dev/client/lua-api/entity-api/entity#entitycontext))
 --- - `drag`: [Drag](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#drag) defaults to Drag.None
 ---
 --- Returns a new HitProps instance.
@@ -3178,7 +3280,7 @@ function Buster.new(player, charged, damage) end
 ---@param flags Hit | number
 ---@param element Element
 ---@param secondary_element Element
----@param context? EntityContext
+---@param context? AttackContext
 ---@param drag? Drag
 ---@return HitProps
 ---@diagnostic disable-next-line: duplicate-set-field
@@ -3188,7 +3290,7 @@ function HitProps.new(damage, flags, element, secondary_element, context, drag) 
 ---@param damage number
 ---@param flags Hit | number
 ---@param element Element
----@param context? EntityContext
+---@param context? AttackContext
 ---@param drag? Drag
 ---@return HitProps
 ---@diagnostic disable-next-line: duplicate-set-field
@@ -3196,7 +3298,7 @@ function HitProps.new(damage, flags, element, context, drag) end
 
 --- Returns a new HitProps instance.
 ---@param card_properties CardProperties
----@param context? EntityContext
+---@param context? AttackContext
 ---@param drag? Drag
 ---@return HitProps
 function HitProps.from_card(card_properties, context, drag) end
@@ -3215,6 +3317,12 @@ function Hit.duration_for(hit_flag, level) end
 ---@return number
 function Hit.mutual_exclusions_for(hit_flag) end
 
+--- Returns true if `element_a` is weak to `element_b`.
+---@param element_a Element
+---@param element_b Element
+---@return boolean
+function Element.is_weak_to(element_a, element_b) end
+
 --- Returns a new Drag instance.
 ---@param direction? Direction
 ---@param distance? number
@@ -3231,6 +3339,11 @@ function CardProperties.new() end
 ---@return CardProperties
 function CardProperties.from_package(package_id, code) end
 
+--- Returns a string, usable anywhere a texture is needed.
+---@param card_properties CardProperties
+---@return string
+function CardProperties.icon_texture(card_properties) end
+
 --- Returns an [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity), represents the entity affected by the status.
 ---@return Entity
 function Status:owner() end
@@ -3242,6 +3355,14 @@ function Status:remaining_time() end
 --- - `duration` number, how many battle frames the effect should last.
 ---@param duration number
 function Status:set_remaining_time(duration) end
+
+--- Returns true if the turn gauge is visible, automatically progressing, and allows the turn to end.
+---@return boolean
+function TurnGauge.enabled() end
+
+--- Hides the turn gauge, disables automatic progression, and prevents the turn from ending when disabled.
+---@param enabled boolean
+function TurnGauge.set_enabled(enabled) end
 
 --- Returns true if time is frozen from [time freeze](https://docs.hubos.dev/client/lua-api/attack-api/cards#card_propertiestime_freeze) [Actions](https://docs.hubos.dev/client/lua-api/attack-api/action).
 ---@return boolean
@@ -3272,8 +3393,16 @@ function TurnGauge.set_max_time(time) end
 --- Sets the total elapsed frames required to end a turn to the default (512).
 function TurnGauge.reset_max_time() end
 
+--- Returns a number, represents the current turn number. Starts at 0 during the intro, increments when Card Select opens.
+---@return number
+function TurnGauge.current_turn() end
+
 --- Ends the turn, causing Card Select to appear.
 function TurnGauge.complete_turn() end
+
+--- Returns a number or nil, modified through [encounter:set_turn_limit()](https://docs.hubos.dev/client/lua-api/field-api/encounter#encounterset_turn_limitlimit).
+---@return number
+function TurnGauge.turn_limit() end
 
 --- - `priority`
 ---   - `DefensePriority.Barrier`
@@ -3318,7 +3447,7 @@ function Defense:impact_blocked() end
 ---@return IntangibleRule
 function IntangibleRule.new() end
 
---- Returns a new AuxProp. Attach to an entity with [living:add_aux_prop()](https://docs.hubos.dev/client/lua-api/entity-api/living#livingadd_aux_propaux_prop) and remove with [living:add_aux_prop()](https://docs.hubos.dev/client/lua-api/entity-api/living#livingremove_aux_propaux_prop)
+--- Returns a new AuxProp. Attach to an entity with [living:add_aux_prop()](https://docs.hubos.dev/client/lua-api/entity-api/living#livingadd_aux_propaux_prop) and remove with [living:remove_aux_prop()](https://docs.hubos.dev/client/lua-api/entity-api/living#livingremove_aux_propaux_prop)
 ---
 --- All AuxProp methods return the AuxProp for chaining.
 ---@return AuxProp
@@ -3423,6 +3552,21 @@ function AuxProp:require_element(element) end
 ---@return AuxProp
 function AuxProp:require_negative_tile_interaction() end
 
+--- - Body Priority
+--- - `action_types`
+---   - `ActionType.All`: All attack types.
+---   - `ActionType.Normal`: A player's normal attack.
+---   - `ActionType.Charged`: A player's charged attack.
+---   - `ActionType.Special`: A player's special attack.
+---   - `ActionType.Card`: An attack generated by a card.
+---   - `ActionType.Scripted`: A scripted attack.
+---
+--- If the effect is Modify Context, the `action_types` filter will be tested against the generated action.
+--- Otherwise the filter will be tested against any active action on the associated entity.
+---@param action_types? number
+---@return AuxProp
+function AuxProp:require_action(action_types) end
+
 --- - Body priority
 --- - `emotion`: string
 ---
@@ -3433,9 +3577,41 @@ function AuxProp:require_emotion(emotion) end
 
 --- - Body priority
 ---
+--- The AuxProp will check a [Player](https://docs.hubos.dev/client/lua-api/entity-api/player)'s held attack charge time against the provided time, the player's charge time will be capped at their max charge time.
+---@param compare Compare
+---@param time number
+---@return AuxProp
+function AuxProp:require_charge_time(compare, time) end
+
+--- - Body priority
+---
+--- The AuxProp will check a [Player](https://docs.hubos.dev/client/lua-api/entity-api/player)'s held card charge time against the provided time, the player's charge time will be capped at their max charge time.
+---@param compare Compare
+---@param time number
+---@return AuxProp
+function AuxProp:require_card_charge_time(compare, time) end
+
+--- - Body priority
+---
 --- The AuxProp will require a [Player](https://docs.hubos.dev/client/lua-api/entity-api/player) to be holding a fully [charged](https://docs.hubos.dev/client/lua-api/entity-api/player#playercan_charge_card_func--functioncard_properties-boolean) card.
 ---@return AuxProp
 function AuxProp:require_charged_card() end
+
+--- - Body priority
+--- - `element`: [Element](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#element)
+---
+--- The AuxProp will check the primary element on the next card for the attached entity.
+---@param element Element
+---@return AuxProp
+function AuxProp:require_card_primary_element(element) end
+
+--- - Body priority
+--- - `element`: [Element](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#element)
+---
+--- The AuxProp will check the next card on the attached entity for a failed match with the primary element.
+---@param element Element
+---@return AuxProp
+function AuxProp:require_card_not_primary_element(element) end
 
 --- - Body priority
 --- - `element`: [Element](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#element)
@@ -3506,6 +3682,14 @@ function AuxProp:require_card_code(code) end
 function AuxProp:require_card_class(card_class) end
 
 --- - Body priority
+--- - `card_class`: [CardClass](https://docs.hubos.dev/client/lua-api/attack-api/cards#card_propertiescard_class)
+---
+--- The AuxProp will check the next card on the attached entity for a non-matching class.
+---@param card_class CardClass
+---@return AuxProp
+function AuxProp:require_card_not_class(card_class) end
+
+--- - Body priority
 --- - `time_freeze`: bool
 ---
 --- The AuxProp will check the time freeze value on the next card on the attached entity.
@@ -3564,6 +3748,13 @@ function AuxProp:require_health_threshold(compare, percentage) end
 ---@param health number
 ---@return AuxProp
 function AuxProp:require_health(compare, health) end
+
+--- - Update Context priority
+---
+--- Allows for modification to the context on the associated entity, executes before actions are generated for cards and attacks.
+---@param callback fun(context: AttackContext): AttackContext
+---@return AuxProp
+function AuxProp:update_context(callback) end
 
 --- - Increase Card Damage priority
 --- - `increase`: number, the amount to increase the card damage before multiplying.

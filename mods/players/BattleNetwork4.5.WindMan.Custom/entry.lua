@@ -94,16 +94,26 @@ function player_init(player)
     end
 
     -- Determines whether or not a Navi can "charge" a Battle Chip for an additional effect.
-    player.can_charge_card_func = function(card_properties)
+    player.calculate_card_charge_time_func = function(self, card_properties)
         -- The Navi cannot charge the Battle Chip if the Battle Chip stops time.
-        if card_properties.time_freeze == true then return false end
+        if card_properties.time_freeze == true then
+            return
+        end
 
         -- The Navi cannot charge the Battle Chip if the Battle Chip does no damage.
-        if card_properties.damage == 0 then return false end
+        if card_properties.damage == 0 then
+            return
+        end
 
         -- If the Primary or Secondary Element of the Battle Chip is the Wind Element,
         -- then given other criteria are met, the Battle Chip may be charged by this Navi.
-        return card_properties.element == Element.Wind or card_properties.secondary_element == Element.Wind
+        local is_wind = card_properties.element == Element.Wind or card_properties.secondary_element == Element.Wind
+
+        if not is_wind then
+            return
+        end
+
+        return 50
     end
 
     -- Determines what happens when a Battle Chip is successfully "charged" by a Navi.
