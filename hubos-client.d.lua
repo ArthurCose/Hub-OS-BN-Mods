@@ -3593,7 +3593,7 @@ function AuxProp:require_card_charge_time(compare, time) end
 
 --- - Body priority
 ---
---- The AuxProp will require a [Player](https://docs.hubos.dev/client/lua-api/entity-api/player) to be holding a fully [charged](https://docs.hubos.dev/client/lua-api/entity-api/player#playercan_charge_card_func--functioncard_properties-boolean) card.
+--- The AuxProp will require a [Player](https://docs.hubos.dev/client/lua-api/entity-api/player) to be holding a fully [charged](https://docs.hubos.dev/client/lua-api/entity-api/player#playercalculate_card_charge_time_func--functionself-card_properties-numbernil) card.
 ---@return AuxProp
 function AuxProp:require_charged_card() end
 
