@@ -1,0 +1,15 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.175"
+name = "FstGauge"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ['E', 'M', 'R', '*']
+damage = 0
+time_freeze = true
+description = "CustGauge speed-up"
+can_boost = false
+limit = 2
+
+[dependencies]
+librarys = ["BattleNetwork.Assets"]

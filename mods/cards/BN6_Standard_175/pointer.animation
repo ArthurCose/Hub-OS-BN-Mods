@@ -1,0 +1,3 @@
+animation state="DEFAULT"
+frame duration="8f" w="15" h="15"
+frame duration="8f" x="16" w="15" h="15" originx="-1" originy="-1"

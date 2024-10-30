@@ -1,0 +1,12 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.174"
+name = "SloGauge"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ['A', 'B', 'G', '*']
+damage = 0
+time_freeze = true
+description = "CustGauge slow-down"
+can_boost = false
+limit = 2
