@@ -31,6 +31,11 @@ function player_init(player)
     return Buster.new(self, false, player:attack_level())
   end
 
+  player.calculate_charge_time_func = function()
+    -- 10-30
+    return 35 - math.min(player:charge_level(), 5) * 5
+  end
+
   player.charged_attack_func = function(self)
     local card_properties = CardProperties.from_package("BattleNetwork6.Class01.Standard.071")
     card_properties.damage = 60 + player:attack_level() * 20
