@@ -2,7 +2,7 @@
 category = "pack"
 id = "BattleNetwork6.Packs.Chips"
 name = "BN6 Chips"
-description = "All of the chips in the BattleNetwork6 namespace"
+description = "Every chip in the BattleNetwork6 namespace"
 
 [dependencies]
 cards = [
