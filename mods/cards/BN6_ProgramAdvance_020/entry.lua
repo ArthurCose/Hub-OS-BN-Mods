@@ -78,5 +78,6 @@ function spawn_artifact(spells, user, state)
 	end)
 
 	local field = user:field()
+	fx:set_elevation(8)
 	field:spawn(fx, user:get_tile(user:facing(), 1))
 end

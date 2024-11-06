@@ -16,3 +16,4 @@ limit = 1
 
 [dependencies]
 tile_states = ["BattleNetwork4.TileStates.Dark"]
+libraries = ["BattleNetwork.Assets"]

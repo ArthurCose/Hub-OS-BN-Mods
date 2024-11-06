@@ -1,3 +1,6 @@
+local bn_assets = require("BattleNetwork.Assets")
+local hole_audio = bn_assets.load_audio("darkhole.ogg")
+
 function card_init(actor, props)
 	local action = Action.new(actor, "CHARACTER_IDLE")
 
@@ -8,6 +11,7 @@ function card_init(actor, props)
 	action:set_lockout(ActionLockout.new_animation())
 
 	action.on_execute_func = function(self, user)
+		Resources.play_audio(hole_audio)
 		local field = actor:field()
 
 		local y = actor:current_tile():y()
