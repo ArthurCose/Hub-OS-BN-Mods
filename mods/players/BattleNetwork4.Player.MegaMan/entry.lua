@@ -1,4 +1,5 @@
 local bn_assets = require("BattleNetwork.Assets")
+local create_version_selector = require("./version_selector")
 
 ---@type PanelStepLib
 local PanelStepLib = require("dev.konstinople.library.panel_step")
@@ -396,6 +397,8 @@ function player_init(player)
                 else
                     context.status_durations[hit_flag] = Hit.duration_for(hit_flag, duration_or_level)
                 end
+
+                return context
             end)
         end
 
@@ -649,7 +652,6 @@ function player_init(player)
 
     local unison_button_animation = unison_button:animation()
     unison_button_animation:load(button_anim_path)
-    unison_button_animation:set_state("SELECT_RS")
 
     local soul_choice_component;
     local turn_level_boost = 0
@@ -1257,7 +1259,7 @@ function player_init(player)
 
         action.on_execute_func = function(self, user)
             local buster = self:create_attachment("BUSTER")
-            buster:sprite():set_texture(bubbler_buster_texture, true)
+            buster:sprite():set_texture(bubbler_buster_texture)
             buster:sprite():set_layer(-1)
 
             local buster_anim = buster:animation()
@@ -1973,45 +1975,40 @@ function player_init(player)
         return state
     end
 
-    unison_button.on_selection_change_func = function(self)
-        -- Only works as a unison button if we've selected a set of souls to use.
-        if chosen_souls == nil then
-            return
+    create_version_selector(unison_button, { "SELECT_RS", "SELECT_BM" }, function(selected_state)
+        if selected_state == "SELECT_RS" then
+            chosen_souls = choose_souls(red_sun_souls, unison_button)
+        elseif selected_state == "SELECT_BM" then
+            chosen_souls = choose_souls(blue_moon_souls, unison_button)
         end
 
-        -- Cannot stage two souls at once.
-        if is_soul_staged == true then
-            return
+        unison_button.on_selection_change_func = function(self)
+            -- Cannot stage two souls at once.
+            if is_soul_staged == true then
+                return
+            end
+
+            local count = #player:staged_items()
+            local item = player:staged_item(count)
+
+            -- Feed the above values in to a rule checking function.
+            local state = obey_rules(count, item)
+
+            self:animation():set_state(state)
         end
 
-        local count = #player:staged_items()
-        local item = player:staged_item(count)
+        unison_button.use_func = function(self)
+            if chosen_souls ~= nil and readied_form ~= nil then
+                handle_staging_form()
 
-        -- Feed the above values in to a rule checking function.
-        local state = obey_rules(count, item)
+                self:animation():set_state("INACTIVE")
 
-        self:animation():set_state(state)
-    end
+                readied_form = nil
 
-    unison_button.use_func = function(self)
-        local state = self:animation():state()
+                return true
+            end
 
-        if state == "SELECT_RS" then
-            chosen_souls = choose_souls(red_sun_souls, self)
-            return true
-        elseif state == "SELECT_BM" then
-            chosen_souls = choose_souls(blue_moon_souls, self)
-            return true
-        elseif chosen_souls ~= nil and readied_form ~= nil then
-            handle_staging_form()
-
-            self:animation():set_state("INACTIVE")
-
-            readied_form = nil
-
-            return true
+            return false
         end
-
-        return false
-    end
+    end)
 end

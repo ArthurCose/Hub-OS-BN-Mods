@@ -1,0 +1,5 @@
+animation state="RIGHT"
+frame duration="6f" x="1" y="10" w="8" h="8" originx="-8" originy="4"
+
+animation state="RIGHT_ACTIVE"
+frame duration="6f" x="10" y="1" w="8" h="8" originx="-8" originy="4"
