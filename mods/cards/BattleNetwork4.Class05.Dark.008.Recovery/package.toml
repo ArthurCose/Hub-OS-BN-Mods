@@ -1,0 +1,22 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class05.Dark.008.Recovery"
+name = "DrkRecov"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ " " ]
+damage = 0
+recover = 1000
+time_freeze = false
+element = "none"
+description = "RESTORE\n1000 HP\nAND WIN"
+card_class = "dark"
+limit = 0
+conceal = true
+can_boost = false
+
+
+[dependencies]
+cards = [
+    "dev.GladeWoodsgrove.ZeroRecovery"
+]

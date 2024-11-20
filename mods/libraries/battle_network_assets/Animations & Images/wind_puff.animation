@@ -1,0 +1,7 @@
+imagePath="C:/Users/seven/OneDrive/Desktop/Games, Engines, and Assets/0 Games/HubOS Release/client/mods/libraries/BattleNetwork.Assets/Animations & Images/wind_puff.png"
+
+animation state="DEFAULT"
+frame duration="0.033" x="2" y="2" w="35" h="23" originx="23" originy="12" flipx="0" flipy="0"
+
+animation state="GREEN"
+frame duration="0.033" x="2" y="35" w="32" h="23" originx="21" originy="12" flipx="0" flipy="0"

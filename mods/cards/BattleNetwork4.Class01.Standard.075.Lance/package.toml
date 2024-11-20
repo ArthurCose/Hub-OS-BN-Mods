@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class01.Standard.075.Lance"
+name = "Lance"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "A", "G", "R", "*" ]
+damage = 130
+time_freeze = false
+element = "wood"
+description = "Lances through back line"
+long_description = "Strike the far column of the enemy field."
+can_boost = true
+card_class = "standard"
+limit = 4
+hit_flags = ["Impact", "Flinch", "Drag"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

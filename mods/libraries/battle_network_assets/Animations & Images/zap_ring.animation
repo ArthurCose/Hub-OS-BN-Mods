@@ -1,0 +1,11 @@
+imagePath="C:/Users/seven/OneDrive/Desktop/Games, Engines, and Assets/0 Games/HubOS Release/client/mods/libraries/BattleNetwork.Assets/Animations & Images/zap_ring.png"
+
+animation state="DEFAULT"
+frame duration="0.067" x="40" y="33" w="25" h="12" originx="12" originy="5" flipx="0" flipy="0"
+frame duration="0.033" x="31" y="85" w="1" h="1" originx="192" originy="192" flipx="0" flipy="0"
+frame duration="0.05" x="2" y="33" w="34" h="22" originx="18" originy="10" flipx="0" flipy="0"
+frame duration="0.033" x="36" y="85" w="1" h="1" originx="192" originy="192" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="2" w="42" h="27" originx="18" originy="14" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="85" w="25" h="12" originx="12" originy="5" flipx="0" flipy="0"
+frame duration="0.05" x="2" y="59" w="40" h="22" originx="20" originy="11" flipx="0" flipy="0"
+frame duration="0.033" x="41" y="85" w="1" h="1" originx="192" originy="192" flipx="0" flipy="0"

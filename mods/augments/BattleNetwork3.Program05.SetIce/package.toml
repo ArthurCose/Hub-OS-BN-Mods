@@ -1,0 +1,30 @@
+[package]
+category = "augment"
+id = "BattleNetwork3.Program05.SetIce"
+name = "SetIce"
+description = "Panels become Ice!"
+colors = [ "green" ]
+flat = true
+shape = [
+  [ 0, 0, 0, 0, 0 ],
+  [ 0, 0, 0, 1, 0 ],
+  [ 0, 0, 1, 1, 0 ],
+  [ 0, 0, 1, 0, 0 ],
+  [ 0, 0, 0, 0, 0 ]
+]
+tags = [
+    "BN3",
+    "EXE3",
+    "NCP"
+]
+byproducts = [
+    "BattleNetwork3.Bugs.PanelBug"
+]
+
+[dependencies]
+tile_states = [
+    "BattleNetwork6.TileStates.Ice"
+]
+augments = [
+    "BattleNetwork3.Bugs.PanelBug"
+]

@@ -1,0 +1,13 @@
+imagePath="C:\Users\seven\OneDrive\Desktop\Games, Engines, and Assets\0 Games\HubOS Release\client\mods\players\BN4_Megaman\button.png"
+
+animation state="INACTIVE"
+frame duration="0.005" x="0" y="0" w="22" h="14" originx="11" originy="7" flipx="0" flipy="0"
+
+animation state="ACTIVE"
+frame duration="0.005" x="28" y="0" w="22" h="14" originx="11" originy="7" flipx="0" flipy="0"
+
+animation state="SELECT_RS"
+frame duration="0.005" x="18" y="14" w="18" h="18" originx="9" originy="10" flipx="0" flipy="0"
+
+animation state="SELECT_BM"
+frame duration="0.005" x="0" y="14" w="18" h="18" originx="9" originy="10" flipx="0" flipy="0"

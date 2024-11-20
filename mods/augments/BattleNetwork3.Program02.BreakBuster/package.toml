@@ -1,0 +1,27 @@
+[package]
+category = "augment"
+id = "BattleNetwork3.Program02.BreakBuster"
+name = "BrakBustr"
+description = "PeaShot pierces guards!"
+colors = [ "red" ]
+flat = true
+shape = [
+  [ 0, 0, 0, 0, 0 ],
+  [ 1, 1, 1, 1, 0 ],
+  [ 0, 0, 1, 1, 0 ],
+  [ 0, 0, 1, 0, 0 ],
+  [ 0, 0, 0, 0, 0 ]
+]
+tags = [
+    "BN3",
+    "EXE3",
+    "NCP"
+]
+byproducts = [
+    "BattleNetwork6.Bugs.BusterBug"
+]
+
+[dependencies]
+augments = [
+    "BattleNetwork6.Bugs.BusterBug"
+]

@@ -1,0 +1,46 @@
+imagePath="C:\Users\seven\OneDrive\Desktop\Games, Engines, and Assets\0 Games\HubOS Release\client\mods\players\BN4_Megaman\forms\BM_02_NUMBER\dice_bomb.png"
+
+animation state="RESULT_1"
+frame duration="0.05" x="65" y="2" w="26" h="28" originx="13" originy="22" flipx="0" flipy="0"
+
+animation state="RESULT_2"
+frame duration="0.017" x="2" y="36" w="26" h="28" originx="13" originy="22" flipx="0" flipy="0"
+
+animation state="RESULT_3"
+frame duration="0.017" x="32" y="36" w="26" h="28" originx="13" originy="22" flipx="0" flipy="0"
+
+animation state="RESULT_4"
+frame duration="0.017" x="62" y="36" w="26" h="28" originx="13" originy="22" flipx="0" flipy="0"
+
+animation state="RESULT_5"
+frame duration="0.017" x="2" y="68" w="26" h="28" originx="13" originy="22" flipx="0" flipy="0"
+
+animation state="RESULT_6"
+frame duration="0.017" x="32" y="68" w="26" h="28" originx="13" originy="22" flipx="0" flipy="0"
+
+animation state="SPIN"
+frame duration="0.033" x="33" y="2" w="28" h="29" originx="14" originy="24" flipx="0" flipy="0"
+frame duration="0.033" x="62" y="68" w="25" h="28" originx="13" originy="22" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="2" w="27" h="30" originx="13" originy="24" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="100" w="26" h="28" originx="13" originy="22" flipx="0" flipy="0"
+
+animation state="BOUNCE"
+frame duration="0.033" x="33" y="2" w="28" h="29" originx="14" originy="24" flipx="0" flipy="0"
+frame duration="0.033" x="62" y="68" w="25" h="28" originx="13" originy="26" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="2" w="27" h="30" originx="13" originy="28" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="100" w="26" h="28" originx="13" originy="30" flipx="0" flipy="0"
+frame duration="0.033" x="33" y="2" w="28" h="29" originx="14" originy="32" flipx="0" flipy="0"
+frame duration="0.033" x="62" y="68" w="25" h="28" originx="13" originy="34" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="2" w="27" h="30" originx="13" originy="36" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="100" w="26" h="28" originx="13" originy="38" flipx="0" flipy="0"
+frame duration="0.033" x="33" y="2" w="28" h="29" originx="14" originy="36" flipx="0" flipy="0"
+frame duration="0.033" x="62" y="68" w="25" h="28" originx="13" originy="34" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="2" w="27" h="30" originx="13" originy="32" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="100" w="26" h="28" originx="13" originy="30" flipx="0" flipy="0"
+frame duration="0.033" x="33" y="2" w="28" h="29" originx="14" originy="28" flipx="0" flipy="0"
+frame duration="0.033" x="62" y="68" w="25" h="28" originx="13" originy="26" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="2" w="27" h="30" originx="13" originy="24" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="100" w="26" h="28" originx="13" originy="22" flipx="0" flipy="0"
+
+animation state="HIDDEN"
+frame duration="0.005" x="43" y="111" w="5" h="3" originx="0" originy="0" flipx="0" flipy="0"

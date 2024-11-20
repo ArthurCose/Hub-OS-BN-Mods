@@ -15,9 +15,10 @@ local AUDIO = bn_assets.load_audio("sword.ogg")
 function card_init(user, props)
 	return sword:create_action(user, function()
 		local spells = {}
-		spawn_artifact(spells, user, "LONG")
+		spawn_artifact(spells, user, "BIG")
 		create_spell(spells, user, props, 1, 0)
 		create_spell(spells, user, props, 2, 0)
+		create_spell(spells, user, props, 3, 0)
 
 		Resources.play_audio(AUDIO)
 	end)

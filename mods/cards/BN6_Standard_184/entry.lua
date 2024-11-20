@@ -5,11 +5,14 @@ local BARRIER_ANIMATION_PATH = bn_assets.fetch_animation_path("bn6_lifeaura.anim
 local BARRIER_UP_SOUND = bn_assets.load_audio("barrier.ogg")
 
 function card_init(user, props)
-	local PRESTEP = { 0, 3 }
-	local END = { 0, 30 }
+	local PRESTEP = { 1, 3 }
+	local END = { 1, 30 }
 	local FRAMES = { PRESTEP, END }
 
-	local action = Action.new(user, "CHARACTER_IDLE")
+	local state = "CHARACTER_IDLE"
+	if not user:animation():has_state(state) then state = user:animation():state() end
+
+	local action = Action.new(user, state)
 	action:set_lockout(ActionLockout.new_animation())
 	action:override_animation_frames(FRAMES)
 
@@ -41,12 +44,13 @@ function create_barrier(user)
 
 	barrier_animation:set_playback(Playback.Loop)
 
-	local number = barrier:create_text_node(TextStyle.new("THICK"), "200")
+	local number = user:sprite():create_text_node(TextStyle.new("THICK"), "200")
 	number:set_color(Color.new(0, 0, 0, 255))
 	number:set_never_flip(true)
-	number:set_offset(-10, 0)
+	number:set_offset(-10, 10)
+	number:set_layer(-3)
 
-	local number_shadow = number:create_text_node(TextStyle.new("THICK"), "70")
+	local number_shadow = number:create_text_node(TextStyle.new("THICK"), "200")
 	number_shadow:set_offset(-1, -1)
 
 	local barrier_defense_rule = DefenseRule.new(DefensePriority.Barrier, DefenseOrder.Always)

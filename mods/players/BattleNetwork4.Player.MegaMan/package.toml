@@ -1,0 +1,42 @@
+[package]
+category = "player"
+id = "BattleNetwork4.Player.MegaMan"
+name = "MegaMan"
+description = ""
+health = 1000
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+overworld_animation_path = "overworld.animation"
+overworld_texture_path = "overworld.png"
+mugshot_texture_path = "mug.png"
+mugshot_animation_path = "mug.animation"
+
+[dependencies]
+augments = [
+    "BattleNetwork4.DarkChipSlots",
+    "dev.GladeWoodsgrove.ModularShuffle"
+]
+
+cards = [
+    "BattleNetwork6.Class01.Standard.004",
+    "BattleNetwork4.Class01.Standard.130",
+    "BattleNetwork6.Class01.Standard.053",
+    "BattleNetwork6.Class01.Standard.071",
+    "BattleNetwork6.Class01.Standard.079",
+    "BattleNetwork4.HiddenAbility.FireArm",
+    "BattleNetwork4.HiddenAbility.ZapRing",
+    "BattleNetwork5.Class02.Mega.007.Poltergeist"
+]
+
+libraries = [
+    "BattleNetwork.Assets",
+    "dev.konstinople.library.bomb",
+    "dev.konstinople.library.shield",
+    "BattleNetwork4.Action.GutsMachGun",
+    "dev.konstinople.library.panel_step"
+]
+
+tile_states = [
+    "BattleNetwork5.TileStates.Lava",
+    "BattleNetwork6.TileStates.Grass"
+]

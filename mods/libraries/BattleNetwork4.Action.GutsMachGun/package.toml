@@ -1,0 +1,14 @@
+[package]
+category = "library" # accepts "library" and "pack"
+id = "BattleNetwork4.Action.GutsMachGun"
+name = "GutsMachGun"
+description = "Queue 5 invincible buster shots."
+
+# this section is optional
+[dependencies]
+statuses = [
+    "BattleNetwork6.Statuses.Invincible"
+]
+libraries = [
+    "BattleNetwork.Assets"
+]

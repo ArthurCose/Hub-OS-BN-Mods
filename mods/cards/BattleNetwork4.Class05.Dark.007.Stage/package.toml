@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class05.Dark.007.Stage"
+past_ids = ["BattleNetwork4.Class05.Dark.008.DarkStage"]
+name = "DrkStage"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ " " ]
+damage = 0
+time_freeze = true
+element = "none"
+description = "STAGE OF DARKNESS"
+can_boost = false
+card_class = "dark"
+limit = 0
+conceal = true
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+tile_states = [
+    "BattleNetwork4.TileStates.Dark",
+    "BattleNetwork6.TileStates.Poison"
+]

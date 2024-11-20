@@ -1,0 +1,22 @@
+[package]
+category = "card"
+id = "BattleNetwork4.HiddenAbility.ZapRing"
+name = "ZapRing"
+damage = 20
+time_freeze = false
+element = "elec"
+description = "Pralyzing electric ring atk!"
+long_description = "Fires a stunning, electrified ring straight ahead."
+codes = [ " " ]
+hit_flags = [ "Impact", "Paralyze" ]
+tags = [
+    "EXE4",
+    "BN4"
+]
+limit = 0
+conceal = true
+
+[dependencies]
+libraries = [
+    "BattleNetwork.Assets"
+]

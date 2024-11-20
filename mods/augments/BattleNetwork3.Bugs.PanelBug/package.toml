@@ -1,0 +1,11 @@
+[package]
+category = "augment"
+id = "BattleNetwork3.Bugs.PanelBug"
+name = "PanelBug"
+description = "Changes all tiles depending on augment level."
+tags = ["BUG"]
+
+[dependencies]
+tile_states = [
+    "BattleNetwork6.TileStates.Poison"
+]

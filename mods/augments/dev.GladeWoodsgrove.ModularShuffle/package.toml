@@ -1,0 +1,16 @@
+[package]
+category = "augment"
+id = "dev.GladeWoodsgrove.ModularShuffle"
+name = "ChpShufl"
+description = "Multi-\nLevel\nShuffle"
+long_description = "A Shuffle program that can be used more than once at higher levels."
+preview_texture_path = "preview.png"
+colors = ["green", "pink", "red"]
+flat = true
+shape = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0],
+    [1, 1, 0, 1, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 1, 0, 0]
+]

@@ -1,0 +1,9 @@
+[package]
+category = "augment"
+id = "BattleNetwork4.Bugs.PanelBug"
+name = "PanelBug"
+description = "Changes the panel when moving off of it. Panel type depends on augment level."
+tags = ["BUG"]
+
+[dependencies]
+tile_states = ["BattleNetwork4.TileStates.Dark", "BattleNetwork6.TileStates.Poison"]

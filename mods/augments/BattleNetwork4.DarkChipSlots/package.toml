@@ -1,0 +1,27 @@
+[package]
+category = "augment"
+id = "BattleNetwork4.DarkChipSlots"
+name = "Dark Karma"
+flat = true
+description = "Augment that tempts you with Dark Chips!"
+colors = [ "blue", "green", "pink", "red", "yellow", "white" ]
+shape = [
+  [ 0, 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0, 0 ],
+  [ 0, 0, 1, 0, 0 ],
+  [ 0, 0, 1, 0, 0 ],
+  [ 0, 0, 0, 0, 0 ]
+]
+
+[dependencies]
+libraries = ["BattleNetwork.Emotions"]
+cards = [
+  "BattleNetwork4.Class05.Dark.001.Cannon",
+  "BattleNetwork4.Class05.Dark.002.Sword",
+  "BattleNetwork4.Class05.Dark.003.Bomb",
+  "BattleNetwork4.Class05.Dark.004.Vulcan",
+  "BattleNetwork4.Class05.Dark.005.Lance",
+  "BattleNetwork4.Class05.Dark.006.Spreader",
+  "BattleNetwork4.Class05.Dark.007.Stage",
+  "BattleNetwork4.Class05.Dark.008.Recovery"
+]

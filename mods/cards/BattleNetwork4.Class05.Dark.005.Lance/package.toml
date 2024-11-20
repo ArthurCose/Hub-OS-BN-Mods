@@ -1,0 +1,27 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class05.Dark.005.Lance"
+name = "DrkLance"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ " " ]
+damage = 0
+time_freeze = false
+element = "none"
+description = "Lances through back line"
+long_description = "Strike the far column of the enemy field."
+can_boost = true
+card_class = "dark"
+limit = 0
+conceal = true
+hit_flags = ["Impact", "Flinch", "Drag"]
+tags = [
+    "HALF_FOE_HEALTH_EQUALS_POWER",
+    "EXE4",
+    "BN4"
+]
+
+[dependencies]
+libraries = [
+    "BattleNetwork.Assets"
+]
