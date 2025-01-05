@@ -1,0 +1,18 @@
+[package]
+category = "card"
+id = "BattleNetwork3.Class01.Standard.020.HeatSide"
+name = "HeatSide"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "C", "J", "K", "L", "T", "*" ]
+damage = 40
+time_freeze = false
+element = "fire"
+description = "Explodes up,down on hit"
+hit_flags = [ "Impact" ]
+limit = 5
+
+[dependencies]
+libraries = [
+    "BattleNetwork.Assets"
+]

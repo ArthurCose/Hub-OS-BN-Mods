@@ -1,6 +1,6 @@
 # @frame_rate 60
 
-imagePath="C:/Users/seven/OneDrive/Desktop/Games, Engines, and Assets/0 Games/HubOS Release/client/mods/libraries/BattleNetwork.Assets/Animations & Images/spread_buster.png"
+imagePath="C:\Users\seven\OneDrive\Desktop\Games, Engines, and Assets\0 Games\HubOS Release\client\mods\libraries\BattleNetwork.Assets\Animations & Images\spread_buster.png"
 
 animation state="DEFAULT"
 frame duration="1f" x="3" y="8" w="21" h="16" originx="2" originy="7" flipx="0" flipy="0"
@@ -19,3 +19,15 @@ frame duration="1f" x="56" y="55" w="42" h="17" originx="4" originy="8" flipx="0
 frame duration="2f" x="100" y="48" w="50" h="30" originx="4" originy="15" flipx="0" flipy="0"
 frame duration="1f" x="153" y="48" w="52" h="32" originx="2" originy="16" flipx="0" flipy="0"
 frame duration="16f" x="29" y="56" w="21" h="16" originx="3" originy="7" flipx="0" flipy="0"
+
+animation state="FLARE"
+frame duration="1f" x="75" y="7" w="23" h="16" originx="0" originy="8" flipx="0" flipy="0"
+frame duration="2f" x="119" y="0" w="30" h="30" originx="0" originy="15" flipx="0" flipy="0"
+frame duration="1f" x="174" y="0" w="31" h="32" originx="0" originy="16" flipx="0" flipy="0"
+frame duration="16f" x="24" y="1" w="1" h="1" originx="0" originy="0" flipx="0" flipy="0"
+
+animation state="DARK_FLARE"
+frame duration="1f" x="75" y="55" w="23" h="16" originx="0" originy="8" flipx="0" flipy="0"
+frame duration="2f" x="119" y="48" w="31" h="30" originx="0" originy="15" flipx="0" flipy="0"
+frame duration="1f" x="174" y="48" w="31" h="32" originx="0" originy="16" flipx="0" flipy="0"
+frame duration="16f" x="24" y="1" w="1" h="1" originx="0" originy="0" flipx="0" flipy="0"

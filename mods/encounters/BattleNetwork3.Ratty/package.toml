@@ -10,6 +10,4 @@ id = "BattleNetwork3.Ratty.Enemy"
 path = "virus"
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [ ]
+libraries = ["BattleNetwork.Assets"]

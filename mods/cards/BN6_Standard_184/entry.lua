@@ -111,6 +111,7 @@ function create_barrier(user)
 
 			barrier_animation:on_complete(function()
 				user:sprite():remove_node(barrier)
+				user:sprite():remove_node(number)
 				aura_fade_component:eject()
 				aura_animate_component:eject()
 				aura_destroy_component:eject()

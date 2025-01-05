@@ -1,0 +1,18 @@
+[package]
+category = "card"
+id = "BattleNetwork3.Class01.Standard.018.HeatShot"
+name = "HeatShot"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "B", "H", "I", "J", "P", "*" ]
+damage = 40
+time_freeze = false
+element = "fire"
+description = "Explodes 1 square behind"
+hit_flags = [ "Impact" ]
+limit = 5
+
+[dependencies]
+libraries = [
+    "BattleNetwork.Assets"
+]

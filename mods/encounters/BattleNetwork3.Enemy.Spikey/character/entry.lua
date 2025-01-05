@@ -14,6 +14,9 @@ local function debug_print(text)
     end
 end
 
+local explosion_texture = bn_assets.load_texture("spell_explosion.png")
+local explosion_animation_path = bn_assets.fetch_animation_path("spell_explosion.animation")
+
 ---@param entity Entity
 local function default_random_tile(entity)
     local tiles = entity:field():find_tiles(function(tile)
@@ -106,7 +109,7 @@ local function spawn_fireball(owner, tile, direction, damage, cascade_frame_inde
     local field = owner:field()
     local fireball_texture = Resources.load_texture("fireball.png")
     local fireball_sfx = Resources.load_audio("sfx.ogg")
-    local explosion_texture = Resources.load_texture("spell_explosion.png")
+
     Resources.play_audio(fireball_sfx)
     local spell = Spell.new(team)
     spell:set_texture(fireball_texture)
@@ -153,14 +156,20 @@ local function spawn_fireball(owner, tile, direction, damage, cascade_frame_inde
             if explosion_table[explosions] and not explosion_table[explosions]:is_edge() then
                 local hitbox = Hitbox.new(spell:team())
                 hitbox:set_hit_props(attack:copy_hit_props())
+
                 local fx = Spell.new(attack:team())
                 fx:set_texture(explosion_texture)
+
                 local fx_anim = fx:animation()
-                fx_anim:load("spell_explosion.animation")
+                fx_anim:load(explosion_animation_path)
+
                 fx_anim:set_state("Default")
                 fx_anim:apply(fx:sprite())
+
                 fx:sprite():set_layer(-2)
+
                 fx_anim:on_complete(function() fx:erase() end)
+
                 field:spawn(fx, explosion_table[explosions])
                 field:spawn(hitbox, explosion_table[explosions])
             end
@@ -170,8 +179,11 @@ local function spawn_fireball(owner, tile, direction, damage, cascade_frame_inde
 
     spell.on_collision_func = function(self, other)
         has_hit = true
+
         local explosion_tiles = {}
+
         local rank = owner:rank()
+
         if rank == Rank.V1 or rank == Rank.SP then
             explosion_tiles = { self:current_tile(), self:get_tile(self:facing(), 1) }
         elseif rank == Rank.V2 then
@@ -187,9 +199,13 @@ end
 
 local function create_fireball_action(character)
     debug_print("started fireball action")
+
     local action_name = "fireball"
+
     local facing = character:facing()
+
     debug_print('action ' .. action_name)
+
     --Set the damage. Default is 30.
     local damage = 30
     local rank = character:rank()
@@ -200,6 +216,7 @@ local function create_fireball_action(character)
     elseif rank == Rank.SP then
         damage = 150
     end
+
     local action = Action.new(character, "ATTACK")
     action:set_lockout(ActionLockout.new_animation())
     action.on_execute_func = function(self, user)

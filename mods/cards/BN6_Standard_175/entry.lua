@@ -14,7 +14,7 @@ function card_init(user)
   local hud_sprite
 
   action.on_execute_func = function()
-    TurnGauge.set_max_time(1024)
+    TurnGauge.set_max_time(256)
 
     -- reset animation
     animation:set_state("DEFAULT")

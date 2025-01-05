@@ -84,9 +84,14 @@ function tile_state_init(custom_state)
   end
 
   custom_state.on_entity_stop_func = function(self, entity)
-    if entity:element() == Element.Aqua then
-      return
-    end
+    -- Do not process if entity is deleted or slated for easure.
+    if entity:deleted() or entity:will_erase_eof() then return end
+
+    -- Do not affect spells or obstacles.
+    if Spell.from(entity) ~= nil or Obstacle.from(entity) ~= nil then return end
+
+    -- Do not affect Aqua entities.
+    if entity:element() == Element.Aqua then return end
 
     entity:apply_status(Hit.Root, 20)
 

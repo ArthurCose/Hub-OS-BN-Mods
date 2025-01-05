@@ -1,0 +1,18 @@
+[package]
+category = "card"
+id = "BattleNetwork3.Class01.Standard.019.Heat-V"
+name = "Heat-V"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "F", "I", "J", "K", "V", "*" ]
+damage = 40
+time_freeze = false
+element = "fire"
+description = "Explodes 2 diag. squares"
+hit_flags = [ "Impact" ]
+limit = 5
+
+[dependencies]
+libraries = [
+    "BattleNetwork.Assets"
+]

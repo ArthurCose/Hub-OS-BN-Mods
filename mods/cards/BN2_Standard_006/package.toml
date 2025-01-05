@@ -1,0 +1,18 @@
+[package]
+category = "card"
+id = "BattleNetwork2.Class01.Standard.006.CrossGun"
+name = "Crossgun"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "H", "J", "M", "Q", "S", "*" ]
+damage = 30
+time_freeze = false
+element = "none"
+description = "Explodes 4 diagonal squares"
+hit_flags = [ "Impact" ]
+limit = 5
+
+[dependencies]
+libraries = [
+    "BattleNetwork.Assets"
+]
