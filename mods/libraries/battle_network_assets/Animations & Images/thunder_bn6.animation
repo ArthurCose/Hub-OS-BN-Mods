@@ -1,4 +1,4 @@
-imagePath="C:/Users/seven/OneDrive/Desktop/HubOS/client/mods/libraries/battle_network_helpers/Animations & Images/thunder_bn6.png"
+imagePath="C:\Users\seven\OneDrive\Desktop\Games, Engines, and Assets\0 Games\HubOS Release\client\mods\libraries\BattleNetwork.Assets\Animations & Images\thunder_bn6.png"
 
 animation state="THUNDER_START"
 frame duration="0.033" x="36" y="142" w="16" h="16" originx="8" originy="8" flipx="0" flipy="0"

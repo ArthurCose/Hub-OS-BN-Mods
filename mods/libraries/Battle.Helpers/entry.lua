@@ -96,6 +96,21 @@ function battle_helpers.drop_trace_fx(target_artifact, lifetimems)
     return fx
 end
 
+function battle_helpers.spawn_visual_artifact(field, tile, texture, animation_path, animation_state, position_x,
+                                              position_y)
+    local visual_artifact = Artifact.new()
+    visual_artifact:set_texture(texture)
+    local anim = visual_artifact:animation()
+    anim:load(animation_path)
+    anim:set_state(animation_state)
+    anim:on_complete(function()
+        visual_artifact:delete()
+    end)
+    visual_artifact:sprite():set_offset(position_x * 0.5, position_y * 0.5)
+    anim:apply(visual_artifact:sprite())
+    field:spawn(visual_artifact, tile:x(), tile:y())
+end
+
 function battle_helpers.create_effect(effect_facing, effect_texture, effect_animpath, effect_state, offset_x, offset_y,
                                       offset_layer,
                                       field, tile,
