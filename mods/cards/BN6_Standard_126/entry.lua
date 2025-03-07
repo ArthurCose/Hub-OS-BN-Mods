@@ -154,7 +154,7 @@ local function create_dragon(user, props)
 
     -- spawn new segments
     if #tail_segments < MAX_SEGMENTS and (time - WAIT + 1) % 3 == 0 and time - WAIT > 0 then
-      local segment = Artifact.new()
+      local segment = Spell.new()
       segment:set_texture(TEXTURE)
 
       local animation = segment:animation()
