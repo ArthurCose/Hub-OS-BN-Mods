@@ -26,16 +26,17 @@ function card_init(actor, props)
 		local buster_anim = buster:animation()
 		buster_anim:load(BUSTER_ANIM_PATH)
 
-		buster_anim:set_state("DEFAULT", frame_times)
+		buster_anim:set_state("DEFAULT")
 
 		buster_anim:on_frame(5, function()
 			user:set_counterable(false)
 
-			local shot = create_wideshot(user, props)
-
 			local tile = user:get_tile(user:facing(), 1)
 
-			user:field():spawn(shot, tile)
+			if tile then
+				local shot = create_wideshot(user, props)
+				user:field():spawn(shot, tile)
+			end
 		end)
 	end
 	return action

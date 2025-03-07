@@ -9,6 +9,10 @@ local IMPACT_ANIM_PATH = bn_assets.fetch_animation_path("bn6_hit_effects.animati
 
 local THUNDER_AUDIO = bn_assets.load_audio("thunder.ogg")
 local BUG_DEATH_THUNDER_AUDIO = bn_assets.load_audio("bug_death_thunder.ogg")
+local HIT_AUDIO = bn_assets.load_audio("hit_impact.ogg")
+
+-- forward decl
+local create_spell
 
 function card_init(user, props)
 	local card_action = Action.new(user, "CHARACTER_SHOOT")
@@ -37,6 +41,7 @@ function card_init(user, props)
 			user:set_counterable(false)
 
 			local shot = create_spell(user, props)
+			shot:set_offset(0, buster_sprite:offset().y)
 
 			local tile = user:get_tile(user:facing(), 1)
 
@@ -78,6 +83,8 @@ local function get_chase_direction(entity)
 		elseif own_coordinates.y > target_coordinates.y then
 			result = Direction.Up
 		end
+	else
+		result = direction_table[math.random(1, #direction_table)]
 	end
 
 	if own_tile:get_tile(result, 1):is_edge() then
@@ -157,7 +164,8 @@ function create_spell(user, props)
 		local field = self:field()
 		local tile = self:current_tile()
 
-		battle_helpers.spawn_visual_artifact(field, tile, IMPACT_TEXTURE, IMPACT_ANIM_PATH, "ELEC", 0, 0)
+		battle_helpers.spawn_visual_artifact(field, tile, IMPACT_TEXTURE, IMPACT_ANIM_PATH, "ELEC", 0, -other:height() / 2)
+		Resources.play_audio(HIT_AUDIO)
 
 		self:delete()
 	end
