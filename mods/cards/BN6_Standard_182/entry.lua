@@ -52,7 +52,7 @@ function create_barrier(user)
 
 	aura_animate_component.on_update_func = function(self)
 		barrier_animation:apply(barrier)
-		barrier_animation:update(barrier)
+		barrier_animation:update()
 	end
 
 	local aura_destroy_component = user:create_component(Lifetime.Battle)
@@ -60,7 +60,6 @@ function create_barrier(user)
 	local destroy_aura = false
 
 	barrier_defense_rule.on_replace_func = function()
-		aura_fade_component:eject()
 		aura_animate_component:eject()
 		aura_destroy_component:eject()
 		user:remove_node(barrier)
@@ -86,21 +85,17 @@ function create_barrier(user)
 			if isWind then
 				local initialX = barrier:offset().x
 				local initialY = barrier:offset().y
-				local facing_check = 1
-				if user:facing() == Direction.Left then
-					facing_check = -1
-				end
 
 				barrier_animation:on_frame(1, function()
-					barrier:set_offset(facing_check * (-25 - initialX) * 0.5, -20 + initialY * 0.5)
+					barrier:set_offset((-25 - initialX) * 0.5, -20 + initialY * 0.5)
 				end)
 
 				barrier_animation:on_frame(2, function()
-					barrier:set_offset(facing_check * (-50 - initialX) * 0.5, -40 + initialY * 0.5)
+					barrier:set_offset((-50 - initialX) * 0.5, -40 + initialY * 0.5)
 				end)
 
 				barrier_animation:on_frame(3, function()
-					barrier:set_offset(facing_check * (-75 - initialX) * 0.5, -60 + initialY * 0.5)
+					barrier:set_offset((-75 - initialX) * 0.5, -60 + initialY * 0.5)
 				end)
 			end
 		end

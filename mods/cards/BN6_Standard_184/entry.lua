@@ -44,9 +44,11 @@ function create_barrier(user)
 
 	barrier_animation:set_playback(Playback.Loop)
 
-	local number = user:sprite():create_text_node(TextStyle.new("THICK"), "200")
+	local number_root = user:sprite():create_node()
+	number_root:set_never_flip(true)
+
+	local number = number_root:create_text_node(TextStyle.new("THICK"), "200")
 	number:set_color(Color.new(0, 0, 0, 255))
-	number:set_never_flip(true)
 	number:set_offset(-10, 10)
 	number:set_layer(-3)
 
@@ -111,7 +113,7 @@ function create_barrier(user)
 
 			barrier_animation:on_complete(function()
 				user:sprite():remove_node(barrier)
-				user:sprite():remove_node(number)
+				user:sprite():remove_node(number_root)
 				aura_fade_component:eject()
 				aura_animate_component:eject()
 				aura_destroy_component:eject()
@@ -120,21 +122,17 @@ function create_barrier(user)
 			if isWind then
 				local initialX = barrier:offset().x
 				local initialY = barrier:offset().y
-				local facing_check = 1
-				if user:facing() == Direction.Left then
-					facing_check = -1
-				end
 
 				barrier_animation:on_frame(1, function()
-					barrier:set_offset(facing_check * (-25 - initialX) * 0.5, -20 + initialY * 0.5)
+					barrier:set_offset((-25 - initialX) * 0.5, -20 + initialY * 0.5)
 				end)
 
 				barrier_animation:on_frame(2, function()
-					barrier:set_offset(facing_check * (-50 - initialX) * 0.5, -40 + initialY * 0.5)
+					barrier:set_offset((-50 - initialX) * 0.5, -40 + initialY * 0.5)
 				end)
 
 				barrier_animation:on_frame(3, function()
-					barrier:set_offset(facing_check * (-75 - initialX) * 0.5, -60 + initialY * 0.5)
+					barrier:set_offset((-75 - initialX) * 0.5, -60 + initialY * 0.5)
 				end)
 			end
 		end
