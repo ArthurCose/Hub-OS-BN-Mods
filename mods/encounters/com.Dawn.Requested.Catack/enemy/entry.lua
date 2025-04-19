@@ -1,16 +1,24 @@
-local noop = function() end
-local animation_path = "Catack Virus.animation"
-local explosion_animation_path = "Explosions.animation"
-local explosion_texture = Resources.load_texture("Explosions.png")
+local bn_assets = require("BattleNetwork.Assets")
 
-local on_spell_sound = Resources.load_audio("boom.ogg")
-local on_roll_sound = Resources.load_audio("move.ogg")
-local on_windup_sound = Resources.load_audio("shot.ogg")
+local animation_path = "Catack Virus.animation"
+
+local explosion_texture = bn_assets.load_texture("tank_cannon_blast.png")
+local explosion_animation_path = bn_assets.fetch_animation_path("tank_cannon_blast.animation")
+
+local impact_texture = bn_assets.load_texture("tank_cannon_hit_effect.png")
+local impact_animation_path = bn_assets.fetch_animation_path("tank_cannon_hit_effect.animation")
+
+local on_roll_sound = bn_assets.load_audio("tankcannon_mob_move.ogg")
+local on_windup_sound = bn_assets.load_audio("tankcannon_mob_windup.ogg")
+
+local on_spell_sound = bn_assets.load_audio("tankcannon_fire.ogg")
+
+local on_impact_sound = bn_assets.load_audio("tankcannon_explode.ogg")
 
 local create_boom = function(catack)
   local spell = Spell.new(catack:team())
   spell:set_facing(catack:facing())
-  spell.slide_started = false
+  spell._slide_started = false
   local direction = spell:facing()
   spell:set_hit_props(
     HitProps.new(
@@ -21,63 +29,74 @@ local create_boom = function(catack)
       Drag.new(direction, 1)
     )
   )
-  spell.can_slide = true
+  spell._can_slide = true
+  spell._can_attack = true
+
   spell.on_update_func = function(self)
-    self:current_tile():attack_entities(self)
-    if self:is_sliding() == false and self.can_slide then
-      if self:get_tile():x() == 1 or self:get_tile():x() == 6 then
-        self.can_slide = false
-        if #self:get_tile():find_entities(catack.tile_query) == 0 then
-          self:teleport(catack:field():tile_at(self:get_tile():x(), 2), function() end)
+    if self._can_attack == true then self:attack_tile() end
+
+    if self:is_sliding() == false and self._can_slide then
+      local own_tile = self:current_tile();
+      if not own_tile then return end
+      if own_tile:get_tile(self:facing(), 1):is_edge() then
+        self._can_slide = false
+        if #self:current_tile():find_entities(catack._tile_query) == 0 then
+          self:teleport(catack:field():tile_at(self:current_tile():x(), 2), function() end)
+
           self:set_texture(explosion_texture)
+
           self:sprite():set_layer(-2)
+
           local anim = self:animation()
+
           anim:load(explosion_animation_path)
-          anim:set_state("EDGE_EXPLOSION")
-          if self:facing() == Direction.Left then
-            self:set_offset(-40.0 * 0.5, -20.0 * 0.5)
-          else
-            self:set_offset(40.0 * 0.5, -20.0 * 0.5)
-          end
+
+          anim:set_state("DEFAULT")
+
           anim:apply(self:sprite())
-          local upper_hitbox = SharedHitbox.new(self, 6)
-          upper_hitbox:set_hit_props(self:copy_hit_props())
-          local lower_hitbox = SharedHitbox.new(self, 6)
-          lower_hitbox:set_hit_props(self:copy_hit_props())
-          catack:field():spawn(upper_hitbox, self:get_tile(Direction.Up, 1))
-          catack:field():spawn(lower_hitbox, self:get_tile(Direction.Down, 1))
-          anim:on_complete(function()
-            self:delete()
-          end)
+
+          self:attack_tiles({ self:get_tile(Direction.Up, 1), self:get_tile(Direction.Down, 1) })
+
+          anim:on_complete(function() self:delete() end)
         end
       end
-      if self:current_tile():is_edge() and self.slide_started then
-        self:delete()
-      end
+
+      if self:current_tile():is_edge() and self._slide_started then self:delete() end
+
       local dest = self:get_tile(direction, 1)
+
+      if not self._can_slide then return end
+
       local ref = self
-      if self.can_slide then
-        self:slide(dest, (1), (0), function()
-          ref.slide_started = true
-        end)
-      end
+
+      self:slide(dest, 1, function()
+        ref._slide_started = true
+      end)
     end
   end
+
   spell.on_collision_func = function(self, other)
-    self.can_slide = false
-    spell:set_offset(0.0 * 0.5, 0.0 * 0.5)
-    self:set_texture(explosion_texture)
+    self._can_slide = false
+    self._can_attack = false
+
+    self:set_texture(impact_animation_path)
+
     self:sprite():set_layer(-2)
+
     local anim = self:animation()
-    anim:load(explosion_animation_path)
-    anim:set_state("CLOUDS")
+
+    anim:load(impact_animation_path)
+    anim:set_state("DEFAULT")
+
     anim:apply(self:sprite())
+
     anim:on_complete(function()
       self:delete()
     end)
   end
+
   spell.on_attack_func = function(self, other)
-    self.can_slide = false
+    self._can_slide = false
   end
 
   spell.on_delete_func = function(self)
@@ -93,7 +112,7 @@ local create_boom = function(catack)
 end
 
 function character_init(catack)
-  catack._cannon_sfx = Resources.load_audio("cannon.ogg")
+  catack._cannon_sfx = bn_assets.load_audio("cannon.ogg")
 
   -- private variables
   catack._idle_state = "IDLE"
@@ -101,21 +120,29 @@ function character_init(catack)
   catack._windup_state = "ATTACK_WINDUP"
   catack._shoot_state = "SHOOT"
   catack._hide_state = "ATTACK_HIDE"
+
   catack._attack = 0
   catack._idle_between_strikes = 0
   catack._current_idle_time = 0
+
   catack._can_move = true
   catack._can_attack = false
   catack._do_once = true
+
   catack._offset_speed = 0
   catack._slide_speed = 0
+
   catack._destination_tile = nil
+
   catack._offsetting_forward = false
   catack._offsetting_reverse = false
   catack._continue_offsetting = false
-  catack.tile_query = function(ent)
-    return ent and Character.from(ent) ~= nil and not ent:deleted() and ent:id() ~= catack:id() or
-        ent and Obstacle.from(ent) ~= nil and not ent:deleted()
+
+  catack._tile_query = function(ent)
+    if not ent then return false end
+    if ent:deleted() or ent:will_erase_eof() then return false end
+    if ent:id() == catack:id() then return false end
+    return Character.from(ent) ~= nil or Obstacle.from(ent) ~= nil
   end
 
   -- meta
@@ -123,7 +150,7 @@ function character_init(catack)
   catack:set_height(36)
 
   --base color
-  catack:set_texture(Resources.load_texture("Catack Virus.greyscaled.png"), false)
+  catack:set_texture(Resources.load_texture("Catack Virus.greyscaled.png"))
   local rank = catack:rank()
 
   if rank == Rank.V1 then
@@ -161,10 +188,13 @@ function character_init(catack)
   end
 
   local anim = catack:animation()
+
   anim:load(animation_path)
+
   anim:set_state(catack._idle_state)
+
   anim:set_playback(Playback.Loop)
-  -- setup defense rules
+
   catack:add_aux_prop(StandardEnemyAux.new())
 
   -- setup event hanlders
@@ -172,30 +202,35 @@ function character_init(catack)
     if catack._current_idle_time <= 0 then
       if catack._can_move then
         catack._destination_tile = catack:get_tile(catack:facing(), 1)
+
         if catack._do_once then
           catack._do_once = false
+
           Resources.play_audio(on_roll_sound)
+
           if catack._destination_tile:team() ~= catack:team() then
             catack._destination_tile:set_team(catack:team(), catack:facing())
           end
-          local anim = catack:animation()
+
           anim:set_state(catack._move_state)
+
           anim:set_playback(Playback.Loop)
         end
-        if catack._destination_tile:x() == 1 or catack._destination_tile:x() == 6 or #catack._destination_tile:find_entities(catack.tile_query) > 0 or catack._continue_offsetting then
+
+        if catack._destination_tile:x() == 1 or catack._destination_tile:x() == 6 or #catack._destination_tile:find_entities(catack._tile_query) > 0 or catack._continue_offsetting then
           if catack:facing() == Direction.Left then
             if catack:offset().x <= -40 or catack._offsetting_reverse then
               catack._offsetting_reverse = true
-              catack:set_offset(catack:offset().x + catack._offset_speed * 0.5, 0.0 * 0.5)
+              catack:set_offset(catack:offset().x + catack._offset_speed * 0.5, 0)
               if catack:offset().x == 0 then
                 catack._offsetting_reverse = false
                 catack._continue_offsetting = false
                 catack._windup_state = "REVERSE_WINDUP"
-                catack:set_offset(0.0 * 0.5, 0.0 * 0.5)
+                catack:set_offset(0, 0)
               end
             elseif catack:offset().x >= -40 and not catack._offsetting_reverse then
               catack._continue_offsetting = true
-              catack:set_offset(catack:offset().x - catack._offset_speed * 0.5, 0.0 * 0.5)
+              catack:set_offset(catack:offset().x - catack._offset_speed * 0.5, 0)
               if catack:offset().x == -40 then
                 local hitbox = Hitbox.new(catack:team())
                 hitbox:set_hit_props(
@@ -213,16 +248,16 @@ function character_init(catack)
           elseif catack:facing() == Direction.Right then
             if catack:offset().x >= 40 or catack._offsetting_reverse then
               catack._offsetting_reverse = true
-              catack:set_offset(catack:offset().x - catack._offset_speed * 0.5, 0.0 * 0.5)
+              catack:set_offset(catack:offset().x - catack._offset_speed * 0.5, 0)
               if catack:offset().x == 0 then
                 catack._offsetting_reverse = false
                 catack._continue_offsetting = false
                 catack._windup_state = "REVERSE_WINDUP"
-                catack:set_offset(0.0 * 0.5, 0.0 * 0.5)
+                catack:set_offset(0, 0)
               end
             elseif catack:offset().x < 40 and not catack._offsetting_reverse then
               catack._continue_offsetting = true
-              catack:set_offset(catack:offset().x + catack._offset_speed * 0.5, 0.0 * 0.5)
+              catack:set_offset(catack:offset().x + catack._offset_speed * 0.5, 0)
               if catack:offset().x == -40 then
                 local hitbox = Hitbox.new(catack:team())
                 hitbox:set_hit_props(
@@ -241,7 +276,7 @@ function character_init(catack)
           if not catack._continue_offsetting and catack:offset().x == 0 then
             catack._offsetting_forward = false
             catack._offsetting_reverse = false
-            catack._destination_tile = catack:get_tile()
+            catack._destination_tile = catack:current_tile()
           end
         else
           catack:slide(catack._destination_tile, (catack._slide_speed), (10), function() end)
@@ -253,7 +288,7 @@ function character_init(catack)
         end
       end
       if catack._can_attack then
-        if catack:get_tile() == catack._destination_tile then
+        if catack:current_tile() == catack._destination_tile then
           if catack._do_once then
             local anim = catack:animation()
             Resources.play_audio(on_windup_sound)
@@ -287,9 +322,6 @@ function character_init(catack)
     end
   end
 
-  catack.on_battle_start_func = noop
-  catack.on_battle_end_func = noop
-  catack.on_spawn_func = noop
   catack.on_delete_func = function(self)
     self:default_character_delete()
   end

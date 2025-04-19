@@ -6,8 +6,8 @@ local BLAST_TEXTURE = bn_helpers.load_texture("tank_cannon_hit_effect.png")
 local BLAST_ANIM = bn_helpers.fetch_animation_path("tank_cannon_hit_effect.animation")
 local BACKROW_BLAST = bn_helpers.load_texture("tank_cannon_blast.png")
 local BACKROW_BLAST_ANIM = bn_helpers.fetch_animation_path("tank_cannon_blast.animation")
-local AUDIO = bn_helpers.load_audio("tankcannon_main.ogg")
-local CANNON = bn_helpers.load_audio("cannon.ogg")
+local AUDIO = bn_helpers.load_audio("tankcannon_fire.ogg")
+local IMPACT_AUDIO = bn_helpers.load_audio("tankcannon_explode.ogg")
 
 local frame_data = ({ { 1, 37 } })
 
@@ -30,10 +30,12 @@ function card_init(actor, props)
 
 		buster_anim:on_frame(4, function()
 			local blast = create_attack(user, props)
+
+
 			field:spawn(blast, actor:get_tile(actor:facing(), 1))
 			field:shake(10, 0.5 * 60)
 
-			Resources.play_audio(CANNON, AudioBehavior.Default)
+			Resources.play_audio(AUDIO, AudioBehavior.Default)
 		end)
 
 		buster_anim:on_frame(5, function()
@@ -142,7 +144,8 @@ function create_attack(user, props)
 		if not self:is_sliding() then
 			if tile:is_edge() and self.slide_started then
 				field:shake(22, 0.5 * 60)
-				Resources.play_audio(AUDIO, AudioBehavior.Default)
+
+				Resources.play_audio(IMPACT_AUDIO, AudioBehavior.NoOverlap)
 
 				local t = self:get_tile(away, 1)
 				local blast = create_back_attack(user, props)
@@ -165,6 +168,7 @@ function create_attack(user, props)
 						tile_up:set_state(TileState.Cracked)
 					end
 				end
+
 				if (tile_down ~= nil and not tile_down:is_edge()) then
 					blast = create_back_attack(user, props)
 					field:spawn(blast, tile_down)
@@ -202,7 +206,7 @@ function create_attack(user, props)
 
 		field:spawn(sprite, other:current_tile())
 
-		Resources.play_audio(AUDIO, AudioBehavior.Default)
+		Resources.play_audio(IMPACT_AUDIO, AudioBehavior.NoOverlap)
 
 		self:delete()
 	end

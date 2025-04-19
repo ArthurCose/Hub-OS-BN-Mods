@@ -12,6 +12,7 @@ description = "Fires 3sq shotgun blast!"
 long_description = "Hits panels above and below, travels, and stops on contact."
 limit = 3
 card_class = "standard"
+hit_flags = ["Impact", "Flinch", "Flash"]
 
 [dependencies]
 libraries = [ "BattleNetwork.Assets" ]

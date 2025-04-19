@@ -1,7 +1,8 @@
-animation state="0"
-frame duration="0.017" x="2" y="2" w="25" h="22" originx="9" originy="11"
+imagePath="C:/Users/seven/OneDrive/Desktop/Games, Engines, and Assets/0 Games/HubOS Release/client/mods/libraries/BattleNetwork.Assets/Animations & Images/buster_satellite.png"
 
-animation state="1"
-frame duration="0.05" x="2" y="28" w="25" h="22" originx="9" originy="11"
-frame duration="0.033" x="2" y="54" w="24" h="22" originx="11" originy="11"
+animation state="WAIT"
+frame duration="0.017" x="2" y="2" w="25" h="22" originx="0" originy="11" flipx="0" flipy="0"
 
+animation state="LOOP"
+frame duration="0.05" x="2" y="28" w="25" h="22" originx="0" originy="11" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="54" w="24" h="22" originx="2" originy="11" flipx="0" flipy="0"

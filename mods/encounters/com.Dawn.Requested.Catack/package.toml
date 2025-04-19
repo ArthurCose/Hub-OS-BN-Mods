@@ -1,15 +1,14 @@
 [package]
 category = "encounter"
-id = "com.Dawn.Requested.Catack"
+id = "BattleNetwork.Encounters.Catack"
+past_ids = ["com.Dawn.Requested.Catack"]
 name = "Catack"
 description = "Battletanx!"
 preview_texture_path = "preview.png"
 
 [[defines.characters]]
-id = "com.Dawn.Requested.Enemy.Catack"
-path = "catack"
+id = "BattleNetwork.Enemy.Catack"
+path = "enemy"
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [ ]
+libraries = ["BattleNetwork.Assets"]

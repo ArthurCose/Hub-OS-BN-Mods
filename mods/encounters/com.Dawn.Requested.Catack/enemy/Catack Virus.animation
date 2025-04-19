@@ -1,5 +1,3 @@
-imagePath="C:/Users/seven/Downloads/Catack Virus.png"
-
 animation state="IDLE"
 frame duration="0.1" x="36" y="130" w="36" h="35" originx="18" originy="32"
 frame duration="0.1" x="36" y="91" w="36" h="36" originx="18" originy="33"

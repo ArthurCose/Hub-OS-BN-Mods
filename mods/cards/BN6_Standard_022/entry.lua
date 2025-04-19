@@ -11,7 +11,7 @@ local AUDIO = bn_assets.load_audio("panelshot2.ogg")
 function card_init(actor, props)
 	local action = Action.new(actor, "CHARACTER_SHOOT")
 
-	local frame_times = { { 1, 2 }, { 1, 3 }, { 1, 2 }, { 1, 1 }, { 2, 3 }, { 3, 3 }, { 4, 13 } }
+	local frame_times = { { 1, 2 }, { 1, 3 }, { 1, 2 }, { 1, 1 }, { 2, 3 }, { 3, 4 }, { 4, 12 } }
 
 	action:override_animation_frames(frame_times)
 	action:set_lockout(ActionLockout.new_animation())
@@ -26,17 +26,16 @@ function card_init(actor, props)
 		local buster_anim = buster:animation()
 		buster_anim:load(BUSTER_ANIM_PATH)
 
-		buster_anim:set_state("DEFAULT")
+		buster_anim:set_state("DEFAULT", frame_times)
 
 		buster_anim:on_frame(5, function()
 			user:set_counterable(false)
 
+			local shot = create_wideshot(user, props)
+
 			local tile = user:get_tile(user:facing(), 1)
 
-			if tile then
-				local shot = create_wideshot(user, props)
-				user:field():spawn(shot, tile)
-			end
+			user:field():spawn(shot, tile)
 		end)
 	end
 	return action
@@ -48,7 +47,7 @@ function create_wideshot(user, props)
 	spell:set_hit_props(
 		HitProps.new(
 			props.damage,
-			Hit.Impact | Hit.Flinch | Hit.Flash,
+			props.hit_flags,
 			props.element,
 			user:context(),
 			Drag.None

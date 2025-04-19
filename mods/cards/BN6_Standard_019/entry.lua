@@ -1,13 +1,15 @@
-local bn_helpers = require("BattleNetwork.Assets")
+local bn_assets = require("BattleNetwork.Assets")
 
-local buster_texture = bn_helpers.load_texture("bn6_flame_buster.png")
-local buster_anim_path = bn_helpers.fetch_animation_path("bn6_flame_buster.animation")
+local buster_texture = bn_assets.load_texture("bn6_flame_buster.png")
+local buster_anim_path = bn_assets.fetch_animation_path("bn6_flame_buster.animation")
 
-local flame_texture = bn_helpers.load_texture("bn6_flame_thrower.png")
-local flame_animation_path = bn_helpers.fetch_animation_path("bn6_flame_thrower.animation")
+local flame_texture = bn_assets.load_texture("bn6_flame_thrower.png")
+local flame_animation_path = bn_assets.fetch_animation_path("bn6_flame_thrower.animation")
 
-local hit_texture = bn_helpers.load_texture("bn6_hit_effects.png")
-local hit_anim_path = bn_helpers.fetch_animation_path("bn6_hit_effects.animation")
+local hit_texture = bn_assets.load_texture("bn6_hit_effects.png")
+local hit_anim_path = bn_assets.fetch_animation_path("bn6_hit_effects.animation")
+
+local AUDIO = bn_assets.load_audio("fireburn.ogg")
 
 local function create_flame_spell(user, props)
     local tile = nil
@@ -84,7 +86,7 @@ end
 
 local function despawn_flame(flame)
     -- Do nothing if the flame never appeared.
-    if flame.has_spawned ~= true then return end
+    if flame._has_spawned ~= true then return end
 
     -- Change the animation and erase on completion.
     local anim = flame:animation()
@@ -96,12 +98,10 @@ local function despawn_flame(flame)
     end)
 end
 
-
 function card_init(actor, props)
     local action = Action.new(actor, "CHARACTER_SHOOT")
     local field = actor:field()
     local tile_array = {}
-    local AUDIO = Resources.load_audio("sfx.ogg")
     local frames = { { 1, 35 } }
     action:override_animation_frames(frames)
     action:set_lockout(ActionLockout.new_animation())
@@ -137,11 +137,7 @@ function card_init(actor, props)
         local origin = user:sprite():origin()
         local fire_x = buster_point.x - origin.x + 21 - Tile:width()
         local fire_y = buster_point.y - origin.y
-        print(fire_y)
-        print("===")
-        print(buster_point.y)
-        print("......")
-        print(origin.y)
+
         self.flame1:set_offset(fire_x, fire_y)
         self.flame2:set_offset(fire_x, fire_y)
         self.flame3:set_offset(fire_x, fire_y)
