@@ -1,3 +1,11 @@
+local bn_assets = require("BattleNetwork.Assets")
+
+local soldier_texture = bn_assets.load_texture("colonel_soldier.png")
+local soldier_anim_path = bn_assets.fetch_animation_path("colonel_soldier.animation")
+
+local hit_sound = bn_assets.load_audio("hit_impact.ogg")
+local gun_sound = bn_assets.load_audio("gunner_shot.ogg")
+
 function create_soldier_shot(user, props, facing)
     local spell = Spell.new(user:team())
     spell:set_facing(facing)
@@ -5,7 +13,7 @@ function create_soldier_shot(user, props, facing)
     spell:set_hit_props(
         HitProps.new(
             props.damage,
-            Hit.Impact | Hit.Flinch | Hit.Paralyze,
+            props.hit_flags,
             Element.None,
             user:context(),
             Drag.None
@@ -25,7 +33,7 @@ function create_soldier_shot(user, props, facing)
         end
     end
     spell.on_collision_func = function(self, other)
-        Resources.play_audio(Resources.load_audio("hit.ogg"))
+        Resources.play_audio(hit_sound)
 
         local next_tile = self:get_tile(self:facing(), 1)
         if next_tile then
@@ -45,7 +53,7 @@ function create_soldier_shot(user, props, facing)
     spell.can_move_to_func = function(tile)
         return true
     end
-    Resources.play_audio(Resources.load_audio("gun.ogg"))
+    Resources.play_audio(gun_sound)
     return spell
 end
 
@@ -58,14 +66,15 @@ function card_init(actor, props)
         local facing = Direction.Right
         local start_x = 6
         local increment = -1
+
         if user:team() == Team.Blue then
             facing = Direction.Left
             start_x = 0
             increment = 1
         end
+
         local tile_array = {}
-        local texture = Resources.load_texture("CommanderAddon.png")
-        local anim_path = "CommanderAddon.animation"
+
         local field = user:field()
 
         local occupied_query = function(ent)
@@ -76,27 +85,33 @@ function card_init(actor, props)
 
         local function create_soldier(tile)
             local soldier = Spell.new(user:team())
+
             soldier:set_facing(facing)
-            soldier:set_texture(texture)
+            soldier:set_texture(soldier_texture)
+
             local anim = soldier:animation()
-            anim:load(anim_path)
-            anim:set_state("COMMANDERARMY")
+
+            anim:load(soldier_anim_path)
+
+            anim:set_state("SPAWN")
+
             anim:apply(soldier:sprite())
-            anim:on_frame(7, function()
-                local spell = create_soldier_shot(user, props, facing)
-                field:spawn(spell, soldier:get_tile(soldier:facing(), 1))
-            end)
-            anim:on_frame(11, function()
-                local spell = create_soldier_shot(user, props, facing)
-                field:spawn(spell, soldier:get_tile(soldier:facing(), 1))
-            end)
-            anim:on_frame(15, function()
-                local spell = create_soldier_shot(user, props, facing)
-                field:spawn(spell, soldier:get_tile(soldier:facing(), 1))
-            end)
+
             anim:on_complete(function()
-                soldier:erase()
+                anim:set_state("ATTACK")
+                for i = 3, 3, 9 do
+                    anim:on_frame(i, function()
+                        field:spawn(create_soldier_shot(user, props, facing), tile:get_tile(soldier:facing(), 1))
+                    end)
+                end
+                anim:on_complete(function()
+                    anim:set_state("REMOVE")
+                    anim:on_complete(function()
+                        soldier:erase()
+                    end)
+                end)
             end)
+
             field:spawn(soldier, tile)
         end
 
@@ -105,12 +120,11 @@ function card_init(actor, props)
             local spawn = 1
             local spawned_something = false
 
-            local soldier_handler = user:create_component(Lifetime.Local)
+            local soldier_handler = user:create_component(Lifetime.ActiveBattle)
 
             soldier_handler.on_update_func = function()
                 if delay % 9 == 0 then
-                    while (not spawned_something)
-                    do
+                    while (not spawned_something) do
                         if list[spawn] then
                             create_soldier(list[spawn])
                             spawn = spawn + 1

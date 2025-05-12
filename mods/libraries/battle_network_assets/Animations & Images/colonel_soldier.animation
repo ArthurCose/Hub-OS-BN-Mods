@@ -1,4 +1,4 @@
-imagePath="colonel_soldier_compressed.png"
+imagePath="C:/Users/seven/OneDrive/Desktop/Games, Engines, and Assets/0 Games/HubOS Release/client/mods/libraries/BattleNetwork.Assets/Animations & Images/colonel_soldier.png"
 
 animation state="SPAWN"
 frame duration="0.017" x="119" y="0" w="1" h="1" originx="192" originy="192" flipx="0" flipy="0"
@@ -10,6 +10,12 @@ frame duration="0.05" x="0" y="62" w="50" h="31" originx="12" originy="28" flipx
 frame duration="0.033" x="68" y="0" w="51" h="31" originx="12" originy="28" flipx="0" flipy="0"
 
 animation state="ATTACK"
+frame duration="0.033" x="61" y="31" w="51" h="31" originx="12" originy="28" flipx="0" flipy="0"
+frame duration="0.033" x="0" y="31" w="61" h="31" originx="12" originy="28" flipx="0" flipy="0"
+frame duration="0.033" x="0" y="0" w="68" h="31" originx="12" originy="28" flipx="0" flipy="0"
+frame duration="0.033" x="61" y="31" w="51" h="31" originx="12" originy="28" flipx="0" flipy="0"
+frame duration="0.033" x="0" y="31" w="61" h="31" originx="12" originy="28" flipx="0" flipy="0"
+frame duration="0.033" x="0" y="0" w="68" h="31" originx="12" originy="28" flipx="0" flipy="0"
 frame duration="0.033" x="61" y="31" w="51" h="31" originx="12" originy="28" flipx="0" flipy="0"
 frame duration="0.033" x="0" y="31" w="61" h="31" originx="12" originy="28" flipx="0" flipy="0"
 frame duration="0.033" x="0" y="0" w="68" h="31" originx="12" originy="28" flipx="0" flipy="0"

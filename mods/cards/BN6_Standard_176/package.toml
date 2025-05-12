@@ -10,3 +10,6 @@ time_freeze = false
 description = "CustGauge instantly refills"
 can_boost = false
 limit = 1
+
+[dependencies]
+librarys = ["BattleNetwork.Assets"]

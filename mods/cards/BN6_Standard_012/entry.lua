@@ -7,7 +7,7 @@ local BLAST_ANIM = bn_helpers.fetch_animation_path("tank_cannon_hit_effect.anima
 local BACKROW_BLAST = bn_helpers.load_texture("tank_cannon_blast.png")
 local BACKROW_BLAST_ANIM = bn_helpers.fetch_animation_path("tank_cannon_blast.animation")
 local AUDIO = bn_helpers.load_audio("tankcannon_fire.ogg")
-local IMPACT_AUDIO = bn_helpers.load_audio("tankcannon_explode.ogg")
+local IMPACT_AUDIO = bn_helpers.load_audio("tankcannon_main.ogg")
 
 local frame_data = ({ { 1, 37 } })
 
@@ -43,16 +43,16 @@ function card_init(actor, props)
 			-- if (user:facing() == Direction.Left) then
 			-- 	offset = 12
 			-- end
-			actor:set_offset(offset * 0.5, 0 * 0.5)
+			actor:set_offset(offset * 0.5, 0)
 		end)
 
 		buster_anim:on_frame(9, function()
-			actor:set_offset(0 * 0.5, 0 * 0.5)
+			actor:set_offset(0, 0)
 		end)
 	end
 
 	action.on_action_end_func = function(self)
-		actor:set_offset(0 * 0.5, 0 * 0.5)
+		actor:set_offset(0, 0)
 	end
 
 	return action
@@ -70,7 +70,9 @@ function create_basic_effect(field, tile, hit_texture, hit_anim_path, hit_anim_s
 	fx_anim:on_complete(function()
 		fx:erase()
 	end)
+
 	field:spawn(fx, tile)
+
 	return fx
 end
 
@@ -114,7 +116,6 @@ function create_back_attack(user, props)
 		self:delete()
 	end
 
-
 	return spell
 end
 
@@ -149,7 +150,9 @@ function create_attack(user, props)
 
 				local t = self:get_tile(away, 1)
 				local blast = create_back_attack(user, props)
+
 				field:spawn(blast, t)
+
 				local tile_up = t:get_tile(Direction.Up, 1)
 				local tile_down = t:get_tile(Direction.Down, 1)
 

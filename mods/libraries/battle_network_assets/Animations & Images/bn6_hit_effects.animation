@@ -1,4 +1,4 @@
-imagePath="C:/Users/seven/OneDrive/Desktop/HubOS/client/mods/libraries/battle_network_helpers/Animations & Images/bn6_hit_effects.png"
+imagePath="C:/Users/seven/OneDrive/Desktop/Games, Engines, and Assets/0 Games/HubOS Release/client/mods/libraries/BattleNetwork.Assets/Animations & Images/bn6_hit_effects.png"
 
 animation state="PEASHOT"
 frame duration="0.017" x="42" y="105" w="22" h="22" originx="11" originy="11" flipx="0" flipy="0"

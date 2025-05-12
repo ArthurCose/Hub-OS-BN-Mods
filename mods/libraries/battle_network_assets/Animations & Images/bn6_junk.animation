@@ -1,0 +1,19 @@
+imagePath="C:/Users/seven/OneDrive/Desktop/Games, Engines, and Assets/0 Games/HubOS Release/client/mods/libraries/BattleNetwork.Assets/Animations & Images/bn6_junk.png"
+
+animation state="RECYCLE"
+frame duration="0.133" x="2" y="2" w="34" h="48" originx="16" originy="44" flipx="0" flipy="0"
+
+animation state="HEART"
+frame duration="0.133" x="2" y="54" w="26" h="44" originx="13" originy="40" flipx="0" flipy="0"
+frame duration="0.133" x="32" y="54" w="26" h="44" originx="13" originy="40" flipx="0" flipy="0"
+
+animation state="SCRAP"
+frame duration="0.133" x="40" y="2" w="32" h="48" originx="16" originy="44" flipx="0" flipy="0"
+
+animation state="BOMB"
+frame duration="0.05" x="76" y="2" w="28" h="46" originx="15" originy="42" flipx="0" flipy="0"
+frame duration="0.05" x="62" y="54" w="26" h="44" originx="13" originy="40" flipx="0" flipy="0"
+
+animation state="ROCKET"
+frame duration="0.05" x="2" y="102" w="45" h="40" originx="19" originy="36" flipx="0" flipy="0"
+frame duration="0.05" x="51" y="102" w="47" h="40" originx="19" originy="36" flipx="0" flipy="0"

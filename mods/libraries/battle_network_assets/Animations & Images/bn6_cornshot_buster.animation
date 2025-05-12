@@ -1,0 +1,10 @@
+imagePath="C:/Users/seven/OneDrive/Desktop/Games, Engines, and Assets/0 Games/HubOS Release/client/mods/libraries/BattleNetwork.Assets/Animations & Images/bn6_cornshot_buster.png"
+
+animation state="0"
+frame duration="0.017" x="2" y="2" w="26" h="23" originx="14" originy="15" flipx="0" flipy="0"
+
+animation state="1"
+frame duration="0.017" x="32" y="2" w="26" h="23" originx="14" originy="15" flipx="0" flipy="0"
+frame duration="0.033" x="32" y="29" w="24" h="22" originx="15" originy="11" flipx="0" flipy="0"
+frame duration="0.067" x="2" y="56" w="24" h="22" originx="14" originy="11" flipx="0" flipy="0"
+frame duration="0.017" x="2" y="29" w="26" h="23" originx="14" originy="15" flipx="0" flipy="0"

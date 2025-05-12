@@ -1,0 +1,7 @@
+imagePath="C:/Users/seven/Desktop/ONB/resources/mods/players/HarpyPersonal/Chips/PhoenixFire/firewave.png"
+
+animation state="DEFAULT"
+frame duration="0.033" x="51" y="69" w="38" h="40" originx="16" originy="36" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="69" w="45" h="58" originx="24" originy="55" flipx="0" flipy="0"
+frame duration="0.033" x="57" y="2" w="51" h="59" originx="33" originy="56" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="2" w="51" h="63" originx="39" originy="60" flipx="0" flipy="0"

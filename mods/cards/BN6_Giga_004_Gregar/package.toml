@@ -11,11 +11,10 @@ element = "none"
 description = "Smn Col. army in open pnls"
 card_class = "giga"
 limit = 1
-
-[defines]
-characters = [ ]
+hit_flags = ["Impact", "Flinch", "Paralyze"]
+status_durations = [
+    {flag_name = "Paralyze", duration = 120}
+]
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [ ]
+libraries = ["BattleNetwork.Assets"]
