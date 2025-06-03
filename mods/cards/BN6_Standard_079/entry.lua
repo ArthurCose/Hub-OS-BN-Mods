@@ -74,7 +74,7 @@ local function create_spell(spells, user, props, x_offset, y_offset)
 		HitProps.from_card(
 			props,
 			user:context(),
-			Drag.new(Direction.Right, field:width())
+			Drag.new(user:facing(), field:width())
 		)
 	)
 
