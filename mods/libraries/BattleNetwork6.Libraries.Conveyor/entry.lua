@@ -1,15 +1,21 @@
-local CONVEYOR_WAIT_DELAY = 7
-local CONVEYOR_SLIDE_DURATION = 7
+local CONVEYOR_WAIT_DELAY = 6
+local CONVEYOR_SLIDE_DURATION = 6
 
 ---@param custom_state CustomTileState
 return function(custom_state, direction)
   local offset = Direction.vector(direction)
   local field = custom_state:field()
 
-  local tracking = {}
+  local time_tracking = {}
+  local slide_tracking = {}
+  local on_tile_count = {}
 
   custom_state.on_entity_leave_func = function(self, entity)
-    tracking[entity:id()] = nil
+    on_tile_count[entity:id()] = (on_tile_count[entity:id()] or 0) - 1
+  end
+
+  custom_state.on_entity_enter_func = function(self, entity)
+    on_tile_count[entity:id()] = (on_tile_count[entity:id()] or 0) + 1
   end
 
   ---@param entity Entity
@@ -19,14 +25,22 @@ return function(custom_state, direction)
     end
 
     if entity:is_moving() then
-      -- reset tracking
-      tracking[entity:id()] = 0
+      local sliding = slide_tracking[entity:id()]
+
+      if sliding then
+        -- reset tracking
+        time_tracking[entity:id()] = 0
+      else
+        time_tracking[entity:id()] = CONVEYOR_WAIT_DELAY
+      end
+
       return
     end
 
     -- get and update movement tracking
-    local elapsed_since_movement = tracking[entity:id()] or 0
-    tracking[entity:id()] = elapsed_since_movement + 1
+    local elapsed_since_movement = time_tracking[entity:id()] or 0
+    time_tracking[entity:id()] = elapsed_since_movement + 1
+    slide_tracking[entity:id()] = nil
 
     if elapsed_since_movement < CONVEYOR_WAIT_DELAY then
       return
@@ -41,10 +55,19 @@ return function(custom_state, direction)
     end
 
     entity:slide(dest, CONVEYOR_SLIDE_DURATION)
+    slide_tracking[entity:id()] = true
   end
 
   ---@param tile Tile
   custom_state.on_update_func = function(self, tile)
+    for entity_id, count in pairs(on_tile_count) do
+      if count == 0 then
+        time_tracking[entity_id] = nil
+        slide_tracking[entity_id] = nil
+        on_tile_count[entity_id] = nil
+      end
+    end
+
     tile:find_characters(function(entity)
       entity_update(entity)
       return false
