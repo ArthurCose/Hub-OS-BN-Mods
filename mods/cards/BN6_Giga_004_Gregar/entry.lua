@@ -69,7 +69,7 @@ function card_init(actor, props)
 
         if user:team() == Team.Blue then
             facing = Direction.Left
-            start_x = 0
+            start_x = 1
             increment = 1
         end
 
@@ -150,7 +150,7 @@ function card_init(actor, props)
 
         local delay = 5
         local function tile_checker()
-            local done = false
+            local fail = false
 
             while (true) do
                 -- Collect column
@@ -162,7 +162,7 @@ function card_init(actor, props)
                 -- Probably redundant
                 for i = 1, 3, 1 do
                     if tile_array[i]:is_edge() then
-                        done = true
+                        fail = true
                         break
                     end
 
@@ -172,17 +172,17 @@ function card_init(actor, props)
                     end
                 end
 
-                if done then
+                if fail then
                     tile_array = {}
                     colforce_handler:eject()
-                    break
+                    return false
                 end
 
                 -- If we could spawn on some, start the wave
                 -- Else, check next column
-                if fail_count < 3 and not done then
+                if fail_count < 3 and not fail then
                     start_x = start_x + increment
-                    break
+                    return true
                 else
                     fail_count = 0
                     start_x = start_x + increment
@@ -190,18 +190,18 @@ function card_init(actor, props)
             end
         end
 
-        tile_checker()
-
-        colforce_handler.on_update_func = function()
-            if delay % 50 == 0 then
-                if do_once then
-                    do_once = false
-                else
-                    tile_checker()
+        if tile_checker() then
+            colforce_handler.on_update_func = function()
+                if delay % 50 == 0 then
+                    if do_once then
+                        do_once = false
+                    else
+                        tile_checker()
+                    end
+                    create_soldier_wave(tile_array)
                 end
-                create_soldier_wave(tile_array)
+                delay = delay - 1
             end
-            delay = delay - 1
         end
 
         action:end_action()
