@@ -105,12 +105,11 @@ function player_init(player)
                 if item.category == "deck_discard" then goto continue end
 
                 if item.index ~= nil then
-                    local recycled_deck_card = self._player:deck_card(item.index)
+                    local recycled_properties = self._player:deck_card_properties(item.index)
 
                     table.insert(junked_chip_list,
                         {
-                            package_id = recycled_deck_card.package_id,
-                            code = recycled_deck_card.code,
+                            card_properties = recycled_properties,
                             used = false
                         }
                     )
@@ -139,7 +138,7 @@ function player_init(player)
                 for i = 1, #junked_chip_list, 1 do
                     local pos = math.random(1, #shuffled + 1)
                     if junked_chip_list[i].used == false then
-                        table.insert(shuffled, pos, { card = junked_chip_list[i], list_index = i })
+                        table.insert(shuffled, pos, { junked = junked_chip_list[i], list_index = i })
                     end
                 end
 
@@ -148,12 +147,11 @@ function player_init(player)
 
                 while (recycle_index <= #shuffled and recycle_count <= 2) do
                     local random_chip = shuffled[recycle_index]
-                    local card = random_chip.card
+                    local junked = random_chip.junked
                     local original_index = random_chip.list_index
 
-                    if card ~= nil and card.used == false then
-                        local recycle_props = CardProperties.from_package(card.package_id, card.code)
-                        recycle_props.code = card.code
+                    if junked ~= nil and junked.used == false then
+                        local recycle_props = junked.card_properties
 
                         self._player:set_fixed_card(recycle_props, recycle_count)
 
@@ -1944,7 +1942,7 @@ function player_init(player)
 
         local card_properties;
         if item.category == "deck_card" then
-            card_properties = CardProperties.from_package(player:deck_card(item.index).package_id)
+            card_properties = player:deck_card_properties(item.index)
         elseif item.category == "card" then
             card_properties = item.card_properties
         end
