@@ -43,7 +43,7 @@ function player_init(player)
             and card.secondary_element == Element.None
 
         if can_charge then
-            return 50
+            return 100
         end
     end
 
