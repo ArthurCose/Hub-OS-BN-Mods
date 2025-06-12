@@ -1,6 +1,5 @@
 ---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
-local battle_helpers = require("Battle.Helpers")
 
 local ROLLING_TEXTURE = bn_assets.load_texture("hells_rolling.png")
 local ROLLING_ANIMATION = bn_assets.fetch_animation_path("hells_rolling.animation")
@@ -90,7 +89,8 @@ local function create_helz_rolling(user, hit_props, direction_priority)
       return
     end
 
-    spell:slide(next_helz_tile(spell, direction_priority), 9)
+    -- normally has duration 9, it's sped up for pvp
+    spell:slide(next_helz_tile(spell, direction_priority), 7)
   end
 
   -- spawn animation

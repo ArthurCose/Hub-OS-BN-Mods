@@ -289,6 +289,12 @@ Input = {
 ---@field on_attack_func fun(self: Entity, entity: Entity)
 --- Called when the spell hits an entity and isn't blocked by [intangibility](https://docs.hubos.dev/client/lua-api/entity-api/living#livingset_intangibleintangible-intangible_rule).
 ---@field on_collision_func fun(self: Entity, entity: Entity)
+--- Called at the start of the intro state (the state before card select first opens).
+---
+--- When unset or returning nil, the default intro for the character type will be used.
+---
+--- The returned action will not be immediately executed. When the action is completed, the next character's intro will begin or the intro state will end.
+---@field intro_func fun(self: Entity): Action|nil
 --- Used to handle movement input, setting this overrides the default handling.
 ---@field movement_func fun(self: Entity, direction: Direction)
 --- Will not be called if there's no matching `calculate_card_charge_time_func`
@@ -330,9 +336,7 @@ Input = {
 --- This function is predefined for all entities.
 ---@field can_move_to_func fun(tile: Tile): boolean
 --- Called when the battle has completed (win or loss).
----
---- Not implemented.
----@field on_battle_end_func fun(self: Entity)
+---@field on_battle_end_func fun(self: Entity, won: boolean)
 --- Called when battle starts for the first time, or when the entity is spawned if battle has already started.
 ---@field on_battle_start_func fun(self: Entity)
 --- Called when health is 0 or `entity:delete()` is called. `entity:erase()` must be called to truly delete the entity.
@@ -1447,6 +1451,12 @@ function Player.from(entity) end
 ---@return boolean
 function Entity:is_local() end
 
+--- Returns a number, represents the index of the player in the list of players sent from the server.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@return number
+function Entity:player_index() end
+
 --- Returns a list of valid values for `player:set_emotion()`.
 ---
 --- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
@@ -1580,12 +1590,25 @@ function Entity:has_regular_card() end
 ---@return DeckCard[]
 function Entity:deck_cards() end
 
+--- - `index`: number, 1 is the first card in the deck.
+---
 --- Returns [DeckCard](https://docs.hubos.dev/client/lua-api/attack-api/cards#deckcard) or nil.
+---
+--- Creating CardProperties through this function rather than [player:deck_card_properties()](https://docs.hubos.dev/client/lua-api/entity-api/player#playerdeck_card_propertiesindex) may cause desyncs when the mod is installed on multiple clients in battle.
 ---
 --- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
 ---@param index number
 ---@return DeckCard
 function Entity:deck_card(index) end
+
+--- - `index`: number, 1 is the first card in the deck.
+---
+--- Returns [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardproperties) or nil.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param index number
+---@return CardProperties
+function Entity:deck_card_properties(index) end
 
 --- - `index`: number, 1 is the first card in the deck.
 --- - `deck_card`: [DeckCard](https://docs.hubos.dev/client/lua-api/attack-api/cards#deckcard)
@@ -1855,6 +1878,28 @@ function Entity:charge_level() end
 ---@param increment number
 function Entity:boost_charge_level(increment) end
 
+--- Returns true if holding the Shoot button is tied to charging for [player.charged_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playercharged_attack_func--functionself-actionnil)
+---
+--- With no calls to `*:set_charge_with_shoot()`, the default is true.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@return boolean
+function Entity:charges_with_shoot() end
+
+--- Configures whether the Shoot button is tied to charging for [player.charged_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playercharged_attack_func--functionself-actionnil), when no other augments or forms are overriding this behavior.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param bool? boolean
+function Entity:set_charge_with_shoot(bool) end
+
+--- Marks the player as trying to charge an attack for [player.charged_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playercharged_attack_func--functionself-actionnil)
+---
+--- Automatically resets to false when the value is used by the engine.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param bool? boolean
+function Entity:mark_charging(bool) end
+
 --- Returns the amount of time in game frames, the `Shoot` button would need to be held for a fully charged attack if the [player.calculate_charge_time](https://docs.hubos.dev/client/lua-api/entity-api/player#playercalculate_charge_time) function was not set.
 ---
 --- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
@@ -1906,6 +1951,12 @@ function PlayerForm:create_card_button(slot_count, card_button_slot) end
 ---@return CardSelectButton
 function PlayerForm:create_special_button() end
 
+--- Configures whether the Shoot button is tied to charging for [player.charged_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playercharged_attack_func--functionself-actionnil), when no other augments or forms are overriding this behavior.
+---
+--- When set to nil (default), the final value will try to fall back to a specified non-nil value with a lower priority or true.
+---@param bool? boolean
+function PlayerForm:set_charge_with_shoot(bool) end
+
 --- Returns the package id of the augment.
 ---@return string
 function Augment:id() end
@@ -1949,6 +2000,12 @@ function Augment:create_card_button(slot_count, card_button_slot) end
 --- Returns [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton)
 ---@return CardSelectButton
 function Augment:create_special_button() end
+
+--- Configures whether the Shoot button is tied to charging for [player.charged_attack_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playercharged_attack_func--functionself-actionnil), when no other augments or forms are overriding this behavior.
+---
+--- When set to nil (default), the final value will try to fall back to a specified non-nil value with a lower priority or true.
+---@param bool? boolean
+function Augment:set_charge_with_shoot(bool) end
 
 --- Returns a [Sprite](https://docs.hubos.dev/client/lua-api/resource-api/sprite)
 ---@return Sprite
@@ -2253,12 +2310,31 @@ function Resources.load_audio(path) end
 ---@param audio_behavior? AudioBehavior
 function Resources.play_audio(path, audio_behavior) end
 
+--- Stops the currently playing music.
+function Resources.stop_music() end
+
 --- - `path`: file path relative to script file, use values returned from `Resources.load_audio()` for better performance.
 ---
 --- Plays audio stored at `path` as music. Loops by default.
 ---@param path string
 ---@param loops? boolean
 function Resources.play_music(path, loops) end
+
+--- Returns true if the index represents the local player.
+---@param player_index number
+---@return boolean
+function Resources.is_local(player_index) end
+
+--- Returns a number, represents the index of the local player in the list of players sent from the server.
+---@return number
+function Resources.local_index() end
+
+--- Same as [player:input_has()](https://docs.hubos.dev/client/lua-api/entity-api/player#playerinput_hasinput_query).
+---
+--- Allows for spectator input to be read.
+---@param player_index number
+---@param input_query Input
+function Resources.input_has(player_index, input_query) end
 
 --- Audio will play from the beginning (sample 0), looping back to `start_sample` when `end_sample` is reached.
 ---
@@ -2377,6 +2453,14 @@ function Animation:has_point(name) end
 ---@return { x: number, y: number }
 function Animation:get_point(name) end
 
+--- Calculates where a point is relative to the origin.
+---
+--- Returns `{ x: number, y: number }`.
+---@param name string
+---@param origin_name? string
+---@return { x: number, y: number }
+function Animation:relative_point(name, origin_name) end
+
 --- - `playback`:
 ---   - `Playback.Once` stops when the animation is completed.
 ---   - `Playback.Loop` restarts the animation when completed.
@@ -2391,7 +2475,7 @@ function Animation:get_point(name) end
 ---@param playback Playback
 function Animation:set_playback(playback) end
 
---- Adds a function to be called when the animation "completes".
+--- Adds a function to be called when the animation "completes". The callback will no longer be called when the state is changed.
 ---
 --- Completion condition differs depending on playback:
 ---
@@ -2402,7 +2486,7 @@ function Animation:set_playback(playback) end
 ---@param callback fun()
 function Animation:on_complete(callback) end
 
---- Adds a function to be called when the state changes.
+--- Adds a function to be called when the state changes. The callback will no longer be called after this occurs.
 ---@param callback fun()
 function Animation:on_interrupt(callback) end
 
@@ -2410,6 +2494,8 @@ function Animation:on_interrupt(callback) end
 --- - `do_once` when true, the callback is deleted.
 ---
 --- Calls the callback when the frame changes during an update. If the `frame_index` is 1 and the state was just set, it will be called next update.
+---
+--- The callback will no longer be called when the state is changed.
 ---@param frame_index number
 ---@param callback fun()
 ---@param do_once? boolean
@@ -3081,6 +3167,16 @@ function Encounter:player_count() end
 ---@param row number
 function Encounter:spawn_player(player_index, col, row) end
 
+--- - `player_index`: number, starts at 0
+---
+--- Marks the player as a spectator. Avoids creating an entity for this player (Mods from this player will still be loaded).
+---@param player_index number
+function Encounter:mark_spectator(player_index) end
+
+--- Converts players to spectators when deleted.
+---@param bool? boolean
+function Encounter:set_spectate_on_delete(bool) end
+
 --- - `vel_x`: if unset, uses the "VELOCITY" point on the first frame of the animation.
 --- - `vel_y`: if unset, uses the "VELOCITY" point on the first frame of the animation.
 ---@param texture_path string
@@ -3100,6 +3196,13 @@ function Encounter:set_background(texture_path, animation_path, vel_x, vel_y) en
 ---@param tile_width number
 ---@param tile_height number
 function Encounter:set_panels(texture_paths, animation_path, tile_width, tile_height) end
+
+--- Resizes the field, remember to add two to each dimension to account for the invisible edge tiles. If the field is larger than the screen allows, the camera will adjust placement and zoom to fit all [Characters](https://docs.hubos.dev/client/lua-api/entity-api/character).
+---
+--- Resets tile teams and states on the field.
+---@param width number
+---@param height number
+function Encounter:set_field_size(width, height) end
 
 --- Sets the initial battle music. Use [Resources.play_music()](https://docs.hubos.dev/client/lua-api/resource-api/resources#resourcesplay_musicpath-loops) to change the music in the middle of the battle
 ---@param path string
@@ -3134,6 +3237,39 @@ function Encounter:enable_flipping(enable, player_index) end
 --- Affects the score in [battle_results](https://docs.hubos.dev/server/lua-api/events#battle_results).
 ---@param enabled? boolean
 function Encounter:enable_boss_battle(enabled) end
+
+--- Disables the built-in battle result banner and prevents the scene from automatically ending.
+function Encounter:enable_scripted_scene_end() end
+
+--- Disables the built-in win / loss detection.
+function Encounter:enable_scripted_result() end
+
+--- Marks the battle as a win for [battle_results](https://docs.hubos.dev/server/lua-api/events#battle_results).
+---
+--- Additionally [ends the battle](https://docs.hubos.dev/client/lua-api/field-api/encounter#encounteron_battle_endfunctionwon), does not end the scene.
+function Encounter:win() end
+
+--- Marks the battle as a loss for [battle_results](https://docs.hubos.dev/server/lua-api/events#battle_results).
+---
+--- Additionally [ends the battle](https://docs.hubos.dev/client/lua-api/field-api/encounter#encounteron_battle_endfunctionwon), does not end the scene.
+function Encounter:lose() end
+
+--- Signals the end of the scene, allowing the player to return to a server or previous menu.
+---
+--- Additionally [ends the battle](https://docs.hubos.dev/client/lua-api/field-api/encounter#encounteron_battle_endfunctionwon)
+function Encounter:end_scene() end
+
+--- Adds a listener for the battle end to handle results.
+---@param callback fun(won: boolean)
+function Encounter:on_battle_end(callback) end
+
+--- Sends a message to the server that initiated this battle, which can be accessed on the server in the [battle_message](https://docs.hubos.dev/server/lua-api/events#battle_message) event.
+---@param data any
+function Encounter:send_to_server(data) end
+
+--- Receives a message sent from the server by [Net.send_battle_message()](https://docs.hubos.dev/server/lua-api/players#netsend_battle_messagebattle_id-encounter_data).
+---@param callback fun(data: any)
+function Encounter:on_server_message(callback) end
 
 --- Spawns the character at this position.
 ---
