@@ -80,7 +80,7 @@ local function create_helz_rolling(user, hit_props, direction_priority)
     end
 
     if not spell:current_tile():is_walkable() then
-      local artifact = bn_assets.MobMove.new("BIG_END")
+      local artifact = bn_assets.MobMove.new("BIG_START")
       local spell_sprite = spell:sprite()
       artifact:set_elevation(spell_sprite:origin().y // 2)
 
