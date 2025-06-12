@@ -178,7 +178,6 @@ function Sword:create_action_step(action, spell_callback)
     end
 
     animation:on_complete(cleanup)
-    animation:on_interrupt(cleanup)
 
     step.on_update_func = nil
   end
@@ -189,8 +188,8 @@ end
 ---@class SwordLib
 local SwordLib = {}
 
+---@return Sword
 function SwordLib.new_sword()
-  ---@type Sword
   local sword = {}
   setmetatable(sword, Sword)
 
