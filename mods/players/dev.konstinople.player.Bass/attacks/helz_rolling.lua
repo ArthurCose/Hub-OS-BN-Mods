@@ -3,6 +3,8 @@ local bn_assets = require("BattleNetwork.Assets")
 
 local ROLLING_TEXTURE = bn_assets.load_texture("hells_rolling.png")
 local ROLLING_ANIMATION = bn_assets.fetch_animation_path("hells_rolling.animation")
+local IMPACT_SFX = bn_assets.load_audio("hit_impact.ogg")
+local SWING_SFX = bn_assets.load_audio("hells_rolling.ogg")
 
 ---@type SwordLib
 local SwordLib = require("dev.konstinople.library.sword")
@@ -71,6 +73,10 @@ local function create_helz_rolling(user, hit_props, direction_priority)
   animation:load(ROLLING_ANIMATION)
   animation:set_state("DEFAULT")
   animation:set_playback(Playback.Loop)
+
+  spell.on_collision_func = function()
+    Resources.play_audio(IMPACT_SFX)
+  end
 
   local function normal_update()
     spell:attack_tile()
@@ -143,6 +149,8 @@ return function(user)
   end
 
   sword:create_action_step(action, function()
+    Resources.play_audio(SWING_SFX)
+
     local top_tile = user:get_tile(Direction.Up, 1)
     local bottom_tile = user:get_tile(Direction.Down, 1)
 
