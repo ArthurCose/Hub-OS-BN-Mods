@@ -9,11 +9,12 @@ overworld_animation_path = "searchmanOW.animation"
 mugshot_texture_path = "mug.png"
 mugshot_animation_path = "mug.animation"
 health = 1000
+element = "Cursor"
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [ ]
+characters = []
+libraries = []
+cards = []

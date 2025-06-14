@@ -4,19 +4,20 @@ id = "BattleNetwork4.5.WindMan.Custom"
 name = "WindMan"
 description = "God of Scissor Island"
 preview_texture_path = "preview.png"
-overworld_animation_path = "windman_OW.animation"
+overworld_animation_path = "windmanOW.animation"
 overworld_texture_path = "windmanOW.png"
 icon_texture_path = "windman_face.png"
 mugshot_animation_path = "mug.animation"
 mugshot_texture_path = "mug.png"
 health = 1000
+element = "Wind"
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
+characters = []
+libraries = []
 cards = [
     "BattleNetwork6.Class01.Standard.004",
     "BattleNetwork6.Class01.Standard.079"

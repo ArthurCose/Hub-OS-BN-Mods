@@ -1,0 +1,21 @@
+[package]
+category = "card"
+id = "dev.GladeWoodsgrove.Chips.IceBomb"
+name = "IceBomb"
+damage = 10
+element = "aqua"
+description = "Bomb freezes 3sq ahead!"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "A", "I", "J", "Q", "U" ]
+limit = 0
+conceal = true
+hit_flags = ["Impact"]
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

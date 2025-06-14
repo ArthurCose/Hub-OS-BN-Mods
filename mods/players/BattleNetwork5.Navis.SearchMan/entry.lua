@@ -1,7 +1,7 @@
 function player_init(player)
     player:set_name("Searchman")
     -- player:set_health(1500)
-    player:set_element(Element.Cursor)
+    -- player:set_element(Element.Cursor)
     player:set_height(60.0)
     player:set_charge_position(0, -30)
 

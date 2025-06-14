@@ -1,6 +1,6 @@
 function player_init(player)
     -- Set the element of this Navi. An Element determines if they are weak to certain attacks.
-    player:set_element(Element.Wind)
+    -- player:set_element(Element.Wind)
 
     -- Set the height of this Navi. This affects the display of the Battle Chip icons in combat.
     player:set_height(70.0)

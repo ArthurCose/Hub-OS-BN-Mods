@@ -1,0 +1,20 @@
+[package]
+category = "player"
+id = "BattleNetwork.Navi.IceMan"
+name = "IceMan"
+health = 1000
+element = "Aqua"
+description = "Stay frosty!"
+preview_texture_path = "preview.png"
+overworld_animation_path = "iceman_OW.animation"
+overworld_texture_path = "iceman_OW.png"
+mugshot_texture_path = "mug.png"
+mugshot_animation_path = "mug.animation"
+
+[defines]
+characters = []
+
+[dependencies]
+characters = []
+libraries = []
+cards = ["dev.GladeWoodsgrove.Chips.IceBomb"]
