@@ -1,0 +1,36 @@
+[package]
+category = "pack"
+id = "BattleNetwork6.Packs.NCPs"
+name = "BN6 NCPs"
+description = "Every NCP in the BattleNetwork6 namespace"
+
+[dependencies]
+augments = [
+  "BattleNetwork6.Program01.SuperArmor",
+  "BattleNetwork6.Program02.Custom1",
+  "BattleNetwork6.Program03.Custom2",
+  "BattleNetwork6.Program04.M-Foldr1",
+  "BattleNetwork6.Program05.M-Foldr2",
+  "BattleNetwork6.Program06.G-Foldr1",
+  "BattleNetwork6.Program08.Shield",
+  "BattleNetwork6.Program09.Reflect",
+  "BattleNetwork6.Program11.FloatShoes",
+  "BattleNetwork6.Program12.AirShoes",
+  "BattleNetwork6.Program14.ChipShuffle",
+  "BattleNetwork6.Program15.UnderShirt",
+  "BattleNetwork6.Program28.BusterPack",
+  "BattleNetwork6.Program29.BodyPack",
+  "BattleNetwork6.Program31.BugStop",
+  "BattleNetwork6.Program35.Attack1",
+  "BattleNetwork6.Program36.Rapid1",
+  "BattleNetwork6.Program37.Charge1",
+  "BattleNetwork6.Program38.AttackMAX",
+  "BattleNetwork6.Program39.RapidMAX",
+  "BattleNetwork6.Program40.ChargeMAX",
+  "BattleNetwork6.Program41.HP+50",
+  "BattleNetwork6.Program42.HP+100",
+  "BattleNetwork6.Program43.HP+200",
+  "BattleNetwork6.Program44.HP+300",
+  "BattleNetwork6.Program45.HP+400",
+  "BattleNetwork6.Program46.HP+500",
+]
