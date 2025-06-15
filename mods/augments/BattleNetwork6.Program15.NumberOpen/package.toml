@@ -1,0 +1,20 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program15.NumberOpen"
+name = "NumbrOpn"
+description = "CustmScr\nSlected\nChip=10"
+long_description = "Ten battle chips on the custom screen!"
+preview_texture_path = "preview.png"
+colors = ["pink"]
+flat = true
+shape = [
+    [1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1],
+    [1, 1, 0, 1, 1]
+]
+byproducts = ["BattleNetwork6.Bugs.CustomBug"]
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.CustomBug"]

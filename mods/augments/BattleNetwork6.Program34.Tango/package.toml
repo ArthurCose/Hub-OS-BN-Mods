@@ -1,0 +1,23 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program34.Tango"
+past_ids = ["BattleNetwork6.Program35.Tango"]
+name = "Tango"
+flat = true
+description = "VS only! Heals low HP"
+colors = ["green"]
+shape = [
+  [0, 0, 0, 0, 0],
+  [0, 1, 1, 1, 0],
+  [0, 0, 1, 0, 0],
+  [0, 0, 1, 0, 0],
+  [0, 1, 1, 0, 0]
+]
+byproducts = ["BattleNetwork6.Bugs.TangoDisabled"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+cards = [
+  "BattleNetwork6.Class01.Standard.181.Barrier100",
+  "BattleNetwork6.Class01.Standard.163"
+]

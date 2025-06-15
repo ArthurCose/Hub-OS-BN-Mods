@@ -1,7 +1,10 @@
 [package]
 category = "augment"
-id = "BattleNetwork6.Program15.UnderShirt"
-past_ids = ["dev.konstinople.augment.UnderShirt.bn6"]
+id = "BattleNetwork6.Program13.UnderShirt"
+past_ids = [
+    "dev.konstinople.augment.UnderShirt.bn6",
+    "BattleNetwork6.Program15.UnderShirt"
+]
 name = "UnderSht"
 description = "Keep 1HP even on hard hit"
 attack_boost = 1

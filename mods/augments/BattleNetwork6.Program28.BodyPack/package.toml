@@ -1,6 +1,7 @@
 [package]
 category = "augment"
-id = "BattleNetwork6.Program29.BodyPack"
+id = "BattleNetwork6.Program28.BodyPack"
+past_ids = ["BattleNetwork6.Program29.BodyPack"]
 name = "BodyPack"
 description = "Armr,Air\nFloat,\nShrt set"
 colors = ["pink"]
@@ -12,9 +13,7 @@ shape = [
     [0, 1, 1, 1, 0],
     [0, 1, 1, 1, 0]
 ]
-byproducts = [
-    "BattleNetwork6.Bugs.WarpStep"
-]
+byproducts = ["BattleNetwork6.Bugs.WarpStep"]
 
 [dependencies]
 augments = [
