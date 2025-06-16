@@ -14,7 +14,7 @@ emotions_texture_path = "emotions.png"
 emotions_animation_path = "emotions.animation"
 
 [dependencies]
-library = [
+libraries = [
   "BattleNetwork.Assets",
   "BattleNetwork.Emotions",
   "dev.konstinople.library.sword"
