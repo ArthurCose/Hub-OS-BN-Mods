@@ -31,6 +31,7 @@ function tile_state_init(custom_state)
     local drain_aux_prop = AuxProp.new()
         :require_element(Element.Fire)
         :require_interval(FIRE_DRAIN_INTERVAL)
+        :require_negative_tile_interaction()
         :drain_health(1)
     entity:add_aux_prop(drain_aux_prop)
 
@@ -84,8 +85,11 @@ function tile_state_init(custom_state)
   end
 
   custom_state.on_entity_stop_func = function(self, entity)
-    -- Do not process if entity is deleted or slated for easure.
+    -- Do not process if entity is deleted or slated for erasure.
     if entity:deleted() or entity:will_erase_eof() then return end
+
+    -- Do not process if entity is deleted or slated for easure.
+    if entity:ignoring_negative_tile_effects() then return end
 
     -- Do not affect spells or obstacles.
     if Spell.from(entity) ~= nil or Obstacle.from(entity) ~= nil then return end
