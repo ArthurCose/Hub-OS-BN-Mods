@@ -345,8 +345,8 @@ end
 ---@class PanelStepLib
 local PanelStepLib = {}
 
+---@return PanelStep
 function PanelStepLib.new_panel_step()
-  ---@type PanelStep
   local panel_step = {}
   setmetatable(panel_step, PanelStep)
 

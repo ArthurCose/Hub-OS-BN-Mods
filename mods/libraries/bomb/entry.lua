@@ -250,8 +250,8 @@ end
 ---@class BombLib
 local BombLib = {}
 
+---@return Bomb
 function BombLib.new_bomb()
-  ---@type Bomb
   local bomb = {}
   setmetatable(bomb, Bomb)
 

@@ -272,8 +272,8 @@ end
 ---@class ShieldLib
 local ShieldLib = {}
 
+---@return Shield
 function ShieldLib.new_shield()
-  ---@type Shield
   local shield = {}
   setmetatable(shield, Shield)
 
@@ -282,8 +282,8 @@ function ShieldLib.new_shield()
   return shield
 end
 
+---@return ShieldReflect
 function ShieldLib.new_reflect()
-  ---@type ShieldReflect
   local reflect = {}
   setmetatable(reflect, ShieldReflect)
 

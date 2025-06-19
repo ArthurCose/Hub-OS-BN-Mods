@@ -219,16 +219,16 @@ end
 
 ---@class SlidingObstacleLib
 local SlidingObstacleLib = {
+  ---@return SlidingObstacle
   new_boulder = function()
-    ---@type SlidingObstacle
     local sliding_obstacle = {}
     setmetatable(sliding_obstacle, SlidingObstacle)
     sliding_obstacle:set_health(500)
     sliding_obstacle:set_damage(400)
     return sliding_obstacle
   end,
+  ---@return SlidingObstacle
   new_cube = function()
-    ---@type SlidingObstacle
     local sliding_obstacle = {}
     setmetatable(sliding_obstacle, SlidingObstacle)
     sliding_obstacle:set_health(200)
