@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.035"
+name = "ElcPuls3"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "A", "J", "S" ]
+damage = 140
+time_freeze = false
+element = "elec"
+description = "Sprd elec puls. Hit w/HP bug."
+limit = 2
+
+hit_flags = ["Impact", "PierceInvis", "Flinch", "Flash"]
+status_durations = [
+    { flag_name = "Flash", level = 1 },
+]
+
+[dependencies]
+cards = ["BattleNetwork6.Class01.Standard.033"]

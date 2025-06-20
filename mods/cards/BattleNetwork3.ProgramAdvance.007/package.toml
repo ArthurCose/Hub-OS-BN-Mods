@@ -1,0 +1,32 @@
+[package]
+category = "card"
+id = "BattleNetwork3.ProgramAdvance.007"
+name = "Z-Varibl"
+icon_texture_path = "icon.png"
+codes = [ "*" ]
+damage = 160
+time_freeze = false
+element = "none"
+description = "Unlimited VarSwrd for 5 sec"
+hit_flags = [ "Impact", "Flinch", "Flash" ]
+limit = 0
+card_class = "recipe"
+tags = [
+    "PROGRAM_ADVANCE",
+    "BN3",
+    "EXE3"
+]
+
+recipes = [
+  { id = "BattleNetwork3.Class01.Standard.039", codes = ["B", "C", "D"] },
+  { id = "BattleNetwork3.Class01.Standard.039", codes = ["C", "D", "E"] },
+  { id = "BattleNetwork3.Class01.Standard.039", codes = ["D", "E", "F"] }
+]
+
+[dependencies]
+libraries = [
+    "BattleNetwork.Assets"
+]
+cards = [
+  "BattleNetwork3.Class01.Standard.039"
+]

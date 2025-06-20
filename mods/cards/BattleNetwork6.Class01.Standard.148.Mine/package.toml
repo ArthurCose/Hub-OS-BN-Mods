@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.148.Mine"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "Mine"
+description = "Place a mine in enmy area"
+codes = ["A", "S", "T"]
+damage = 200
+element = "summon"
+hit_flags = ["Impact", "Flinch", "Flash", "PierceInvis"]
+time_freeze = true
+can_boost = true
+limit = 4
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

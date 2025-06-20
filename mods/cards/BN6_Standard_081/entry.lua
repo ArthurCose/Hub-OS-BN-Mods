@@ -198,7 +198,7 @@ function card_init(actor, props)
 				Resources.play_audio(AUDIO)
 			end)
 		elseif attack_name == "long" then
-			return sword:create_action(actor, function()
+			sword_action = sword:create_action(actor, function()
 				spawn_attack(actor, props, "LONG",
 					{
 						{ x = 1, y = 0 }

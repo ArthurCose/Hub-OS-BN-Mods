@@ -1,0 +1,16 @@
+[package]
+category = "card"
+id = "BattleNetwork2.Chip.169.MagnetLine"
+name = "MagLine"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "A", "E", "I", "M", "Q", "*" ]
+damage = 0
+time_freeze = true
+element = "none"
+description = "Changes your line to magnet"
+limit = 5
+
+[dependencies]
+tile_states = [ "BattleNetwork2.TileStates.Magnet" ]
+libraries = [ "BattleNetwork.Assets" ]

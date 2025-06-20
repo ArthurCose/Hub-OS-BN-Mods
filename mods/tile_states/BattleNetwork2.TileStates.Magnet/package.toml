@@ -1,0 +1,7 @@
+[package]
+id = "BattleNetwork2.TileStates.Magnet"
+category = "tile_state"
+name = "Magnet Tile"
+state_name = "Magnet"
+texture_path = "texture.png"
+animation_path = "animation.animation"

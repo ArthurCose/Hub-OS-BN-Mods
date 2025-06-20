@@ -161,7 +161,6 @@ function card_init(actor, props)
             if time % 10 == 0 then Resources.play_audio(AUDIO) end
 
             if time == spawn_timing and #tile_array >= (flame_index) then
-                print(flame_index)
                 field:spawn(flame_list[flame_index], tile_array[flame_index])
                 flame_index = flame_index + 1
                 spawn_timing = spawn_timing + 4

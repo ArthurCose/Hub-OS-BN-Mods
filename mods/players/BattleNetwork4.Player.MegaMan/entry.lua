@@ -88,6 +88,7 @@ function player_init(player)
     local update_junk = false
     local junked_chip_list = {}
     local junk_manager_list = {}
+    local wind_components = {}
 
     local function create_junk_managers(entity)
         local on_close_manager = entity:create_component(Lifetime.CardSelectClose)
@@ -172,24 +173,25 @@ function player_init(player)
 
     local wind_spawned = false;
 
-    local function create_gust_wind(tile)
+    local function create_wind_gust(tile)
         local gust = Spell.new(player:team())
+
+        local hit_props = HitProps.new(
+            0,
+            Hit.None,
+            Element.None,
+            player:context(),
+            Drag.None
+        )
+
+        gust:set_hit_props(
+            hit_props
+        )
 
         local field = player:field()
 
         local facing = tile:facing()
         gust:set_facing(facing)
-
-        gust:set_hit_props(
-            HitProps.new(
-                0,
-                Hit.None | Hit.Drag | Hit.NoCounter,
-                Element.Wind,
-                Element.Wind,
-                player:context(),
-                Drag.new(facing, field:width())
-            )
-        )
 
         gust:set_texture(wind_puff_texture)
 
@@ -206,12 +208,40 @@ function player_init(player)
             end
 
             self:attack_tile()
+
             self:slide(self:current_tile():get_tile(self:facing(), 1), 2)
         end
 
         gust.on_delete_func = function(self)
             wind_spawned = false;
             self:erase()
+        end
+
+        gust.on_collision_func = function(self, other)
+            print("collision")
+            if wind_components[other:id()] ~= nil then return end
+
+            local slide_component = other:create_component(Lifetime.ActiveBattle)
+
+            slide_component._direction = self:facing()
+
+            slide_component.on_update_func = function(self)
+                local owner = self:owner()
+
+                local slide_tile = owner:get_tile(self._direction, 1)
+
+                if not owner:can_move_to(slide_tile) then
+                    wind_components[other:id()] = nil
+                    self:eject()
+                    return
+                end
+
+                if owner:is_moving() then return end
+                if owner:is_dragged() then return end
+                owner:slide(slide_tile, 6)
+            end
+
+            wind_components[other:id()] = slide_component
         end
 
         field:spawn(gust, tile)
@@ -1907,7 +1937,7 @@ function player_init(player)
                 wind_list_index = 1
             end
 
-            create_gust_wind(wind_list[wind_list_index])
+            create_wind_gust(wind_list[wind_list_index])
 
             wind_list_index = wind_list_index + 1
 
