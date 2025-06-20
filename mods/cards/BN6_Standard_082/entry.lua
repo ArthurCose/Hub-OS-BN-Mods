@@ -230,11 +230,8 @@ function spawn_attack(user, props, state, offset_list, is_slide, is_pierce)
 	slash:set_facing(user:facing())
 
 	slash:set_hit_props(
-		HitProps.new(
-			props.damage,
-			props.hit_flags,
-			props.element,
-			props.secondary_element,
+		HitProps.from_card(
+			props,
 			user:context(),
 			Drag.None
 		)

@@ -58,11 +58,8 @@ function card_init(user, props)
 				local target_tile = list[1]:current_tile()
 				local replacement_spell = Spell.new(user:team())
 				replacement_spell:set_hit_props(
-					HitProps.new(
-						props.damage,
-						props.hit_flags,
-						props.element,
-						props.secondary_element,
+					HitProps.from_card(
+						props,
 						user:context(),
 						Drag.None
 					)

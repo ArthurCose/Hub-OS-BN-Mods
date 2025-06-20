@@ -9,6 +9,7 @@ damage = 100
 time_freeze = true
 element = "none"
 secondary_element = "sword"
+hit_flags = ["Impact", "Flinch"]
 description = "Sets trap and throw a star"
 limit = 3
 card_class = "standard"

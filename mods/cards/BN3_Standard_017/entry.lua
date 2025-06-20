@@ -69,10 +69,8 @@ function create_attack(user, props)
 	spell:set_facing(direction)
 
 	spell:set_hit_props(
-		HitProps.new(
-			props.damage,
-			props.hit_flags,
-			props.element,
+		HitProps.from_card(
+			props,
 			user:context(),
 			Drag.None
 		)

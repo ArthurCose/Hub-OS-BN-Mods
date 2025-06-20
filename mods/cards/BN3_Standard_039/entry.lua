@@ -338,11 +338,8 @@ function spawn_attack(user, props, state, offset_list, is_slide, is_pierce)
 	if state == "SONIC_WOOD" then props.secondary_element = Element.Wood end
 
 	slash:set_hit_props(
-		HitProps.new(
-			props.damage,
-			props.hit_flags,
-			props.element,
-			props.secondary_element,
+		HitProps.from_card(
+			props,
 			user:context(),
 			Drag.None
 		)

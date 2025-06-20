@@ -93,11 +93,8 @@ function create_shuriken_spell(user, props)
     spell_anim:set_state("FLY")
 
     spell:set_hit_props(
-        HitProps.new(
-            props.damage,
-            Hit.Impact | Hit.Flinch,
-            props.element,
-            props.secondary_element,
+        HitProps.from_card(
+            props,
             user:context(),
             Drag.None
         )

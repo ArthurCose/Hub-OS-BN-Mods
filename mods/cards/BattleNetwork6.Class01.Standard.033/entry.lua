@@ -113,10 +113,8 @@ function create_pulse(user, props)
 	end
 
 	spell:set_hit_props(
-		HitProps.new(
-			props.damage,
-			props.hit_flags,
-			props.element,
+		HitProps.from_card(
+			props,
 			user:context(),
 			drag
 		)
@@ -178,12 +176,12 @@ function create_pulse(user, props)
 			entity:boost_augment("BattleNetwork6.Bugs.BattleHPBug", 1)
 		elseif props.short_name == "DestPuls" then
 			local blind_aux = AuxProp.new()
-				:immediate()
-				:apply_status(Hit.Blind, 1200)
+					:immediate()
+					:apply_status(Hit.Blind, 1200)
 
 			local paralyze_aux = AuxProp.new()
-				:immediate()
-				:apply_status(Hit.Paralyze, 150)
+					:immediate()
+					:apply_status(Hit.Paralyze, 150)
 
 			entity:boost_augment("BattleNetwork6.Bugs.DamageHPBug", 2)
 			entity:boost_augment("BattleNetwork6.Bugs.CustomBug", 2)

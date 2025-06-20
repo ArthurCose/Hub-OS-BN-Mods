@@ -32,7 +32,6 @@ function card_init(actor, props)
 							0,
 							Hit.None,
 							Element.Wind,
-							Element.Wind,
 							actor:context(),
 							Drag.None
 						)

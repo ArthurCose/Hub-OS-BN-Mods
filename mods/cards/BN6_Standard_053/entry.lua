@@ -48,13 +48,11 @@ function create_attack(user, props)
 	spell.hits = 8
 	spell:set_facing(user:facing())
 	spell:set_tile_highlight(Highlight.Solid)
-	spell:set_texture(TEXTURE, true)
+	spell:set_texture(TEXTURE)
 	spell:sprite():set_layer(-1)
 
-	local hit_props = HitProps.new(
-		props.damage,
-		Hit.Impact | Hit.Flinch,
-		props.element,
+	local hit_props = HitProps.from_card(
+		props,
 		user:context(),
 		Drag.None
 	)

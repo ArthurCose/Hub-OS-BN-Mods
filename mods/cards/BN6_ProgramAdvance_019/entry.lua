@@ -39,10 +39,8 @@ function create_attack(user, props)
 	spell:set_facing(direction)
 
 	spell:set_hit_props(
-		HitProps.new(
-			props.damage,
-			props.hit_flags,
-			props.element,
+		HitProps.from_card(
+			props,
 			user:context(),
 			Drag.None
 		)
@@ -154,10 +152,8 @@ function spawn_spread_burst(tile, user, props)
 	local burst_spell = Spell.new(team)
 
 	burst_spell:set_hit_props(
-		HitProps.new(
-			props.damage,
-			props.hit_flags,
-			props.element,
+		HitProps.from_card(
+			props,
 			user:context(),
 			Drag.None
 		)

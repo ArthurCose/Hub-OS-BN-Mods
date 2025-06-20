@@ -22,11 +22,11 @@ end
 local function create_and_spawn_explosion(spell, spawn_tile)
 	if spawn_tile == nil or spawn_tile:is_edge() then return end
 	if #spawn_tile:find_entities(function(ent)
-			if Character.from(ent) == nil then return false end
-			if not ent:hittable() then return false end
-			if ent:team() == spell:team() then return false end
-			return true
-		end) == 0 then
+				if Character.from(ent) == nil then return false end
+				if not ent:hittable() then return false end
+				if ent:team() == spell:team() then return false end
+				return true
+			end) == 0 then
 		return
 	end
 
@@ -100,11 +100,8 @@ local function create_attack(user, props, context, facing, is_recipe, field)
 
 	spell:set_facing(facing)
 	spell:set_hit_props(
-		HitProps.new(
-			props.damage,
-			props.hit_flags,
-			props.element,
-			props.secondary_element,
+		HitProps.from_card(
+			props,
 			context,
 			Drag.None
 		)

@@ -125,11 +125,8 @@ function create_attack(user, props)
 	local field = user:field()
 	local spell = Spell.new(user:team())
 	spell:set_hit_props(
-		HitProps.new(
-			props.damage,
-			Hit.Impact | Hit.Drag | Hit.Flinch | Hit.Flash,
-			props.element,
-			props.secondary_element,
+		HitProps.from_card(
+			props,
 			user:context(),
 			Drag.new(direction, field:width())
 		)

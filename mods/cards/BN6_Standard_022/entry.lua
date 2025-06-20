@@ -45,10 +45,8 @@ function create_wideshot(user, props)
 	local spell = Spell.new(user:team())
 	spell:set_facing(user:facing())
 	spell:set_hit_props(
-		HitProps.new(
-			props.damage,
-			props.hit_flags,
-			props.element,
+		HitProps.from_card(
+			props,
 			user:context(),
 			Drag.None
 		)

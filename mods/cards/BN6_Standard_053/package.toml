@@ -4,22 +4,21 @@ id = "BattleNetwork6.Class01.Standard.053"
 name = "Tornado"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "L", "R", "T" ]
+codes = ["L", "R", "T"]
 damage = 20
 time_freeze = false
 element = "wind"
+hit_flags = ["Impact", "Flinch"]
 description = "8hit strm\n2 squares\nahead"
 limit = 5
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [
-    "BattleNetwork.Assets"
-]
-cards = [ ]
+characters = []
+libraries = ["BattleNetwork.Assets"]
+cards = []
 tile_states = [
     "BattleNetwork5.TileStates.Lava",
     "BattleNetwork6.TileStates.Grass",

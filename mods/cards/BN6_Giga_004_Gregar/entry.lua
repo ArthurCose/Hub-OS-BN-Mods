@@ -11,10 +11,8 @@ function create_soldier_shot(user, props, facing)
     spell:set_facing(facing)
     spell.slide_started = false
     spell:set_hit_props(
-        HitProps.new(
-            props.damage,
-            props.hit_flags,
-            Element.None,
+        HitProps.from_card(
+            props,
             user:context(),
             Drag.None
         )

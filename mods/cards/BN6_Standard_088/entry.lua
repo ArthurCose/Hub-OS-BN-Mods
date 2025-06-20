@@ -109,11 +109,8 @@ function create_attack(user, props, team, facing, field, tile, query)
 			tile:set_state(TileState.Broken)
 			spell.slide_started = false
 			spell:set_hit_props(
-				HitProps.new(
-					props.damage,
-					props.hit_flags,
-					props.element,
-					props.secondary_element,
+				HitProps.from_card(
+					props,
 					user:context(),
 					Drag.None
 				)
