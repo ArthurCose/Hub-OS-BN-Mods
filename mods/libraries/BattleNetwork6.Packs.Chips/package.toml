@@ -32,6 +32,12 @@ cards = [
   "BattleNetwork6.Class01.Standard.027",
   "BattleNetwork6.Class01.Standard.028",
   "BattleNetwork6.Class01.Standard.029.Thunder",
+  "BattleNetwork6.Class01.Standard.033",
+  "BattleNetwork6.Class01.Standard.034",
+  "BattleNetwork6.Class01.Standard.035",
+  "BattleNetwork6.Class01.Standard.036.CornShot1",
+  "BattleNetwork6.Class01.Standard.037.CornShot2",
+  "BattleNetwork6.Class01.Standard.038.CornShot3",
   "BattleNetwork6.Class01.Standard.039",
   "BattleNetwork6.Class01.Standard.040",
   "BattleNetwork6.Class01.Standard.041",
@@ -72,6 +78,7 @@ cards = [
   "BattleNetwork6.Class01.Standard.128",
   "BattleNetwork6.Class01.Standard.129",
   "BattleNetwork6.Class01.Standard.138",
+  "BattleNetwork6.Class01.Standard.148.Mine",
   "BattleNetwork6.Class01.Standard.149",
   "BattleNetwork6.Class01.Standard.150",
   "BattleNetwork6.Class01.Standard.151",
@@ -116,6 +123,7 @@ cards = [
   "BattleNetwork6.ProgramAdvance.001",
   "BattleNetwork6.ProgramAdvance.002",
   "BattleNetwork6.ProgramAdvance.003",
+  "BattleNetwork6.ProgramAdvance.015",
   "BattleNetwork6.ProgramAdvance.019",
   "BattleNetwork6.ProgramAdvance.020"
 ]
