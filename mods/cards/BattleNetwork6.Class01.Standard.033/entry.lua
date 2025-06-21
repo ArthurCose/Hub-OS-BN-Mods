@@ -8,13 +8,14 @@ local spell_anim_path = bn_assets.fetch_animation_path("bn6_elec_pulse.animation
 
 local audio = bn_assets.load_audio("elecpulse.ogg")
 
+---@param actor Entity
+---@param props CardProperties
 function card_init(actor, props)
 	local FRAMES = { { 1, 2 }, { 1, 1 }, { 1, 59 } }
 
 	local action = Action.new(actor, "CHARACTER_SHOOT")
 
-	local start_cancel_timer = false;
-	local can_use_use = false;
+	local start_cancel_timer = false
 
 	action:override_animation_frames(FRAMES)
 
@@ -36,64 +37,27 @@ function card_init(actor, props)
 		end)
 
 		self:add_anim_action(2, function()
-			start_cancel_timer = true
+			start_cancel_timer = props.short_name == "ElcPuls2"
 
 			local pulse = create_pulse(actor, props)
 
 			local tile = user:get_tile(user:facing(), 1)
 
-			user:field():spawn(pulse, tile)
+			if tile then
+				user:field():spawn(pulse, tile)
+			end
 		end)
-	end
-
-	local function check_input()
-		if Player.from(actor) == nil then return false end
-
-		local result = false
-
-		if actor:input_has(Input.Pressed.Use) or actor:input_has(Input.Held.Use) and can_use_use == true then
-			result = true
-			local card = actor:field_card(1)
-			if card ~= nil then
-				actor:queue_action(Action.from_card(actor, card))
-				actor:remove_field_card(1)
-			end
-		elseif actor:input_has(Input.Pressed.Shoot) or actor:input_has(Input.Held.Shoot) then
-			result = true
-		elseif actor:input_has(Input.Pressed.Left) or actor:input_has(Input.Held.Left) then
-			if actor:can_move_to(actor:get_tile(Direction.Left, 1)) then
-				result = true
-			end
-		elseif actor:input_has(Input.Pressed.Right) or actor:input_has(Input.Held.Right) then
-			if actor:can_move_to(actor:get_tile(Direction.Right, 1)) then
-				result = true
-			end
-		elseif actor:input_has(Input.Pressed.Up) or actor:input_has(Input.Held.Up) then
-			if actor:can_move_to(actor:get_tile(Direction.Up, 1)) then
-				result = true
-			end
-		elseif actor:input_has(Input.Pressed.Down) or actor:input_has(Input.Held.Down) then
-			if actor:can_move_to(actor:get_tile(Direction.Down, 1)) then
-				result = true
-			end
-		end
-
-		return result
 	end
 
 	local cancel_timer = 0
 	action.on_update_func = function()
-		if can_use_use == false then
-			if not actor:input_has(Input.Held.Use) and not actor:input_has(Input.Pressed.Use) then can_use_use = true end
-		end
-
 		if start_cancel_timer == false then return end
 
 		cancel_timer = cancel_timer + 1
 
 		if cancel_timer < 15 then return end
 
-		if check_input() then action:end_action() end
+		action:end_action()
 	end
 
 	return action
