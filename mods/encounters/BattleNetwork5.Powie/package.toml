@@ -1,0 +1,23 @@
+[package]
+category = "encounter"
+id = "BattleNetwork5.Powie"
+name = "Powie"
+description = 'Powie, known as "Poward" in Japan, also known as Flappy'
+preview_texture_path = "preview.png"
+
+[[defines.characters]]
+id = "BattleNetwork5.Powie.Enemy"
+path = "powie"
+
+[[defines.characters]]
+id = "BattleNetwork5.Powie2.Enemy"
+path = "powie2"
+
+[[defines.characters]]
+id = "BattleNetwork5.Powie3.Enemy"
+path = "powie3"
+
+[dependencies]
+characters = []
+libraries = []
+cards = []

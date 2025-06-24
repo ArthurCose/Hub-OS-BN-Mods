@@ -1,0 +1,15 @@
+[package]
+category = "encounter"
+id = "BattleNetwork5.BlizzardMan"
+name = "BlizzardMan.EXE"
+description = "\"I'll freeze you to the bone!\""
+preview_texture_path = "preview1.png"
+
+[[defines.characters]]
+id = "BattleNetwork5.BlizzardMan.Enemy"
+path = "character"
+
+[dependencies]
+characters = []
+libraries = []
+cards = []

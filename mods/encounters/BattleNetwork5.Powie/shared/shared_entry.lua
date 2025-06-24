@@ -1,0 +1,448 @@
+local idle
+local powies = {}
+
+local JUMP_HEIGHT = 120
+local DROP_ELEVATION = 120
+
+local THUD_SFX = Resources.load_audio("thud_compressed.ogg") -- not the right audio, but close
+
+---@class _BattleNetwork5.Powie: Entity
+---@field _damage number
+---@field _reserver EntityId?
+---@field _shock_shape "cross" | "column" | nil
+---@field _target_id EntityId?
+---@field _target_tile Tile?
+---@field _jumps number
+---@_thud_sfx
+
+---@param character _BattleNetwork5.Powie
+local function run_post_movement(character, fn)
+  local component = character:create_component(Lifetime.Local)
+
+  component.on_update_func = function()
+    if not character:is_moving() then
+      component:eject()
+      fn()
+    end
+  end
+end
+
+---@param character _BattleNetwork5.Powie
+local function reserve_tile_for_return(character)
+  local artifact = Artifact.new()
+  local return_tile = character:current_tile()
+  local last_tile = return_tile
+  local made_reservation = false
+
+  artifact.on_update_func = function()
+    if character:deleted() then
+      artifact:erase()
+      return
+    end
+
+    if not made_reservation then
+      return_tile:reserve_for_id(artifact:id())
+    end
+
+    local current_tile = character:current_tile()
+
+    if last_tile ~= return_tile and current_tile == return_tile then
+      -- returned to the tile!
+      artifact:erase()
+    end
+
+    last_tile = current_tile
+  end
+
+  character:field():spawn(artifact, return_tile)
+  character._reserver = artifact:id()
+end
+
+---@param character _BattleNetwork5.Powie
+local function create_hitprops(character)
+  return HitProps.new(
+    character._damage,
+    Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceGuard,
+    Element.Break,
+    character:context(),
+    Drag.None
+  )
+end
+
+---@param character _BattleNetwork5.Powie
+local function create_hitbody_spell(character)
+  local spell = Spell.new(character:team())
+
+  spell:set_hit_props(create_hitprops(character))
+
+  spell.on_update_func = function()
+    if character:deleted() then
+      spell:erase()
+    end
+
+    spell:get_tile():attack_entities(spell)
+  end
+
+  character:field():spawn(spell, character:current_tile())
+
+  return spell
+end
+
+---@param character _BattleNetwork5.Powie
+local function create_after_shock(character, x_offset, y_offset)
+  local field = character:field()
+  local start_tile = character:current_tile()
+
+  local tile = field:tile_at(start_tile:x() + x_offset, start_tile:y() + y_offset)
+
+  if not tile then
+    return
+  end
+
+  local explosion = Explosion.new()
+  field:spawn(explosion, tile)
+
+  local spell = Spell.new(character:team())
+  spell:set_hit_props(create_hitprops(character))
+
+  spell.on_update_func = function()
+    tile:attack_entities(spell)
+    spell:erase()
+  end
+
+  field:spawn(spell, tile)
+end
+
+---@param character _BattleNetwork5.Powie
+local function create_after_shocks(character)
+  if character._shock_shape == "column" then
+    create_after_shock(character, 0, -1)
+    create_after_shock(character, 0, 1)
+  elseif character._shock_shape == "cross" then
+    create_after_shock(character, 0, -1)
+    create_after_shock(character, 0, 1)
+    create_after_shock(character, -1, 0)
+    create_after_shock(character, 1, 0)
+  end
+end
+
+---@param character _BattleNetwork5.Powie
+local function create_ominous_shadow(character)
+  local shadow = Artifact.new()
+  shadow:sprite():set_layer(1)
+  shadow:set_texture(character:texture())
+
+  local animation = shadow:animation()
+  animation:copy_from(character:animation())
+  animation:set_state("BIG_SHADOW")
+
+  shadow.on_update_func = function()
+    if character:deleted() or shadow:get_tile() ~= character:get_tile() then
+      shadow:erase()
+    end
+  end
+
+  character:field():spawn(shadow, character:current_tile())
+
+  return shadow
+end
+
+---@param character _BattleNetwork5.Powie
+local function complete_attack(character, hitbody_spell, return_tile, landing_tile)
+  character._target_tile = nil
+  character:teleport(return_tile, function()
+    run_post_movement(character, function()
+      if landing_tile then
+        landing_tile:set_state(TileState.Cracked)
+      end
+
+      character:show_shadow(true)
+      character:enable_sharing_tile(false)
+      hitbody_spell:erase()
+    end)
+
+    local anim = character:animation()
+    anim:set_state("LAND")
+
+    anim:on_complete(function()
+      idle(character)
+    end)
+  end)
+end
+
+---@param character _BattleNetwork5.Powie
+local function land(character, return_tile, hitbody_spell)
+  local ticks = 0
+
+  local landing_tile = character:current_tile()
+
+  if not landing_tile:is_walkable() then
+    complete_attack(character, hitbody_spell, return_tile)
+    character.on_update_func = function() end
+    return
+  end
+
+  Resources.play_audio(THUD_SFX, AudioBehavior.Default)
+  create_after_shocks(character)
+  character:enable_hitbox(true)
+  character:field():shake(8.0, 1.0 * 60)
+
+  character.on_update_func = function()
+    ticks = ticks + 1
+
+    if ticks < 40 then
+      return
+    end
+
+    complete_attack(character, hitbody_spell, return_tile, landing_tile)
+    character.on_update_func = function() end
+  end
+end
+
+---@param character _BattleNetwork5.Powie
+local function drop(character, return_tile)
+  local ticks = 0
+
+  local elevations = {
+    DROP_ELEVATION,
+    DROP_ELEVATION - DROP_ELEVATION * 1 / 5,
+    DROP_ELEVATION - DROP_ELEVATION * 2 / 5,
+    DROP_ELEVATION - DROP_ELEVATION * 3 / 5,
+    DROP_ELEVATION - DROP_ELEVATION * 4 / 5,
+    DROP_ELEVATION - DROP_ELEVATION * 4 / 5,
+    0
+  }
+
+  local hitbody_spell = create_hitbody_spell(character)
+
+  character.on_update_func = function()
+    ticks = ticks + 1
+    local elevation = elevations[ticks]
+
+    if elevation < 0 then
+      elevation = 0
+    end
+
+    character:set_offset(0 * 0.5, -elevation * 0.5)
+
+    if elevation == 0 then
+      land(character, return_tile, hitbody_spell)
+    end
+  end
+end
+
+---@param character _BattleNetwork5.Powie
+---@param target Entity
+local function attack(character, target)
+  character._target_id = target:id()
+  character._jumps = 0
+
+  character:set_counterable(true)
+
+  local anim = character:animation()
+  anim:set_state("LAND")
+  anim:set_playback(Playback.Once)
+
+  anim:on_complete(function()
+    local return_tile = character:get_tile()
+    local target_tile = target:get_tile()
+
+    reserve_tile_for_return(character)
+    character._target_tile = target_tile
+
+    character:teleport(target_tile, function()
+      run_post_movement(character, function()
+        character:enable_sharing_tile(true)
+        character:enable_hitbox(false)
+        character:set_counterable(false)
+        character:show_shadow(false)
+      end)
+
+      character:set_offset(0 * 0.5, -DROP_ELEVATION * 0.5)
+
+      anim:set_state("ATTACK")
+      anim:set_playback(Playback.Once)
+
+      anim:on_frame(2, function()
+        create_ominous_shadow(character)
+      end)
+
+      anim:on_complete(function()
+        drop(character, return_tile)
+      end)
+    end)
+  end)
+end
+
+---@param character _BattleNetwork5.Powie
+local function find_target(character)
+  local enemies = character:field():find_nearest_characters(character, function(c)
+    return c:hittable() and c:team() ~= character:team()
+  end)
+
+  for _, enemy in ipairs(enemies) do
+    local skip = false
+
+    for _, powie in ipairs(powies) do
+      if powie._target_id == enemy:id() then
+        skip = true
+        break
+      end
+    end
+
+    if not skip then
+      return enemy
+    end
+  end
+
+  return nil
+end
+
+---@param character _BattleNetwork5.Powie
+local function attempt_attack(character)
+  local target = find_target(character)
+
+  if target then
+    attack(character, target)
+  else
+    idle(character)
+  end
+end
+
+---@param character _BattleNetwork5.Powie
+local function find_valid_jump_location(character)
+  local field = character:field()
+
+  local tiles = field:find_tiles(function(tile)
+    return character:can_move_to(tile)
+  end)
+
+  local target_tile = tiles[math.random(#tiles)]
+  local start_tile = character:get_tile()
+
+  if #tiles > 1 then
+    while target_tile == start_tile do
+      -- pick another, don't try to jump on the same tile if it's not necessary
+      target_tile = tiles[math.random(#tiles)]
+    end
+  end
+
+  return target_tile
+end
+
+---@param character _BattleNetwork5.Powie
+local function jump(character)
+  character._jumps = character._jumps + 1
+
+  local anim = character:animation()
+  anim:set_state("LAND")
+  anim:set_playback(Playback.Reverse)
+
+  anim:on_complete(function()
+    anim:set_state("JUMP")
+    anim:set_playback(Playback.Once)
+
+    local target_tile = find_valid_jump_location(character)
+    character:enable_hitbox(false)
+
+    character.on_update_func = function()
+      character:set_facing(character:get_tile():facing())
+    end
+
+    character:jump(target_tile, JUMP_HEIGHT, 40, function()
+      run_post_movement(character, function()
+        character:enable_hitbox(true)
+        character.on_update_func = function() end
+
+        if character._jumps > 1 or math.random(20) == 1 then
+          attempt_attack(character)
+        else
+          idle(character)
+        end
+      end)
+    end)
+  end)
+end
+
+---@param character _BattleNetwork5.Powie
+idle = function(character)
+  local anim = character:animation()
+  anim:set_state("IDLE")
+  anim:set_playback(Playback.Loop)
+  character._target_id = nil
+
+  local wait_time = 0
+
+  -- wait 2s then jump
+  character.on_update_func = function()
+    wait_time = wait_time + 1
+
+    if wait_time < 120 then
+      return
+    end
+
+    character.on_update_func = function() end
+
+    jump(character)
+  end
+end
+
+---@param character _BattleNetwork5.Powie
+local function shared_package_init(character)
+  character:set_texture(Resources.load_texture("battle.greyscaled.png"))
+  character:load_animation("battle.animation")
+  character:set_shadow(Resources.load_texture("small_shadow.png"))
+  character:show_shadow(true)
+  -- character:set_float_shoe(true) -- hack! https://discord.com/channels/455429604455219211/820777515995234314/921740913980616804
+
+  character:add_aux_prop(StandardEnemyAux.new())
+
+  character._reserver = nil
+  character._damage = 20
+  character._shock_shape = nil -- "column" | "cross" | nil
+  character._target_id = nil
+  character._target_tile = nil
+  character._jumps = 0
+  powies[#powies + 1] = character
+
+  local function drop_from_powie_list()
+    for index, powie in ipairs(powies) do
+      if powie:id() == character:id() then
+        table.remove(powies, index)
+        break
+      end
+    end
+  end
+
+  character.on_delete_func = function()
+    drop_from_powie_list()
+    character:erase()
+  end
+  character.on_battle_end_func = drop_from_powie_list
+
+  character.can_move_to_func = function(tile)
+    if character._target_tile then
+      return character._target_tile:x() == tile:x() and character._target_tile:y() == tile:y()
+    end
+
+    if not tile:is_walkable() or tile:team() ~= character:team() or tile:is_reserved({ character:id(), character._reserver }) then
+      return false
+    end
+
+    local has_character = false
+
+    tile:find_entities(function(c)
+      if not c:hittable() then return false end
+      if (Character.from(c) and c:id() ~= character:id()) or Obstacle.from(c) then
+        has_character = true
+      end
+      return false
+    end)
+
+    return not has_character
+  end
+
+  idle(character)
+end
+
+return shared_package_init

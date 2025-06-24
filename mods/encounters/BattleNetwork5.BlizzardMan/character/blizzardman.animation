@@ -1,0 +1,65 @@
+imagePath="/home/konst/Documents/ONB Stuff/OBN Debug Mods/enemies/blizzardman/character/blizzardman.png"
+
+animation state="IDLE"
+frame duration="0.1" x="8" y="20" w="53" h="61" originx="24" originy="55" flipx="1" flipy="0" 
+
+animation state="MOVE"
+frame duration="0.05" x="74" y="20" w="82" h="62" originx="25" originy="56" flipx="1" flipy="0" 
+frame duration="0.07" x="163" y="14" w="81" h="68" originx="25" originy="62" flipx="1" flipy="0" 
+
+animation state="KICK"
+frame duration="0.05" x="8" y="20" w="53" h="61" originx="24" originy="55" flipx="1" flipy="0" 
+frame duration="0.083" x="8" y="20" w="53" h="61" originx="26" originy="55" flipx="1" flipy="0" 
+frame duration="0.05" x="256" y="16" w="79" h="66" originx="44" originy="60" flipx="1" flipy="0" 
+frame duration="0.2" x="353" y="12" w="80" h="67" originx="46" originy="61" flipx="1" flipy="0" 
+
+animation state="BLIZZARD_BREATH"
+frame duration="0.4" x="38" y="99" w="59" h="58" originx="25" originy="52" flipx="1" flipy="0" 
+frame duration="0.05" x="109" y="95" w="104" h="62" originx="47" originy="56" flipx="1" flipy="0" 
+frame duration="0.05" x="221" y="95" w="170" h="68" originx="113" originy="56" flipx="1" flipy="0" 
+frame duration="0.05" x="109" y="95" w="104" h="62" originx="47" originy="56" flipx="1" flipy="0" 
+frame duration="0.05" x="221" y="95" w="170" h="68" originx="113" originy="56" flipx="1" flipy="0" 
+frame duration="0.05" x="109" y="95" w="104" h="62" originx="47" originy="56" flipx="1" flipy="0" 
+frame duration="0.05" x="221" y="95" w="170" h="68" originx="113" originy="56" flipx="1" flipy="0" 
+frame duration="0.05" x="109" y="95" w="104" h="62" originx="47" originy="56" flipx="1" flipy="0" 
+frame duration="0.05" x="221" y="95" w="170" h="68" originx="113" originy="56" flipx="1" flipy="0" 
+frame duration="0.05" x="109" y="95" w="104" h="62" originx="47" originy="56" flipx="1" flipy="0" 
+frame duration="0.05" x="221" y="95" w="170" h="68" originx="113" originy="56" flipx="1" flipy="0" 
+frame duration="0.05" x="109" y="95" w="104" h="62" originx="47" originy="56" flipx="1" flipy="0" 
+frame duration="0.05" x="221" y="95" w="170" h="68" originx="113" originy="56" flipx="1" flipy="0" 
+frame duration="0.05" x="109" y="95" w="104" h="62" originx="47" originy="56" flipx="1" flipy="0" 
+frame duration="0.36" x="74" y="20" w="82" h="62" originx="25" originy="56" flipx="1" flipy="0" 
+
+animation state="CHARACTER_HIT"
+frame duration="0.36" x="10" y="262" w="90" h="62" originx="47" originy="56" flipx="1" flipy="0" 
+
+animation state="ROLLING"
+frame duration="0.083" x="233" y="204" w="53" h="48" originx="24" originy="42" flipx="1" flipy="0" 
+frame duration="0.083" x="294" y="204" w="42" h="48" originx="21" originy="42" flipx="1" flipy="0" 
+frame duration="0.083" x="349" y="201" w="51" h="52" originx="23" originy="46" flipx="1" flipy="0" 
+
+animation state="CURLING_UP"
+frame duration="0.15" x="38" y="174" w="99" h="82" originx="36" originy="72" flipx="1" flipy="0" 
+frame duration="0.15" x="149" y="181" w="72" h="71" originx="40" originy="65" flipx="1" flipy="0" 
+
+animation state="SNOWBALL"
+frame duration="0.033" x="112" y="292" w="30" h="32" originx="15" originy="26" flipx="1" flipy="0" 
+frame duration="0.033" x="148" y="288" w="37" h="36" originx="16" originy="30" flipx="1" flipy="0" 
+frame duration="0.033" x="191" y="291" w="37" h="33" originx="16" originy="27" flipx="1" flipy="0" 
+
+animation state="FALLING_SNOW"
+frame duration="0.1" x="244" y="262" w="29" h="31" originx="15" originy="26" flipx="1" flipy="0" 
+
+animation state="LANDING_SNOW"
+frame duration="0.1" x="281" y="290" w="41" h="32" originx="22" originy="26" flipx="1" flipy="0" 
+
+animation state="LANDED_SNOW"
+frame duration="10" x="328" y="299" w="36" h="24" originx="18" originy="13" flipx="1" flipy="0" 
+
+animation state="MELTING_SNOW"
+frame duration="0.167" x="375" y="308" w="29" h="16" originx="16" originy="5" flipx="1" flipy="0" 
+frame duration="0.167" x="414" y="313" w="21" h="11" originx="10" originy="3" flipx="1" flipy="0" 
+
+animation state="SNOWBALL_BREAKING"
+frame duration="0.05" x="79" y="352" w="31" h="34" originx="15" originy="28" flipx="1" flipy="0" 
+frame duration="0.067" x="123" y="348" w="42" h="40" originx="21" originy="32" flipx="1" flipy="0" 
