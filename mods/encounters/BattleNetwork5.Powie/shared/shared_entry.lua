@@ -371,6 +371,10 @@ local function shared_package_init(character)
   character._jumps = 0
 
   character.can_move_to_func = function(tile)
+    if tile:reserve_count_for(character) > 0 then
+      return true
+    end
+
     if character._target_tile then
       local team = character:team()
       local has_teammate = false
