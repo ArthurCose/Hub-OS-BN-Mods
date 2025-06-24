@@ -1,5 +1,5 @@
--- todo: seems to break from spamming stun attacks
-
+---@type KonstAiLib
+local Ai = require("dev.konstinople.library.ai")
 
 local BREATH_SFX = Resources.load_audio("wind.ogg")
 local THUD_SFX = Resources.load_audio("thud.ogg")
@@ -18,68 +18,172 @@ local function run_after(character, frame_count, fn)
   end
 end
 
----@param character Entity
-local function wait_for(character, wait_fn, fn)
-  local component = character:create_component(Lifetime.ActiveBattle)
+---@param blizzardman Entity
+---@param end_idle_duration number
+---@param select_tile fun(): Tile?
+local function create_move_factory(blizzardman, end_idle_duration, select_tile)
+  local animation = blizzardman:animation()
 
-  component.on_update_func = function()
-    if wait_fn() then
-      component:eject()
-      fn()
+  return function()
+    local action = Action.new(blizzardman, "MOVE")
+    action:set_lockout(ActionLockout.new_sequence())
+
+    local move_step = action:create_step()
+
+    action.on_execute_func = function()
+      local tile = select_tile()
+
+      if tile == blizzardman:current_tile() then
+        move_step:complete_step()
+        animation:set_state("IDLE")
+        return
+      end
+
+      animation:on_complete(function()
+        animation:set_state("MOVE")
+        animation:set_playback(Playback.Reverse)
+
+        animation:on_complete(function()
+          if tile ~= nil then
+            blizzardman:teleport(tile)
+          end
+
+          move_step:complete_step()
+          animation:set_state("IDLE")
+        end)
+      end)
     end
+
+    local idle_time = 0
+
+    local idle_wait_step = action:create_step()
+    idle_wait_step.on_update_func = function(self)
+      blizzardman:set_facing(blizzardman:current_tile():facing())
+      idle_time = idle_time + 1
+
+      if idle_time >= end_idle_duration then
+        self:complete_step()
+      end
+    end
+
+    return action
   end
 end
 
 ---@param blizzardman Entity
-local function teleport(blizzardman, tile, endlag, end_callback)
-  if blizzardman:current_tile() == tile then
-    -- no need to move
-    end_callback()
-    return
+local function get_random_team_tile(blizzardman)
+  local current_tile = blizzardman:current_tile()
+
+  local tiles = blizzardman:field()
+      :find_tiles(function(tile)
+        return blizzardman:can_move_to(tile) and current_tile ~= tile
+      end)
+
+  if #tiles == 0 then
+    return nil
   end
 
-  local anim = blizzardman:animation()
+  return tiles[math.random(#tiles)]
+end
 
-  local function teleport_in()
-    anim:set_state("MOVE")
-    anim:set_playback(Playback.Reverse)
-    anim:on_interrupt(end_callback)
-    anim:on_complete(function()
-      anim:on_interrupt(function() end)
-      anim:set_state("IDLE")
+---@param blizzardman Entity
+---@param end_idle_duration number
+local function create_random_move_factory(blizzardman, end_idle_duration)
+  return create_move_factory(blizzardman, end_idle_duration, function()
+    return get_random_team_tile(blizzardman)
+  end)
+end
 
-      if end_callback then
-        local action = Action.new(blizzardman, "IDLE")
-        action:set_lockout(ActionLockout.new_sequence())
+---@param blizzardman Entity
+local function find_target(blizzardman)
+  local blizzardman_team = blizzardman:team()
+  local targets = blizzardman:field()
+      :find_nearest_characters(blizzardman, function(character)
+        return character:hittable() and character:team() ~= blizzardman_team
+      end)
 
-        local step = action:create_step()
-        step.on_update_func = function(self)
-          endlag = endlag - 1
+  return targets[1]
+end
 
-          if endlag <= 0 then
-            self:complete_step()
-          end
-        end
+---@param blizzardman Entity
+local function get_back_tile(blizzardman, y)
+  local field = blizzardman:field()
+  local start_x, end_x, x_step
 
-        action.on_action_end_func = function()
-          end_callback(true)
-        end
-
-        blizzardman:queue_action(action)
-      end
-    end)
+  if blizzardman:facing() == Direction.Left then
+    start_x = field:width()
+    end_x = 1
+    x_step = -1
+  else
+    start_x = 1
+    end_x = field:width()
+    x_step = 1
   end
 
-  anim:set_state("MOVE")
-  anim:set_playback(Playback.Once)
-  anim:on_interrupt(end_callback)
+  for x = start_x, end_x, x_step do
+    local tile = field:tile_at(x, y)
 
-  anim:on_complete(function()
-    if tile ~= nil then
-      blizzardman:teleport(tile)
+    if blizzardman:can_move_to(tile) then
+      return tile
+    end
+  end
+
+  return nil
+end
+
+---@param blizzardman Entity
+---@param end_idle_duration number
+local function create_back_row_setup_factory(blizzardman, end_idle_duration)
+  return create_move_factory(blizzardman, end_idle_duration, function()
+    local target = find_target(blizzardman)
+
+    if not target then
+      return nil
     end
 
-    teleport_in()
+    local target_row = target:current_tile():y()
+    return get_back_tile(blizzardman, target_row)
+  end)
+end
+
+---@param blizzardman Entity
+local function get_front_tile(blizzardman, y)
+  local field = blizzardman:field()
+  local start_x, end_x, x_step
+
+  if blizzardman:facing() == Direction.Left then
+    start_x = 1
+    end_x = field:width()
+    x_step = 1
+  else
+    start_x = field:width()
+    end_x = 1
+    x_step = -1
+  end
+
+  for x = start_x, end_x, x_step do
+    local tile = field:tile_at(x, y)
+
+    if blizzardman:can_move_to(tile) then
+      return tile
+    end
+  end
+
+  return nil
+end
+
+---@param blizzardman Entity
+---@param end_idle_duration number
+local function create_front_row_setup_factory(blizzardman, end_idle_duration)
+  return create_move_factory(blizzardman, end_idle_duration, function()
+    local target = find_target(blizzardman)
+
+    if not target then
+      return nil
+    end
+
+    local target_row = target:current_tile():y()
+    return get_front_tile(blizzardman, target_row)
   end)
 end
 
@@ -131,85 +235,6 @@ local function spawn_snow_hit_artifact(character)
   )
 
   character:field():spawn(artifact, character:current_tile())
-end
-
----@param blizzardman Entity
-local function find_target(blizzardman)
-  local blizzardman_team = blizzardman:team()
-  local targets = blizzardman:field()
-      :find_nearest_characters(blizzardman, function(character)
-        return character:hittable() and character:team() ~= blizzardman_team
-      end)
-
-  return targets[1]
-end
-
----@param blizzardman Entity
-local function get_random_team_tile(blizzardman)
-  local current_tile = blizzardman:current_tile()
-
-  local tiles = blizzardman:field()
-      :find_tiles(function(tile)
-        return blizzardman:can_move_to(tile) and current_tile ~= tile
-      end)
-
-  if #tiles == 0 then
-    return nil
-  end
-
-  return tiles[math.random(#tiles)]
-end
-
----@param blizzardman Entity
-local function get_back_tile(blizzardman, y)
-  local field = blizzardman:field()
-  local start_x, end_x, x_step
-
-  if blizzardman:facing() == Direction.Left then
-    start_x = field:width()
-    end_x = 1
-    x_step = -1
-  else
-    start_x = 1
-    end_x = field:width()
-    x_step = 1
-  end
-
-  for x = start_x, end_x, x_step do
-    local tile = field:tile_at(x, y)
-
-    if blizzardman:can_move_to(tile) then
-      return tile
-    end
-  end
-
-  return nil
-end
-
----@param blizzardman Entity
-local function get_front_tile(blizzardman, y)
-  local field = blizzardman:field()
-  local start_x, end_x, x_step
-
-  if blizzardman:facing() == Direction.Left then
-    start_x = 1
-    end_x = field:width()
-    x_step = 1
-  else
-    start_x = field:width()
-    end_x = 1
-    x_step = -1
-  end
-
-  for x = start_x, end_x, x_step do
-    local tile = field:tile_at(x, y)
-
-    if blizzardman:can_move_to(tile) then
-      return tile
-    end
-  end
-
-  return nil
 end
 
 ---@param blizzardman Entity
@@ -296,45 +321,40 @@ end
 
 -- kick two snowballs from the top or bottom row to the middle (starting row preferring the same row as the player)
 ---@param blizzardman Entity
-local function snow_rolling(blizzardman, damage, end_callback)
-  local target = find_target(blizzardman)
+local function create_snow_rolling_factory(blizzardman, damage)
+  return function()
+    local action = Action.new(blizzardman)
+    action:set_lockout(ActionLockout.new_sequence())
 
-  if not target then
-    end_callback()
-    return
-  end
+    local step = action:create_step()
 
-  local start_row = target:current_tile():y()
-
-  local back_tile = get_back_tile(blizzardman, start_row)
-
-  teleport(blizzardman, back_tile, 25, function()
-    kick_snowball(blizzardman, damage, function()
-      -- move randomly up/down from the start row
-      local y_offset
-
-      if math.random(2) == 1 then
-        y_offset = -1
-      else
-        y_offset = 1
-      end
-
-      back_tile = get_back_tile(blizzardman, start_row + y_offset)
-
-      if not back_tile then
-        -- try the other way
-        back_tile = get_back_tile(blizzardman, start_row - y_offset)
-      end
-
-      if back_tile then
-        blizzardman:teleport(back_tile)
-      end
+    action.on_execute_func = function()
+      local start_row = blizzardman:current_tile():y()
+      local back_tile = get_back_tile(blizzardman, start_row)
 
       kick_snowball(blizzardman, damage, function()
-        end_callback()
+        -- move randomly up/down from the start row
+        local y_offset = math.random(0, 1) * 2 - 1
+
+        back_tile = get_back_tile(blizzardman, start_row + y_offset)
+
+        if not back_tile then
+          -- try the other way
+          back_tile = get_back_tile(blizzardman, start_row - y_offset)
+        end
+
+        if back_tile then
+          blizzardman:teleport(back_tile)
+        end
+
+        kick_snowball(blizzardman, damage, function()
+          step:complete_step()
+        end)
       end)
-    end)
-  end)
+    end
+
+    return action
+  end
 end
 
 ---@param blizzardman Entity
@@ -361,18 +381,11 @@ local function create_continuous_hitbox(blizzardman, damage)
 end
 
 ---@param blizzardman Entity
-local function blizzard_breath(blizzardman, damage, end_callback)
-  local target = find_target(blizzardman)
+local function create_blizzard_breath_factory(blizzardman, damage)
+  return function()
+    local target = find_target(blizzardman)
 
-  if not target then
-    end_callback()
-    return
-  end
-
-  local front_tile = get_front_tile(blizzardman, target:current_tile():y())
-  teleport(blizzardman, front_tile, 0, function(success)
-    if not success then
-      end_callback()
+    if not target then
       return
     end
 
@@ -380,11 +393,12 @@ local function blizzard_breath(blizzardman, damage, end_callback)
     local hitboxA = create_continuous_hitbox(blizzardman, damage)
     local hitboxB = create_continuous_hitbox(blizzardman, damage)
 
-    hitboxA.on_collision_func = function(character)
+    local on_collision_func = function(character)
       spawn_snow_hit_artifact(character)
     end
 
-    hitboxB.on_collision_func = hitboxA.on_collision_func
+    hitboxA.on_collision_func = on_collision_func
+    hitboxB.on_collision_func = on_collision_func
 
     action.on_execute_func = function()
       blizzardman:set_counterable(true)
@@ -420,12 +434,10 @@ local function blizzard_breath(blizzardman, damage, end_callback)
         hitboxA:erase()
         hitboxB:erase()
       end
-
-      end_callback()
     end
 
-    blizzardman:queue_action(action)
-  end)
+    return action
+  end
 end
 
 local falling_snow_entities = {}
@@ -556,23 +568,11 @@ local function spawn_falling_snow(blizzardman, damage)
   falling_snow_entities[#falling_snow_entities + 1] = snow
 end
 
+
 ---@param blizzardman Entity
-local function rolling_slider(blizzardman, damage, end_callback)
-  local target = find_target(blizzardman)
-
-  if not target then
-    end_callback()
-    return
-  end
-
-  local target_row = target:current_tile():y()
-  local end_tile = get_back_tile(blizzardman, target_row)
-  teleport(blizzardman, end_tile, 5, function(success)
-    if not success then
-      end_callback()
-      return
-    end
-
+---@param damage number
+local function create_rolling_slider_factory(blizzardman, damage)
+  return function()
     local anim = blizzardman:animation()
     local field = blizzardman:field()
 
@@ -641,51 +641,25 @@ local function rolling_slider(blizzardman, damage, end_callback)
       blizzardman:set_offset(0, 0)
       blizzardman:set_counterable(false)
       blizzardman:enable_sharing_tile(false)
-      end_callback()
     end
 
-    blizzardman:queue_action(action)
-  end)
+    return action
+  end
 end
 
--- blizzardman's attacks come with a movement plan
--- snow_rolling comes after 3-4 movements
--- blizzard_breath comes after one movement and followed up with rolling_slider
----@param blizzardman Entity
-local function pick_plan(blizzardman, plan_number, damage, callback)
-  local movements, on_attack_func
+local RANK_TO_HP = {
+  [Rank.V1] = 400,
+  [Rank.V2] = 1200,
+  [Rank.V3] = 1600,
+  [Rank.SP] = 2000
+}
 
-  if plan_number > 1 and math.random(3) == 1 then
-    -- 1/3 chance
-    movements = 1
-    on_attack_func = function(_blizzardman, _damage, _callback)
-      blizzard_breath(_blizzardman, _damage, function()
-        rolling_slider(_blizzardman, _damage, _callback)
-      end)
-    end
-  else
-    -- 2/3 chance
-    movements = math.random(3, 4)
-    on_attack_func = snow_rolling
-  end
-
-  local step
-
-  step = function()
-    if movements == 0 then
-      on_attack_func(blizzardman, damage, callback)
-    else
-      movements = movements - 1
-      teleport(blizzardman, get_random_team_tile(blizzardman), 60, function()
-        wait_for(blizzardman, function()
-          return not blizzardman._flinching
-        end, step)
-      end)
-    end
-  end
-
-  step()
-end
+local RANK_TO_DAMAGE = {
+  [Rank.V1] = 20,
+  [Rank.V2] = 40,
+  [Rank.V3] = 60,
+  [Rank.SP] = 80
+}
 
 ---@param blizzardman Entity
 function character_init(blizzardman)
@@ -699,36 +673,49 @@ function character_init(blizzardman)
   anim:set_state("IDLE")
 
   local rank = blizzardman:rank()
-  local rank_to_hp = {
-    [Rank.V1] = 400,
-    [Rank.V2] = 1200,
-    [Rank.V3] = 1600,
-    [Rank.SP] = 2000
-  }
-  blizzardman:set_health(rank_to_hp[rank])
+  blizzardman:set_health(RANK_TO_HP[rank])
+  local damage = RANK_TO_DAMAGE[rank]
 
-  local rank_to_damage = {
-    [Rank.V1] = 20,
-    [Rank.V2] = 40,
-    [Rank.V3] = 60,
-    [Rank.SP] = 80
-  }
-  local attack_damage = rank_to_damage[rank]
-  local has_plan = false
-  local plan_number = 1
+  -- AI
 
-  blizzardman.on_update_func = function()
-    if anim:state() == "CHARACTER_HIT" then
-      -- flinching
-      return
-    end
+  local ai = Ai.new_ai(blizzardman)
 
-    if not has_plan then
-      pick_plan(blizzardman, plan_number, attack_damage, function()
-        has_plan = false
-      end)
-      has_plan = true
-      plan_number = plan_number + 1
-    end
-  end
+  local random_movement_factory = create_random_move_factory(blizzardman, 60)
+
+  -- blizzard breath + rolling slider
+  local blizzard_breath_setup_factory = create_front_row_setup_factory(blizzardman, 0)
+  local blizzard_breath_factory = create_blizzard_breath_factory(blizzardman, damage)
+  local rolling_slider_setup_factory = create_back_row_setup_factory(blizzardman, 5)
+  local rolling_slider_factory = create_rolling_slider_factory(blizzardman, damage)
+
+  local breath_plan = ai:create_plan()
+  breath_plan:set_usable_after(1)
+  breath_plan:set_weight(1)
+  breath_plan:set_action_iter_factory(function()
+    return Ai.IteratorLib.chain(
+      Ai.IteratorLib.take(1, random_movement_factory),
+      Ai.IteratorLib.short_circuiting_chain(
+        Ai.IteratorLib.take(1, blizzard_breath_setup_factory),
+        Ai.IteratorLib.take(1, blizzard_breath_factory),
+        Ai.IteratorLib.take(1, rolling_slider_setup_factory),
+        Ai.IteratorLib.take(1, rolling_slider_factory)
+      )
+    )
+  end)
+
+  -- snow rolling
+  local snow_rolling_setup_factory = create_back_row_setup_factory(blizzardman, 25)
+  local snow_rolling_factory = create_snow_rolling_factory(blizzardman, damage)
+
+  local kick_snow_plan = ai:create_plan()
+  kick_snow_plan:set_weight(2)
+  kick_snow_plan:set_action_iter_factory(function()
+    return Ai.IteratorLib.chain(
+      Ai.IteratorLib.take(math.random(3, 4), random_movement_factory),
+      Ai.IteratorLib.short_circuiting_chain(
+        Ai.IteratorLib.take(1, snow_rolling_setup_factory),
+        Ai.IteratorLib.take(1, snow_rolling_factory)
+      )
+    )
+  end)
 end

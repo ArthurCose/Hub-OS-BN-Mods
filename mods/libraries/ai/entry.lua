@@ -111,13 +111,8 @@ end
 
 function Ai:create_plan()
   local plan = AiPlan.new()
-  self:add_plan(plan)
-  return plan
-end
-
----@param plan AiPlan
-function Ai:add_plan(plan)
   self._plans[#self._plans + 1] = plan
+  return plan
 end
 
 function Ai:cancel_plan()
