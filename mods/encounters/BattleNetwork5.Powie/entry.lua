@@ -4,8 +4,6 @@ local powie3_id = "BattleNetwork5.Powie3.Enemy"
 
 ---@param encounter Encounter
 function encounter_init(encounter)
-  encounter:spawn_player(1, 4, 3)
-
   encounter:set_field_size(9, 5)
 
   encounter
