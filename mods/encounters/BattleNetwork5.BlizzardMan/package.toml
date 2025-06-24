@@ -10,6 +10,5 @@ id = "BattleNetwork5.BlizzardMan.Enemy"
 path = "character"
 
 [dependencies]
-characters = []
-libraries = []
-cards = []
+libraries = ["dev.konstinople.library.ai"]
+tile_states = ["BattleNetwork6.TileStates.Ice"]

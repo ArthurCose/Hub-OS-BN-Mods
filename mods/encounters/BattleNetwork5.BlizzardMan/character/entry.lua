@@ -4,6 +4,65 @@ local Ai = require("dev.konstinople.library.ai")
 local BREATH_SFX = Resources.load_audio("wind.ogg")
 local THUD_SFX = Resources.load_audio("thud.ogg")
 
+---@generic T
+---@param t table<Rank, T>
+---@return table<Rank, T>
+local function apply_bn5_ranks(t)
+  t[Rank.Alpha] = t[Rank.V2]
+  t[Rank.Beta]  = t[Rank.V3]
+  t[Rank.Omega] = t[Rank.SP]
+  return t
+end
+
+local RANK_TO_HP = apply_bn5_ranks({
+  [Rank.V1] = 400,
+  [Rank.V2] = 1200,
+  [Rank.V3] = 1600,
+  [Rank.SP] = 2000
+})
+
+local RANK_TO_DAMAGE = apply_bn5_ranks({
+  [Rank.V1] = 20,
+  [Rank.V2] = 100,
+  [Rank.V3] = 160,
+  [Rank.SP] = 200,
+})
+
+local RANK_TO_SLIDER_DAMAGE = apply_bn5_ranks({
+  [Rank.V1] = 30,
+  [Rank.V2] = 120,
+  [Rank.V3] = 240,
+  [Rank.SP] = 300
+})
+
+local RANK_TO_FALLING_SNOW_HP = apply_bn5_ranks({
+  [Rank.V1] = 5,
+  [Rank.V2] = 10,
+  [Rank.V3] = 15,
+  [Rank.SP] = 20
+})
+
+local RANK_TO_FALLING_SNOW_COUNT = apply_bn5_ranks({
+  [Rank.V1] = 2,
+  [Rank.V2] = 2,
+  [Rank.V3] = 3,
+  [Rank.SP] = 3
+})
+
+local RANK_TO_MOVEMENT_DELAY = apply_bn5_ranks({
+  [Rank.V1] = 60,
+  [Rank.V2] = 40,
+  [Rank.V3] = 20,
+  [Rank.SP] = 10
+})
+
+local RANK_TO_BLIZZARD_BREATH_ICE = apply_bn5_ranks({
+  [Rank.V1] = false,
+  [Rank.V2] = true,
+  [Rank.V3] = true,
+  [Rank.SP] = true
+})
+
 ---@param character Entity
 local function run_after(character, frame_count, fn)
   local component = character:create_component(Lifetime.ActiveBattle)
@@ -242,7 +301,7 @@ local function create_snowball(blizzardman, damage)
   local snowball = Obstacle.new(blizzardman:team())
   snowball:set_facing(blizzardman:facing())
   snowball:set_texture(blizzardman:texture())
-  snowball:set_health(100)
+  snowball:set_health(50)
   snowball:set_height(36)
   snowball:enable_sharing_tile(true)
 
@@ -370,7 +429,7 @@ local function create_continuous_hitbox(blizzardman, damage)
   ))
 
   spell.on_update_func = function()
-    spell:current_tile():attack_entities(spell)
+    spell:attack_tile()
   end
 
   spell.can_move_to_func = function()
@@ -411,15 +470,24 @@ local function create_blizzard_breath_factory(blizzardman, damage)
       local facing = blizzardman:facing()
       local field = blizzardman:field()
 
+      local spawn_ice = RANK_TO_BLIZZARD_BREATH_ICE[blizzardman:rank()]
+      local function spawn_hitbox(tile, hitbox)
+        if tile then
+          field:spawn(hitbox, tile)
+
+          if spawn_ice then
+            tile:set_state(TileState.Ice)
+          end
+        end
+      end
+
       local tile = blizzardman:get_tile(facing, 1)
-      if not tile then return end
 
-      field:spawn(hitboxA, tile)
-
-      tile = tile:get_tile(facing, 1)
-      if not tile then return end
-
-      field:spawn(hitboxB, tile)
+      if tile then
+        spawn_hitbox(tile, hitboxA)
+        tile = tile:get_tile(facing, 1)
+        spawn_hitbox(tile, hitboxB)
+      end
     end)
 
     action:add_anim_action(15, function()
@@ -454,7 +522,7 @@ local function erase_falling_snow(snow)
 end
 
 ---@param blizzardman Entity
-local function spawn_falling_snow(blizzardman, damage)
+local function spawn_falling_snow(blizzardman)
   local team = blizzardman:team()
   local field = blizzardman:field()
 
@@ -481,7 +549,7 @@ local function spawn_falling_snow(blizzardman, damage)
   local tile = tiles[math.random(#tiles)]
   local snow = Obstacle.new(team)
   snow:set_facing(Direction.Left)
-  snow:set_health(1)
+  snow:set_health(RANK_TO_FALLING_SNOW_HP[blizzardman:rank()])
   snow:enable_hitbox(false)
   snow:set_shadow(Shadow.Small)
   snow:show_shadow(true)
@@ -494,7 +562,7 @@ local function spawn_falling_snow(blizzardman, damage)
   anim:apply(snow:sprite())
 
   snow:set_hit_props(HitProps.new(
-    damage,
+    10,
     Hit.Impact | Hit.Flash | Hit.Flinch,
     Element.Aqua,
     blizzardman:context(),
@@ -617,11 +685,19 @@ local function create_rolling_slider_factory(blizzardman, damage)
           blizzardman:field():shake(8, 0.4 * 60)
           Resources.play_audio(THUD_SFX, AudioBehavior.Default)
 
-          spawn_falling_snow(blizzardman, damage)
+          spawn_falling_snow(blizzardman)
 
-          run_after(blizzardman, math.random(4, 18), function()
-            spawn_falling_snow(blizzardman, damage)
-          end)
+          local count = RANK_TO_FALLING_SNOW_COUNT[blizzardman:rank()]
+
+          for i = 0, count - 2 do
+            local min_delay = 4 + i * 4
+            local max_delay = 18 + i * 4
+            local delay = math.random(min_delay, max_delay)
+
+            run_after(blizzardman, delay, function()
+              spawn_falling_snow(blizzardman)
+            end)
+          end
         end
 
         rolling_step:complete_step()
@@ -647,20 +723,6 @@ local function create_rolling_slider_factory(blizzardman, damage)
   end
 end
 
-local RANK_TO_HP = {
-  [Rank.V1] = 400,
-  [Rank.V2] = 1200,
-  [Rank.V3] = 1600,
-  [Rank.SP] = 2000
-}
-
-local RANK_TO_DAMAGE = {
-  [Rank.V1] = 20,
-  [Rank.V2] = 40,
-  [Rank.V3] = 60,
-  [Rank.SP] = 80
-}
-
 ---@param blizzardman Entity
 function character_init(blizzardman)
   blizzardman:set_name("BlizMan")
@@ -675,18 +737,19 @@ function character_init(blizzardman)
   local rank = blizzardman:rank()
   blizzardman:set_health(RANK_TO_HP[rank])
   local damage = RANK_TO_DAMAGE[rank]
+  local slider_damage = RANK_TO_SLIDER_DAMAGE[rank]
 
   -- AI
 
   local ai = Ai.new_ai(blizzardman)
 
-  local random_movement_factory = create_random_move_factory(blizzardman, 60)
+  local random_movement_factory = create_random_move_factory(blizzardman, RANK_TO_MOVEMENT_DELAY[rank])
 
   -- blizzard breath + rolling slider
   local blizzard_breath_setup_factory = create_front_row_setup_factory(blizzardman, 0)
   local blizzard_breath_factory = create_blizzard_breath_factory(blizzardman, damage)
   local rolling_slider_setup_factory = create_back_row_setup_factory(blizzardman, 5)
-  local rolling_slider_factory = create_rolling_slider_factory(blizzardman, damage)
+  local rolling_slider_factory = create_rolling_slider_factory(blizzardman, slider_damage)
 
   local breath_plan = ai:create_plan()
   breath_plan:set_usable_after(1)
