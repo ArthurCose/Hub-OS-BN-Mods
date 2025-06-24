@@ -3,7 +3,7 @@ category = "encounter"
 id = "BattleNetwork5.BlizzardMan"
 name = "BlizzardMan.EXE"
 description = "\"I'll freeze you to the bone!\""
-preview_texture_path = "preview1.png"
+preview_texture_path = "preview.png"
 
 [[defines.characters]]
 id = "BattleNetwork5.BlizzardMan.Enemy"
