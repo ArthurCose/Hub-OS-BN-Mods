@@ -153,13 +153,18 @@ return function(character, gaia_props)
 
             -- crack tiles
             if gaia_props.cracks then
-              local tiles = field:find_tiles(function(tile) return tile:team() ~= character:team() end)
+              local tiles = field:find_tiles(function(tile)
+                local tile_team = tile:team()
+                return tile_team ~= character:team() or tile_team == Team.Other
+              end)
 
-              for _ = 1, gaia_props.cracks do
-                local crack_tile = tiles[math.random(#tiles)]
+              if #tiles > 0 then
+                for _ = 1, gaia_props.cracks do
+                  local crack_tile = tiles[math.random(#tiles)]
 
-                if crack_tile:is_walkable() then
-                  crack_tile:set_state(TileState.Cracked)
+                  if crack_tile:is_walkable() then
+                    crack_tile:set_state(TileState.Cracked)
+                  end
                 end
               end
             end
@@ -198,7 +203,8 @@ return function(character, gaia_props)
               -- spawn rocks
               if effects_time == 30 then
                 local enemy_tiles = field:find_tiles(function(tile)
-                  return tile:team() ~= character:team() and not tile:is_edge()
+                  local tile_team = tile:team()
+                  return tile_team ~= character:team() or tile_team == Team.Other and not tile:is_edge()
                 end)
 
                 local remaining_rocks = 3
