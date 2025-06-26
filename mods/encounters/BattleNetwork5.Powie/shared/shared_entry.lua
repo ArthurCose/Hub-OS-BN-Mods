@@ -371,6 +371,10 @@ local function shared_package_init(character)
   character._jumps = 0
 
   character.can_move_to_func = function(tile)
+    if character:is_immobile() then
+      return false
+    end
+
     if tile:reserve_count_for(character) > 0 then
       return true
     end
