@@ -192,7 +192,7 @@ end
 
 ---@param blizzardman Entity
 ---@param end_idle_duration number
-local function create_back_row_setup_factory(blizzardman, end_idle_duration)
+local function create_back_col_setup_factory(blizzardman, end_idle_duration)
   return create_move_factory(blizzardman, end_idle_duration, function()
     local target = find_target(blizzardman)
 
@@ -233,7 +233,7 @@ end
 
 ---@param blizzardman Entity
 ---@param end_idle_duration number
-local function create_front_row_setup_factory(blizzardman, end_idle_duration)
+local function create_front_col_setup_factory(blizzardman, end_idle_duration)
   return create_move_factory(blizzardman, end_idle_duration, function()
     local target = find_target(blizzardman)
 
@@ -746,9 +746,9 @@ function character_init(blizzardman)
   local random_movement_factory = create_random_move_factory(blizzardman, RANK_TO_MOVEMENT_DELAY[rank])
 
   -- blizzard breath + rolling slider
-  local blizzard_breath_setup_factory = create_front_row_setup_factory(blizzardman, 0)
+  local blizzard_breath_setup_factory = create_front_col_setup_factory(blizzardman, 0)
   local blizzard_breath_factory = create_blizzard_breath_factory(blizzardman, damage)
-  local rolling_slider_setup_factory = create_back_row_setup_factory(blizzardman, 5)
+  local rolling_slider_setup_factory = create_back_col_setup_factory(blizzardman, 5)
   local rolling_slider_factory = create_rolling_slider_factory(blizzardman, slider_damage)
 
   local breath_plan = ai:create_plan()
@@ -767,7 +767,7 @@ function character_init(blizzardman)
   end)
 
   -- snow rolling
-  local snow_rolling_setup_factory = create_back_row_setup_factory(blizzardman, 25)
+  local snow_rolling_setup_factory = create_back_col_setup_factory(blizzardman, 25)
   local snow_rolling_factory = create_snow_rolling_factory(blizzardman, damage)
 
   local kick_snow_plan = ai:create_plan()
