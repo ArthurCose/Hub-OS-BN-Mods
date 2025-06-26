@@ -362,7 +362,7 @@ local function shared_package_init(character)
   character:set_shadow(Resources.load_texture("small_shadow.png"))
   character:show_shadow(true)
   character:set_height(38)
-  -- character:set_float_shoe(true) -- hack! https://discord.com/channels/455429604455219211/820777515995234314/921740913980616804
+  character:ignore_negative_tile_effects(true)
 
   character:add_aux_prop(StandardEnemyAux.new())
 
