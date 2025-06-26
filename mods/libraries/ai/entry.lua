@@ -279,4 +279,189 @@ function Lib.find_setup_tiles(entity, tile_suggester, tile_filter, entity_filter
   return tiles
 end
 
+---Picks a random tile for movement on the same row as an enemy
+---@param entity Entity
+---@param min_dist number? starts at 1
+---@param max_dist number? defaults to the field width
+function Lib.pick_same_row_tile(entity, min_dist, max_dist)
+  local field = entity:field()
+  local team = entity:team()
+  local enemies = field:find_nearest_characters(entity, function(e)
+    return not e:deleted() and e ~= team
+  end)
+
+  if #enemies == 0 then
+    return
+  end
+
+  min_dist = math.max(1, min_dist or 1)
+  max_dist = max_dist or field:width()
+
+  ---@type Tile[]
+  local possible_tiles = {}
+
+  for _, enemy in ipairs(enemies) do
+    local enemy_tile = enemy:current_tile()
+
+    local enemy_x = enemy_tile:x()
+    local y = enemy_tile:y()
+
+    for x = 1, field:width() - 1 do
+      local tile = field:tile_at(x, y)
+      local dist = math.abs(x - enemy_x)
+
+      if not tile or dist < min_dist or dist > max_dist or not entity:can_move_to(tile) then
+        goto continue
+      end
+
+      local facing_correctly
+
+      if tile:facing() == Direction.Right then
+        facing_correctly = x < enemy_x
+      else
+        facing_correctly = x > enemy_x
+      end
+
+      if facing_correctly then
+        possible_tiles[#possible_tiles + 1] = tile
+      end
+
+      ::continue::
+    end
+  end
+
+  if #possible_tiles == 0 then
+    return
+  end
+
+  return possible_tiles[math.random(#possible_tiles)]
+end
+
+---Finds the furthest tile away from each enemy in both directions for movement, returns one of them
+---@param entity Entity
+function Lib.pick_far_same_row_tile(entity)
+  local field = entity:field()
+  local team = entity:team()
+  local enemies = field:find_nearest_characters(entity, function(e)
+    return not e:deleted() and e ~= team
+  end)
+
+  if #enemies == 0 then
+    return
+  end
+
+  ---@type Tile[]
+  local possible_tiles = {}
+  local current_tile = entity:current_tile()
+
+  for _, enemy in ipairs(enemies) do
+    local enemy_tile = enemy:current_tile()
+
+    local enemy_x = enemy_tile:x()
+    local y = enemy_tile:y()
+
+    local furthest_tile
+
+    -- find the furthest tile on the right
+
+    for x = field:width() - 1, enemy_x + 1, -1 do
+      local tile = field:tile_at(x, y)
+
+      if not tile or not entity:can_move_to(tile) then
+        goto continue
+      end
+
+      if tile:facing() == Direction.Left then
+        furthest_tile = tile
+        break
+      end
+
+      ::continue::
+    end
+
+    if furthest_tile and furthest_tile ~= current_tile then
+      possible_tiles[#possible_tiles + 1] = furthest_tile
+    end
+
+    -- find the furthest tile on the left
+
+    for x = 1, enemy_x - 1 do
+      local tile = field:tile_at(x, y)
+
+      if not tile or not entity:can_move_to(tile) then
+        goto continue
+      end
+
+      if tile:facing() == Direction.Left then
+        furthest_tile = tile
+        break
+      end
+
+      ::continue::
+    end
+
+    if furthest_tile and furthest_tile ~= current_tile then
+      possible_tiles[#possible_tiles + 1] = furthest_tile
+    end
+  end
+
+  if #possible_tiles == 0 then
+    return
+  end
+
+  return possible_tiles[math.random(#possible_tiles)]
+end
+
+---Finds the tiles closest to the edge in both directions, returns one of them
+---@param entity Entity
+function Lib.pick_far_tile(entity)
+  local field = entity:field()
+  local x_start = 1
+
+  local facing = entity:facing()
+  if facing == Direction.Left then
+    x_start = field:width() - 2
+  end
+
+  ---@type Tile[]
+  local possible_tiles = {}
+  local current_tile = entity:current_tile()
+
+  for y = 1, field:height() - 2 do
+    local tile = field:tile_at(x_start, y)
+
+    while tile do
+      if entity:can_move_to(tile) and tile ~= current_tile then
+        possible_tiles[#possible_tiles + 1] = tile
+        break
+      end
+
+      tile = tile:get_tile(facing, 1)
+    end
+  end
+
+  if #possible_tiles == 0 then
+    return
+  end
+
+  return possible_tiles[math.random(#possible_tiles)]
+end
+
+---Finds a random tile with a matching team for movement
+---@param entity Entity
+function Lib.pick_same_team_tile(entity)
+  local current_tile = entity:current_tile()
+
+  local tiles = entity:field()
+      :find_tiles(function(tile)
+        return entity:can_move_to(tile) and current_tile ~= tile
+      end)
+
+  if #tiles == 0 then
+    return nil
+  end
+
+  return tiles[math.random(#tiles)]
+end
+
 return Lib
