@@ -29,8 +29,8 @@ end
 local function create_hitprops(character)
   return HitProps.new(
     character._damage,
-    Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceGuard,
-    Element.Break,
+    Hit.Impact | Hit.Flinch | Hit.Flash,
+    Element.None,
     character:context(),
     Drag.None
   )
@@ -40,7 +40,9 @@ end
 local function create_hitbody_spell(character)
   local spell = Spell.new(character:team())
 
-  spell:set_hit_props(create_hitprops(character))
+  local hit_props = create_hitprops(character)
+  hit_props.flags = hit_props.flags | Hit.PierceGuard | Hit.PierceGround
+  spell:set_hit_props(hit_props)
 
   spell.on_update_func = function()
     if character:deleted() then
