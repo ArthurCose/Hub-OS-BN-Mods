@@ -1,0 +1,117 @@
+# 0
+animation state="CHARACTER_IDLE"
+frame duration="0.067" x="138" y="2" w="31" h="65" originx="14" originy="59"
+frame duration="0.067" x="138" y="2" w="31" h="65" originx="14" originy="59"
+frame duration="0.067" x="138" y="2" w="31" h="65" originx="14" originy="59"
+frame duration="0.067" x="138" y="2" w="31" h="65" originx="14" originy="59"
+
+# 1
+animation state="CHARACTER_HIT"
+frame duration="0.067" x="397" y="79" w="41" h="61" originx="27" originy="55"
+frame duration="0.033" x="2" y="147" w="41" h="61" originx="28" originy="55"
+frame duration="0.033" x="47" y="147" w="41" h="61" originx="29" originy="55"
+frame duration="0.033" x="92" y="147" w="41" h="61" originx="28" originy="55"
+frame duration="0.033" x="137" y="147" w="41" h="61" originx="29" originy="55"
+frame duration="0.033" x="182" y="147" w="41" h="61" originx="28" originy="55"
+frame duration="0.067" x="197" y="79" w="36" h="62" originx="18" originy="56"
+frame duration="0.067" x="418" y="2" w="35" h="64" originx="17" originy="58"
+
+# 4
+animation state="CHARACTER_MOVE"
+frame duration="0.033" x="243" y="2" w="31" h="65" originx="14" originy="59"
+frame duration="0.017" x="103" y="2" w="31" h="69" originx="14" originy="63"
+frame duration="0.017" x="35" y="2" w="29" h="73" originx="13" originy="67"
+frame duration="0.017" x="35" y="2" w="29" h="73" originx="13" originy="67"
+
+# 5
+animation state="CHARACTER_SWING"
+frame duration="0.133" x="171" y="212" w="42" h="56" originx="22" originy="50"
+frame duration="0.033" x="217" y="212" w="47" h="56" originx="21" originy="50"
+frame duration="0.033" x="92" y="453" w="44" h="53" originx="20" originy="47"
+frame duration="0.167" x="268" y="212" w="53" h="56" originx="20" originy="50"
+
+# 6
+animation state="FIRE_BOMB"
+frame duration="0.1" x="2" y="453" w="41" h="54" originx="18" originy="48"
+frame duration="0.05" x="184" y="453" w="39" h="52" originx="18" originy="46"
+frame duration="0.05" x="140" y="453" w="40" h="53" originx="18" originy="47"
+frame duration="0.05" x="47" y="453" w="41" h="54" originx="18" originy="48"
+frame duration="0.05" x="237" y="79" w="36" h="62" originx="18" originy="56"
+frame duration="0.05" x="2" y="79" w="35" h="64" originx="17" originy="58"
+frame duration="0.017" x="278" y="2" w="31" h="65" originx="14" originy="59"
+
+# 7
+animation state="FLAME_TOWER"
+frame duration="0.033" x="325" y="212" w="51" h="56" originx="21" originy="50"
+frame duration="0.033" x="380" y="212" w="50" h="56" originx="21" originy="50"
+frame duration="0.033" x="2" y="273" w="50" h="56" originx="21" originy="50"
+frame duration="0.033" x="56" y="273" w="50" h="56" originx="21" originy="50"
+
+# 8
+animation state="8"
+frame duration="0.017" x="41" y="79" w="35" h="64" originx="17" originy="58"
+frame duration="0.017" x="277" y="79" w="36" h="62" originx="18" originy="56"
+frame duration="0.017" x="80" y="79" w="35" h="64" originx="17" originy="58"
+frame duration="0.017" x="313" y="2" w="31" h="65" originx="14" originy="59"
+
+# 9
+animation state="9"
+frame duration="0.017" x="348" y="2" w="31" h="65" originx="14" originy="59"
+frame duration="0.033" x="119" y="79" w="35" h="64" originx="17" originy="58"
+frame duration="0.033" x="317" y="79" w="36" h="62" originx="18" originy="56"
+frame duration="0.15" x="110" y="273" w="45" h="56" originx="21" originy="50"
+frame duration="0.017" x="159" y="273" w="44" h="56" originx="25" originy="50"
+frame duration="0.017" x="207" y="273" w="44" h="56" originx="26" originy="50"
+frame duration="0.017" x="255" y="273" w="44" h="56" originx="27" originy="50"
+frame duration="0.2" x="303" y="273" w="44" h="56" originx="29" originy="50"
+
+# 10
+animation state="FIRE_ARM"
+frame duration="0.033" x="386" y="147" w="53" h="57" originx="21" originy="51"
+frame duration="0.033" x="2" y="212" w="52" h="57" originx="21" originy="51"
+frame duration="0.033" x="58" y="212" w="52" h="57" originx="21" originy="51"
+
+animation state="11"
+frame duration="0.017" x="383" y="2" w="31" h="65" originx="14" originy="59"
+frame duration="0.033" x="158" y="79" w="35" h="64" originx="17" originy="58"
+frame duration="0.033" x="357" y="79" w="36" h="62" originx="18" originy="56"
+frame duration="0.133" x="351" y="273" w="45" h="56" originx="21" originy="50"
+frame duration="0.117" x="400" y="273" w="44" h="56" originx="21" originy="50"
+
+animation state="12"
+frame duration="0.067" x="2" y="333" w="45" h="56" originx="21" originy="50"
+frame duration="0.017" x="51" y="333" w="44" h="56" originx="25" originy="50"
+frame duration="0.017" x="99" y="333" w="44" h="56" originx="26" originy="50"
+frame duration="0.067" x="147" y="333" w="44" h="56" originx="27" originy="50"
+
+animation state="13"
+frame duration="0.033" x="195" y="333" w="45" h="56" originx="21" originy="50"
+
+animation state="14"
+frame duration="0.033" x="244" y="333" w="45" h="56" originx="21" originy="50"
+frame duration="0.017" x="293" y="333" w="44" h="56" originx="21" originy="50"
+frame duration="0.017" x="341" y="333" w="44" h="56" originx="21" originy="50"
+frame duration="0.033" x="389" y="333" w="44" h="56" originx="21" originy="50"
+
+# 15
+animation state="FIRE_ARM_START"
+frame duration="0.033" x="114" y="212" w="53" h="57" originx="21" originy="51"
+
+# 16
+animation state="FIRE_CIRCLE"
+frame duration="0.033" x="2" y="393" w="42" h="56" originx="22" originy="50"
+frame duration="0.033" x="48" y="393" w="52" h="56" originx="21" originy="50"
+frame duration="0.033" x="104" y="393" w="46" h="56" originx="20" originy="50"
+frame duration="0.05" x="272" y="147" w="53" h="60" originx="20" originy="54"
+frame duration="0.117" x="329" y="147" w="53" h="60" originx="20" originy="54"
+
+animation state="17"
+frame duration="0.05" x="154" y="393" w="45" h="56" originx="21" originy="50"
+frame duration="0.033" x="203" y="393" w="44" h="56" originx="21" originy="50"
+
+animation state="18"
+frame duration="0.017" x="251" y="393" w="51" h="56" originx="21" originy="50"
+frame duration="0.05" x="306" y="393" w="50" h="56" originx="21" originy="50"
+frame duration="0.05" x="360" y="393" w="50" h="56" originx="21" originy="50"
+frame duration="0.017" x="414" y="393" w="51" h="56" originx="21" originy="50"
+

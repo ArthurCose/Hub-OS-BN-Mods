@@ -1,0 +1,13 @@
+[package]
+category = "encounter"
+id = "BattleNetwork4.FireMan"
+name = "FireMan.EXE"
+description = ""
+preview_texture_path = "preview.png"
+
+[[defines.characters]]
+id = "BattleNetwork4.FireMan.Enemy"
+path = "character"
+
+[dependencies]
+libraries = ["dev.konstinople.library.ai", "BattleNetwork.Assets"]
