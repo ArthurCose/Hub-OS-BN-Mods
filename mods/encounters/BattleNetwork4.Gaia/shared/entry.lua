@@ -204,7 +204,7 @@ return function(character, gaia_props)
               if effects_time == 30 then
                 local enemy_tiles = field:find_tiles(function(tile)
                   local tile_team = tile:team()
-                  return tile_team ~= character:team() or tile_team == Team.Other and not tile:is_edge()
+                  return (tile_team ~= character:team() or tile_team == Team.Other) and not tile:is_edge()
                 end)
 
                 local remaining_rocks = 3
