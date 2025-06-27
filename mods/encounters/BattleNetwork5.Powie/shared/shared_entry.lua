@@ -11,7 +11,7 @@ local THUD_SFX = Resources.load_audio("thud_compressed.ogg") -- not the right au
 ---@field _target_id EntityId?
 ---@field _target_tile Tile?
 ---@field _jumps number
----@_thud_sfx
+---@field _ominous_shadow Entity | nil
 
 ---@param character _BattleNetwork5.Powie
 local function run_post_movement(character, fn)
@@ -106,7 +106,7 @@ local function create_ominous_shadow(character)
   animation:set_state("BIG_SHADOW")
 
   shadow.on_update_func = function()
-    if character:deleted() or shadow:get_tile() ~= character:get_tile() then
+    if character:deleted() then
       shadow:erase()
     end
   end
@@ -128,6 +128,8 @@ local function complete_attack(character, hitbody_spell, return_tile, landing_ti
 
       return_tile:remove_reservation_for(character)
 
+      character._ominous_shadow:erase()
+      character._ominous_shadow = nil
       character:show_shadow(true)
       character:enable_sharing_tile(false)
       hitbody_spell:erase()
@@ -243,7 +245,7 @@ local function attack(character, target)
       anim:set_playback(Playback.Once)
 
       anim:on_frame(2, function()
-        create_ominous_shadow(character)
+        character._ominous_shadow = create_ominous_shadow(character)
       end)
 
       anim:on_complete(function()
