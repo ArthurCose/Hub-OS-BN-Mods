@@ -180,7 +180,7 @@ function Ai:_create_component()
   end
 end
 
----@class KonstAiLib
+---@class dev.konstinople.library.ai
 local Lib = {
   new_ai = Ai.new,
   new_plan = AiPlan.new,

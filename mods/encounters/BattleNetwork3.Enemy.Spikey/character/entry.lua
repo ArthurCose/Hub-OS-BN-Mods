@@ -1,4 +1,4 @@
----@type KonstAiLib
+---@type dev.konstinople.library.ai
 local Ai = require("dev.konstinople.library.ai")
 ---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")

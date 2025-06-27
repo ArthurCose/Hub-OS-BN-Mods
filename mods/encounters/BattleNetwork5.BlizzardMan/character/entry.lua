@@ -1,4 +1,4 @@
----@type KonstAiLib
+---@type dev.konstinople.library.ai
 local Ai = require("dev.konstinople.library.ai")
 
 local BREATH_SFX = Resources.load_audio("wind.ogg")

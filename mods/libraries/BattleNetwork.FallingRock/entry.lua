@@ -1,4 +1,4 @@
----@class FallingRockLib
+---@class BattleNetwork.FallingRock
 local Lib = {}
 
 local ROCK_SFX = Resources.load_audio("rock_shatter.ogg")

@@ -1,8 +1,8 @@
 ---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
----@type FallingRockLib
+---@type BattleNetwork.FallingRock
 local FallingRockLib = require("BattleNetwork.FallingRock")
----@type KonstAiLib
+---@type dev.konstinople.library.ai
 local AiLib = require("dev.konstinople.library.ai")
 local IteratorLib = AiLib.IteratorLib
 
