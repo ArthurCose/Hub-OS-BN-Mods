@@ -250,6 +250,8 @@ end
 ---@class BombLib
 local BombLib = {}
 
+---@alias dev.konstinople.library.bomb BombLib
+
 ---@return Bomb
 function BombLib.new_bomb()
   local bomb = {}

@@ -345,6 +345,8 @@ end
 ---@class PanelStepLib
 local PanelStepLib = {}
 
+---@alias dev.konstinople.library.panel_step PanelStepLib
+
 ---@return PanelStep
 function PanelStepLib.new_panel_step()
   local panel_step = {}

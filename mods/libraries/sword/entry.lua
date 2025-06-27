@@ -188,6 +188,8 @@ end
 ---@class SwordLib
 local SwordLib = {}
 
+---@alias dev.konstinople.library.sword SwordLib
+
 ---@return Sword
 function SwordLib.new_sword()
   local sword = {}

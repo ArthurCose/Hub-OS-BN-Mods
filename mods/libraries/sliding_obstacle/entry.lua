@@ -237,4 +237,6 @@ local SlidingObstacleLib = {
   end,
 }
 
+---@alias dev.konstinople.library.sliding_obstacle SlidingObstacleLib
+
 return SlidingObstacleLib

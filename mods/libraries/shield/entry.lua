@@ -272,6 +272,8 @@ end
 ---@class ShieldLib
 local ShieldLib = {}
 
+---@alias dev.konstinople.library.shield ShieldLib
+
 ---@return Shield
 function ShieldLib.new_shield()
   local shield = {}

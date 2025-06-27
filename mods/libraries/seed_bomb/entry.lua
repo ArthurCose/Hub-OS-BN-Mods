@@ -129,6 +129,8 @@ end
 ---@class SeedBombLib
 local Lib = {}
 
+---@alias dev.konstinople.library.seed_bomb SeedBombLib
+
 ---@return SeedBomb
 function Lib.new_seed_bomb()
   local seedbomb = {
