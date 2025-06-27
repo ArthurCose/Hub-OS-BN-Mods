@@ -1,4 +1,4 @@
----@type IteratorLib
+---@type dev.konstinople.library.iterator
 local IteratorLib = require("dev.konstinople.library.iterator")
 
 ---A function that returns a new Action on every call, or nil to signify the end

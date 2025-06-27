@@ -1,4 +1,4 @@
----@class IteratorLib
+---@class dev.konstinople.library.iterator
 local IteratorLib = {}
 
 ---Limits the output of an iterator, by taking only `amount` values from it.
