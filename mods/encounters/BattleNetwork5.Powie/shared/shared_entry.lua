@@ -132,6 +132,7 @@ local function complete_attack(character, hitbody_spell, return_tile, landing_ti
       character._ominous_shadow = nil
       character:show_shadow(true)
       character:enable_sharing_tile(false)
+      character:enable_hitbox(true)
       hitbody_spell:erase()
     end)
 
