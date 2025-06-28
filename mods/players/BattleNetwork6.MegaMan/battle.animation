@@ -2,8 +2,8 @@ animation state="CHARACTER_IDLE"
 frame x="1" y="5" w="35" h="44" originx="17" originy="38" duration="1f"
 
 animation state="CHARACTER_HIT"
-frame x="37" y="1" w="28" h="48" originx="18" originy="42" duration="1f"
-frame x="66" y="9" w="38" h="40" originx="17" originy="34" duration="1f"
+frame x="37" y="1" w="28" h="48" originx="18" originy="42" duration="15f"
+frame x="66" y="9" w="38" h="40" originx="17" originy="34" duration="7f"
 
 animation state="CHARACTER_MOVE"
 frame x="1" y="5" w="35" h="44" originx="17" originy="38" duration="1f"
