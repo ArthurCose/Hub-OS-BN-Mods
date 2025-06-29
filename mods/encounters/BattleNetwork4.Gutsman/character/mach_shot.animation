@@ -1,0 +1,10 @@
+animation state="DEFAULT"
+frame duration="0.033" x="2" y="54" w="16" h="11" originx="8" originy="5"
+
+animation state="DESPAWN"
+frame duration="0.017" x="2" y="30" w="20" h="20" originx="10" originy="10"
+frame duration="0.017" x="26" y="30" w="20" h="20" originx="10" originy="10"
+frame duration="0.017" x="30" y="2" w="22" h="22" originx="11" originy="11"
+frame duration="0.017" x="2" y="2" w="24" h="24" originx="12" originy="12"
+frame duration="0.017" x="22" y="54" w="1" h="1" originx="192" originy="192"
+

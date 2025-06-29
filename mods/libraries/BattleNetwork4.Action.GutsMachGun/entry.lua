@@ -2,7 +2,7 @@ local GutsMachGun = {}
 
 local bn_assets = require("BattleNetwork.Assets")
 
-local guts_mach_gun_audio = bn_assets.load_audio("GutsMachGun.ogg")
+local guts_mach_gun_audio = bn_assets.load_audio("guts_mach_gun.ogg")
 
 ---@param user Entity
 ---@param damage number
