@@ -287,7 +287,7 @@ function Lib.pick_same_row_tile(entity, min_dist, max_dist)
   local field = entity:field()
   local team = entity:team()
   local enemies = field:find_nearest_characters(entity, function(e)
-    return not e:deleted() and e ~= team
+    return not e:deleted() and e:team() ~= team
   end)
 
   if #enemies == 0 then
@@ -343,7 +343,7 @@ function Lib.pick_far_same_row_tile(entity)
   local field = entity:field()
   local team = entity:team()
   local enemies = field:find_nearest_characters(entity, function(e)
-    return not e:deleted() and e ~= team
+    return not e:deleted() and e:team() ~= team
   end)
 
   if #enemies == 0 then
