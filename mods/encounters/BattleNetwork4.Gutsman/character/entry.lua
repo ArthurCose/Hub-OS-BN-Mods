@@ -405,7 +405,7 @@ local function create_guts_punch_spell(entity, guts_punch_range, damage)
         return
       end
 
-      spell:slide(next_tile, 10)
+      spell:slide(next_tile, 8)
     end
   end
 
@@ -482,7 +482,6 @@ function character_init(entity)
   local guts_quake_factory = create_guts_quake_factory(entity, damage * GUTS_QUAKE_DAMAGE_MULTIPLIER)
 
   local guts_quake_plan = ai:create_plan()
-  guts_quake_plan:set_usable_after(1)
   guts_quake_plan:set_weight(1)
   guts_quake_plan:set_action_iter_factory(function()
     return Ai.IteratorLib.chain(
@@ -496,7 +495,6 @@ function character_init(entity)
   local guts_mach_gun_setup_factory = create_short_range_setup_factory(entity, 3, 0)
 
   local mach_gun_plan = ai:create_plan()
-  mach_gun_plan:set_usable_after(1)
   mach_gun_plan:set_weight(3)
   mach_gun_plan:set_action_iter_factory(function()
     return Ai.IteratorLib.chain(
