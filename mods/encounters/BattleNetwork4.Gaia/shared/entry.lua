@@ -153,20 +153,7 @@ return function(character, gaia_props)
 
             -- crack tiles
             if gaia_props.cracks then
-              local tiles = field:find_tiles(function(tile)
-                local tile_team = tile:team()
-                return tile_team ~= character:team() or tile_team == Team.Other
-              end)
-
-              if #tiles > 0 then
-                for _ = 1, gaia_props.cracks do
-                  local crack_tile = tiles[math.random(#tiles)]
-
-                  if crack_tile:is_walkable() then
-                    crack_tile:set_state(TileState.Cracked)
-                  end
-                end
-              end
+              FallingRockLib.crack_tiles(field, character:team(), gaia_props.cracks)
             end
 
             -- spawn effects
@@ -202,46 +189,7 @@ return function(character, gaia_props)
 
               -- spawn rocks
               if effects_time == 30 then
-                local enemy_tiles = field:find_tiles(function(tile)
-                  local tile_team = tile:team()
-                  return (tile_team ~= character:team() or tile_team == Team.Other) and not tile:is_edge()
-                end)
-
-                local remaining_rocks = 3
-
-                -- try to hit enemies with the rocks
-                for i = #enemy_tiles, 1, -1 do
-                  local has_enemy = false
-
-                  local enemy_tile = enemy_tiles[i]
-                  enemy_tile:find_characters(function(other)
-                    if other:team() ~= character:team() then
-                      has_enemy = true
-                    end
-                    return false
-                  end)
-
-                  if has_enemy then
-                    table.remove(enemy_tiles, i)
-
-                    local rock = FallingRockLib.create_falling_rock(character:team(), gaia_props.damage)
-                    field:spawn(rock, enemy_tile)
-
-                    remaining_rocks = remaining_rocks - 1
-
-                    if remaining_rocks == 0 then
-                      break
-                    end
-                  end
-                end
-
-                -- drop rocks on random tiles
-                for _ = 1, math.min(#enemy_tiles, remaining_rocks) do
-                  local rock_tile = table.remove(enemy_tiles, math.random(#enemy_tiles))
-
-                  local rock = FallingRockLib.create_falling_rock(character:team(), gaia_props.damage)
-                  field:spawn(rock, rock_tile)
-                end
+                FallingRockLib.spawn_falling_rocks(field, character:team(), 3, gaia_props.damage)
               end
 
               if effects_time > SHAKE_DURATION then

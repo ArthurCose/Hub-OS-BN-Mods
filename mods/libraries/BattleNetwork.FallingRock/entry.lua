@@ -17,6 +17,79 @@ local FALL_TIME = 5 / ROCK_ACC -- must hit a vel of 5, before it hits the ground
 local ROCK_INITIAL_HEIGHT = calculate_elevation_after(FALL_TIME, ROCK_ACC, 0)
 local PARTICLE_ACC = 0.15
 
+---Spawns up to `count` falling rocks, aims for enemy characters
+---@param field Field
+---@param team Team the team of the attacker, tiles on this team will not be cracked
+---@param count number
+function Lib.crack_tiles(field, team, count)
+  -- find enemy tiles
+  local enemy_tiles = field:find_tiles(function(tile)
+    local tile_team = tile:team()
+    return (tile_team ~= team or tile_team == Team.Other) and not tile:is_edge()
+  end)
+
+  -- randomly crack tiles
+  for _ = 1, math.min(#enemy_tiles, count) do
+    local tile = table.remove(enemy_tiles, math.random(#enemy_tiles))
+
+    if tile:state() == TileState.Cracked then
+      tile:set_state(TileState.Broken)
+    else
+      tile:set_state(TileState.Cracked)
+    end
+  end
+end
+
+---Spawns up to `count` falling rocks, aims for enemy characters
+---@param field Field
+---@param team Team the team of the attacker
+---@param count number
+---@param damage number
+function Lib.spawn_falling_rocks(field, team, count, damage)
+  -- find enemy tiles
+  local enemy_tiles = field:find_tiles(function(tile)
+    local tile_team = tile:team()
+    return (tile_team ~= team or tile_team == Team.Other) and not tile:is_edge()
+  end)
+
+  -- resolve which of the tiles have enemies
+  local tiles_with_enemy = {}
+
+  for i, tile in ipairs(enemy_tiles) do
+    local contains_enemy = false
+
+    tile:find_characters(function(character)
+      if character:hittable() and character:team() ~= team then
+        contains_enemy = true
+      end
+      return false
+    end)
+
+    if contains_enemy then
+      tiles_with_enemy[#tiles_with_enemy + 1] = i
+    end
+  end
+
+  -- aim for enemies
+  while #tiles_with_enemy > 0 and count > 0 do
+    local i = table.remove(tiles_with_enemy, math.random(#tiles_with_enemy))
+    local tile = table.remove(enemy_tiles, i)
+
+    local rock = Lib.create_falling_rock(team, damage)
+    field:spawn(rock, tile)
+
+    count = count - 1
+  end
+
+  -- randomly drop remaining rocks
+  for _ = 1, math.min(#enemy_tiles, count) do
+    local tile = table.remove(enemy_tiles, math.random(#enemy_tiles))
+
+    local rock = Lib.create_falling_rock(team, damage)
+    field:spawn(rock, tile)
+  end
+end
+
 ---@param team Team
 ---@param damage number
 function Lib.create_falling_rock(team, damage)
