@@ -117,7 +117,11 @@ local function create_move_factory(entity, end_idle_duration, select_tile)
     local action = Action.new(entity)
     action:set_lockout(ActionLockout.new_sequence())
 
+    local old_tile
+
     action.on_execute_func = function()
+      old_tile = entity:current_tile()
+
       local tile = select_tile()
 
       if tile then
@@ -128,6 +132,9 @@ local function create_move_factory(entity, end_idle_duration, select_tile)
     local move_step = action:create_step()
     move_step.on_update_func = function()
       entity:set_facing(entity:current_tile():facing())
+
+      old_tile:remove_reservation_for(entity)
+      entity:current_tile():reserve_for(entity)
 
       if not entity:is_moving() then
         move_step:complete_step()
@@ -148,6 +155,10 @@ local function create_move_factory(entity, end_idle_duration, select_tile)
       if idle_time >= end_idle_duration then
         self:complete_step()
       end
+    end
+
+    action.on_action_end_func = function()
+      entity:current_tile():remove_reservation_for(entity)
     end
 
     return action
