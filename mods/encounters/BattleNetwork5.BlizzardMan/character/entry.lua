@@ -472,12 +472,16 @@ local function create_blizzard_breath_factory(blizzardman, damage)
 
       local spawn_ice = RANK_TO_BLIZZARD_BREATH_ICE[blizzardman:rank()]
       local function spawn_hitbox(tile, hitbox)
-        if tile then
-          field:spawn(hitbox, tile)
+        if not tile then
+          return
+        end
 
-          if spawn_ice then
+        field:spawn(hitbox, tile)
+
+        if spawn_ice then
+          run_after(blizzardman, 1, function()
             tile:set_state(TileState.Ice)
-          end
+          end)
         end
       end
 
