@@ -335,6 +335,8 @@ Input = {
 --- Not to be confused with [entity.on_counter_func](https://docs.hubos.dev/client/lua-api/entity-api/entity#entityon_counter_func--functionself)
 ---@field on_countered_func fun(self: Entity)
 --- This function is predefined for all entities.
+---
+--- When overriding, you may want to check for whether the tile is [reserved](https://docs.hubos.dev/client/lua-api/field-api/tile#tileis_reservedexclude_list) or [walkable](https://docs.hubos.dev/client/lua-api/field-api/tile#tileis_walkable). If this overridden on a character, you may also want to check if the entity is [immobile](https://docs.hubos.dev/client/lua-api/entity-api/living#livingis_immobile).
 ---@field can_move_to_func fun(tile: Tile): boolean
 --- Called when the battle has completed (win or loss).
 ---@field on_battle_end_func fun(self: Entity, won: boolean)
@@ -1005,7 +1007,7 @@ function Entity:ignoring_negative_tile_effects() end
 --- The entity will ignore negative tile effects when active.
 ---
 --- Automatically set for [Spells](https://docs.hubos.dev/client/lua-api/entity-api/spell) and [Artifacts](https://docs.hubos.dev/client/lua-api/entity-api/artifact).
----@param enabled boolean
+---@param enabled? boolean
 function Entity:ignore_negative_tile_effects(enabled) end
 
 --- Returns true if the entity should be able to walk on Broken and PermaHole tiles.
@@ -1015,7 +1017,7 @@ function Entity:ignoring_hole_tiles() end
 --- Allows the entity to walk on Broken and PermaHole tiles.
 ---
 --- Automatically set for [Spells](https://docs.hubos.dev/client/lua-api/entity-api/spell) and [Artifacts](https://docs.hubos.dev/client/lua-api/entity-api/artifact).
----@param enabled boolean
+---@param enabled? boolean
 function Entity:ignore_hole_tiles(enabled) end
 
 --- Returns `{ x: number, y: number }`.
@@ -1215,6 +1217,12 @@ function Entity:jump(tile, height, duration, callback) end
 --- - `movement`: [Movement](https://docs.hubos.dev/client/lua-api/field-api/movement)
 ---@param movement Movement
 function Entity:queue_movement(movement) end
+
+--- - `tile`: [Tile](https://docs.hubos.dev/client/lua-api/field-api/tile)
+---
+--- Queues a movement with the same animation and timing as one caused by player input.
+---@param tile Tile
+function Entity:queue_default_player_movement(tile) end
 
 --- Cancels non-drag movement.
 function Entity:cancel_movement() end
@@ -1587,14 +1595,6 @@ function Entity:set_movement_on_input(bool) end
 --- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
 ---@param bool? boolean
 function Entity:set_slide_when_moving(bool) end
-
---- - `tile`: [Tile](https://docs.hubos.dev/client/lua-api/field-api/tile)
----
---- Queues a movement with the default internal logic.
----
---- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
----@param tile Tile
-function Entity:queue_default_player_movement(tile) end
 
 --- Queues an action from a [Form](https://docs.hubos.dev/client/lua-api/entity-api/player#playerform), [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment), or the base player mod.
 ---
@@ -3268,7 +3268,7 @@ function Encounter:set_background(texture_path, animation_path, vel_x, vel_y) en
 ---@param tile_height number
 function Encounter:set_panels(texture_paths, animation_path, tile_width, tile_height) end
 
---- Resizes the field, remember to add two to each dimension to account for the invisible edge tiles. If the field is larger than the screen allows, the camera will adjust placement and zoom to fit all [Characters](https://docs.hubos.dev/client/lua-api/entity-api/character).
+--- Resizes the field, remember to add two to each dimension to account for the invisible edge tiles (The default field size is 8x5). If the field is larger than the screen allows, the camera will adjust placement and zoom to fit all [Characters](https://docs.hubos.dev/client/lua-api/entity-api/character).
 ---
 --- Resets tile teams and states on the field.
 ---@param width number
@@ -3385,6 +3385,13 @@ function Action:owner() end
 --- - `lockout`: [ActionLockout](https://docs.hubos.dev/client/lua-api/attack-api/action#actionlockout)
 ---@param lockout ActionLockout
 function Action:set_lockout(lockout) end
+
+--- By default, actions prevent entities from creating tile reservations on movement.
+---
+--- Calling this function with `true` or `nil` will allow the action's owner to reserve entered tiles and unreserve left tiles.
+--- This only matters for entities that automatically reserve tiles by default, such as Characters and Obstacles.
+---@param bool? boolean
+function Action:allow_auto_tile_reservation(bool) end
 
 --- Returns a new [ActionStep](https://docs.hubos.dev/client/lua-api/attack-api/action#actionstep)
 ---@return ActionStep

@@ -86,6 +86,7 @@ local function create_move_factory(blizzardman, end_idle_duration, select_tile)
   return function()
     local action = Action.new(blizzardman, "MOVE")
     action:set_lockout(ActionLockout.new_sequence())
+    action:allow_auto_tile_reservation()
 
     local move_step = action:create_step()
 
@@ -384,6 +385,7 @@ local function create_snow_rolling_factory(blizzardman, damage)
   return function()
     local action = Action.new(blizzardman)
     action:set_lockout(ActionLockout.new_sequence())
+    action:allow_auto_tile_reservation()
 
     local step = action:create_step()
 
@@ -656,7 +658,11 @@ local function create_rolling_slider_factory(blizzardman, damage)
     local curling_step = action:create_step()
     local rolling_step = action:create_step()
 
+    local original_tile
+
     action.on_execute_func = function()
+      original_tile = blizzardman:current_tile()
+
       blizzardman:set_counterable(true)
       blizzardman:enable_sharing_tile(true)
 
@@ -721,6 +727,7 @@ local function create_rolling_slider_factory(blizzardman, damage)
       blizzardman:set_offset(0, 0)
       blizzardman:set_counterable(false)
       blizzardman:enable_sharing_tile(false)
+      original_tile:add_entity(blizzardman)
     end
 
     return action
@@ -737,6 +744,11 @@ function character_init(blizzardman)
   local anim = blizzardman:animation()
   anim:load("blizzardman.animation")
   anim:set_state("IDLE")
+
+  blizzardman.on_idle_func = function()
+    anim:set_state("IDLE")
+    anim:set_playback(Playback.Loop)
+  end
 
   local rank = blizzardman:rank()
   blizzardman:set_health(RANK_TO_HP[rank])

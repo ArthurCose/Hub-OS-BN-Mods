@@ -90,22 +90,15 @@ local function create_move_factory(entity, end_idle_duration, select_tile)
 
     local action = Action.new(entity)
     action:set_lockout(ActionLockout.new_sequence())
-
-    local old_tile
+    action:allow_auto_tile_reservation()
 
     action.on_execute_func = function()
-      old_tile = entity:current_tile()
-
       entity:queue_default_player_movement(tile)
     end
 
     local move_step = action:create_step()
     move_step.on_update_func = function()
       entity:set_facing(entity:current_tile():facing())
-
-      old_tile:remove_reservation_for(entity)
-      old_tile = entity:current_tile()
-      old_tile:reserve_for(entity)
 
       if not entity:is_moving() then
         move_step:complete_step()
@@ -126,10 +119,6 @@ local function create_move_factory(entity, end_idle_duration, select_tile)
       if idle_time >= end_idle_duration then
         self:complete_step()
       end
-    end
-
-    action.on_action_end_func = function()
-      old_tile:remove_reservation_for(entity)
     end
 
     return action
@@ -472,6 +461,11 @@ function character_init(entity)
   anim:load("battle.animation")
   anim:set_state("CHARACTER_IDLE")
   anim:set_playback(Playback.Loop)
+
+  entity.on_idle_func = function()
+    anim:set_state("CHARACTER_IDLE")
+    anim:set_playback(Playback.Loop)
+  end
 
   local rank = entity:rank()
   entity:set_health(RANK_TO_HP[rank])
