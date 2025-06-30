@@ -223,14 +223,16 @@ local function create_guts_quake_factory(entity, damage)
         end
 
         field:spawn(hammer_hitbox, hammer_tile)
+
+        if hammer_tile:is_walkable() then
+          -- spawn rocks
+          FallingRockLib.spawn_falling_rocks(field, entity:team(), 3, damage)
+
+          -- crack panels
+          local cracks = RANK_TO_CRACKS[entity:rank()]
+          FallingRockLib.crack_tiles(field, entity:team(), cracks)
+        end
       end
-
-      -- spawn rocks
-      FallingRockLib.spawn_falling_rocks(field, entity:team(), 3, damage)
-
-      -- crack panels
-      local cracks = RANK_TO_CRACKS[entity:rank()]
-      FallingRockLib.crack_tiles(field, entity:team(), cracks)
     end)
 
     action.on_action_end_func = function()
