@@ -1,0 +1,5 @@
+animation state="DEFAULT"
+frame w="43" h="16"
+
+animation state="SYNCHRO"
+frame y="16" w="43" h="16"
