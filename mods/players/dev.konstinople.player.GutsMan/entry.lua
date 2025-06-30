@@ -309,7 +309,7 @@ function player_init(player)
   local MACH_GUN_FAIL_FRAMES = { { 1, 3 }, { 3, 3 }, { 4, 3 } }
 
   player.normal_attack_func = function()
-    local bonus_capacity_from_rapid = (player:rapid_level() / 5 * 2)
+    local bonus_capacity_from_rapid = (player:rapid_level() - 1) / 4 * 2
     local max_heat = (bonus_capacity_from_rapid + 3) * HEAT_PER_SHOT
 
     local frames = MACH_GUN_FRAMES
