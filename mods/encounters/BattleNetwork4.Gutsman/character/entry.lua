@@ -201,9 +201,7 @@ local function create_guts_quake_factory(entity, damage)
 
     action:add_anim_action(5, function()
       entity:set_counterable(false)
-      Resources.play_audio(HAMMER_SFX)
       local field = entity:field()
-      field:shake(5, 40)
 
       -- create hitbox for hammer
       local hammer_tile = entity:get_tile(entity:facing(), 1)
@@ -225,6 +223,9 @@ local function create_guts_quake_factory(entity, damage)
         field:spawn(hammer_hitbox, hammer_tile)
 
         if hammer_tile:is_walkable() then
+          Resources.play_audio(HAMMER_SFX)
+          field:shake(5, 40)
+
           -- spawn rocks
           FallingRockLib.spawn_falling_rocks(field, entity:team(), 3, damage)
 
