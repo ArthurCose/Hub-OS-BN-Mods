@@ -134,7 +134,8 @@ local function create_move_factory(entity, end_idle_duration, select_tile)
       entity:set_facing(entity:current_tile():facing())
 
       old_tile:remove_reservation_for(entity)
-      entity:current_tile():reserve_for(entity)
+      old_tile = entity:current_tile()
+      old_tile:reserve_for(entity)
 
       if not entity:is_moving() then
         move_step:complete_step()
@@ -158,7 +159,7 @@ local function create_move_factory(entity, end_idle_duration, select_tile)
     end
 
     action.on_action_end_func = function()
-      entity:current_tile():remove_reservation_for(entity)
+      old_tile:remove_reservation_for(entity)
     end
 
     return action
