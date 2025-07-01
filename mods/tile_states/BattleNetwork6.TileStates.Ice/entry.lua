@@ -8,6 +8,11 @@ function tile_state_init(custom_state)
       return
     end
 
+    if tracked_auxprops[entity:id()] then
+      print("entity entered ice tile twice without leaving?")
+      return
+    end
+
     local aux_prop = AuxProp.new()
         :require_hit_element(Element.Aqua)
         :with_callback(function()
