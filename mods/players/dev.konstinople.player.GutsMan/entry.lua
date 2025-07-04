@@ -407,7 +407,6 @@ function player_init(player)
     local can_charge =
         not card.time_freeze
         and card.element == Element.None
-        and card.secondary_element == Element.None
 
     if can_charge then
       return 100
@@ -421,8 +420,14 @@ function player_init(player)
   -- intro
   player.intro_func = function()
     local action = Action.new(player, "GUTS_PUNCH")
-    action:set_lockout(ActionLockout.new_sequence())
-    action:override_animation_frames({ { 2, 4 }, { 1, 4 }, { 2, 4 } })
+    action:override_animation_frames({
+      { 2, 4 },
+      { 1, 6 },
+      { 2, 8 },
+      { 1, 6 },
+      { 2, 4 },
+      { 1, 8 },
+    })
     return action
   end
 end
