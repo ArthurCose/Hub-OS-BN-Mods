@@ -3,6 +3,7 @@ local TILE_WIDTH = Tile:width()
 local HALF_TILE_WIDTH = TILE_WIDTH / 2
 
 ---@class Bomb
+---@field target_tile_func fun(user: Entity): Tile?
 local Bomb = {}
 Bomb.__index = Bomb
 
@@ -45,6 +46,43 @@ function Bomb:set_frame_data(frame_data)
   self._user_frame_data = frame_data
 end
 
+--- Sets target_tile_func
+function Bomb:enable_seeking()
+  ---@param user Entity
+  self.target_tile_func = function(user)
+    local direction = user:facing()
+    local x = user:current_tile():x()
+
+    local position_comparison_func
+
+    if direction == Direction.Right then
+      position_comparison_func = function(other_x)
+        return other_x > x
+      end
+    else
+      position_comparison_func = function(other_x)
+        return other_x < x
+      end
+    end
+
+    local field = user:field()
+    local team = user:team()
+    local enemies = field:find_nearest_characters(user, function(character)
+      return character:team() ~= team and position_comparison_func(character:current_tile():x())
+    end)
+
+    if enemies[1] then
+      return enemies[1]:current_tile()
+    end
+
+    if user:facing() == Direction.Right then
+      return field:tile_at(field:width() - 1, field:height() // 2)
+    end
+
+    return field:tile_at(0, field:height() // 2)
+  end
+end
+
 ---@param self Bomb
 local function create_bomb(self)
   local bomb = Spell.new()
@@ -70,6 +108,128 @@ local function ease_out(progress)
 end
 
 ---@param user Entity
+---@param bomb Entity
+---@param release_x number
+---@param release_y number
+---@param spell_callback fun(tile?: Tile)
+local function play_standard_animation(user, bomb, release_x, release_y, spell_callback)
+  local i = 0
+  local x = 0
+  local y = release_y - math.abs(release_x) * 0.5
+  local vel_x = 3
+
+  local PEAK = -60
+
+  -- resolve target tile
+  local facing_direction = user:facing()
+  local target_tile = user:get_tile(user:facing(), 3)
+
+  if facing_direction == Direction.Left then
+    -- flip animation direction based on the user's facing direction
+    vel_x = -vel_x
+  end
+
+  local component
+
+  local update_tile = function()
+    -- necessary for proper sprite layering
+
+    if x > HALF_TILE_WIDTH then
+      local next_tile = bomb:get_tile(Direction.Right, 1)
+
+      if next_tile then
+        x = x - TILE_WIDTH
+
+        next_tile:add_entity(bomb)
+      end
+    elseif x < -HALF_TILE_WIDTH then
+      local next_tile = bomb:get_tile(Direction.Left, 1)
+
+      if next_tile then
+        x = x + TILE_WIDTH
+        next_tile:add_entity(bomb)
+      end
+    end
+  end
+
+  local fall_func = function()
+    i = i + 1
+
+    local progress = i / 28
+
+    x = x + vel_x
+    y = PEAK - PEAK * ease_in(progress)
+
+    update_tile()
+
+    bomb:set_offset(x, 0)
+    bomb:set_elevation(-y)
+
+    if progress == 1 then
+      bomb:erase()
+      spell_callback(target_tile)
+    end
+  end
+
+  local rise_func = function()
+    i = i + 1
+
+    local progress = i / 12
+
+    x = x + vel_x
+    y = ease_out(progress) * (PEAK - release_y) + release_y
+
+    update_tile()
+
+    bomb:set_offset(x, 0)
+    bomb:set_elevation(-y)
+
+    if progress == 1 then
+      -- swap update func
+      component.on_update_func = fall_func
+      -- reset i
+      i = 0
+    end
+  end
+
+  component = bomb:create_component(Lifetime.Local)
+  component.on_update_func = rise_func
+  rise_func()
+end
+
+---@param bomb Entity
+---@param target_tile Tile
+---@param release_x number
+---@param release_y number
+---@param spell_callback fun(tile?: Tile)
+local function play_seeking_animation(bomb, target_tile, release_x, release_y, spell_callback)
+  local y = release_y - math.abs(release_x) * 0.5
+
+  local i = 0
+
+  local function update_offset()
+    local progress = i / 40
+    bomb:set_elevation(y * progress - y)
+  end
+
+  local component = bomb:create_component(Lifetime.Local)
+  component.on_update_func = function()
+    i = i + 1
+    update_offset()
+
+    if bomb:is_moving() then
+      return
+    end
+
+    bomb:erase()
+    spell_callback(target_tile)
+  end
+
+  bomb:jump(target_tile, 60, 40)
+  update_offset()
+end
+
+---@param user Entity
 ---@param spell_callback fun(tile?: Tile)
 function Bomb:create_action(user, spell_callback)
   local action = Action.new(user, "CHARACTER_THROW")
@@ -77,7 +237,7 @@ function Bomb:create_action(user, spell_callback)
   action:override_animation_frames(self._user_frame_data)
 
   local field = user:field()
-  local bomb, component, target_tile, cancelled
+  local bomb, component, cancelled
 
   local synced_frames = 0
 
@@ -99,73 +259,13 @@ function Bomb:create_action(user, spell_callback)
     -- sync bomb position to hand
     local user_anim = user:animation()
     local user_sprite = user:sprite()
-    local i = 0
-    local x = 0
-    local y = 0
-    local vel_x = 3
-    local release_y = 0
 
-    local PEAK = -60
+    local i = 0
+    local held_x = 0
+    local held_y = 0
 
     bomb.on_update_func = function()
       i = i + 1
-    end
-
-    local update_tile = function()
-      -- necessary for proper sprite layering
-
-      if x > HALF_TILE_WIDTH then
-        local next_tile = bomb:get_tile(Direction.Right, 1)
-
-        if next_tile then
-          x = x - TILE_WIDTH
-
-          next_tile:add_entity(bomb)
-        end
-      elseif x < -HALF_TILE_WIDTH then
-        local next_tile = bomb:get_tile(Direction.Left, 1)
-
-        if next_tile then
-          x = x + TILE_WIDTH
-          next_tile:add_entity(bomb)
-        end
-      end
-    end
-
-    local fall_func = function()
-      local progress = i / 28
-
-      x = x + vel_x
-      y = PEAK - PEAK * ease_in(progress)
-
-      update_tile()
-
-      bomb:set_offset(x, 0)
-      bomb:set_elevation(-y)
-
-      if progress == 1 then
-        bomb:erase()
-        spell_callback(target_tile)
-      end
-    end
-
-    local rise_func = function()
-      local progress = i / 12
-
-      x = x + vel_x
-      y = ease_out(progress) * (PEAK - release_y) + release_y
-
-      update_tile()
-
-      bomb:set_offset(x, 0)
-      bomb:set_elevation(-y)
-
-      if progress == 1 then
-        -- swap update func
-        component.on_update_func = fall_func
-        -- reset i
-        i = 0
-      end
     end
 
     local sync_func = function()
@@ -181,27 +281,17 @@ function Bomb:create_action(user, spell_callback)
           bomb:show_shadow(true)
         end
 
-        -- switch update func and lifetime
+        -- eject component and play the animation
         component:eject()
-        component = bomb:create_component(Lifetime.Local)
-        component.on_update_func = rise_func
+        bomb:set_offset(0, 0)
 
-        -- snap to x = 0, adjust y to make sense
-        release_y = y - math.abs(x) * 0.5
-        y = release_y
-        x = 0
+        local target_tile = self.target_tile_func and self.target_tile_func(user)
 
-        -- resolve target tile
-        local facing_direction = user:facing()
-        target_tile = user:get_tile(user:facing(), 3)
-
-        if facing_direction == Direction.Left then
-          -- flip animation direction based on the user's facing direction
-          vel_x = -vel_x
+        if target_tile then
+          play_seeking_animation(bomb, target_tile, held_x, held_y, spell_callback)
+        else
+          play_standard_animation(user, bomb, held_x, held_y, spell_callback)
         end
-
-        -- reset i
-        i = 0
 
         -- update animation
         if self._bomb_held_animation_state then
@@ -210,7 +300,6 @@ function Bomb:create_action(user, spell_callback)
           bomb_anim:set_playback(Playback.Loop)
         end
 
-        rise_func()
         return
       end
 
@@ -230,10 +319,10 @@ function Bomb:create_action(user, spell_callback)
         scale.x = -scale.x
       end
 
-      x = user_offset.x + user_movement_offset.x + (point.x - user_origin.x) * scale.x
-      y = user_offset.y + user_movement_offset.y + (point.y - user_origin.y) * scale.y
+      held_x = user_offset.x + user_movement_offset.x + (point.x - user_origin.x) * scale.x
+      held_y = user_offset.y + user_movement_offset.y + (point.y - user_origin.y) * scale.y
 
-      bomb:set_offset(x, y)
+      bomb:set_offset(held_x, held_y)
     end
 
     component = bomb:create_component(Lifetime.Scene)
