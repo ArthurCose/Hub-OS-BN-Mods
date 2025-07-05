@@ -1,0 +1,5 @@
+[package]
+category = "library"
+id = "BattleNetwork6.Libraries.HitDamageJudge"
+name = "Hit Damage Judge"
+description = "Use with encounter:set_turn_limit(turns) to have the Hit Damage Judge decide a winner at the end of the limit."
