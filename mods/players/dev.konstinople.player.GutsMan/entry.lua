@@ -292,6 +292,11 @@ function player_init(player)
   local cooldown = 0
   local MAX_COOLDOWN = 60
 
+  local function calculate_max_heat()
+    local bonus_capacity_from_rapid = (player:rapid_level() - 1) / 4 * 2
+    return (bonus_capacity_from_rapid + 3) * HEAT_PER_SHOT
+  end
+
   -- use a component to handle heat, so it can cool down while the player is stunned
   local heat_component = player:create_component(Lifetime.ActiveBattle)
   heat_component.on_update_func = function()
@@ -308,9 +313,9 @@ function player_init(player)
   local MACH_GUN_FRAMES = { { 1, 3 }, { 2, 3 }, { 3, 3 }, { 4, 3 } }
   local MACH_GUN_FAIL_FRAMES = { { 1, 3 }, { 3, 3 }, { 4, 3 } }
 
+
   player.normal_attack_func = function()
-    local bonus_capacity_from_rapid = (player:rapid_level() - 1) / 4 * 2
-    local max_heat = (bonus_capacity_from_rapid + 3) * HEAT_PER_SHOT
+    local max_heat = calculate_max_heat()
 
     local frames = MACH_GUN_FRAMES
 
@@ -400,6 +405,7 @@ function player_init(player)
   end
 
   player.charged_attack_func = function()
+    cooldown = MAX_COOLDOWN * 2 // 3
     return create_guts_punch_action(player, player:attack_level(), 60 + player:attack_level() * 20)
   end
 
