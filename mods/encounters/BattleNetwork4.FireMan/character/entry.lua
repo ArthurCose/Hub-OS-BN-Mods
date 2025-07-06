@@ -425,7 +425,6 @@ local function create_fire_arm_factory(entity, damage)
       local flame = create_fire_arm_flame(entity, damage)
       flames[#flames + 1] = flame
       field:spawn(flame, tile)
-      print("spawned flame")
     end
 
     action.on_execute_func = function()
@@ -469,8 +468,6 @@ local function create_fire_arm_factory(entity, damage)
       for _, flame in ipairs(flames) do
         flame:erase()
       end
-
-      print("flames deleted")
     end
 
     return action
