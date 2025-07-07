@@ -27,7 +27,9 @@ function augment_init(augment)
 
   augment.special_attack_func = function()
     if shield_cooldown > 0 then
-      return Action.new(entity)
+      local action = Action.new(entity)
+      action:set_lockout(ActionLockout.new_sequence())
+      return action
     end
 
     shield_cooldown = 40 + shield:duration()
