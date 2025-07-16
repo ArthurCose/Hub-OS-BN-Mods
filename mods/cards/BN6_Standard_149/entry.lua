@@ -115,7 +115,7 @@ function card_init(user)
   action.on_execute_func = function()
     local tile = user:get_tile(user:facing(), 1)
 
-    if tile and not tile:is_reserved() then
+    if tile and not tile:is_reserved() and tile:is_walkable() then
       user:field():spawn(create_trumpy(user), tile)
       Resources.play_audio(APPEAR_SFX)
     end
