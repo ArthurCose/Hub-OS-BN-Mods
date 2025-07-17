@@ -144,6 +144,7 @@ function PanelStep:wrap_action(wrapped_action)
     -- allows our wrapped action to queue actions that run before we return to the original tile
     local queue_action = Action.new(user)
     local executed_queue_action = false
+    local returned = false
 
     local cleanup = function()
       -- just in case we never landed on it
@@ -155,7 +156,7 @@ function PanelStep:wrap_action(wrapped_action)
         lagging_ghost:erase()
       end
 
-      if not self._return_frame then
+      if not returned then
         user:current_tile():remove_entity(user)
         original_tile:add_entity(user)
         original_tile:remove_reservation_for(user)
@@ -211,6 +212,7 @@ function PanelStep:wrap_action(wrapped_action)
         original_tile:remove_reservation_for(user)
         debug_print("returned")
         component:eject()
+        returned = true
       end
     end
   end
@@ -242,6 +244,7 @@ function PanelStep:create_action(user, create_action_steps)
 
   local original_tile, dest_tile, lagging_ghost, static_ghost
   local field = user:field()
+  local returned = false
 
   action.can_move_to_func = can_move_to_func
 
@@ -291,6 +294,7 @@ function PanelStep:create_action(user, create_action_steps)
         original_tile:remove_reservation_for(user)
         debug_print("returned")
         component:eject()
+        returned = true
       end
     end
   end
@@ -324,7 +328,7 @@ function PanelStep:create_action(user, create_action_steps)
       lagging_ghost:erase()
     end
 
-    if not self._return_frame then
+    if not returned then
       user:current_tile():remove_entity(user)
       original_tile:add_entity(user)
       original_tile:remove_reservation_for(user)
