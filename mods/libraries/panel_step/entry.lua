@@ -115,7 +115,7 @@ function PanelStep:wrap_action(wrapped_action)
   local start_action = Action.new(user)
   start_action:set_lockout(ActionLockout.new_sequence())
 
-  local original_tile, dest_tile, temp_super_armor, lagging_ghost, static_ghost
+  local original_tile, dest_tile, lagging_ghost, static_ghost
   local field = user:field()
 
   start_action.can_move_to_func = can_move_to_func
@@ -132,10 +132,6 @@ function PanelStep:wrap_action(wrapped_action)
       return
     end
 
-    -- prevent flinching ensure our actions stay queued
-    temp_super_armor = AuxProp.new():declare_immunity(Hit.Flinch)
-    user:add_aux_prop(temp_super_armor)
-
     -- reserve our destination
     dest_tile:reserve_for(user)
     -- reserve our return tile
@@ -147,34 +143,39 @@ function PanelStep:wrap_action(wrapped_action)
     -- queue an action, that will queue a clean up action
     -- allows our wrapped action to queue actions that run before we return to the original tile
     local queue_action = Action.new(user)
+    local executed_queue_action = false
+
+    local cleanup = function()
+      -- just in case we never landed on it
+      if dest_tile then
+        dest_tile:remove_reservation_for(user)
+      end
+
+      if lagging_ghost then
+        lagging_ghost:erase()
+      end
+
+      if not self._return_frame then
+        user:current_tile():remove_entity(user)
+        original_tile:add_entity(user)
+        original_tile:remove_reservation_for(user)
+        debug_print("default returned")
+      end
+    end
 
     queue_action.on_execute_func = function()
       local end_action = Action.new(user)
       end_action:set_lockout(ActionLockout.new_sequence())
-
-      end_action.on_action_end_func = function()
-        if temp_super_armor then
-          user:remove_aux_prop(temp_super_armor)
-        end
-
-        -- just in case we never landed on it
-        if dest_tile then
-          dest_tile:remove_reservation_for(user)
-        end
-
-        if lagging_ghost then
-          lagging_ghost:erase()
-        end
-
-        if not self._return_frame then
-          user:current_tile():remove_entity(user)
-          original_tile:add_entity(user)
-          original_tile:remove_reservation_for(user)
-          debug_print("default returned")
-        end
-      end
-
+      end_action.on_action_end_func = cleanup
       user:queue_action(end_action)
+
+      executed_queue_action = true
+    end
+
+    queue_action.on_action_end_func = function()
+      if not executed_queue_action then
+        cleanup()
+      end
     end
 
     user:queue_action(queue_action)
@@ -239,7 +240,7 @@ function PanelStep:create_action(user, create_action_steps)
   local action = Action.new(user)
   action:set_lockout(ActionLockout.new_sequence())
 
-  local original_tile, dest_tile, temp_super_armor, lagging_ghost, static_ghost
+  local original_tile, dest_tile, lagging_ghost, static_ghost
   local field = user:field()
 
   action.can_move_to_func = can_move_to_func
@@ -253,10 +254,6 @@ function PanelStep:create_action(user, create_action_steps)
       action:end_action()
       return
     end
-
-    -- prevent flinching ensure our actions stay queued
-    temp_super_armor = AuxProp.new():declare_immunity(Hit.Flinch)
-    user:add_aux_prop(temp_super_armor)
 
     -- reserve our destination
     dest_tile:reserve_for(user)
@@ -318,10 +315,6 @@ function PanelStep:create_action(user, create_action_steps)
 
   -- clean up
   action.on_action_end_func = function()
-    if temp_super_armor then
-      user:remove_aux_prop(temp_super_armor)
-    end
-
     -- just in case we never landed on it
     if dest_tile then
       dest_tile:remove_reservation_for(user)
