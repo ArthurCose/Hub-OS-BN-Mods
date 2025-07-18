@@ -1,3 +1,3 @@
 animation state="CHARACTER_SUMMON_LOOP"
-frame x="500" y="309" w="1" h="1" originx="192" originy="192" duration="0.05"
-frame x="470" y="288" w="16" h="19" originx="-1" originy="65" duration="0.05"
+frame x="406" y="237" w="1" h="1" originx="192" originy="192" duration="0.05"
+frame x="376" y="216" w="16" h="19" originx="-1" originy="65" duration="0.05"
