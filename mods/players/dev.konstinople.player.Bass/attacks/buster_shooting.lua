@@ -117,7 +117,6 @@ return function(user)
         local x_start = x - 1
         local x_end = x + 1
 
-
         local user_x = user:current_tile():x()
 
         if user:facing() == Direction.Right then
@@ -154,11 +153,11 @@ return function(user)
                 target_tiles[#target_tiles + 1] = next_tile
             end
 
-            next_tile = tile_pool[math.random(#tile_pool)]
-
-            if not next_tile then
+            if #tile_pool == 0 then
                 break
             end
+
+            next_tile = table.remove(tile_pool, math.random(#tile_pool))
         end
     end
 
