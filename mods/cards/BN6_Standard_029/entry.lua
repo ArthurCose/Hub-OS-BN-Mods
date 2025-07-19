@@ -137,9 +137,9 @@ function create_spell(user, props)
 		if timer > 0 then
 			timer = timer - 1
 		else
-			self:animation():set_state(state_prefix .. "END")
-			self:animation():set_playback(Playback.Once)
-			self:animation():on_complete(function()
+			spell.on_update_func = nil
+			anim:set_state(state_prefix .. "END")
+			anim:on_complete(function()
 				self:delete()
 			end)
 			return
