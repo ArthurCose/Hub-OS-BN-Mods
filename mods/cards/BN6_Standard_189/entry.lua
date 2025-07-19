@@ -13,6 +13,10 @@ function card_init(user, props)
         local has_blocked = false
 
         antidamage_rule.defense_func = function(defense, attacker, defender)
+            if defense:damage_blocked() then
+                return
+            end
+
             local hit_props = attacker:copy_hit_props()
 
             --Simulate cursor removing traps
