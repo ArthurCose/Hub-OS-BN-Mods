@@ -12,7 +12,7 @@ function augment_init(augment)
     return Action.from_card(player, props)
   end
 
-  augment.calculate_charge_time_func = function(self, card_properties)
+  augment.calculate_charge_time_func = function(self)
     return 200
   end
 end

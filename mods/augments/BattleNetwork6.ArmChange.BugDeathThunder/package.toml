@@ -3,6 +3,7 @@ category = "augment"
 id = "BattleNetwork6.ArmChange.BugDeathThunder"
 name = "BugDeathThunder"
 description = ""
+priority = true
 preview_texture_path = "preview.png"
 colors = ["white"]
 
@@ -11,4 +12,3 @@ cards = [
     "BattleNetwork6.Class01.Standard.029.Thunder",
     "BattleNetwork6.Class03.Giga.005.Falzar.BugDeathThunder"
 ]
-
