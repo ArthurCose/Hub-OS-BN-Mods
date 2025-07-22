@@ -17,6 +17,11 @@ local create_spell
 function card_init(user, props)
 	local card_action = Action.new(user, "CHARACTER_SHOOT")
 
+	if props.damage == 0 and props.card_class == CardClass.Giga then
+		-- assume BDT
+		card_action:set_lockout(ActionLockout.new_async(30))
+	end
+
 	-- override animation
 
 	local frame_data = { { 1, 1 }, { 2, 2 }, { 3, 2 }, { 1, 1 } }
