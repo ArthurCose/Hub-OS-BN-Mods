@@ -2,6 +2,9 @@
 function augment_init(augment)
   local player = augment:owner()
 
+  -- override rapid buster
+  augment:set_charge_with_shoot(true)
+
   augment.charged_attack_func = function()
     local props = CardProperties.from_package("BattleNetwork6.Class01.Standard.029.Thunder")
     local copy_props = CardProperties.from_package("BattleNetwork6.Class03.Giga.005.Falzar.BugDeathThunder")
