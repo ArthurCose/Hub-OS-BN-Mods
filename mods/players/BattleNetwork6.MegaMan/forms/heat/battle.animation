@@ -41,12 +41,6 @@ frame x="86" y="217" w="55" h="47" originx="14" originy="41" duration="1f"
 frame x="142" y="220" w="44" h="44" originx="13" originy="38" duration="1f"
 frame x="109" y="11" w="38" h="43" originx="17" originy="37" duration="1f"
 
-animation state="12"
-frame x="2" y="161" w="31" h="27" originx="16" originy="42" duration="1f"
-frame x="223" y="108" w="38" h="26" originx="8" originy="43" duration="1f"
-frame x="166" y="107" w="21" h="28" originx="-1" originy="43" duration="1f"
-frame x="188" y="107" w="34" h="28" originx="11" originy="42" duration="1f"
-
 animation state="HAND"
 frame x="109" y="100" w="18" h="9" originx="1" originy="5" duration="1f"
 frame x="128" y="97" w="14" h="13" originx="1" originy="14" duration="1f"

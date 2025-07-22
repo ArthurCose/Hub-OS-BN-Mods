@@ -1,3 +1,4 @@
+local shared = require("../shared")
 local bn_assets = require("BattleNetwork.Assets")
 
 local flame_texture = bn_assets.load_texture("bn6_flame_thrower.png")
@@ -6,11 +7,7 @@ local flame_animation_path = bn_assets.fetch_animation_path("bn6_flame_thrower.a
 local hit_texture = bn_assets.load_texture("bn6_hit_effects.png")
 local hit_anim_path = bn_assets.fetch_animation_path("bn6_hit_effects.animation")
 
-local FORM_TEXTURE = Resources.load_texture("heat.png")
-local FORM_ANIMATION_PATH = _folder_path .. "heat.animation"
-local FORM_EMOTIONS_TEXTURE = Resources.load_texture("heat_emotions.png")
-local FORM_EMOTIONS_ANIMATION_PATH = _folder_path .. "heat_emotions.animation"
-local FORM_MUG = _folder_path .. "heat_mug.png"
+local FORM_MUG = _folder_path .. "mug.png"
 
 local function create_flame_spell(user, props)
   local tile
@@ -96,6 +93,8 @@ local function charged_buster(user, props)
   action:override_animation_frames(frames)
   action:set_lockout(ActionLockout.new_animation())
   action.on_execute_func = function(self, user)
+    user:set_counterable(true)
+
     local self_tile = user:current_tile()
     local y = self_tile:y()
     local x = self_tile:x()
@@ -158,6 +157,8 @@ local function charged_buster(user, props)
             flame1:erase()
           end)
         end
+      elseif time == 16 then
+        user:set_counterable(false)
       elseif time == 62 - 7 then
         if flame2:spawned() then
           flame2:animation():set_state("1")
@@ -179,6 +180,7 @@ local function charged_buster(user, props)
   end
 
   action.on_action_end_func = function()
+    user:set_counterable(false)
     if not flame1:deleted() then flame1:erase() end
     if not flame2:deleted() then flame2:erase() end
     if not flame3:deleted() then flame3:erase() end
@@ -189,60 +191,27 @@ end
 
 ---@param player Entity
 ---@param form PlayerForm
----@param base_texture string
 ---@param base_animation_path string
-return function(player, form, base_texture, base_animation_path)
-  local base_element = player:element()
-  local base_emotions_texture = player:emotions_texture()
-  local base_emotions_animation_path = player:emotions_animation_path()
-  local prev_emotion
-  local prev_emotions_texture
-  local prev_emotions_animation_path
-
+return function(player, form, base_animation_path)
   local fire_boost_aux_prop
 
+  local form = shared.implement_form(player, form, {
+    base_animation_path = base_animation_path,
+    folder_path = _folder_path,
+    element = Element.Fire,
+    activate_callback = function()
+      fire_boost_aux_prop = AuxProp.new()
+          :require_card_element(Element.Fire)
+          :require_card_time_freeze(false)
+          :increase_card_damage(50)
+      player:add_aux_prop(fire_boost_aux_prop)
+    end,
+    deactivate_callback = function()
+      player:remove_aux_prop(fire_boost_aux_prop)
+    end
+  })
+
   form:set_mugshot_texture(FORM_MUG)
-
-  form.on_select_func = function()
-    prev_emotion = player:emotion()
-    prev_emotions_texture = player:emotions_texture()
-    prev_emotions_animation_path = player:emotions_animation_path()
-
-    player:set_emotions_texture(FORM_EMOTIONS_TEXTURE)
-    player:load_emotions_animation(FORM_EMOTIONS_ANIMATION_PATH)
-    player:set_emotion("DEFAULT")
-  end
-
-  form.on_deselect_func = function()
-    player:set_emotions_texture(prev_emotions_texture)
-    player:load_emotions_animation(prev_emotions_animation_path)
-    player:set_emotion(prev_emotion)
-  end
-
-  form.on_activate_func = function()
-    player:set_element(Element.Fire)
-    player:set_texture(FORM_TEXTURE)
-    player:load_animation(FORM_ANIMATION_PATH)
-
-    fire_boost_aux_prop = AuxProp.new()
-        :require_card_element(Element.Fire)
-        :increase_card_damage(50)
-    player:add_aux_prop(fire_boost_aux_prop)
-
-    -- load emotions again in case we activated outside of card select
-    player:set_emotions_texture(FORM_EMOTIONS_TEXTURE)
-    player:load_emotions_animation(FORM_EMOTIONS_ANIMATION_PATH)
-    player:set_emotion("DEFAULT")
-  end
-
-  form.on_deactivate_func = function()
-    player:set_element(base_element)
-    player:set_texture(base_texture)
-    player:load_animation(base_animation_path)
-    player:remove_aux_prop(fire_boost_aux_prop)
-    player:set_emotions_texture(base_emotions_texture)
-    player:load_emotions_animation(base_emotions_animation_path)
-  end
 
   form.normal_attack_func = function()
     return Buster.new(player, false, player:attack_level() + 1)
