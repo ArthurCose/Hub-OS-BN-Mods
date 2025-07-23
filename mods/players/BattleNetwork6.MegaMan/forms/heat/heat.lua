@@ -1,5 +1,5 @@
-local shared = require("../shared")
 local bn_assets = require("BattleNetwork.Assets")
+local shared = require("../shared")
 
 local flame_texture = bn_assets.load_texture("bn6_flame_thrower.png")
 local flame_animation_path = bn_assets.fetch_animation_path("bn6_flame_thrower.animation")

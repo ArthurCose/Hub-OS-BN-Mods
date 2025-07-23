@@ -1,13 +1,12 @@
-local shared = require("../shared")
+---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
-
-local hit_texture = bn_assets.load_texture("bn6_hit_effects.png")
-local hit_anim_path = bn_assets.fetch_animation_path("bn6_hit_effects.animation")
+local shared = require("../shared")
 
 local FORM_MUG = _folder_path .. "mug.png"
 
 local THUNDERBOLT_TEXTURE = Resources.load_texture("thunderbolt.png")
 local THUNDERBOLT_ANIMATION_PATH = _folder_path .. "thunderbolt.animation"
+local THUNDERBOLT_SFX = bn_assets.load_audio("dollthunder.ogg")
 
 ---@param player Entity
 ---@param form PlayerForm
@@ -34,7 +33,7 @@ return function(player, form, base_animation_path)
   form:set_mugshot_texture(FORM_MUG)
 
   form.normal_attack_func = function()
-    return Buster.new(player, false, player:attack_level() + 1)
+    return Buster.new(player, false, player:attack_level())
   end
 
   form.charged_attack_func = function()
@@ -46,15 +45,21 @@ return function(player, form, base_animation_path)
 
     action.on_execute_func = function()
       local buster = action:create_attachment("BUSTER")
+
+      local buster_sprite = buster:sprite()
+      buster_sprite:set_texture(player:texture())
+      buster_sprite:use_parent_shader(true)
+
       local buster_anim = buster:animation()
       buster_anim:load(_folder_path .. "battle.animation")
       buster_anim:set_state("BUSTER", frames)
-      buster:sprite():set_texture(player:texture())
 
       player:set_counterable(true)
     end
 
     action:add_anim_action(2, function()
+      Resources.play_audio(THUNDERBOLT_SFX)
+
       local facing = player:facing()
       local tile = player:get_tile(facing, 1)
 
@@ -96,6 +101,10 @@ return function(player, form, base_animation_path)
           if time >= 14 then
             spell:delete()
           end
+        end
+
+        spell.on_collision_func = function(_, other)
+          shared.spawn_hit_artifact(other, "ELEC", math.random(-8, 8), math.random(-8, 8))
         end
 
         player:field():spawn(spell, tile)

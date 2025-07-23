@@ -1,3 +1,8 @@
+local bn_assets = require("BattleNetwork.Assets")
+
+local HIT_TEXTURE = bn_assets.load_texture("bn6_hit_effects.png")
+local HIT_ANIMATION_PATH = bn_assets.fetch_animation_path("bn6_hit_effects.animation")
+
 local Shared = {}
 
 ---@class _BattleNetwork6.Megaman.FormConfig
@@ -85,6 +90,34 @@ function Shared.implement_form(player, form, config)
   end
 
   return form
+end
+
+---@param character Entity
+---@param state string
+---@param offset_x number
+---@param offset_y number
+function Shared.spawn_hit_artifact(character, state, offset_x, offset_y)
+  local artifact = Artifact.new()
+  artifact:set_facing(Direction.Right)
+  artifact:set_never_flip()
+  artifact:set_texture(HIT_TEXTURE)
+
+  artifact:load_animation(HIT_ANIMATION_PATH)
+  local anim = artifact:animation()
+  anim:set_state(state)
+  anim:apply(artifact:sprite())
+
+  anim:on_complete(function()
+    artifact:erase()
+  end)
+
+  local movement_offset = character:movement_offset()
+  artifact:set_offset(
+    movement_offset.x + offset_x,
+    movement_offset.y + offset_y
+  )
+
+  character:field():spawn(artifact, character:current_tile())
 end
 
 return Shared
