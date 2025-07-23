@@ -1,11 +1,9 @@
 local bn_assets = require("BattleNetwork.Assets")
 local shared = require("../shared")
 
-local flame_texture = bn_assets.load_texture("bn6_flame_thrower.png")
-local flame_animation_path = bn_assets.fetch_animation_path("bn6_flame_thrower.animation")
-
-local hit_texture = bn_assets.load_texture("bn6_hit_effects.png")
-local hit_anim_path = bn_assets.fetch_animation_path("bn6_hit_effects.animation")
+local FLAME_TEXTURE = bn_assets.load_texture("bn6_flame_thrower.png")
+local FLAME_ANIMATION_PATH = bn_assets.fetch_animation_path("bn6_flame_thrower.animation")
+local FLAME_SFX = bn_assets.load_audio("dragon4.ogg")
 
 local FORM_MUG = _folder_path .. "mug.png"
 
@@ -26,9 +24,9 @@ local function create_flame_spell(user, props)
     )
   )
 
-  spell:set_texture(flame_texture)
+  spell:set_texture(FLAME_TEXTURE)
 
-  animation:load(flame_animation_path)
+  animation:load(FLAME_ANIMATION_PATH)
   animation:set_state("0")
   animation:set_playback(Playback.Loop)
 
@@ -54,25 +52,7 @@ local function create_flame_spell(user, props)
   end
 
   spell.on_collision_func = function(self, other)
-    local fx = Spell.new(self:team())
-
-    fx:set_texture(hit_texture)
-
-    local anim = fx:animation()
-
-    local fx_sprite = fx:sprite()
-
-    anim:load(hit_anim_path)
-    anim:set_state("FIRE")
-
-    sprite:set_layer(-3)
-
-    anim:apply(fx_sprite)
-    anim:on_complete(function()
-      fx:erase()
-    end)
-
-    self:field():spawn(fx, tile)
+    shared.spawn_hit_artifact(other, "FIRE", math.random(-8, 8), math.random(-8, 8))
   end
 
   spell.on_update_func = function(self)
@@ -85,7 +65,6 @@ local function charged_buster(user, props)
   local action = Action.new(user, "CHARACTER_SHOOT")
   local field = user:field()
   local tile_array = {}
-  local AUDIO = Resources.load_audio("sfx.ogg")
   local frames = { { 1, 67 } }
 
   local flame1, flame2, flame3
@@ -130,7 +109,8 @@ local function charged_buster(user, props)
     flame3:set_offset(fire_x, fire_y)
 
     -- spawn first flame
-    Resources.play_audio(AUDIO)
+    Resources.play_audio(FLAME_SFX)
+
     if #tile_array > 0 then
       field:spawn(flame1, tile_array[1])
     end
@@ -138,6 +118,10 @@ local function charged_buster(user, props)
     local time = 0
     action.on_update_func = function()
       time = time + 1
+
+      if time % 20 == 0 then
+        Resources.play_audio(FLAME_SFX)
+      end
 
       if time == 5 then
         if #tile_array > 1 then

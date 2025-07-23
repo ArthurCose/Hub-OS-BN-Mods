@@ -111,6 +111,10 @@ return function(player, form, base_animation_path)
       end
     end)
 
+    action:add_anim_action(4, function()
+      player:set_counterable(false)
+    end)
+
     action.on_action_end_func = function()
       player:set_counterable(false)
     end

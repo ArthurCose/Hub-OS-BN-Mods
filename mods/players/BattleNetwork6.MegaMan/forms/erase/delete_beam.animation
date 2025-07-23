@@ -1,0 +1,10 @@
+animation state="START"
+frame duration="0.05" x="2" y="31" w="227" h="4" originx="31" originy="27"
+
+animation state="LOOP"
+frame duration="0.05" x="2" y="2" w="233" h="12" originx="37" originy="31"
+frame duration="0.05" x="2" y="18" w="229" h="9" originx="33" originy="29"
+
+animation state="END"
+frame duration="0.05" x="2" y="39" w="227" h="4" originx="31" originy="27"
+

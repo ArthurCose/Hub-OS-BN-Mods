@@ -40,7 +40,8 @@ return function(player, form, base_animation_path)
 
   form.charged_attack_func = function()
     local action = Action.new(player, "CHARACTER_SWING")
-    action:override_animation_frames({ { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 2 }, { 4, 19 } })
+    -- the split frames at the end are for setting anim actions at specific times
+    action:override_animation_frames({ { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 1 }, { 4, 15 }, { 4, 5 } })
 
     action:add_anim_action(2, function()
       local hand = action:create_attachment("HILT")
@@ -54,8 +55,10 @@ return function(player, form, base_animation_path)
       hand_anim:set_state("HAND")
     end)
 
-    action:add_anim_action(4, function()
+    action:add_anim_action(5, function()
       Resources.play_audio(SLASH_SFX)
+
+      player:set_counterable(true)
 
       local facing = player:facing()
       local tile = player:get_tile(facing, 1)
@@ -94,7 +97,6 @@ return function(player, form, base_animation_path)
           local down = spell:get_tile(Direction.Down, 1)
           if down then spell:attack_tile(down) end
 
-
           if time < 2 or stopped or spell:is_moving() then
             return
           end
@@ -109,6 +111,14 @@ return function(player, form, base_animation_path)
         player:field():spawn(spell, tile)
       end
     end)
+
+    action:add_anim_action(6, function()
+      player:set_counterable(false)
+    end)
+
+    action.on_action_end_func = function()
+      player:set_counterable(false)
+    end
 
     return action
   end

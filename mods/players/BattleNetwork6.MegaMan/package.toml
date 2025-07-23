@@ -13,4 +13,5 @@ emotions_texture_path = "emotions.png"
 emotions_animation_path = "emotions.animation"
 
 [dependencies]
-libraries = ["BattleNetwork.Emotions"]
+libraries = ["BattleNetwork.Assets", "BattleNetwork.Emotions"]
+augments = ["BattleNetwork6.Bugs.BattleHPBug"]
