@@ -6,8 +6,8 @@ local FORM_MUG = _folder_path .. "mug.png"
 
 local BEAM_TEXTURE = Resources.load_texture("delete_beam.png")
 local BEAM_ANIMATION_PATH = _folder_path .. "delete_beam.animation"
-local BEAM_SFX = bn_assets.load_audio("dollthunder.ogg")
-
+local BEAM_SFX = bn_assets.load_audio("delete_beam.ogg")
+local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
 
 ---@param player Entity
 ---@param form PlayerForm
@@ -104,6 +104,8 @@ return function(player, form, base_animation_path)
       player:set_counterable(true)
     end
 
+    local action_ended = false
+
     action:add_anim_action(2, function()
       Resources.play_audio(BEAM_SFX)
 
@@ -157,7 +159,7 @@ return function(player, form, base_animation_path)
             spell:attack_tile(tile)
           end
 
-          if time < 62 then
+          if time < 62 and not action_ended then
             return
           end
 
@@ -166,6 +168,10 @@ return function(player, form, base_animation_path)
           spell_anim:on_complete(function()
             spell:delete()
           end)
+        end
+
+        spell.on_collision_func = function()
+          Resources.play_audio(HIT_SFX)
         end
 
         player:field():spawn(spell, tile)
@@ -178,6 +184,7 @@ return function(player, form, base_animation_path)
 
     action.on_action_end_func = function()
       player:set_counterable(false)
+      action_ended = true
     end
 
     return action

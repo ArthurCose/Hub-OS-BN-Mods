@@ -4,6 +4,7 @@ local shared = require("../shared")
 local FLAME_TEXTURE = bn_assets.load_texture("bn6_flame_thrower.png")
 local FLAME_ANIMATION_PATH = bn_assets.fetch_animation_path("bn6_flame_thrower.animation")
 local FLAME_SFX = bn_assets.load_audio("dragon4.ogg")
+local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
 
 local FORM_MUG = _folder_path .. "mug.png"
 
@@ -52,7 +53,8 @@ local function create_flame_spell(user, props)
   end
 
   spell.on_collision_func = function(self, other)
-    shared.spawn_hit_artifact(other, "FIRE", math.random(-8, 8), math.random(-8, 8))
+    shared.spawn_hit_artifact(other, "FIRE", math.random(-8, 8), -other:height() // 2 + math.random(-8, 8))
+    Resources.play_audio(HIT_SFX)
   end
 
   spell.on_update_func = function(self)

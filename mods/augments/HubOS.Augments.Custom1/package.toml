@@ -1,0 +1,6 @@
+[package]
+category = "augment"
+id = "HubOS.Augments.Custom1"
+name = "Hidden Custom1"
+description = "A Custom Screen +1 Boost not tied to any system."
+hand_size_boost = 1

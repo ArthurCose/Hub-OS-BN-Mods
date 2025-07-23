@@ -4,6 +4,7 @@ local implement_heat_form = require("forms/heat/heat.lua")
 local implement_elec_form = require("forms/elec/elec.lua")
 local implement_slash_form = require("forms/slash/slash.lua")
 local implement_erase_form = require("forms/erase/erase.lua")
+local implement_charge_form = require("forms/charge/charge.lua")
 
 local BASE_TEXTURE = Resources.load_texture("battle.png")
 local BASE_ANIMATION_PATH = _folder_path .. "battle.animation"
@@ -43,4 +44,7 @@ function player_init(player)
 
   local erase_form = player:create_form()
   implement_erase_form(player, erase_form, BASE_ANIMATION_PATH)
+
+  local charge_form = player:create_form()
+  implement_charge_form(player, charge_form, BASE_ANIMATION_PATH)
 end
