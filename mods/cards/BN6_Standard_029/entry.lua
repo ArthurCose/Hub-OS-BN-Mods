@@ -37,6 +37,7 @@ function card_init(user, props)
 		buster_sprite:set_texture(user:texture())
 		buster_sprite:set_layer(-2)
 		buster_sprite:use_root_shader()
+		buster_sprite:set_palette(user:palette())
 
 		local buster_animation = buster_attachment:animation()
 		buster_animation:copy_from(user:animation())

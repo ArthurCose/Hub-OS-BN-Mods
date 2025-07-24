@@ -41,6 +41,7 @@ function card_init(actor, props)
 			hilt_sprite:set_texture(actor:texture())
 			hilt_sprite:set_layer(-2)
 			hilt_sprite:use_root_shader(true)
+			hilt_sprite:set_palette(actor:palette())
 
 			local hilt_anim = hilt:animation()
 			hilt_anim:copy_from(actor:animation())

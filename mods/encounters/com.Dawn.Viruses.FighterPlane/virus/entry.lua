@@ -179,8 +179,9 @@ function character_init(plane)
     local j = 1
     local propellor = plane:create_node()
     propellor:set_layer(-1)
-    propellor:set_texture(texture, true)
+    propellor:set_texture(texture)
     propellor:use_root_shader(true)
+    propellor:set_palette(plane:palette())
 
     local propellor_animation = Animation.new(animation_path)
     propellor_animation:set_state("PROPELLOR")

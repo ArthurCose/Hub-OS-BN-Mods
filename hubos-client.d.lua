@@ -1124,7 +1124,7 @@ function Entity:create_sync_node() end
 ---@param sync_node SyncNode
 function Entity:remove_sync_node(sync_node) end
 
---- Sets the texture for the shadow. Shadows are not visible by default, use `entity:show_shadow()` to make the shadow visible.
+--- Sets the texture and animation for the shadow. Shadows are not visible by default, use `entity:show_shadow()` to make the shadow visible.
 ---
 --- Use values returned from [Resources.load_texture()](https://docs.hubos.dev/client/lua-api/resource-api/resources#resourcesload_texturepath) for better performance.
 ---
@@ -1133,8 +1133,9 @@ function Entity:remove_sync_node(sync_node) end
 --- - `Shadow.None`
 --- - `Shadow.Small`
 --- - `Shadow.Big`
----@param path string
-function Entity:set_shadow(path) end
+---@param texture_path string
+---@param animation_path? string
+function Entity:set_shadow(texture_path, animation_path) end
 
 --- Sets whether the shadow is visible or not.
 ---@param visible? boolean
@@ -2617,7 +2618,7 @@ function Sprite:palette() end
 --- Palettes are 256x1 images. Colors on the sprite's texture will be remapped by taking the red value of the texture to grab a color from the palette.
 ---
 --- Use values returned from [Resources.load_texture()](https://docs.hubos.dev/client/lua-api/resource-api/resources#resourcesload_texturepath) for better performance.
----@param path string
+---@param path? string
 function Sprite:set_palette(path) end
 
 --- Returns true if the sprite is visible.
@@ -2738,11 +2739,11 @@ function Sprite:shader_effect() end
 ---@param sprite_shader_effect SpriteShaderEffect
 function Sprite:set_shader_effect(sprite_shader_effect) end
 
---- Temporarily adopts the color, color mode, palette, and shader effect of the root sprite during render.
+--- Temporarily adopts the color, color mode, and shader effect of the root sprite during render.
 ---@param enable? boolean
 function Sprite:use_root_shader(enable) end
 
---- Adopts the color, color mode, palette, and shader effect of the parent sprite during render.
+--- Adopts the color, color mode, and shader effect of the parent sprite during render.
 ---@param enable? boolean
 function Sprite:use_parent_shader(enable) end
 

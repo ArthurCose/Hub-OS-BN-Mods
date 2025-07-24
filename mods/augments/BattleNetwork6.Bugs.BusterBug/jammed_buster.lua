@@ -1,6 +1,7 @@
 -- tweaked from client/src/lua_api/battle_api/built_in/buster.lua
 local JammedBuster = {}
 
+---@param user Entity
 JammedBuster.new = function(user)
   local card_action = Action.new(user, "CHARACTER_SHOOT")
   local context = user:context()
@@ -19,6 +20,7 @@ JammedBuster.new = function(user)
   buster_sprite:set_texture(user:texture())
   buster_sprite:set_layer(-2)
   buster_sprite:use_root_shader()
+  buster_sprite:set_palette(user:palette())
 
   local buster_animation = buster_attachment:animation()
   buster_animation:copy_from(user:animation())
@@ -136,7 +138,7 @@ JammedBuster.new = function(user)
       spell:erase()
     end
 
-    field:spawn(spell, user:get_tile())
+    field:spawn(spell, user:current_tile())
   end)
 
   -- flare attachment
