@@ -1,10 +1,15 @@
 ---@type BattleNetwork.Emotions
 local EmotionsLib = require("BattleNetwork.Emotions")
+
+-- gregar
 local implement_heat_form = require("forms/heat/heat.lua")
 local implement_elec_form = require("forms/elec/elec.lua")
 local implement_slash_form = require("forms/slash/slash.lua")
 local implement_erase_form = require("forms/erase/erase.lua")
 local implement_charge_form = require("forms/charge/charge.lua")
+
+-- falzar
+local implement_spout_form = require("forms/spout/spout.lua")
 
 local BASE_TEXTURE = Resources.load_texture("battle.png")
 local BASE_ANIMATION_PATH = _folder_path .. "battle.animation"
@@ -33,18 +38,39 @@ function player_init(player)
   synchro:implement(player)
 
   -- forms
-  local heat_form = player:create_form()
-  implement_heat_form(player, heat_form, BASE_ANIMATION_PATH)
+  local gregar_button = player:create_form()
+  gregar_button:set_mugshot_texture("gregar.png")
+  gregar_button:set_close_on_select(false)
 
-  local elec_form = player:create_form()
-  implement_elec_form(player, elec_form, BASE_ANIMATION_PATH)
+  local falzar_button = player:create_form()
+  falzar_button:set_mugshot_texture("falzar.png")
+  falzar_button:set_close_on_select(false)
 
-  local slash_form = player:create_form()
-  implement_slash_form(player, slash_form, BASE_ANIMATION_PATH)
+  gregar_button.on_select_func = function()
+    falzar_button:deactivate()
+    gregar_button:deactivate()
 
-  local erase_form = player:create_form()
-  implement_erase_form(player, erase_form, BASE_ANIMATION_PATH)
+    local heat_form = player:create_form()
+    implement_heat_form(player, heat_form, BASE_ANIMATION_PATH)
 
-  local charge_form = player:create_form()
-  implement_charge_form(player, charge_form, BASE_ANIMATION_PATH)
+    local elec_form = player:create_form()
+    implement_elec_form(player, elec_form, BASE_ANIMATION_PATH)
+
+    local slash_form = player:create_form()
+    implement_slash_form(player, slash_form, BASE_ANIMATION_PATH)
+
+    local erase_form = player:create_form()
+    implement_erase_form(player, erase_form, BASE_ANIMATION_PATH)
+
+    local charge_form = player:create_form()
+    implement_charge_form(player, charge_form, BASE_ANIMATION_PATH)
+  end
+
+  falzar_button.on_select_func = function()
+    falzar_button:deactivate()
+    gregar_button:deactivate()
+
+    local spout_form = player:create_form()
+    implement_spout_form(player, spout_form, BASE_ANIMATION_PATH)
+  end
 end

@@ -92,6 +92,7 @@ local function charged_buster(user, props)
     local buster_sprite = buster:sprite()
     buster_sprite:set_texture(user:texture())
     buster_sprite:set_layer(-2)
+    buster_sprite:use_root_shader()
 
     flame1 = create_flame_spell(user, props)
     flame2 = create_flame_spell(user, props)

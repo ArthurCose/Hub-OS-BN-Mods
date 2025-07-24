@@ -49,7 +49,7 @@ return function(player, form, base_animation_path)
 
       local hand_sprite = hand:sprite()
       hand_sprite:set_texture(player:texture())
-      hand_sprite:use_parent_shader(true)
+      hand_sprite:use_root_shader()
 
       local hand_anim = hand:animation()
       hand_anim:load(ANIMATION_PATH)

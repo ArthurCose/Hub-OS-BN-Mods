@@ -49,7 +49,7 @@ return function(player, form, base_animation_path)
 
       local buster_sprite = buster:sprite()
       buster_sprite:set_texture(player:texture())
-      buster_sprite:use_parent_shader(true)
+      buster_sprite:use_root_shader()
 
       local buster_anim = buster:animation()
       buster_anim:load(_folder_path .. "battle.animation")
