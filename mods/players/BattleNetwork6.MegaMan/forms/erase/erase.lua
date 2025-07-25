@@ -17,7 +17,7 @@ return function(player, form, base_animation_path)
   local death_curse_active = false
   local defense_rules = {}
 
-  local form = shared.implement_form(player, form, {
+  shared.implement_form(player, form, {
     folder_path = _folder_path,
     base_animation_path = base_animation_path,
     element = Element.Cursor,
@@ -132,7 +132,7 @@ return function(player, form, base_animation_path)
 
         spell:set_hit_props(HitProps.new(
           20 * player:attack_level() + 40,
-          Hit.Flinch | Hit.Flash | Hit.PierceInvis,
+          Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceInvis,
           Element.None,
           player:context()
         ))

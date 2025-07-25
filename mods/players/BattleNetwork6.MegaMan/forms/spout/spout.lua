@@ -23,7 +23,7 @@ return function(player, form, base_animation_path)
   local aqua_charge_aux_prop
   local aqua_heal_aux_prop
 
-  local form = shared.implement_form(player, form, {
+  shared.implement_form(player, form, {
     folder_path = _folder_path,
     base_animation_path = base_animation_path,
     element = Element.Aqua,

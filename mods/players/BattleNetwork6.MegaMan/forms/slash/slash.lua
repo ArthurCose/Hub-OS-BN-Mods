@@ -17,7 +17,7 @@ local ANIMATION_PATH = _folder_path .. "battle.animation"
 return function(player, form, base_animation_path)
   local sword_boost_aux_prop
 
-  local form = shared.implement_form(player, form, {
+  shared.implement_form(player, form, {
     folder_path = _folder_path,
     base_animation_path = base_animation_path,
     element = Element.Sword,
@@ -76,7 +76,7 @@ return function(player, form, base_animation_path)
 
         spell:set_hit_props(HitProps.new(
           20 * player:attack_level() + 60,
-          Hit.Flinch | Hit.Flash,
+          Hit.Impact | Hit.Flinch | Hit.Flash,
           Element.None,
           player:context()
         ))

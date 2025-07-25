@@ -18,7 +18,7 @@ return function(player, form, base_animation_path)
   local charging_chip = false
   local chip_charge_time = 0
 
-  local form = shared.implement_form(player, form, {
+  shared.implement_form(player, form, {
     folder_path = _folder_path,
     base_animation_path = base_animation_path,
     element = Element.Fire,
@@ -116,7 +116,7 @@ return function(player, form, base_animation_path)
     local spell = Spell.new(player:team())
     spell:set_hit_props(HitProps.new(
       20 * player:attack_level() + 30,
-      Hit.Flinch | Hit.Flash | Hit.PierceGuard,
+      Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceGuard,
       Element.Fire,
       player:context()
     ))

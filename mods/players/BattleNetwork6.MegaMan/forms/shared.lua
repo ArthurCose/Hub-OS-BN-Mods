@@ -88,8 +88,6 @@ function Shared.implement_form(player, form, config)
       config.deactivate_callback()
     end
   end
-
-  return form
 end
 
 ---@param character Entity

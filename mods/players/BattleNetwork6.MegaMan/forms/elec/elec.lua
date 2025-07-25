@@ -15,7 +15,7 @@ local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
 return function(player, form, base_animation_path)
   local elec_boost_aux_prop
 
-  local form = shared.implement_form(player, form, {
+  shared.implement_form(player, form, {
     folder_path = _folder_path,
     base_animation_path = base_animation_path,
     element = Element.Elec,
@@ -76,7 +76,7 @@ return function(player, form, base_animation_path)
 
         spell:set_hit_props(HitProps.new(
           20 * player:attack_level() + 40,
-          Hit.Flinch | Hit.Flash,
+          Hit.Impact | Hit.Flinch | Hit.Flash,
           Element.Elec,
           player:context()
         ))
