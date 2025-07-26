@@ -4,7 +4,7 @@ id = "BattleNetwork6.Class01.Standard.157"
 name = "Recov30"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "Q", "*" ]
+codes = ["Q", "*"]
 damage = 0
 recover = 30
 time_freeze = false
@@ -15,11 +15,9 @@ limit = 5
 can_boost = false
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [
-    "dev.GladeWoodsgrove.ZeroRecovery"
-]
+characters = []
+libraries = []
+cards = ["BattleNetwork6.RecoveryBase"]

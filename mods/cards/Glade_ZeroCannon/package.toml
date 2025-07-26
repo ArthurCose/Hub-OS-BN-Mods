@@ -1,10 +1,11 @@
 [package]
 category = "card"
-id = "dev.GladeWoodsgrove.ZeroDamageCannon"
-name = "Cannon"
+id = "BattleNetwork6.CannonBase"
+past_ids = ["dev.GladeWoodsgrove.ZeroDamageCannon"]
+name = "Cannon Base"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "*" ]
+codes = ["*"]
 damage = 0
 time_freeze = false
 element = "none"
@@ -24,7 +25,4 @@ augments = [] # optional, list of package ids
 encounters = [] # optional, list of package ids
 cards = [] # optional, list of package ids, must also depend on defining package
 characters = [] # optional, list of package ids
-libraries = [
-    "BattleNetwork.Assets",
-    "Battle.Helpers"
-]
+libraries = ["BattleNetwork.Assets", "Battle.Helpers"]

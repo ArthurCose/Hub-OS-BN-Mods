@@ -4,7 +4,7 @@ id = "BattleNetwork4.Class05.Dark.008.Recovery"
 name = "DrkRecov"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ " " ]
+codes = [" "]
 damage = 0
 recover = 1000
 time_freeze = false
@@ -15,8 +15,5 @@ limit = 0
 conceal = true
 can_boost = false
 
-
 [dependencies]
-cards = [
-    "dev.GladeWoodsgrove.ZeroRecovery"
-]
+cards = ["BattleNetwork6.RecoveryBase"]

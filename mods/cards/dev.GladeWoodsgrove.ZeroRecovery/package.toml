@@ -1,10 +1,11 @@
 [package]
 category = "card"
-id = "dev.GladeWoodsgrove.ZeroRecovery"
-name = "Zero Recovery"
+id = "BattleNetwork6.RecoveryBase"
+past_ids = ["dev.GladeWoodsgrove.ZeroRecovery"]
+name = "Recovery Base"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "*" ]
+codes = ["*"]
 damage = 0
 recover = 0
 time_freeze = false
@@ -16,11 +17,9 @@ conceal = true
 can_boost = false
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [
-    "BattleNetwork.Assets"
-]
-cards = [ ]
+characters = []
+libraries = ["BattleNetwork.Assets"]
+cards = []

@@ -4,7 +4,7 @@ id = "BattleNetwork6.Class01.Standard.001"
 name = "Cannon"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "A", "B", "C", "*" ]
+codes = ["A", "B", "C", "*"]
 damage = 40
 time_freeze = false
 element = "none"
@@ -21,7 +21,5 @@ characters = []
 [dependencies]
 augments = [] # optional, list of package ids
 encounters = [] # optional, list of package ids
-cards = [
-    "dev.GladeWoodsgrove.ZeroDamageCannon"
-]
+cards = ["BattleNetwork6.CannonBase"]
 characters = [] # optional, list of package ids

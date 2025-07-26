@@ -1,10 +1,11 @@
 [package]
 category = "card"
-id = "dev.GladeWoodsgrove.AirHockeyZero"
-name = "ZeroHockey"
+id = "BattleNetwork4.AirHockeyBase"
+past_ids = ["dev.GladeWoodsgrove.AirHockeyZero"]
+name = "Air Hockey Base"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "*" ]
+codes = ["*"]
 damage = 0
 time_freeze = false
 element = "break"
@@ -14,9 +15,9 @@ hidden = true
 hit_flags = ["Impact", "Flinch", "PierceGuard", "Shake"]
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [ ]
+characters = []
+libraries = []
+cards = []

@@ -32,7 +32,7 @@ function card_mutate(entity, card_index)
 end
 
 function card_init(actor, props)
-    props.package_id = "dev.GladeWoodsgrove.ZeroDamageCannon"
+    props.package_id = "BattleNetwork6.CannonBase"
 
     return Action.from_card(actor, props);
 end

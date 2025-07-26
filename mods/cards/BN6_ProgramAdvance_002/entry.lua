@@ -1,6 +1,6 @@
 function card_init(actor, props)
 	-- Almost identical to Cannon so reuse it
-	local card_properties = CardProperties.from_package("dev.GladeWoodsgrove.ZeroDamageCannon")
+	local card_properties = CardProperties.from_package("BattleNetwork6.CannonBase")
 
 	-- Change damage to what's taken in from toml + modifiers
 	card_properties.damage = props.damage
