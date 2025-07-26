@@ -29,11 +29,12 @@ function card_init(actor, props)
             local buster = self:create_attachment("BUSTER")
 
             -- obtain the sprite so we don't have to call it more than once
-            local buster_sprite = buster:sprite();
+            local buster_sprite = buster:sprite()
 
             -- Set the texture
-            buster_sprite:set_texture(BUSTER_TEXTURE);
-            buster_sprite:set_layer(-1);
+            buster_sprite:set_texture(BUSTER_TEXTURE)
+            buster_sprite:set_layer(-1)
+            buster_sprite:use_root_shader()
 
             -- Create airshot arm attachment animation
             local buster_anim = buster:animation()

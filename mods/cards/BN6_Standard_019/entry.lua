@@ -120,6 +120,7 @@ function card_init(actor, props)
         local buster_sprite = buster:sprite()
         buster_sprite:set_texture(user:texture())
         buster_sprite:set_layer(-2)
+        buster_sprite:use_root_shader()
 
         self.flame1 = create_flame_spell(user, props)
         self.flame2 = create_flame_spell(user, props)

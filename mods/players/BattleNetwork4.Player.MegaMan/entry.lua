@@ -1287,8 +1287,10 @@ function player_init(player)
 
         action.on_execute_func = function(self, user)
             local buster = self:create_attachment("BUSTER")
-            buster:sprite():set_texture(bubbler_buster_texture)
-            buster:sprite():set_layer(-1)
+            local buster_sprite = buster:sprite()
+            buster_sprite:set_texture(bubbler_buster_texture)
+            buster_sprite:set_layer(-1)
+            buster_sprite:use_root_shader()
 
             local buster_anim = buster:animation()
             buster_anim:load(bubbler_buster_animation_path)

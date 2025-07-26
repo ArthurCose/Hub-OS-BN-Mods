@@ -51,6 +51,7 @@ function card_init(user)
     local mag_sprite = attachment:sprite()
     mag_sprite:set_layer(-1)
     mag_sprite:set_texture(BUSTER_TEXTURE)
+    mag_sprite:use_root_shader()
 
     local mag_animation = attachment:animation()
     mag_animation:load(BUSTER_ANIMATION_PATH)

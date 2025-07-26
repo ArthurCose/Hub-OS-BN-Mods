@@ -29,8 +29,10 @@ function card_init(actor, props)
 
     action.on_execute_func = function(self, user)
         local buster = self:create_attachment("BUSTER")
-        buster:sprite():set_texture(gunhilt_texture, true)
-        buster:sprite():set_layer(-1)
+        local buster_sprite = buster:sprite()
+        buster_sprite:set_texture(gunhilt_texture)
+        buster_sprite:set_layer(-1)
+        buster_sprite:use_root_shader()
 
         local buster_anim = buster:animation()
         buster_anim:load(gunhilt_anim_path)

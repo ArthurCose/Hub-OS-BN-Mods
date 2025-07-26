@@ -16,6 +16,7 @@ Buster_Action.new = function(user, charged, damage, action_user)
 
     local buster_sprite = buster_attachment:sprite()
     buster_sprite:set_texture(action_user:texture())
+    buster_sprite:set_palette(action_user:palette())
     buster_sprite:set_layer(-2)
     buster_sprite:use_root_shader()
 

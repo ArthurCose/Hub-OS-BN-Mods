@@ -80,6 +80,7 @@ local function create_hilt(self, action, user)
   local hilt = action:create_attachment("HILT")
   local hilt_sprite = hilt:sprite()
   hilt_sprite:set_layer(-1)
+  hilt_sprite:use_root_shader()
 
   local hilt_anim = hilt:animation()
 
@@ -87,13 +88,11 @@ local function create_hilt(self, action, user)
     hilt_sprite:set_texture(user:texture())
     hilt_anim:copy_from(user:animation())
     hilt_anim:set_state("HAND", self._hilt_frame_data)
-    hilt_sprite:use_root_shader(true)
     hilt_sprite:set_palette(user:palette())
   else
     hilt_sprite:set_texture(self._hilt_texture or user:texture())
 
     if not self._hilt_texture then
-      hilt_sprite:use_root_shader(true)
       hilt_sprite:set_palette(user:palette())
     end
 
@@ -116,6 +115,7 @@ local function create_blade(self, hilt, user)
   local blade = hilt:create_attachment("ENDPOINT")
   local blade_sprite = blade:sprite()
   blade_sprite:set_layer(-2)
+  blade_sprite:use_root_shader()
 
   local blade_anim = blade:animation()
 
@@ -126,7 +126,6 @@ local function create_blade(self, hilt, user)
     blade_anim:load(self._blade_animation_path)
     blade_anim:set_state("DEFAULT")
   elseif actor_animation:has_state("BLADE") then
-    blade_sprite:use_root_shader(true)
     blade_sprite:set_texture(user:texture())
     blade_sprite:set_palette(user:palette())
     blade_anim:copy_from(actor_animation)

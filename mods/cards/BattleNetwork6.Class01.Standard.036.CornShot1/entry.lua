@@ -216,6 +216,7 @@ function card_init(actor, props)
 			-- Set the texture
 			buster_sprite:set_texture(BUSTER_TEXTURE)
 			buster_sprite:set_layer(-1)
+			buster_sprite:use_root_shader()
 
 			-- Create cannon arm attachment animation
 			local buster_anim = buster:animation()

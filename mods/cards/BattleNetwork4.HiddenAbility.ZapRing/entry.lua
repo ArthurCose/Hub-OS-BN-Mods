@@ -27,8 +27,10 @@ function card_init(player, props)
 
 		self:add_anim_action(1, function()
 			local buster = self:create_attachment("BUSTER")
-			buster:sprite():set_texture(buster_texture)
-			buster:sprite():set_layer(-1)
+			local buster_sprite = buster:sprite()
+			buster_sprite:set_texture(buster_texture)
+			buster_sprite:set_layer(-1)
+			buster_sprite:use_root_shader()
 
 			local buster_anim = buster:animation()
 			buster_anim:load(buster_anim_path)

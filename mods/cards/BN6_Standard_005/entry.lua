@@ -60,6 +60,7 @@ function card_init(user, props)
         local attachment_sprite = attachment:sprite()
         attachment_sprite:set_texture(attachment_texture)
         attachment_sprite:set_layer(-2)
+        attachment_sprite:use_root_shader()
 
         local attachment_animation = attachment:animation()
         attachment_animation:load(attachment_animation_path)

@@ -21,6 +21,7 @@ function card_init(user, props)
         local buster_sprite = buster_attachment:sprite()
         buster_sprite:set_texture(buster_texture)
         buster_sprite:set_layer(-2)
+        buster_sprite:use_root_shader()
 
         local buster_animation = buster_attachment:animation()
         buster_animation:load(buster_animation_path)

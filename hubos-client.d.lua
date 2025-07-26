@@ -1974,6 +1974,14 @@ function PlayerForm:set_mugshot_texture(path) end
 ---@param description? string
 function PlayerForm:set_description(description) end
 
+--- Sets whether Form Select closes when this form is selected.
+---@param bool boolean
+function PlayerForm:set_close_on_select(bool) end
+
+--- Sets whether the transition and audio effect plays when this form is selected.
+---@param bool boolean
+function PlayerForm:set_transition_on_select(bool) end
+
 --- Deactivates the form.
 function PlayerForm:deactivate() end
 

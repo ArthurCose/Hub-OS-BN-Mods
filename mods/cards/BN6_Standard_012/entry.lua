@@ -22,6 +22,7 @@ function card_init(actor, props)
 		local buster_sprite = buster:sprite()
 		buster_sprite:set_texture(TANKCAN_TEXTURE)
 		buster_sprite:set_layer(-1)
+		buster_sprite:use_root_shader()
 		local offset = 0
 
 		local buster_anim = buster:animation()
