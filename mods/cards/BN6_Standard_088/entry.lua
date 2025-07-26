@@ -1,5 +1,7 @@
 local battle_helpers = require("Battle.Helpers")
 local bn_assets = require("BattleNetwork.Assets")
+---@type dev.konstinople.library.sword
+local SwordLib = require("dev.konstinople.library.sword")
 
 local AUDIO_DAMAGE = bn_assets.load_audio("hit_impact.ogg")
 local AUDIO_DAMAGE_OBS = bn_assets.load_audio("hit_obstacle.ogg")
@@ -14,59 +16,42 @@ local DUST_ANIMPATH = bn_assets.fetch_animation_path("floor_dust.animation")
 local EFFECT_TEXTURE = bn_assets.load_texture("bn6_hit_effects.png")
 local EFFECT_ANIMPATH = bn_assets.fetch_animation_path("bn6_hit_effects.animation")
 
-function card_init(actor, props)
-	local action = Action.new(actor, "CHARACTER_SWING")
+local sword = SwordLib.new_sword()
+sword:use_hand()
 
+function card_init(user, props)
 	local query = function(o)
-		return Living.from(o) == nil and not o:hittable()
+		return Living.from(o) ~= nil and o:hittable()
 	end
 
 	local crackshoot_type = "CRACKSHOOT_TYPE_SINGLE"
 
 	for index, value in ipairs(props.tags) do
-		print(value)
 		if value == "CRACKSHOOT_TYPE_DOUBLE" or value == "CRACKSHOOT_TYPE_TRIPLE" then
 			crackshoot_type = value
 		end
 	end
 
-	action:set_lockout(ActionLockout.new_animation())
-	action.on_execute_func = function(self, user)
+	return sword:create_action(user, function()
 		local field = user:field()
 		local team = user:team()
 		local facing = user:facing()
-		self:add_anim_action(2, function()
-			local hilt = self:create_attachment("HILT")
-			local hilt_sprite = hilt:sprite()
-			hilt_sprite:set_texture(actor:texture())
-			hilt_sprite:set_layer(-2)
-			hilt_sprite:use_root_shader(true)
-			hilt_sprite:set_palette(actor:palette())
+		local tile1 = user:get_tile(facing, 1)
 
-			local hilt_anim = hilt:animation()
-			hilt_anim:copy_from(actor:animation())
-			hilt_anim:set_state("HAND")
-		end)
+		create_attack(user, props, team, facing, field, tile1, query)
 
-		self:add_anim_action(3, function()
-			local tile1 = user:get_tile(facing, 1)
+		if crackshoot_type == "CRACKSHOOT_TYPE_DOUBLE" then
+			local tile2 = user:get_tile(facing, 2)
 
-			create_attack(user, props, team, facing, field, tile1, query)
+			create_attack(user, props, team, facing, field, tile2, query)
+		elseif crackshoot_type == "CRACKSHOOT_TYPE_TRIPLE" then
+			local tile2 = tile1:get_tile(Direction.Up, 1)
+			local tile3 = tile1:get_tile(Direction.Down, 1)
 
-			if crackshoot_type == "CRACKSHOOT_TYPE_DOUBLE" then
-				local tile2 = user:get_tile(facing, 2)
-
-				create_attack(user, props, team, facing, field, tile2, query)
-			elseif crackshoot_type == "CRACKSHOOT_TYPE_TRIPLE" then
-				local tile2 = tile1:get_tile(Direction.Up, 1)
-				local tile3 = tile1:get_tile(Direction.Down, 1)
-
-				create_attack(user, props, team, facing, field, tile2, query)
-				create_attack(user, props, team, facing, field, tile3, query)
-			end
-		end)
-	end
-	return action
+			create_attack(user, props, team, facing, field, tile2, query)
+			create_attack(user, props, team, facing, field, tile3, query)
+		end
+	end)
 end
 
 function create_attack(user, props, team, facing, field, tile, query)

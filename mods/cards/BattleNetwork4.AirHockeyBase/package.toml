@@ -19,5 +19,5 @@ characters = []
 
 [dependencies]
 characters = []
-libraries = []
+libraries = ["dev.konstinople.library.sword"]
 cards = []

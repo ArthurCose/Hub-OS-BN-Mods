@@ -1,3 +1,6 @@
+---@type dev.konstinople.library.sword
+local SwordLib = require("dev.konstinople.library.sword")
+
 local TEXTURE = Resources.load_texture("puck.png")
 local TEXTURE_ANIM = "puck.animation"
 local LAUNCH_AUDIO = Resources.load_audio("pucklaunch.ogg")
@@ -5,51 +8,29 @@ local BOUNCE_AUDIO = Resources.load_audio("puckhit.ogg")
 local MOB_MOVE_TEXTURE = Resources.load_texture("mob_move.png")
 local PARTICLE_TEXTURE = Resources.load_texture("artifact_impact_fx.png")
 
-local frame_data = { { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 25 } }
-local hand_frame_data = {}
-
-for i = 2, #frame_data do
-	local data = frame_data[i]
-	hand_frame_data[i - 1] = { data[1] - 1, data[2] }
-end
+local sword = SwordLib.new_sword()
+sword:use_hand()
+sword:set_frame_data({ { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 25 } })
 
 function card_init(user, props)
-	local action = Action.new(user, "CHARACTER_SWING")
+	local action = sword:create_action(user, function()
+		local dir = user:facing()
+		local tile = user:get_tile(dir, 1)
+		if tile then
+			local puck = create_puck(user, props)
+			user:field():spawn(puck, tile)
+		end
+	end)
 
-	action:override_animation_frames(frame_data)
 	action:set_lockout(ActionLockout.new_async(32))
 
-	action.on_execute_func = function(self)
-		self:add_anim_action(2, function()
-			user:set_counterable(true)
+	action:add_anim_action(2, function()
+		user:set_counterable(true)
+	end)
 
-			local hilt = self:create_attachment("HILT")
-
-			local hilt_sprite = hilt:sprite()
-			hilt_sprite:set_texture(user:texture())
-			hilt_sprite:set_layer(-2)
-			hilt_sprite:use_root_shader(true)
-			hilt_sprite:set_palette(user:palette())
-
-			local hilt_anim = hilt:animation()
-			hilt_anim:copy_from(user:animation())
-			hilt_anim:set_state("HAND", hand_frame_data)
-			hilt_anim:apply(hilt_sprite)
-		end)
-
-		self:add_anim_action(3, function()
-			local dir = user:facing()
-			local tile = user:get_tile(dir, 1)
-			if tile then
-				local puck = create_puck(user, props)
-				user:field():spawn(puck, tile)
-			end
-		end)
-
-		self:add_anim_action(4, function()
-			user:set_counterable(false)
-		end)
-	end
+	action:add_anim_action(4, function()
+		user:set_counterable(false)
+	end)
 
 	action.on_action_end_func = function()
 		user:set_counterable(false)

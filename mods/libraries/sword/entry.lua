@@ -34,17 +34,6 @@ function Sword:set_blade_animation_path(animation_path)
   self._blade_animation_path = animation_path
 end
 
---- Texture for the hilt, uses the actor's texture by default.
-function Sword:set_hilt_texture(texture)
-  self._hilt_texture = texture
-end
-
---- Expects a 3 frame HILT state with ENDPOINT points on the animation.
---- Uses the actor's animation by default
-function Sword:set_hilt_animation_path(animation_path)
-  self._hilt_animation_path = animation_path
-end
-
 --- [frame_number, duration][]
 --- Used for custom timing. Not required, as a default timing is provided.
 --- Affects the user's animation and modified to work with the hilt's animation
@@ -74,6 +63,27 @@ function Sword:set_spell_frame_index(frame_index)
 end
 
 ---@param self Sword
+---@param user Entity
+local function resolve_state(self, user)
+  local state = "CHARACTER_SWING_HILT"
+
+  if self._use_hand then
+    state = "CHARACTER_SWING_HAND"
+  end
+
+  if not user:animation():has_state(state) then
+    -- backwards compat
+    warn(
+      "CHARACTER_SWING is deprecated, bake into CHARACTER_SWING_HAND and CHARACTER_SWING_HILT"
+      .. "\nhttps://hub-os.github.io/Navi-Animation-Updater/"
+    )
+    state = "CHARACTER_SWING"
+  end
+
+  return state
+end
+
+---@param self Sword
 ---@param action Action
 ---@param user Entity
 local function create_hilt(self, action, user)
@@ -90,17 +100,9 @@ local function create_hilt(self, action, user)
     hilt_anim:set_state("HAND", self._hilt_frame_data)
     hilt_sprite:set_palette(user:palette())
   else
-    hilt_sprite:set_texture(self._hilt_texture or user:texture())
-
-    if not self._hilt_texture then
-      hilt_sprite:set_palette(user:palette())
-    end
-
-    if self._hilt_animation_path then
-      hilt_anim:load(self._hilt_animation_path)
-    else
-      hilt_anim:copy_from(user:animation())
-    end
+    hilt_sprite:set_texture(user:texture())
+    hilt_sprite:set_palette(user:palette())
+    hilt_anim:copy_from(user:animation())
 
     hilt_anim:set_state("HILT", self._hilt_frame_data)
   end
@@ -109,7 +111,7 @@ local function create_hilt(self, action, user)
 end
 
 ---@param self Sword
----@param hilt Attachment
+---@param hilt Attachment | Action
 ---@param user Entity
 local function create_blade(self, hilt, user)
   local blade = hilt:create_attachment("ENDPOINT")
@@ -135,22 +137,38 @@ local function create_blade(self, hilt, user)
     blade_anim:load(self._default_blade_animation_path)
     blade_anim:set_state("DEFAULT")
   end
+
+  return blade
+end
+
+---@param self Sword
+---@param action Action
+---@param state string
+---@param user Entity
+local function build_attachments(self, action, state, user)
+  local hilt
+
+  if state == "CHARACTER_SWING" then
+    -- more backwards compat
+    hilt = create_hilt(self, action, user)
+  end
+
+  if not self._use_hand then
+    create_blade(self, hilt or action, user)
+  end
 end
 
 ---@param user Entity
 function Sword:create_action(user, spell_callback)
-  local action = Action.new(user, "CHARACTER_SWING")
+  local state = resolve_state(self, user)
+  local action = Action.new(user, state)
   action:set_lockout(ActionLockout.new_animation())
   action:override_animation_frames(self._user_frame_data)
 
   action.on_execute_func = function()
     action:add_anim_action(self._spell_frame_index, spell_callback)
     action:add_anim_action(2, function()
-      local hilt = create_hilt(self, action, user)
-
-      if not self._use_hand then
-        create_blade(self, hilt, user)
-      end
+      build_attachments(self, action, state, user)
     end)
   end
 
@@ -159,19 +177,17 @@ end
 
 ---@param action Action
 function Sword:create_action_step(action, spell_callback)
-  local user = action:owner()
   local step = action:create_step()
 
   step.on_update_func = function()
+    local user = action:owner()
+    local state = resolve_state(self, user)
+
     local animation = user:animation()
-    animation:set_state("CHARACTER_SWING", self._user_frame_data)
+    animation:set_state(state, self._user_frame_data)
     animation:on_frame(self._spell_frame_index, spell_callback)
     animation:on_frame(2, function()
-      local hilt = create_hilt(self, action, user)
-
-      if not self._use_hand then
-        create_blade(self, hilt, user)
-      end
+      build_attachments(self, action, state, user)
     end)
 
     local cleanup = function()
