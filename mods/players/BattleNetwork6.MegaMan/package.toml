@@ -14,4 +14,8 @@ emotions_animation_path = "emotions.animation"
 
 [dependencies]
 libraries = ["BattleNetwork.Assets", "BattleNetwork.Emotions"]
-augments = ["BattleNetwork6.Bugs.BattleHPBug", "HubOS.Augments.Custom1"]
+augments = [
+  "BattleNetwork6.Bugs.BattleHPBug",
+  "HubOS.Augments.IgnoreHoles",
+  "HubOS.Augments.Custom1"
+]
