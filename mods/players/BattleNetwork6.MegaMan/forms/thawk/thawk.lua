@@ -19,6 +19,7 @@ return function(player, form, base_animation_path)
     folder_path = _folder_path,
     base_animation_path = base_animation_path,
     element = Element.Wood,
+    charge_timing = { 120, 110, 100, 95, 90 },
     activate_callback = function()
       wood_boost_aux_prop = AuxProp.new()
           :require_card_element(Element.Wood)
@@ -109,11 +110,6 @@ return function(player, form, base_animation_path)
     end
 
     return action
-  end
-
-  local charge_timing = { 120, 110, 100, 95, 90 }
-  form.calculate_charge_time_func = function()
-    return charge_timing[player:charge_level()] or 90
   end
 
   form.calculate_card_charge_time_func = function(self, card_properties)

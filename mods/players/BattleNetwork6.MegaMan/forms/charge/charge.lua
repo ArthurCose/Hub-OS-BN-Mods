@@ -22,6 +22,7 @@ return function(player, form, base_animation_path)
     folder_path = _folder_path,
     base_animation_path = base_animation_path,
     element = Element.Fire,
+    charge_timing = { 90, 80, 70, 65, 60 },
     activate_callback = function()
       detect_charge_aux_prop = AuxProp.new()
           :require_card_charge_time(Compare.GT, 0)
@@ -249,11 +250,6 @@ return function(player, form, base_animation_path)
     end
 
     return action
-  end
-
-  local charge_timing = { 90, 80, 70, 65, 60 }
-  form.calculate_charge_time_func = function()
-    return charge_timing[player:charge_level()] or 60
   end
 
   form.calculate_card_charge_time_func = function(self, card_properties)

@@ -21,6 +21,7 @@ return function(player, form, base_animation_path)
     folder_path = _folder_path,
     base_animation_path = base_animation_path,
     element = Element.Sword,
+    charge_timing = { 80, 70, 60, 55, 50 },
     activate_callback = function()
       sword_boost_aux_prop = AuxProp.new()
           :require_card_element(Element.Sword)
@@ -123,11 +124,6 @@ return function(player, form, base_animation_path)
     end
 
     return action
-  end
-
-  local charge_timing = { 80, 70, 60, 55, 50 }
-  form.calculate_charge_time_func = function()
-    return charge_timing[player:charge_level()] or 50
   end
 
   -- todo sonic boom, maybe by reading the name to resolve the size?

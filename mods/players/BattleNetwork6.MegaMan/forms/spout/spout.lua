@@ -27,6 +27,7 @@ return function(player, form, base_animation_path)
     folder_path = _folder_path,
     base_animation_path = base_animation_path,
     element = Element.Aqua,
+    charge_timing = { 60, 50, 40, 30, 20 },
     activate_callback = function()
       aqua_charge_aux_prop = AuxProp.new()
           :require_card_element(Element.Aqua)
@@ -179,11 +180,6 @@ return function(player, form, base_animation_path)
     end
 
     return action
-  end
-
-  local charge_timing = { 60, 50, 40, 30, 20 }
-  form.calculate_charge_time_func = function()
-    return charge_timing[player:charge_level()] or 20
   end
 
   form.calculate_card_charge_time_func = function(self, card_properties)

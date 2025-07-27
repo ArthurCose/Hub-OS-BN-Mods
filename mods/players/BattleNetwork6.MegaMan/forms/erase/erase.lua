@@ -21,6 +21,7 @@ return function(player, form, base_animation_path)
     folder_path = _folder_path,
     base_animation_path = base_animation_path,
     element = Element.Cursor,
+    charge_timing = { 110, 100, 90, 85, 80 },
     activate_callback = function()
       cursor_boost_aux_prop = AuxProp.new()
           :require_card_element(Element.Cursor)
@@ -188,10 +189,5 @@ return function(player, form, base_animation_path)
     end
 
     return action
-  end
-
-  local charge_timing = { 110, 100, 90, 85, 80 }
-  form.calculate_charge_time_func = function()
-    return charge_timing[player:charge_level()] or 80
   end
 end

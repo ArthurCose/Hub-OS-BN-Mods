@@ -9,6 +9,7 @@ local Shared = {}
 ---@field base_animation_path string
 ---@field folder_path string
 ---@field element Element
+---@field charge_timing number[]
 ---@field activate_callback fun()?
 ---@field deactivate_callback fun()?
 
@@ -87,6 +88,10 @@ function Shared.implement_form(player, form, config)
     if config.deactivate_callback then
       config.deactivate_callback()
     end
+  end
+
+  form.calculate_charge_time_func = function()
+    return config.charge_timing[player:charge_level()] or config.charge_timing[#config.charge_timing]
   end
 end
 
