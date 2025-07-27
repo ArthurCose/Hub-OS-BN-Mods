@@ -1,0 +1,4 @@
+[package]
+category = "augment"
+id = "HubOS.Augments.IgnoreHoles"
+name = "IgnoreHoles Augment"

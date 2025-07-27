@@ -15,4 +15,4 @@ shape = [
 byproducts = ["BattleNetwork6.Bugs.PanelBug"]
 
 [dependencies]
-augments = ["BattleNetwork6.Bugs.PanelBug"]
+augments = ["HubOS.Augments.IgnoreHoles", "BattleNetwork6.Bugs.PanelBug"]
