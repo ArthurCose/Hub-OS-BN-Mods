@@ -24,7 +24,7 @@ function card_init(user, props)
 
 	-- override animation
 
-	local frame_data = { { 1, 1 }, { 2, 2 }, { 3, 2 }, { 1, 1 } }
+	local frame_data = { { 1, 1 }, { 2, 2 }, { 3, 2 }, { 1, 30 } }
 
 	card_action:override_animation_frames(frame_data)
 
