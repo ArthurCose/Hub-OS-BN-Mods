@@ -63,15 +63,15 @@ local function create_attack(user, props, context, facing, is_recipe, field)
 		)
 	)
 	-- store starting tile as the user's own tile
-	spell._tile = user:current_tile();
+	spell._tile = user:current_tile()
 
 	-- this will be used to teleport 1 frame in.
-	spell._first_move = false;
+	spell._first_move = false
 
 	-- the wait is to make the spell count how many frames it waited without moving
 	-- the count_to is the amount of frames to wait. NOTE: May need to -1? is 0 > 1 two frames or is it 0 > 1 > 2...?
-	spell._wait = 0;
-	spell._count_to = 2;
+	spell._wait = 0
+	spell._count_to = 2
 
 	-- Spell cycles this every frame.
 	spell.on_update_func = function(self)
@@ -79,7 +79,7 @@ local function create_attack(user, props, context, facing, is_recipe, field)
 		if self._tile:is_edge() then return self:erase() end
 
 		if self._has_collided == true then
-			self._wait = self._wait + 1;
+			self._wait = self._wait + 1
 			if self._wait >= 6 then self:delete() end
 			return
 		end
@@ -90,19 +90,19 @@ local function create_attack(user, props, context, facing, is_recipe, field)
 
 		-- Perform first movement
 		if self._first_move == false then
-			local dest = self:get_tile(self._facing, 1);
+			local dest = self:get_tile(self._facing, 1)
 			self:teleport(dest, function()
-				spell._tile = dest;
-				spell._first_move = true;
+				spell._tile = dest
+				spell._first_move = true
 			end)
 		else
 			-- Begin counting up the wait timer
-			self._wait = self._wait + 1;
+			self._wait = self._wait + 1
 
 			-- When it hits 2, teleport it.
 			if self._wait == 2 then
 				-- Obtain a destination tile
-				local dest = self:get_tile(self._facing, 1);
+				local dest = self:get_tile(self._facing, 1)
 
 				if is_recipe and dest:is_edge() then
 					explode(self, nil, field, self._tile)
@@ -113,8 +113,8 @@ local function create_attack(user, props, context, facing, is_recipe, field)
 					-- Initiate teleport
 					self:teleport(dest, function()
 						-- Set current tile property and reset wait timer
-						spell._tile = dest;
-						spell._wait = 0;
+						spell._tile = dest
+						spell._wait = 0
 					end)
 				end
 			end
@@ -155,7 +155,7 @@ local function create_attack(user, props, context, facing, is_recipe, field)
 end
 
 function card_init(actor, props)
-	local context = actor:context();
+	local context = actor:context()
 
 	-- Decide animation state based on which cannon is being used.
 	local buster_state = props.short_name
@@ -179,40 +179,72 @@ function card_init(actor, props)
 		end
 	end
 
-	local action = Action.new(actor, "CHARACTER_SHOOT");
+	local action = Action.new(actor, "CHARACTER_IDLE")
+	action:set_card_properties(props)
+	action:set_lockout(ActionLockout.new_sequence())
 
-	local action_frame_sequence = {
-		{ 1, 4 }, { 2, 3 },
-		{ 2, 6 }, { 3, 1 },
-		{ 3, 1 }, { 1, 2 },
-		{ 1, 2 }, { 1, 2 },
-		{ 1, 7 }, { 1, 3 },
-		{ 1, 4 },
-	};
+	-- create a step and drop it to block the action from ending
+	-- we'll use action:end_action() to complete the action
+	action:create_step()
 
-	action:set_card_properties(props);
+	local startup_frames = { { 1, 4 } }
+	local shoot_frames = { { 1, 3 }, { 1, 6 }, { 2, 2 }, { 3, 13 } }
+	local recover_frames = { { 1, 3 } }
 
-	action._is_update_offset = false
+	-- startup animation
+	action:override_animation_frames(startup_frames)
 
-	action:override_animation_frames(action_frame_sequence);
+	local original_offset
 
 	action.on_execute_func = function(self, user)
 		-- obtain field to not call this more than once
-		local field = user:field();
+		local field = user:field()
 
 		-- obtain direction user is facing to not call this more than once
-		local facing = user:facing();
+		local facing = user:facing()
 
-		-- add action on animation index 1
-		self:add_anim_action(1, function()
-			-- action starts, enable countering
-			user:set_counterable(true);
-			if lagging_ghost ~= nil then field:spawn(lagging_ghost, user:current_tile()) end
-		end)
+		-- handle offset animation
+		original_offset = actor:offset()
 
-		self:add_anim_action(2, function()
+		local offset_sign = -1
+		if facing == Direction.Left then offset_sign = 1 end
+		-- [duration, offset_x][]
+		local offsets = {
+			{ 13, 0 },
+			{ 0,  offset_sign * 4 },
+			{ 0,  offset_sign * 5 },
+			{ 0,  offset_sign * 6 },
+			{ 12, offset_sign * 7 },
+			{ 99, 0 }
+		}
+
+		local offset_elapsed = 0
+		local offset_frame = 1
+
+		action.on_update_func = function()
+			local current_frame = offsets[offset_frame]
+
+			if offset_elapsed >= current_frame[1] then
+				offset_frame = offset_frame + 1
+				current_frame = offsets[offset_frame]
+				offset_elapsed = 0
+			end
+
+			offset_elapsed = offset_elapsed + 1
+
+			actor:set_offset(original_offset.x + current_frame[2], original_offset.y)
+		end
+
+		user:set_counterable(true)
+		if lagging_ghost ~= nil then field:spawn(lagging_ghost, user:current_tile()) end
+
+		local animation = user:animation()
+		animation:on_complete(function()
 			-- attack starts, can no longer counter
 			user:set_counterable(false)
+
+			-- switch to the shoot animation
+			animation:set_state("CHARACTER_SHOOT", shoot_frames)
 
 			-- create cannon arm attachment
 			local buster = self:create_attachment("BUSTER")
@@ -230,58 +262,42 @@ function card_init(actor, props)
 			buster_anim:load(attachment_animation_path)
 
 			buster_anim:set_state(buster_state)
-		end)
 
-		self:add_anim_action(5, function()
-			self._is_update_offset = true
-			-- create the attack itself
-			local cannonshot = create_attack(user, props, context, facing, is_recipe, field)
+			animation:on_frame(4, function()
+				-- create the attack itself
+				local cannonshot = create_attack(user, props, context, facing, is_recipe, field)
 
-			-- obtain tile to spawn the attack on and spawn it using the field
-			local tile = user:current_tile()
-			field:spawn(cannonshot, tile)
+				-- obtain tile to spawn the attack on and spawn it using the field
+				local tile = user:current_tile()
+				field:spawn(cannonshot, tile)
 
-			-- play a sound to indicate the attack.
-			Resources.play_audio(AUDIO)
+				-- play a sound to indicate the attack.
+				Resources.play_audio(AUDIO)
+			end)
+
+			animation:on_complete(function()
+				buster_sprite:hide()
+
+				animation:set_state("CHARACTER_IDLE", recover_frames)
+				animation:on_complete(function()
+					action:end_action()
+				end)
+			end)
 		end)
 	end
 
-	local original_offset = actor:offset()
-	local goal_offset_index = 1
-	local increment = -1
-	if actor:facing() == Direction.Left then increment = 1 end
-	local goal_offset_list = {
-		original_offset.x + (increment * 2),
-		original_offset.x + (increment * 3),
-		original_offset.x + (increment * 4),
-		original_offset.x + (increment * 6)
-	}
 
-	local is_hold = false
-	local hold_time = 0
-
-	action.on_update_func = function(self)
-		if self._is_update_offset == false then return end
-
-		if is_hold == true and hold_time < 13 then
-			hold_time = hold_time + 1
-		else
-			local offset_x = actor:offset().x
-			if offset_x ~= goal_offset_list[goal_offset_index] then
-				actor:set_offset(offset_x + increment, original_offset.y)
-			else
-				goal_offset_index = goal_offset_index + 1
-				if goal_offset_index >= #goal_offset_list then is_hold = true end
-			end
+	action.on_action_end_func = function()
+		if original_offset then
+			actor:set_offset(original_offset.x, original_offset.y)
 		end
-	end
 
-	action.on_action_end_func = function(self)
-		actor:set_offset(original_offset.x, original_offset.y)
 		if lagging_ghost then
 			lagging_ghost:erase()
 		end
+
+		actor:set_counterable(false)
 	end
 
-	return action;
+	return action
 end
