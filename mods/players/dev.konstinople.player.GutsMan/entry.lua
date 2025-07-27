@@ -251,7 +251,13 @@ local function guts_quake(entity, cracks, damage)
         field:shake(5, 40)
 
         -- spawn rocks and crack panels
-        FallingRockLib.spawn_falling_rocks(field, entity:team(), 3, damage)
+        local hit_props = HitProps.new(
+          damage,
+          Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceGuard,
+          Element.None
+        )
+
+        FallingRockLib.spawn_falling_rocks(field, entity:team(), 3, hit_props)
         FallingRockLib.crack_tiles(field, entity:team(), cracks)
       end
     end

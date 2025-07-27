@@ -217,7 +217,13 @@ local function create_guts_quake_factory(entity, damage)
           field:shake(5, 40)
 
           -- spawn rocks
-          FallingRockLib.spawn_falling_rocks(field, entity:team(), 3, damage)
+          local hit_props = HitProps.new(
+            damage,
+            Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceGuard,
+            Element.None
+          )
+
+          FallingRockLib.spawn_falling_rocks(field, entity:team(), 3, hit_props)
 
           -- crack panels
           local cracks = RANK_TO_CRACKS[entity:rank()]

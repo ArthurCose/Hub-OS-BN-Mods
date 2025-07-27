@@ -189,7 +189,13 @@ return function(character, gaia_props)
 
               -- spawn rocks
               if effects_time == 30 then
-                FallingRockLib.spawn_falling_rocks(field, character:team(), 3, gaia_props.damage)
+                local hit_props = HitProps.new(
+                  gaia_props.damage,
+                  Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceGuard,
+                  Element.None
+                )
+
+                FallingRockLib.spawn_falling_rocks(field, character:team(), 3, hit_props)
               end
 
               if effects_time > SHAKE_DURATION then

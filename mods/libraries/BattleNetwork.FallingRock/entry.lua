@@ -44,8 +44,8 @@ end
 ---@param field Field
 ---@param team Team the team of the attacker
 ---@param count number
----@param damage number
-function Lib.spawn_falling_rocks(field, team, count, damage)
+---@param hit_props HitProps
+function Lib.spawn_falling_rocks(field, team, count, hit_props)
   -- find enemy tiles
   local enemy_tiles = field:find_tiles(function(tile)
     local tile_team = tile:team()
@@ -75,7 +75,7 @@ function Lib.spawn_falling_rocks(field, team, count, damage)
     local i = table.remove(tiles_with_enemy, math.random(#tiles_with_enemy))
     local tile = table.remove(enemy_tiles, i)
 
-    local rock = Lib.create_falling_rock(team, damage)
+    local rock = Lib.create_falling_rock(team, hit_props)
     field:spawn(rock, tile)
 
     count = count - 1
@@ -85,15 +85,16 @@ function Lib.spawn_falling_rocks(field, team, count, damage)
   for _ = 1, math.min(#enemy_tiles, count) do
     local tile = table.remove(enemy_tiles, math.random(#enemy_tiles))
 
-    local rock = Lib.create_falling_rock(team, damage)
+    local rock = Lib.create_falling_rock(team, hit_props)
     field:spawn(rock, tile)
   end
 end
 
 ---@param team Team
----@param damage number
-function Lib.create_falling_rock(team, damage)
+---@param hit_props HitProps
+function Lib.create_falling_rock(team, hit_props)
   local spell = Spell.new(team)
+  spell:set_hit_props(hit_props)
   spell:set_texture(TEXTURE)
   spell:set_shadow(BIG_SHADOW)
   spell:show_shadow(true)
@@ -105,14 +106,6 @@ function Lib.create_falling_rock(team, damage)
 
   local sprite = spell:sprite()
   sprite:set_layer(-4)
-
-  spell:set_hit_props(
-    HitProps.new(
-      damage,
-      Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceGuard,
-      Element.None
-    )
-  )
 
   local spawn_particles = function()
     local tile = spell:current_tile()
