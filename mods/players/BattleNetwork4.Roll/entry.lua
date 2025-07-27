@@ -1,8 +1,8 @@
 ---@param player Entity
 function player_init(player)
     player:set_height(70.0)
-    player:load_animation("roll.animation")
-    player:set_texture(Resources.load_texture("navi_roll_atlas.png"))
+    player:load_animation("battle.animation")
+    player:set_texture(Resources.load_texture("battle.png"))
     player:set_fully_charged_color(Color.new(255, 200, 200, 255))
     player:set_charge_position(4, -34)
 

@@ -4,8 +4,8 @@ function player_init(player)
 	-- player:set_element(Element.Aqua)
 	player:set_height(33.0)
 
-	local base_texture = Resources.load_texture("Iceman_battle.png")
-	local base_animation_path = "Iceman_battle.animation"
+	local base_texture = Resources.load_texture("battle.png")
+	local base_animation_path = "battle.animation"
 	local base_charge_color = Color.new(0, 200, 255, 255)
 
 	player:load_animation(base_animation_path)

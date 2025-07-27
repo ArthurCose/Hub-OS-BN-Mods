@@ -17,10 +17,10 @@ function player_init(player)
     local WindRack = "BattleNetwork6.Class01.Standard.079"
 
     -- Load the image for the Navi's texture.
-    local base_texture = Resources.load_texture("windman_EXE4.5.png")
+    local base_texture = Resources.load_texture("battle.png")
 
     -- Save the animation path. Like the Package IDs above, this is not strictly necessary.
-    local base_animation_path = "windman.animation"
+    local base_animation_path = "battle.animation"
 
     -- Create and store the charge effect color.
     -- Storing it as a variable like this is slightly more efficient in some cases,
@@ -43,7 +43,7 @@ function player_init(player)
     player:set_fully_charged_color(base_charge_color)
 
     -- Position charge effect.
-    player:set_charge_position(4, -35)
+    player:set_charge_position(-3, -35)
 
     -- Return the action for the Navi's default attack.
     -- Determines what happens when you press B.

@@ -1,12 +1,10 @@
 function player_init(player)
     player:set_name("Searchman")
-    -- player:set_health(1500)
-    -- player:set_element(Element.Cursor)
-    player:set_height(60.0)
+    player:set_height(52.0)
     player:set_charge_position(0, -30)
 
-    local base_animation_path = "searchman_atlas.animation"
-    local base_texture = Resources.load_texture("searchman_atlas.png")
+    local base_animation_path = "battle.animation"
+    local base_texture = Resources.load_texture("battle.png")
 
     player:load_animation(base_animation_path)
     player:set_texture(base_texture)
