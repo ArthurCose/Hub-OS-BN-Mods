@@ -54,8 +54,9 @@ function Lib.spawn_falling_rocks(field, team, count, hit_props)
 
   -- resolve which of the tiles have enemies
   local tiles_with_enemy = {}
+  local tiles_without_enemy = {}
 
-  for i, tile in ipairs(enemy_tiles) do
+  for _, tile in ipairs(enemy_tiles) do
     local contains_enemy = false
 
     tile:find_characters(function(character)
@@ -66,14 +67,15 @@ function Lib.spawn_falling_rocks(field, team, count, hit_props)
     end)
 
     if contains_enemy then
-      tiles_with_enemy[#tiles_with_enemy + 1] = i
+      tiles_with_enemy[#tiles_with_enemy + 1] = tile
+    else
+      tiles_without_enemy[#tiles_without_enemy + 1] = tile
     end
   end
 
   -- aim for enemies
   while #tiles_with_enemy > 0 and count > 0 do
-    local i = table.remove(tiles_with_enemy, math.random(#tiles_with_enemy))
-    local tile = table.remove(enemy_tiles, i)
+    local tile = table.remove(tiles_with_enemy, math.random(#tiles_with_enemy))
 
     local rock = Lib.create_falling_rock(team, hit_props)
     field:spawn(rock, tile)
@@ -82,8 +84,8 @@ function Lib.spawn_falling_rocks(field, team, count, hit_props)
   end
 
   -- randomly drop remaining rocks
-  for _ = 1, math.min(#enemy_tiles, count) do
-    local tile = table.remove(enemy_tiles, math.random(#enemy_tiles))
+  for _ = 1, math.min(#tiles_without_enemy, count) do
+    local tile = table.remove(tiles_without_enemy, math.random(#tiles_without_enemy))
 
     local rock = Lib.create_falling_rock(team, hit_props)
     field:spawn(rock, tile)
