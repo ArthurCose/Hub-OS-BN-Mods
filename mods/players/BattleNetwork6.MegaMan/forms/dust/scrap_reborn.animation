@@ -1,0 +1,11 @@
+animation state="DEFAULT"
+frame x="129" y="1" w="59" h="58" originx="31" originy="52" duration="0.05"
+frame x="129" y="61" w="57" h="59" originx="31" originy="53" duration="0.05"
+
+animation state="PUNCH"
+frame x="1" y="70" w="56" h="69" originx="31" originy="63" duration="0.033"
+frame x="59" y="70" w="56" h="69" originx="31" originy="63" duration="0.033"
+frame x="65" y="1" w="62" h="65" originx="33" originy="59" duration="0.033"
+frame x="1" y="1" w="62" h="67" originx="33" originy="61" duration="0.033"
+frame x="65" y="1" w="62" h="65" originx="33" originy="59" duration="0.033"
+frame x="1" y="1" w="62" h="67" originx="33" originy="61" duration="0.167"

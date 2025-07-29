@@ -13,6 +13,7 @@ local implement_spout_form = require("forms/spout/spout.lua")
 local implement_thawk_form = require("forms/thawk/thawk.lua")
 local implement_tengu_form = require("forms/tengu/tengu.lua")
 local implement_grnd_form = require("forms/grnd/grnd.lua")
+local implement_dust_form = require("forms/dust/dust.lua")
 
 local BASE_TEXTURE = Resources.load_texture("battle.png")
 local BASE_ANIMATION_PATH = _folder_path .. "battle.animation"
@@ -84,5 +85,8 @@ function player_init(player)
 
     local grnd_form = player:create_form()
     implement_grnd_form(player, grnd_form, BASE_ANIMATION_PATH)
+
+    local dust_form = player:create_form()
+    implement_dust_form(player, dust_form, BASE_ANIMATION_PATH)
   end
 end

@@ -1,0 +1,8 @@
+animation state="DEFAULT"
+frame x="1" w="30" h="22"
+
+animation state="USED"
+frame x="32" w="30" h="22"
+
+animation state="DISABLED"
+frame x="1" y="22" w="30" h="22"
