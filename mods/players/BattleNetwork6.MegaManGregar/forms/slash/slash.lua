@@ -41,21 +41,9 @@ return function(player, form, base_animation_path)
   end
 
   form.charged_attack_func = function()
-    local action = Action.new(player, "CHARACTER_SWING")
+    local action = Action.new(player, "CHARACTER_SWING_HAND")
     -- the split frames at the end are for setting anim actions at specific times
     action:override_animation_frames({ { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 1 }, { 4, 15 }, { 4, 5 } })
-
-    action:add_anim_action(2, function()
-      local hand = action:create_attachment("HILT")
-
-      local hand_sprite = hand:sprite()
-      hand_sprite:set_texture(player:texture())
-      hand_sprite:use_root_shader()
-
-      local hand_anim = hand:animation()
-      hand_anim:load(ANIMATION_PATH)
-      hand_anim:set_state("HAND")
-    end)
 
     action:add_anim_action(5, function()
       Resources.play_audio(SLASH_SFX)

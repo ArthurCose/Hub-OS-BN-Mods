@@ -27,7 +27,15 @@ frame duration="0.017" x="211" y="190" w="1" h="1" originx="192" originy="192" f
 frame duration="0.017" x="199" y="153" w="1" h="1" originx="192" originy="192" flipx="0" flipy="0"
 frame duration="0.017" x="50" y="83" w="19" h="19" originx="3" originy="52" flipx="0" flipy="0"
 
-animation state="CHARACTER_SWING"
+animation state="CHARACTER_SWING_HILT"
+frame duration="0.133" x="138" y="131" w="19" h="17" originx="5" originy="50" flipx="0" flipy="0"
+frame duration="0.033" x="214" y="153" w="1" h="1" originx="192" originy="192" flipx="0" flipy="0"
+frame duration="0.033" x="199" y="158" w="1" h="1" originx="192" originy="192" flipx="0" flipy="0"
+frame duration="0.05" x="180" y="2" w="28" h="23" originx="6" originy="55" flipx="0" flipy="0"
+frame duration="0.05" x="48" y="2" w="30" h="24" originx="7" originy="56" flipx="0" flipy="0"
+frame duration="0.067" x="161" y="131" w="17" h="17" originx="-5" originy="49" flipx="0" flipy="0"
+
+animation state="CHARACTER_SWING_HAND"
 frame duration="0.133" x="138" y="131" w="19" h="17" originx="5" originy="50" flipx="0" flipy="0"
 frame duration="0.033" x="214" y="153" w="1" h="1" originx="192" originy="192" flipx="0" flipy="0"
 frame duration="0.033" x="199" y="158" w="1" h="1" originx="192" originy="192" flipx="0" flipy="0"
