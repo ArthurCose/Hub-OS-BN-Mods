@@ -1,8 +1,9 @@
 [package]
 category = "player"
-id = "BattleNetwork6.ProtoMan"
-name = "ProtoMan"
-description = "Awaiting your orders."
+id = "BattleNetwork6.MegaManFalzar"
+name = "MegaMan"
+long_name = "Falzar Megaman"
+description = "So, what should we do now?"
 preview_texture_path = "preview.png"
 overworld_animation_path = "overworld.animation"
 overworld_texture_path = "overworld.png"
@@ -13,13 +14,12 @@ emotions_texture_path = "emotions.png"
 emotions_animation_path = "emotions.animation"
 
 [dependencies]
-cards = [
-  "BattleNetwork6.Class01.Standard.071",
-  "BattleNetwork6.Class06.Fixed.006"
-]
 libraries = [
-  "dev.konstinople.library.panel_step",
-  "dev.konstinople.library.shield",
+  "BattleNetwork.Assets",
   "BattleNetwork.Emotions",
-  "BattleNetwork.Assets"
+  "BattleNetwork.FallingRock"
+]
+augments = [
+  "HubOS.Augments.IgnoreHoles",
+  "BattleNetwork6.Program01.SuperArmor"
 ]

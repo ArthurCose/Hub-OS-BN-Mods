@@ -5,7 +5,7 @@ local HIT_ANIMATION_PATH = bn_assets.fetch_animation_path("bn6_hit_effects.anima
 
 local Shared = {}
 
----@class _BattleNetwork6.Megaman.FormConfig
+---@class _BattleNetwork6.GregarMegaman.FormConfig
 ---@field base_animation_path string
 ---@field folder_path string
 ---@field element Element
@@ -15,7 +15,7 @@ local Shared = {}
 
 ---@param player Entity
 ---@param form PlayerForm
----@param config _BattleNetwork6.Megaman.FormConfig
+---@param config _BattleNetwork6.GregarMegaman.FormConfig
 function Shared.implement_form(player, form, config)
   -- form assets
   local form_texture = Resources.load_texture(config.folder_path .. "battle.png")
