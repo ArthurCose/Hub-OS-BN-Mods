@@ -2,7 +2,7 @@
 category = "player"
 id = "BattleNetwork6.MegaManFalzar"
 name = "MegaMan"
-long_name = "Falzar Megaman"
+long_name = "Megaman (Falzar)"
 description = "So, what should we do now?"
 preview_texture_path = "preview.png"
 overworld_animation_path = "overworld.animation"
@@ -19,7 +19,4 @@ libraries = [
   "BattleNetwork.Emotions",
   "BattleNetwork.FallingRock"
 ]
-augments = [
-  "HubOS.Augments.IgnoreHoles",
-  "BattleNetwork6.Program01.SuperArmor"
-]
+augments = ["HubOS.Augments.IgnoreHoles", "BattleNetwork6.Program01.SuperArmor"]

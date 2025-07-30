@@ -3,7 +3,7 @@ category = "player"
 id = "BattleNetwork6.MegaManGregar"
 past_ids = ["BattleNetwork6.MegaMan"]
 name = "MegaMan"
-long_name = "Gregar Megaman"
+long_name = "Megaman (Gregar)"
 description = "So, what should we do now?"
 preview_texture_path = "preview.png"
 overworld_animation_path = "overworld.animation"
@@ -15,11 +15,5 @@ emotions_texture_path = "emotions.png"
 emotions_animation_path = "emotions.animation"
 
 [dependencies]
-libraries = [
-  "BattleNetwork.Assets",
-  "BattleNetwork.Emotions",
-]
-augments = [
-  "HubOS.Augments.Custom1",
-  "BattleNetwork6.Bugs.BattleHPBug",
-]
+libraries = ["BattleNetwork.Assets", "BattleNetwork.Emotions"]
+augments = ["HubOS.Augments.Custom1", "BattleNetwork6.Bugs.BattleHPBug"]
