@@ -5,7 +5,7 @@ function card_init(actor, props)
         local step1 = self:create_step()
         step1.on_update_func = function(self)
             local recov = create_recov("DEFAULT", user)
-            actor:field():spawn(recov, actor:current_tile())
+            Field.spawn(recov, actor:current_tile())
             self:complete_step()
         end
     end

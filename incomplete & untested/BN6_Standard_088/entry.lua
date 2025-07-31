@@ -26,7 +26,6 @@ function card_init(actor, props)
 	end
 	action:set_lockout(ActionLockout.new_animation())
 	action.on_execute_func = function(self, user)
-		local field = user:field()
 		local team = user:team()
 		local facing = user:facing()
 		self:add_anim_action(2, function()
@@ -50,7 +49,7 @@ function card_init(actor, props)
 				else
 					Resources.play_audio(CRACKSHOOT_AUDIO_YES)
 				end
-				create_attack(user, props, team, facing, field, tile1, char_query, dark_query)
+				create_attack(user, props, team, facing, tile1, char_query, dark_query)
 			elseif props.crackshoot_type == 2 then
 				local tile1 = user:get_tile(facing, 1)
 				local tile2 = user:get_tile(facing, 2)
@@ -61,8 +60,8 @@ function card_init(actor, props)
 				else
 					Resources.play_audio(CRACKSHOOT_AUDIO_YES)
 				end
-				create_attack(user, props, team, facing, field, tile1, char_query, dark_query)
-				create_attack(user, props, team, facing, field, tile2, char_query, dark_query)
+				create_attack(user, props, team, facing, tile1, char_query, dark_query)
+				create_attack(user, props, team, facing, tile2, char_query, dark_query)
 			elseif props.crackshoot_type == 3 then
 				local tile1 = user:get_tile(facing, 1):get_tile(Direction.Up, 1)
 				local tile2 = user:get_tile(facing, 1)
@@ -75,21 +74,21 @@ function card_init(actor, props)
 				else
 					Resources.play_audio(CRACKSHOOT_AUDIO_YES)
 				end
-				create_attack(user, props, team, facing, field, tile1, char_query, dark_query)
-				create_attack(user, props, team, facing, field, tile2, char_query, dark_query)
-				create_attack(user, props, team, facing, field, tile3, char_query, dark_query)
+				create_attack(user, props, team, facing, tile1, char_query, dark_query)
+				create_attack(user, props, team, facing, tile2, char_query, dark_query)
+				create_attack(user, props, team, facing, tile3, char_query, dark_query)
 			end
 		end)
 	end
 	return action
 end
 
-function create_attack(user, props, team, facing, field, tile, char_query, dark_query)
+function create_attack(user, props, team, facing, tile, char_query, dark_query)
 	local spell = Spell.new(team)
 	spell:set_facing(facing)
 	if tile then
 		if not tile:is_edge() then
-			battle_helpers.create_effect(facing, DUST_TEXTURE, DUST_ANIMPATH, "DEFAULT", 0, 0, -3, field, tile,
+			battle_helpers.create_effect(facing, DUST_TEXTURE, DUST_ANIMPATH, "DEFAULT", 0, 0, -3, tile,
 				Playback.Once, true, nil)
 		end
 		if (#tile:find_entities(char_query) > 0 or #tile:find_entities(dark_query) > 0) and tile:is_walkable() then
@@ -115,7 +114,7 @@ function create_attack(user, props, team, facing, field, tile, char_query, dark_
 			end
 			-- create effect
 			spell.spell_anim_effect = battle_helpers.create_effect(facing, CRACKSHOOT_TEXTURE, CRACKSHOOT_ANIMPATH,
-				spell_anim_state, 0, 24 * 0.5, -3, field, tile, Playback.Loop, false, tile_move_func)
+				spell_anim_state, 0, 24 * 0.5, -3, tile, Playback.Loop, false, tile_move_func)
 
 			-- let effect move anywhere
 			spell.spell_anim_effect.can_move = function() return true end
@@ -140,25 +139,19 @@ function create_attack(user, props, team, facing, field, tile, char_query, dark_
 			end
 		end
 
-		field:spawn(spell, tile)
+		Field.spawn(spell, tile)
 	end
 	spell.on_collision_func = function(self, other)
 		self.spell_anim_effect:erase()
 		self:delete()
 	end
-	spell.on_delete_func = function(self)
-		self:erase()
-	end
-	spell.can_move_to_func = function(self, tile)
-		return true
-	end
 	spell.on_attack_func = function(self, ent)
 		if facing == Direction.Right then
-			battle_helpers.create_effect(facing, EFFECT_TEXTURE, EFFECT_ANIMPATH, "0", -20, -15, -999999, field,
-				self:current_tile(), Playback.Once, true, nil)
+			battle_helpers.create_effect(facing, EFFECT_TEXTURE, EFFECT_ANIMPATH, "0", -20, -15, -999999, self:current_tile(),
+				Playback.Once, true, nil)
 		else
-			battle_helpers.create_effect(facing, EFFECT_TEXTURE, EFFECT_ANIMPATH, "0", 20, -15, -999999, field,
-				self:current_tile(), Playback.Once, true, nil)
+			battle_helpers.create_effect(facing, EFFECT_TEXTURE, EFFECT_ANIMPATH, "0", 20, -15, -999999, self:current_tile(),
+				Playback.Once, true, nil)
 		end
 		if Obstacle.from(ent) == nil then
 			if Player.from(user) ~= nil then

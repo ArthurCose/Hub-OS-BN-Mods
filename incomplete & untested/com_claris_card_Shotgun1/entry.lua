@@ -18,7 +18,7 @@ function card_init(actor, props)
 
 		local cannonshot = create_attack(user, props)
 		local tile = user:get_tile(user:facing(), 1)
-		actor:field():spawn(cannonshot, tile)
+		Field.spawn(cannonshot, tile)
 	end
 	return action
 end
@@ -27,7 +27,6 @@ function create_attack(user, props)
 	local spell = Spell.new(user:team())
 	spell.slide_started = false
 	local direction = user:facing()
-	local field = user:field()
 	spell:set_hit_props(
 		HitProps.new(
 			props.damage,
@@ -61,7 +60,7 @@ function create_attack(user, props)
 		fx:set_height(-16.0)
 		local tile = self:current_tile():get_tile(direction, 1)
 		if tile and not tile:is_edge() then
-			field:spawn(fx, tile)
+			Field.spawn(fx, tile)
 			tile:attack_entities(self)
 		end
 
@@ -76,7 +75,7 @@ function create_attack(user, props)
 
 		local tile2 = self:current_tile():get_tile(direction, 1)
 		if tile2 and not tile2:is_edge() then
-			field:spawn(fx2, tile2)
+			Field.spawn(fx2, tile2)
 			tile2:attack_entities(self)
 		end
 		self:delete()

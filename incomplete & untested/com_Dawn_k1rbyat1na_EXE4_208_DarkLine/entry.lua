@@ -47,8 +47,6 @@ function card_init(actor, props)
 	action:set_lockout(ActionLockout.new_sequence())
 	action.on_execute_func = function(self, user)
 		local step1 = self:create_step()
-		local direction = user:facing()
-		local field = user:field()
 		local self_tile = user:current_tile()
 		local X = self_tile:x()
 		local Y = self_tile:y()
@@ -63,12 +61,12 @@ function card_init(actor, props)
 				Resources.play_audio(AUDIO_DARKHOLE)
 				do_once = false
 				for o = 1, 6, 1 do
-					local desired_tile = field:tile_at(o, Y)
+					local desired_tile = Field.tile_at(o, Y)
 					local dark_check = desired_tile:find_obstacles(dark_hole_query)
 					if not desired_tile:is_edge() and #dark_check <= 0 then
 						local dark_hole = create_dark_hole(user, desired_tile)
 						desired_tile:set_state(TileState.Normal)
-						field:spawn(dark_hole, desired_tile)
+						Field.spawn(dark_hole, desired_tile)
 					end
 				end
 			end

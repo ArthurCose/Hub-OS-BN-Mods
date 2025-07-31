@@ -15,7 +15,6 @@ function card_init(actor, props)
 		cube:enable_hitbox(false)
 		cube:set_health(0)
 		local direction = user:facing()
-		local field = user:field()
 		local dark_hole_query = function(hole)
 			return hole and hole:name() == "DarkHole" and hole:animation():state() == "DEFAULT"
 		end

@@ -28,7 +28,7 @@ function card_init(actor, props)
 			self:add_anim_action(3,
 				function()
 					slash = create_slash("DEFAULT", user, props)
-					actor:field():spawn(slash, tile)
+					Field.spawn(slash, tile)
 				end
 			)
 		end

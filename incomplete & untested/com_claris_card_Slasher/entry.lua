@@ -15,12 +15,11 @@ function card_init(actor, props)
 		local cooldown = 10
 		local slashed = false
 		local tile_array = {}
-		local field = user:field()
 		local ref = self
 		local do_once = true
 		for i = 0, 6, 1 do
 			for j = 0, 6, 1 do
-				local tile = field:tile_at(i, j)
+				local tile = Field.tile_at(i, j)
 				if tile and not tile:is_edge() and user:is_team(tile:team()) then
 					table.insert(tile_array, tile)
 				end
@@ -74,8 +73,8 @@ function card_init(actor, props)
 										fx:erase()
 										sword:erase()
 									end)
-									field:spawn(fx, tile_array[k])
-									field:spawn(sword, tile_array[k])
+									Field.spawn(fx, tile_array[k])
+									Field.spawn(sword, tile_array[k])
 									self:complete_step()
 								end)
 								user:queue_action(action2)

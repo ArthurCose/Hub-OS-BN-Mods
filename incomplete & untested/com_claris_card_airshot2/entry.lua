@@ -20,9 +20,11 @@ function card_init(actor, props)
         buster_anim:load("airshot.animation")
         buster_anim:set_state("DEFAULT")
 
-        local cannonshot = create_attack(user, props)
         local tile = user:get_tile(user:facing(), 1)
-        actor:field():spawn(cannonshot, tile)
+        if tile then
+            local cannonshot = create_attack(user, props)
+            Field.spawn(cannonshot, tile)
+        end
     end
     return action
 end

@@ -17,11 +17,10 @@ function card_init(actor, props)
 		local step1 = self:create_step()
 		local current_x = user:current_tile():x()
 		local dir = user:facing()
-		local field = user:field()
 		local tile_array = {}
 		for i = current_x, 6, 1 do
 			for j = 0, 6, 1 do
-				local tile = field:tile_at(i, j)
+				local tile = Field.tile_at(i, j)
 				if tile and user:is_team(tile:team()) and not tile:is_edge() and not tile:is_reserved({}) and tile:state() == TileState.Broken then
 					table.insert(tile_array, tile)
 				end
@@ -35,7 +34,7 @@ function card_init(actor, props)
 					for i = 1, #tile_array, 1 do
 						Resources.play_audio(APPEAR)
 						local snake = spawn_snake(user, props)
-						field:spawn(snake, tile_array[i])
+						Field.spawn(snake, tile_array[i])
 					end
 				end
 			end
@@ -64,7 +63,7 @@ function spawn_snake(user, props)
 			Drag.None
 		)
 	)
-	local target = user:field():find_nearest_characters(user,
+	local target = Field.find_nearest_characters(user,
 		function(found)
 			if not user:is_team(found:team()) and found:health() > 0 then
 				return true

@@ -50,15 +50,14 @@ function card_init(actor, props)
 	action.on_execute_func = function(self, user)
 		local tile_count = 0
 		local other_tile_count = 0
-		local field = user:field()
-		local all_red_tiles = field:find_tiles(function(tile)
+		local all_red_tiles = Field.find_tiles(function(tile)
 			if tile:team() == user:team() then
 				tile_count = tile_count + 1
 				return true
 			end
 			return false
 		end)
-		local all_blue_tiles = field:find_tiles(function(tile)
+		local all_blue_tiles = Field.find_tiles(function(tile)
 			if tile:team() ~= user:team() then
 				other_tile_count = other_tile_count + 1
 				return true
@@ -87,7 +86,7 @@ function card_init(actor, props)
 						local dark_hole = create_dark_hole(user, all_red_tiles[i])
 						local dark_check = all_red_tiles[i]:find_obstacles(dark_hole_query)
 						if dark_hole ~= nil and #dark_check <= 0 then
-							all_red_tiles[i]:set_state(TileState.Normal); field:spawn(dark_hole, all_red_tiles[i]); table
+							all_red_tiles[i]:set_state(TileState.Normal); Field.spawn(dark_hole, all_red_tiles[i]); table
 									.insert(dark_hole_list, dark_hole)
 						end
 					end

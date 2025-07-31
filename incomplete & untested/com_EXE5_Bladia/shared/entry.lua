@@ -12,7 +12,7 @@ local function create_smoke(self, anim_state)
     return smoke
 end
 
-local function spawn_attack_visual(team, tile, field)
+local function spawn_attack_visual(team, tile)
     local visual = Spell.new(team)
     visual:set_texture(Resources.load_texture("hit_effect.png"))
     local anim = visual:animation()
@@ -23,7 +23,7 @@ local function spawn_attack_visual(team, tile, field)
     anim:on_complete(function()
         visual:erase()
     end)
-    field:spawn(visual, tile)
+    Field.spawn(visual, tile)
 end
 
 local function increment_pattern(self)
@@ -44,7 +44,6 @@ end
 
 local function warp(self, anim_state)
     local smoke = create_smoke(self, anim_state)
-    local field = self:field()
     local facing = self:facing()
     local i = 1
     local goal = 6
@@ -56,14 +55,14 @@ local function warp(self, anim_state)
     end
     for x = i, goal, increment do
         for y = 1, 3, 1 do
-            local prospective_tile = field:tile_at(x, y)
+            local prospective_tile = Field.tile_at(x, y)
             if self:can_move_to(prospective_tile) then
                 self.warp_tile = prospective_tile
                 break
             end
         end
     end
-    field:spawn(smoke, self:current_tile())
+    Field.spawn(smoke, self:current_tile())
     local c = self:create_component(Lifetime.ActiveBattle)
     c.duration = 60
     c.start_tile = self:current_tile()
@@ -85,7 +84,7 @@ local function warp(self, anim_state)
         if self.duration <= 0 then
             increment_pattern(self.owner)
             self.target_tile:add_entity(self.owner)
-            field:spawn(self.smoke, self.target_tile)
+            Field.spawn(self.smoke, self.target_tile)
             self.owner.can_block = true --Enable blocking.
             self:eject()
         end
@@ -135,10 +134,9 @@ local function spawn_attack(self)
             self.tile = nil
             self.panels = nil
         end
-        local field = self:field()
-        field:spawn(spell, self.tile)
+        Field.spawn(spell, self.tile)
         Resources.play_audio(Resources.load_audio("sounds/attack.ogg", true))
-        spawn_attack_visual(self:team(), self.tile, field)
+        spawn_attack_visual(self:team(), self.tile)
     end
 end
 
@@ -167,18 +165,17 @@ local function spawn_attack_highlight(self)
             panels[i]:set_highlight(Highlight.Flash)
         end
     end
-    self.target:field():spawn(spell, tile)
+    Field.spawn(spell, tile)
     self.tile = tile
     self.panels = panels
 end
 
 local function find_best_target(self)
     local target = nil
-    local field = self:field()
     local query = function(c)
         return c:team() ~= self:team()
     end
-    local potential_threats = field:find_characters(query)
+    local potential_threats = Field.find_characters(query)
     local goal_hp = 99999
     if #potential_threats > 0 then
         for i = 1, #potential_threats, 1 do
@@ -201,9 +198,7 @@ function character_init(self, character_info)
     self:set_health(tonumber(character_info.hp))
     self.attack = character_info.attack
     self:set_name(character_info.name)
-    local field = nil
     self.on_battle_start_func = function(self)
-        field = self:field()
         anim:set_state("IDLE")
         anim:apply(self:sprite())
         anim:set_playback(Playback.Loop)
@@ -245,7 +240,7 @@ function character_init(self, character_info)
     self.should_block = false --Bool used to determine if an attack worth blocking is found.
     self.on_update_func = function(self)
         if not self.is_guarding and self.can_block then
-            local attacks = field:find_entities(self.attack_find_query)
+            local attacks = Field.find_entities(self.attack_find_query)
             if #attacks > 0 then
                 --Collapsed for loop. Goes over the attack list and checks if any have a damage value over 0.
                 --If so, tells Bladia he should try to block.
@@ -286,7 +281,7 @@ function character_init(self, character_info)
                             shine_anim:on_complete(function()
                                 shine:delete()
                             end)
-                            defender:field():spawn(shine, defender:current_tile())
+                            Field.spawn(shine, defender:current_tile())
                         end
                         self:add_defense_rule(self.defense)
                     end)
@@ -330,7 +325,7 @@ function character_init(self, character_info)
             end)
             anim:on_frame(6, function()
                 self:set_counterable(false)
-                self:field():shake(8.0, 36)
+                Field.shake(8.0, 36)
                 spawn_attack(self)
             end)
             anim:on_complete(function()

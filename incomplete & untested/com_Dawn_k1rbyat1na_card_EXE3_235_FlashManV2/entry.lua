@@ -30,7 +30,6 @@ function card_init(actor, props)
 		local input_time = 50
 		local voiceline_number = 0
 
-		local field = user:field()
 		local team = user:team()
 		local direction = user:facing()
 		local self_tile = user:current_tile()
@@ -101,7 +100,7 @@ function card_init(actor, props)
 						step1:complete_step()
 					end
 				end)
-				field:spawn(ref.flashman, self_tile)
+				Field.spawn(ref.flashman, self_tile)
 			end
 			local anim = ref.flashman:animation()
 			if anim:state() == "ATTACK" then
@@ -122,13 +121,13 @@ function card_init(actor, props)
 						Resources.play_audio(AUDIO_FLASHLIGHT)
 						for i = 1, 6, 1 do
 							for j = 1, 3, 1 do
-								local tile = field:tile_at(i, j)
+								local tile = Field.tile_at(i, j)
 								if tile == self_tile then
 									print("user tile found, skipping")
 								elseif #tile:find_characters(friendly_query) > 0 or #tile:find_entities(dark_query) > 0 then
 									print("friendly/obstacle tile found, skipping")
 								else
-									create_attack(user, props, team, direction, field, tile)
+									create_attack(user, props, team, direction, tile)
 								end
 							end
 						end
@@ -144,7 +143,7 @@ function card_init(actor, props)
 						flashlight_anim:on_complete(function()
 							flashlight:erase()
 						end)
-						field:spawn(flashlight, 1, 1)
+						Field.spawn(flashlight, 1, 1)
 					end)
 					anim:on_complete(function()
 						anim:set_state("END")
@@ -164,7 +163,7 @@ function card_init(actor, props)
 	return action
 end
 
-function create_attack(user, props, team, direction, field, tile)
+function create_attack(user, props, team, direction, tile)
 	local spell = Spell.new(team)
 	spell:set_facing(direction)
 	spell:set_hit_props(
@@ -198,19 +197,19 @@ function create_attack(user, props, team, direction, field, tile)
 
 	spell.on_attack_func = function(self)
 		Resources.play_audio(AUDIO_DAMAGE)
-		create_effect(TEXTURE_EFFECT, ANIMPATH_EFFECT, "ELEC", math.random(-5, 5), math.random(-5, 5), field,
+		create_effect(TEXTURE_EFFECT, ANIMPATH_EFFECT, "ELEC", math.random(-5, 5), math.random(-5, 5),
 			self:current_tile())
 	end
 
-	field:spawn(spell, tile)
+	Field.spawn(spell, tile)
 
 	return spell
 end
 
-function create_effect(effect_texture, effect_animpath, effect_state, offset_x, offset_y, field, tile)
+function create_effect(effect_texture, effect_animpath, effect_state, offset_x, offset_y, tile)
 	local hitfx = Artifact.new()
 	hitfx:set_facing(Direction.Right)
-	hitfx:set_texture(effect_texture, true)
+	hitfx:set_texture(effect_texture)
 	hitfx:set_offset(offset_x * 0.5, offset_y * 0.5)
 	local hitfx_sprite = hitfx:sprite()
 	hitfx_sprite:set_layer(-99999)
@@ -221,7 +220,7 @@ function create_effect(effect_texture, effect_animpath, effect_state, offset_x, 
 	hitfx_anim:on_complete(function()
 		hitfx:erase()
 	end)
-	field:spawn(hitfx, tile)
+	Field.spawn(hitfx, tile)
 
 	return hitfx
 end

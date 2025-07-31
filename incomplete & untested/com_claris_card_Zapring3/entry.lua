@@ -19,23 +19,25 @@ function card_init(actor, props)
 
     action.on_execute_func = function(self, user)
         local buster = self:create_attachment("BUSTER")
-        buster:sprite():set_texture(BUSTER_TEXTURE, true)
+        buster:sprite():set_texture(BUSTER_TEXTURE)
         buster:sprite():set_layer(-1)
 
         local buster_anim = buster:animation()
         buster_anim:load("buster_zapring.animation")
         buster_anim:set_state("DEFAULT")
 
-        local cannonshot = create_zap("DEFAULT", user, props)
         local tile = user:get_tile(user:facing(), 1)
-        actor:field():spawn(cannonshot, tile)
+        if tile then
+            local cannonshot = create_zap("DEFAULT", user, props)
+            Field.spawn(cannonshot, tile)
+        end
     end
     return action
 end
 
 function create_zap(animation_state, user, props)
     local spell = Spell.new(user:team())
-    spell:set_texture(TEXTURE, true)
+    spell:set_texture(TEXTURE)
     spell:set_tile_highlight(Highlight.Solid)
     spell:set_height(16.0)
     local direction = user:facing()

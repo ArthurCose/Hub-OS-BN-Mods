@@ -55,7 +55,6 @@ function card_init(actor, props)
 						blade_anim:set_state("DEFAULT")
 					end)
 
-					local field = user:field()
 					self:add_anim_action(3, function()
 						local sword = create_slash(user, props)
 						local tile = user:get_tile(user:facing(), 1)
@@ -69,8 +68,8 @@ function card_init(actor, props)
 							fx:erase()
 							if not sword:deleted() then sword:delete() end
 						end)
-						field:spawn(sword, tile)
-						field:spawn(fx, tile)
+						Field.spawn(sword, tile)
+						Field.spawn(fx, tile)
 					end)
 				end
 				actor:queue_action(action)
@@ -94,7 +93,6 @@ function create_slash(user, props)
 		)
 	)
 	local attack_once = true
-	local field = user:field()
 	local facing = user:facing()
 	local facing_away = user:facing_away()
 	spell.on_update_func = function(self)
@@ -119,27 +117,27 @@ function create_slash(user, props)
 			if tile and not tile:is_edge() then
 				local hitbox_c = SharedHitbox.new(self, 12)
 				hitbox_c:set_hit_props(self:copy_hit_props())
-				field:spawn(hitbox_c, tile)
+				Field.spawn(hitbox_c, tile)
 			end
 			if tile_next and not tile_next:is_edge() then
 				local hitbox_r = SharedHitbox.new(self, 12)
 				hitbox_r:set_hit_props(self:copy_hit_props())
-				field:spawn(hitbox_r, tile_next)
+				Field.spawn(hitbox_r, tile_next)
 			end
 			if tile_next_two and not tile_next_two:is_edge() then
 				local hitbox_l = SharedHitbox.new(self, 12)
 				hitbox_l:set_hit_props(self:copy_hit_props())
-				field:spawn(hitbox_l, tile_next_two)
+				Field.spawn(hitbox_l, tile_next_two)
 			end
 			if tile_back and not tile_back:is_edge() then
 				local hitbox_u = SharedHitbox.new(self, 12)
 				hitbox_u:set_hit_props(self:copy_hit_props())
-				field:spawn(hitbox_u, tile_back)
+				Field.spawn(hitbox_u, tile_back)
 			end
 			if tile_back_two and not tile_back_two:is_edge() then
 				local hitbox_d = SharedHitbox.new(self, 12)
 				hitbox_d:set_hit_props(self:copy_hit_props())
-				field:spawn(hitbox_d, tile_back_two)
+				Field.spawn(hitbox_d, tile_back_two)
 			end
 			attack_once = false
 		end

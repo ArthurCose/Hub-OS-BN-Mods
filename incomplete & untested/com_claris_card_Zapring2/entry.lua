@@ -28,7 +28,7 @@ function card_init(actor, props)
 
         local cannonshot = create_zap("DEFAULT", user, props)
         local tile = user:get_tile(user:facing(), 1)
-        actor:field():spawn(cannonshot, tile)
+        Field.spawn(cannonshot, tile)
     end
     return action
 end

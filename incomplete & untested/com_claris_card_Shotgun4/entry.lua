@@ -23,7 +23,7 @@ function card_init(actor, props)
 
 		local cannonshot = create_attack(user, props)
 		local tile = user:get_tile(user:facing(), 1)
-		actor:field():spawn(cannonshot, tile)
+		Field.spawn(cannonshot, tile)
 	end
 	return action
 end
@@ -68,7 +68,7 @@ function create_attack(user, props)
 		fx:set_height(-16.0)
 		local tile = self:current_tile()
 		if tile and not tile:is_edge() then
-			spell:field():spawn(fx, tile)
+			Field.spawn(fx, tile)
 		end
 	end
 	spell.on_attack_func = function(self, other)
@@ -82,7 +82,7 @@ function create_attack(user, props)
 
 		local tile2 = self:current_tile():get_tile(Direction.Up, 1)
 		if tile2 and not tile2:is_edge() then
-			spell:field():spawn(fx2, tile2)
+			Field.spawn(fx2, tile2)
 			tile2:attack_entities(self)
 		end
 
@@ -96,7 +96,7 @@ function create_attack(user, props)
 
 		local tile3 = self:current_tile():get_tile(Direction.Down, 1)
 		if tile3 and not tile3:is_edge() then
-			spell:field():spawn(fx3, tile3)
+			Field.spawn(fx3, tile3)
 			tile3:attack_entities(self)
 		end
 

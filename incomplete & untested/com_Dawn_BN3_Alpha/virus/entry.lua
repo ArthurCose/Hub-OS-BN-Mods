@@ -51,7 +51,6 @@ local function drop_trace_fx(target_artifact, lifetimems, desired_color)
     --drop an afterimage artifact mimicking the appearance of an existing spell/artifact/character and fade it out over it's lifetimems
     local fx = Spell.new(target_artifact:team())
     local anim = target_artifact:animation()
-    local field = target_artifact:field()
     local offset = target_artifact:offset()
     local texture = target_artifact:texture()
     local elevation = target_artifact:elevation()
@@ -77,7 +76,7 @@ local function drop_trace_fx(target_artifact, lifetimems, desired_color)
     end
 
     local tile = target_artifact:current_tile()
-    field:spawn(fx, tile:x(), tile:y())
+    Field.spawn(fx, tile:x(), tile:y())
     return fx
 end
 
@@ -98,7 +97,7 @@ local function create_claw_defense(spell)
         anim:on_complete(function()
             artifact:erase()
         end)
-        defender:field():spawn(artifact, defender:current_tile())
+        Field.spawn(artifact, defender:current_tile())
         Resources.play_audio(defense.audio, AudioBehavior.NoOverlap)
     end
     return defense
@@ -106,11 +105,10 @@ end
 
 local function find_best_target(alpha)
     local target = nil
-    local field = alpha:field()
     local query = function(c)
         return c:team() ~= alpha:team()
     end
-    local potential_threats = field:find_characters(query)
+    local potential_threats = Field.find_characters(query)
     local goal_hp = 0
     if #potential_threats > 0 then
         for i = 1, #potential_threats, 1 do
@@ -196,7 +194,6 @@ local function create_sigma_taser(alpha)
         if alpha.sigma_index > #alpha.sigma_state then alpha.sigma_index = 1 end
         spell.anim_once = true
     end)
-    local field = alpha:field()
     local facing = alpha:facing()
     local center_tile = alpha:get_tile(facing, 2)
     local upper_tile = center_tile:get_tile(Direction.Up, 1)
@@ -231,7 +228,7 @@ local function create_sigma_taser(alpha)
                     self:current_tile():attack_entities(self)
                     self:erase()
                 end
-                field:spawn(hitbox, check_tile)
+                Field.spawn(hitbox, check_tile)
             end
         end
     end
@@ -256,7 +253,7 @@ local function create_sigma_taser(alpha)
                             self:current_tile():attack_entities(self)
                             self:erase()
                         end
-                        field:spawn(hitbox, tile_array[alpha.sigma_index][i])
+                        Field.spawn(hitbox, tile_array[alpha.sigma_index][i])
                     end
                     anim:set_state(alpha.sigma_state[alpha.sigma_index])
                     anim:apply(spell:sprite())
@@ -299,7 +296,6 @@ local function create_omega_rocket(alpha)
     spell.has_exploded = false
     spell.can_move_to_func = function(tile) return true end
     local ANIMPATH_FLASHLIGHT = "flashlight.animation"
-    local field = alpha:field()
     local explosion = rocket_explosion_texture
     local function run_explosion(hitter, array)
         Resources.play_audio(alpha_blast_sound)
@@ -329,15 +325,15 @@ local function create_omega_rocket(alpha)
             attack.on_update_func = function(self)
                 self:current_tile():attack_entities(self)
             end
-            field:spawn(attack, array[i])
+            Field.spawn(attack, array[i])
         end
-        field:spawn(flashlight, 1, 1)
-        hitter:field():shake(15, 60)
+        Field.spawn(flashlight, 1, 1)
+        Field.shake(15, 60)
     end
     spell.on_collision_func = function(self, other)
     end
-    spell.back_boom_array = { field:tile_at(1, 1), field:tile_at(1, 2), field:tile_at(1, 3), field:tile_at(2, 1),
-        field:tile_at(2, 2), field:tile_at(2, 3) }
+    spell.back_boom_array = { Field.tile_at(1, 1), Field.tile_at(1, 2), Field.tile_at(1, 3), Field.tile_at(2, 1),
+        Field.tile_at(2, 2), Field.tile_at(2, 3) }
     spell.on_delete_func = function(self)
         if not self.has_exploded then
             run_explosion(self, self.back_boom_array)
@@ -370,14 +366,13 @@ end
 local function take_alpha_arm_action(alpha, current_arm)
     alpha.is_acting = true
     alpha.is_vulnerable = false
-    local field = alpha:field()
     if current_arm == "SIGMA" then
         local spell = create_sigma_taser(alpha)
-        field:spawn(spell, alpha:get_tile(alpha:facing(), 2))
+        Field.spawn(spell, alpha:get_tile(alpha:facing(), 2))
         return spell
     elseif current_arm == "OMEGA" then
         local spell = create_omega_rocket(alpha)
-        field:spawn(spell, alpha:get_tile(alpha:facing(), 1))
+        Field.spawn(spell, alpha:get_tile(alpha:facing(), 1))
         return spell
     else
         alpha.is_acting = false
@@ -386,7 +381,6 @@ end
 
 local function take_red_eye_action(alpha, state)
     alpha.is_acting = true --Set to acting so we don't spam lasers.
-    local field = alpha:field()
     local first_tile = alpha:get_tile(alpha:facing(), 2)
     local tile_array = { first_tile, first_tile:get_tile(Direction.Up, 1), first_tile:get_tile(alpha:facing(), 1),
         first_tile:get_tile(Direction.Down, 1) }
@@ -419,7 +413,7 @@ local function take_red_eye_action(alpha, state)
                     self:current_tile():attack_entities(self)
                     self:erase()
                 end
-                field:spawn(hitbox, tile_array[2])
+                Field.spawn(hitbox, tile_array[2])
                 anim:on_complete(function()
                     anim:set_state("ATTACK_DISSIPATE")
                     anim:on_complete(function()
@@ -433,7 +427,7 @@ local function take_red_eye_action(alpha, state)
                 --If NOT Cracked, then Crack them.
                 if tile_array[1]:state() ~= TileState.Broken then
                     Resources.play_audio(crack_sound)
-                    alpha:field():shake(8, 60)
+                    Field.shake(8, 60)
                     for i = 1, #tile_array, 1 do
                         if tile_array[i]:state() == TileState.Cracked then
                             tile_array[i]:set_state(TileState.Broken)
@@ -446,19 +440,19 @@ local function take_red_eye_action(alpha, state)
                     local down = create_red_eye_arrow(alpha, props, "DOWN", Direction.Down)
                     local check_up = tile_array[2]
                     if check_up and not check_up:is_edge() then
-                        field:spawn(up, check_up)
+                        Field.spawn(up, check_up)
                     end
-                    field:spawn(forward, tile_array[3])
+                    Field.spawn(forward, tile_array[3])
                     local check_down = tile_array[4]
                     if check_down and not check_down:is_edge() then
-                        field:spawn(down, check_down)
+                        Field.spawn(down, check_down)
                     end
                 end
             end)
         end
     end)
     Resources.play_audio(red_eye_charge_sound)
-    field:spawn(artifact, alpha:current_tile())
+    Field.spawn(artifact, alpha:current_tile())
 end
 
 local function create_reverse_vulcan_shot(alpha, texture, props)
@@ -526,9 +520,9 @@ local function take_reverse_vulcan_action(alpha)
     )
     local shot = create_reverse_vulcan_shot(alpha, texture, props)
     local target = find_best_target(alpha)
-    local field = alpha:field()
+
     if target and not target:deleted() then
-        field:spawn(shot, target:current_tile())
+        Field.spawn(shot, target:current_tile())
         Resources.play_audio(gun_audio)
     else
         alpha.is_acting = false
@@ -538,7 +532,7 @@ end
 local function create_devil_hand(alpha, props, texture_part, is_omega)
     local spell = Obstacle.new(alpha:team()) --Create the spell.
     local arm = alpha.upper_arm
-    local field = alpha:field()
+
     local sound = devil_arm_sound_upper
     local direction = Direction.Down
     local target_anim = "arm_upper.animation"
@@ -635,7 +629,6 @@ end
 local function take_devil_hand_action(alpha, texture_part, is_omega)
     alpha.is_acting = true                                  --Set alpha to acting so we don't spam claws.
 
-    local field = alpha:field()                             --Get the field so we can spawn the spell.
     local mob_move = create_mob_move(mob_move_texture, "2") --Create an artifact to visually warp the claw.
     local damage = 50
     if alpha:rank() == Rank.SP then damage = 100 end
@@ -657,19 +650,19 @@ local function take_devil_hand_action(alpha, texture_part, is_omega)
             alpha.upper_arm:enable_hitbox(false)
             alpha.upper_arm:enable_sharing_tile(true)
             if is_omega then
-                desired_tile = field:tile_at(3, 0)                --Hover over the player's third column
+                desired_tile = Field.tile_at(3, 0)                --Hover over the player's third column
             else
-                desired_tile = field:tile_at(target_tile:x(), 0)  --Hover on the edge tile above them.
+                desired_tile = Field.tile_at(target_tile:x(), 0)  --Hover on the edge tile above them.
             end
-            field:spawn(mob_move, alpha.upper_arm:current_tile()) --Spawn the artifact as we hide the arm so it looks good.
+            Field.spawn(mob_move, alpha.upper_arm:current_tile()) --Spawn the artifact as we hide the arm so it looks good.
         elseif texture_part == "arm_lower" then
             alpha.lower_arm:hide()                                --Hide the upper arm. We're going to be spawning a spell that looks like it.
             alpha.lower_arm:enable_hitbox(false)
             alpha.lower_arm:enable_sharing_tile(true)
             local goal_x = 4
             if alpha:team() == Team.Red then goal_x = 3 end
-            desired_tile = field:tile_at(goal_x, target_tile:y())
-            field:spawn(mob_move, alpha.lower_arm:current_tile()) --Spawn the artifact as we hide the arm so it looks good.
+            desired_tile = Field.tile_at(goal_x, target_tile:y())
+            Field.spawn(mob_move, alpha.lower_arm:current_tile()) --Spawn the artifact as we hide the arm so it looks good.
         end
         local other_query = function(o)
             return Obstacle.from(o) ~= nil and o:team() ~= alpha:team()
@@ -678,7 +671,7 @@ local function take_devil_hand_action(alpha, texture_part, is_omega)
         if desired_tile ~= nil then
             local list = desired_tile:find_entities(other_query)
             if #list == 0 then
-                field:spawn(spell, desired_tile)
+                Field.spawn(spell, desired_tile)
             else
                 alpha.is_acting = false
             end
@@ -843,18 +836,16 @@ function character_init(alpha)
     alpha.vulcan_texture = vulcan_texture
     alpha.flare_cooldown = 8
 
-    local field = nil
     alpha.on_battle_start_func = function()
-        field = alpha:field()
-        local friends_list = field:find_characters(function(ent)
+        local friends_list = Field.find_characters(function(ent)
             return ent and alpha:is_team(ent:team())
         end)
         for x = 1, 6, 1 do
             for y = 1, 3, 1 do
-                local tile = field:tile_at(x, y)
+                local tile = Field.tile_at(x, y)
                 if tile:team() == alpha:team() then
                     for c = 1, #friends_list, 1 do
-                        field:tile_at(x, y):reserve_for_id(tonumber(friends_list[c]:id()))
+                        Field.tile_at(x, y):reserve_for_id(tonumber(friends_list[c]:id()))
                     end
                 end
             end
@@ -862,15 +853,14 @@ function character_init(alpha)
     end
 
     alpha.on_spawn_func = function()
-        field = alpha:field()
         alpha.upper_arm:add_defense_rule(create_claw_defense(alpha.upper_arm))
         alpha.upper_arm:set_team(alpha:team())
         alpha.upper_arm:set_facing(alpha:facing())
-        field:spawn(alpha.upper_arm, alpha:get_tile(Direction.join(alpha:facing(), Direction.Up), 1))
+        Field.spawn(alpha.upper_arm, alpha:get_tile(Direction.join(alpha:facing(), Direction.Up), 1))
         alpha.lower_arm:add_defense_rule(create_claw_defense(alpha.lower_arm))
         alpha.lower_arm:set_team(alpha:team())
         alpha.lower_arm:set_facing(alpha:facing())
-        field:spawn(alpha.lower_arm, alpha:get_tile(alpha:facing_away(), 1))
+        Field.spawn(alpha.lower_arm, alpha:get_tile(alpha:facing_away(), 1))
     end
     alpha.can_move_to_func = function(tile)
         return false
@@ -984,7 +974,7 @@ function character_init(alpha)
                                 self.armor_anim:set_playback(Playback.Loop)
                                 self.vulcan_attack = true
                                 self.flare = create_reverse_vulcan_flare(self, self.vulcan_texture)
-                                if field ~= nil then field:spawn(self.flare, self:current_tile()) end
+                                Field.spawn(self.flare, self:current_tile())
                             end)
                         end)
                     elseif self.anim_once and self.vulcan_shots >= 16 then
