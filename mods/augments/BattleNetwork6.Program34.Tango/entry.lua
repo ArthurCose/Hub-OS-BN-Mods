@@ -38,7 +38,7 @@ end
 
 local function heal_and_create_barrier(user)
     local recov = create_recov(user)
-    user:field():spawn(recov, user:current_tile())
+    Field.spawn(recov, user:current_tile())
     user:set_health(user:health() + 300)
 
     local HP = 100
@@ -73,7 +73,7 @@ local function heal_and_create_barrier(user)
 
     aura_animate_component.on_update_func = function(self)
         barrier_animation:apply(barrier)
-        barrier_animation:update(barrier)
+        barrier_animation:update()
     end
 
     local aura_destroy_component = user:create_component(Lifetime.Battle)
@@ -129,13 +129,14 @@ local function heal_and_create_barrier(user)
     user:add_defense_rule(barrier_defense_rule)
 end
 
+---@param augment Augment
 function augment_init(augment)
     local owner = augment:owner()
     -- Only for pvp. Needs at least one player of the enemy team
-    local find_func = function(entity) return not player:is_team(entity:team()) end
+    local find_func = function(entity) return not owner:is_team(entity:team()) end
 
     -- If enemy players are not found, then do nothing
-    if #owner:field():find_players(find_func) == 0 then return end
+    if #Field.find_players(find_func) == 0 then return end
 
     -- If we've bugged this program, it won't activate, so do nothing.
     if owner:get_augment("BattleNetwork6.Bugs.TangoDisabled") ~= nil then return end
@@ -162,7 +163,6 @@ function augment_init(augment)
                 tango_artifact:set_texture(TEXTURE)
 
                 tango_artifact:set_shadow(Shadow.Small)
-                tango_artifact:show_shadow(true)
 
                 tango_artifact:set_facing(owner:facing())
 
@@ -222,7 +222,7 @@ function augment_init(augment)
                                 end
                             end
 
-                            owner:field():spawn(orb_artifact, tango_artifact:current_tile())
+                            Field.spawn(orb_artifact, tango_artifact:current_tile())
                         end)
 
                         tango_anim:on_complete(function()
@@ -239,7 +239,7 @@ function augment_init(augment)
                     end)
                 end)
 
-                owner:field():spawn(tango_artifact, owner:current_tile():get_tile(owner:facing(), 1))
+                Field.spawn(tango_artifact, owner:get_tile(owner:facing(), 1) or owner:current_tile())
             end
 
             owner:queue_action(action)

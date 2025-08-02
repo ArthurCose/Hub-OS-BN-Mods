@@ -7,11 +7,10 @@ local main_texture = Resources.load_texture("Basher.png")
 
 local function find_best_target(self)
     local target = nil
-    local field = self.field
     local query = function(c)
         return c:team() ~= self:team()
     end
-    local potential_threats = field:find_characters(query)
+    local potential_threats = Field.find_characters(query)
     local goal_hp = 99999
     if #potential_threats > 0 then
         for i = 1, #potential_threats, 1 do
@@ -24,7 +23,7 @@ local function find_best_target(self)
     return target
 end
 
-local function spawn_hit_effect(field, tile)
+local function spawn_hit_effect(tile)
     local effect = Spell.new(Team.Other)
     effect:set_texture(hit_texture)
     local anim = effect:animation()
@@ -34,12 +33,12 @@ local function spawn_hit_effect(field, tile)
     anim:on_complete(function()
         effect:erase()
     end)
-    field:spawn(effect, tile)
+    Field.spawn(effect, tile)
 end
 
 local function tile_logic(self)
     local tiles = {}
-    local tile = self.field:tile_at(self:current_tile():x(), 2)
+    local tile = self.Field.tile_at(self:current_tile():x(), 2)
     local dir = self:facing(self)
     local count = 1
     local max = 6
@@ -175,7 +174,7 @@ local function spawn_cursors(self)
             end
         end
         table.insert(self.cursor_table, spell)
-        self.field:spawn(spell, tile_array[i])
+        self.Field.spawn(spell, tile_array[i])
     end
 end
 
@@ -191,9 +190,7 @@ function character_init(basher)
         basher:set_health(150)
         basher.attack = 50
     end
-    basher.field = nil
     basher.on_battle_start_func = function(self)
-        self.field = basher:field()
         anim:set_state("IDLE")
 
         anim:set_playback(Playback.Loop)
@@ -242,15 +239,15 @@ function character_init(basher)
                                 local spawn_tile = cursor:current_tile()
                                 local ref = self
                                 hitbox.on_update_func = function(self)
-                                    spawn_hit_effect(ref.field, spawn_tile)
+                                    spawn_hit_effect(spawn_tile)
                                     spawn_tile:attack_entities(self)
                                     spawn_tile:set_state(TileState.Cracked)
                                     spawn_tile:set_state(TileState.Broken)
                                     self:erase()
                                 end
-                                self.field:spawn(hitbox, spawn_tile)
+                                self.Field.spawn(hitbox, spawn_tile)
                             end
-                            self.field:shake(8.0, 36)
+                            self.Field.shake(8.0, 36)
                             for b = 1, #self.cursor_table, 1 do
                                 local cursor = self.cursor_table[b]
                                 cursor:erase()

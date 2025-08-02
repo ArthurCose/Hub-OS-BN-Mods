@@ -24,7 +24,7 @@ local function spawn_artifact(parent)
     parent_offset.y + movement_offset.y - parent:height() * 0.5
   )
 
-  parent:field():spawn(artifact, parent:current_tile())
+  Field.spawn(artifact, parent:current_tile())
 
   return artifact
 end

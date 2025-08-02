@@ -6,7 +6,7 @@ function card_init(user)
 
     action.on_execute_func = function()
         local recov = create_recov(user)
-        user:field():spawn(recov, user:current_tile())
+        Field.spawn(recov, user:current_tile())
         user:boost_attack_level(1)
     end
 

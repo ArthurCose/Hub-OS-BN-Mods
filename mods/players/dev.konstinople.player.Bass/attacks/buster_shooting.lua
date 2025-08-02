@@ -48,7 +48,6 @@ end
 
 ---@param user Entity
 local function find_target_position(user)
-    local field = user:field()
     local team = user:team()
     local direction = user:facing()
     local current_tile = user:current_tile()
@@ -66,7 +65,7 @@ local function find_target_position(user)
         end
     end
 
-    local enemies = field:find_nearest_characters(user, function(character)
+    local enemies = Field.find_nearest_characters(user, function(character)
         return
             character:team() ~= team and
             not character:deleted() and
@@ -82,7 +81,7 @@ local function find_target_position(user)
         y = enemy_tile:y()
     else
         if direction == Direction.Right then
-            x = field:width() - 2
+            x = Field.width() - 2
         else
             x = 2
         end
@@ -105,7 +104,6 @@ return function(user)
     local action = Action.new(user, "CHARACTER_BUSTER_SHOOTING_START")
     action:set_lockout(ActionLockout.new_sequence())
 
-    local field = user:field()
     local animation = user:animation()
 
     ---@type Tile[]
@@ -131,7 +129,7 @@ return function(user)
                     goto continue
                 end
 
-                local tile = field:tile_at(i, j)
+                local tile = Field.tile_at(i, j)
 
                 if tile and not tile:is_edge() then
                     tile_pool[#tile_pool + 1] = tile
@@ -146,7 +144,7 @@ return function(user)
         target_tiles[1] = nil
         target_tiles[2] = nil
 
-        local next_tile = field:tile_at(x, y)
+        local next_tile = Field.tile_at(x, y)
 
         while #target_tiles < 2 do
             if next_tile ~= prev_a and next_tile ~= prev_b then
@@ -208,7 +206,7 @@ return function(user)
             if time_remainder == 3 then
                 -- hit the target tiles
                 for _, tile in ipairs(target_tiles) do
-                    field:spawn(create_gunner_shot(user, hit_props), tile)
+                    Field.spawn(create_gunner_shot(user, hit_props), tile)
                 end
 
                 -- update target tiles
@@ -256,7 +254,7 @@ return function(user)
             artifact:erase()
         end)
 
-        field:spawn(artifact, user:current_tile())
+        Field.spawn(artifact, user:current_tile())
 
         -- play sfx
         Resources.play_audio(SHOT_SFX)

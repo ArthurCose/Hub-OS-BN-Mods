@@ -55,7 +55,7 @@ local function create_meteor(metrid)
             local tile = self:current_tile()
             if tile and tile:is_walkable() then
                 tile:attack_entities(self)
-                self:field():shake(5, 18)
+                Field.shake(5, 18)
                 local explosion = Spell.new(self:team())
                 explosion:set_texture(boom)
                 local new_anim = explosion:animation()
@@ -64,7 +64,7 @@ local function create_meteor(metrid)
                 new_anim:apply(explosion:sprite())
                 explosion:sprite():set_layer(-2)
                 Resources.play_audio(LANDING_SFX)
-                self:field():spawn(explosion, tile)
+                Field.spawn(explosion, tile)
                 new_anim:on_frame(3, function()
                     Resources.play_audio(EXPLOSION_SFX)
                 end)
@@ -87,13 +87,12 @@ end
 
 local function find_best_target(virus)
     if not virus or virus and virus:deleted() then return end
-    local target = nil          --Grab a basic target from the virus itself.
-    local field = virus:field() --Grab the field so you can scan it.
+    local target = nil --Grab a basic target from the virus itself.
     local query = function(c)
         return c:team() ~=
             virus:team()                                   --Make sure you're not targeting the same team, since that won't work for an attack.
     end
-    local potential_threats = field:find_characters(query) --Find CHARACTERS, not entities, to attack.
+    local potential_threats = Field.find_characters(query) --Find CHARACTERS, not entities, to attack.
     local goal_hp = 999999                                 --Start with a ridiculous health.
     if #potential_threats > 0 then                         --If the list is bigger than 0, we go in to a loop.
         for i = 1, #potential_threats, 1 do                --The pound sign, or hashtag if you're more familiar with that term, is used to denote length of a list or array in lua.
@@ -133,7 +132,6 @@ local function create_meteor_action(metrid)
             desired_cooldown = attack_cooldown_max - 16
         end
 
-        local field = metrid:field()
         meteor_component.on_update_func = function()
             if metrid:deleted() then return end
             if count <= 0 then
@@ -151,7 +149,7 @@ local function create_meteor_action(metrid)
             end
 
             if highlight_cooldown <= 0 then
-                local tile_list = metrid:field():find_tiles(function(tile)
+                local tile_list = Field.find_tiles(function(tile)
                     return tile:team() ~= metrid:team() and tile:is_walkable()
                 end)
 
@@ -178,7 +176,7 @@ local function create_meteor_action(metrid)
                 count = count - 1
                 attack_cooldown_max = attack_cooldown_max
                 attack_cooldown = attack_cooldown_max
-                field:spawn(create_meteor(metrid), next_tile)
+                Field.spawn(create_meteor(metrid), next_tile)
             else
                 attack_cooldown = attack_cooldown - 1
             end
@@ -200,7 +198,7 @@ end
 
 ---@param entity Entity
 local function default_random_tile(entity)
-    local tiles = entity:field():find_tiles(function(tile)
+    local tiles = Field.find_tiles(function(tile)
         return entity:can_move_to(tile) and tile ~= entity:current_tile()
     end)
 
@@ -228,7 +226,7 @@ end
 
 ---@param metrid Entity
 local function setup_random_tile(metrid)
-    local preferred_tiles = metrid:field():find_tiles(function(tile)
+    local preferred_tiles = Field.find_tiles(function(tile)
         if not metrid:can_move_to(tile) then
             return false
         end
@@ -251,7 +249,7 @@ local function setup_random_tile(metrid)
         return preferred_tiles[math.random(#preferred_tiles)]
     end
 
-    local tiles = metrid:field():find_tiles(function(tile)
+    local tiles = Field.find_tiles(function(tile)
         return metrid:can_move_to(tile)
     end)
 

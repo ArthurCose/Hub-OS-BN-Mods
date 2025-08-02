@@ -12,7 +12,6 @@ local hit_anim_path = bn_assets.fetch_animation_path("bn6_hit_effects.animation"
 local AUDIO = bn_assets.load_audio("dragon3.ogg")
 
 local function create_flame_spell(user, props)
-    local tile = nil
     local spell = Spell.new(user:team())
 
     local animation = spell:animation()
@@ -43,11 +42,7 @@ local function create_flame_spell(user, props)
     spell._has_spawned = false
 
     spell.on_spawn_func = function(self)
-        tile = self:current_tile()
-
         self._has_spawned = true
-
-        if not tile:is_walkable() then return end
     end
 
     spell.on_collision_func = function(self, other)
@@ -69,7 +64,7 @@ local function create_flame_spell(user, props)
             fx:erase()
         end)
 
-        self:field():spawn(fx, tile)
+        Field.spawn(fx, spell:current_tile())
     end
 
     spell.on_update_func = function(self)
@@ -104,7 +99,6 @@ end
 
 function card_init(actor, props)
     local action = Action.new(actor, "CHARACTER_SHOOT")
-    local field = actor:field()
     local tile_array = {}
     local flame_list = {}
 
@@ -159,7 +153,7 @@ function card_init(actor, props)
             if time % 10 == 0 then Resources.play_audio(AUDIO) end
 
             if time == spawn_timing and #tile_array >= (flame_index) then
-                field:spawn(flame_list[flame_index], tile_array[flame_index])
+                Field.spawn(flame_list[flame_index], tile_array[flame_index])
                 flame_index = flame_index + 1
                 spawn_timing = spawn_timing + 4
             elseif time >= despawn_timing and #flame_list >= despawn_index then

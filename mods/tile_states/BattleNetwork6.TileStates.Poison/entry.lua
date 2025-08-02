@@ -2,7 +2,6 @@ local POISON_DRAIN_INTERVAL = 7
 
 ---@param custom_state CustomTileState
 function tile_state_init(custom_state)
-  local field = custom_state:field()
   local tracked_auxprops = {}
 
   custom_state.on_entity_enter_func = function(self, entity)
@@ -55,7 +54,7 @@ function tile_state_init(custom_state)
 
   custom_state.on_replace_func = function(self, tile)
     for id in pairs(tracked_auxprops) do
-      local entity = field:get_entity(id)
+      local entity = Field.get_entity(id)
 
       if not entity then
         tracked_auxprops[id] = nil

@@ -25,14 +25,14 @@ function card_init(user, props)
 			interrupt:erase()
 		end)
 
-		Field:spawn(interrupt, entity:current_tile())
+		Field.spawn(interrupt, entity:current_tile())
 	end
 
 	action.on_execute_func = function()
 		local step = action:create_step()
 		local timer = 80
 
-		local characters = user:field():find_characters(function(ch)
+		local characters = Field.find_characters(function(ch)
 			if not ch:spawned() then return false end
 			if ch:deleted() or ch:will_erase_eof() then return false end
 			if ch:team() == user:team() then return false end

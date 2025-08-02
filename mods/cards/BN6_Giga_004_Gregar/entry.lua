@@ -73,8 +73,6 @@ function card_init(actor, props)
 
         local tile_array = {}
 
-        local field = user:field()
-
         local occupied_query = function(ent)
             return true
         end
@@ -99,7 +97,7 @@ function card_init(actor, props)
                 anim:set_state("ATTACK")
                 for i = 3, 3, 9 do
                     anim:on_frame(i, function()
-                        field:spawn(create_soldier_shot(user, props, facing), tile:get_tile(soldier:facing(), 1))
+                        Field.spawn(create_soldier_shot(user, props, facing), tile:get_tile(soldier:facing(), 1))
                     end)
                 end
                 anim:on_complete(function()
@@ -110,7 +108,7 @@ function card_init(actor, props)
                 end)
             end)
 
-            field:spawn(soldier, tile)
+            Field.spawn(soldier, tile)
         end
 
         local function create_soldier_wave(list)
@@ -153,7 +151,7 @@ function card_init(actor, props)
             while (true) do
                 -- Collect column
                 for i = 1, 3, 1 do
-                    tile_array[i] = field:tile_at(start_x, i)
+                    tile_array[i] = Field.tile_at(start_x, i)
                 end
 
                 -- Check which ones can't have a spawn

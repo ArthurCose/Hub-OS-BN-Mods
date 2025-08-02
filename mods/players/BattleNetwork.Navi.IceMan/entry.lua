@@ -97,7 +97,7 @@ function player_init(player)
 						return true
 					end
 
-					user:field():spawn(snowman, tile)
+					Field.spawn(snowman, tile)
 				end
 			end
 			return action
@@ -133,7 +133,7 @@ function player_init(player)
 					end
 
 
-					user:field():spawn(self._spell, tile)
+					Field.spawn(self._spell, tile)
 				end)
 
 				action.on_animation_end_func = function()

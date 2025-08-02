@@ -9,9 +9,7 @@ local IMPACT_TEXTURE = bn_helpers.load_texture("spell_explosion.png")
 -- TODO: Implement proper explosion
 local AUDIO = bn_helpers.load_audio("cannon.ogg")
 
-local function explode(spell, target, field, tile)
-	if field == nil then field = spell:field() end
-
+local function explode(spell, target, tile)
 	if tile == nil then
 		if target ~= nil then tile = target:current_tile() else tile = spell:current_tile() end
 	end
@@ -21,32 +19,32 @@ local function explode(spell, target, field, tile)
 	local offset_x = math.floor(math.random(-10, 10))
 	local offset_y = math.floor(math.random(-10, -25))
 	local explosion = battle_helpers.create_effect(facing, IMPACT_TEXTURE, explosion_animation_path, "Default",
-		offset_x, offset_y, -3, field, tile, Playback.Once, true, nil)
+		offset_x, offset_y, -3, tile, Playback.Once, true, nil)
 
 
 	-- spawn the explosion
-	field:spawn(explosion, tile)
+	Field.spawn(explosion, tile)
 end
 
-local splash_explosion = function(self, other, field)
+local splash_explosion = function(self, other)
 	local tile = self._tile
 	local tile_x = self._tile:x()
 	local tile_y = self._tile:y()
 
 	for x = -1, 1, 1 do
 		for y = -1, 1, 1 do
-			tile = field:tile_at(tile_x + x, tile_y + y)
+			tile = Field.tile_at(tile_x + x, tile_y + y)
 
 			if tile and not tile:is_edge() then
 				self:attack_tile(tile)
 
-				explode(self, other, field, tile)
+				explode(self, other, tile)
 			end
 		end
 	end
 end
 
-local function create_attack(user, props, context, facing, is_recipe, field)
+local function create_attack(user, props, context, facing, is_recipe)
 	local spell = Spell.new(user:team())
 
 	spell._facing = facing
@@ -105,8 +103,8 @@ local function create_attack(user, props, context, facing, is_recipe, field)
 				local dest = self:get_tile(self._facing, 1)
 
 				if is_recipe and dest:is_edge() then
-					explode(self, nil, field, self._tile)
-					splash_explosion(self, nil, field)
+					explode(self, nil, self._tile)
+					splash_explosion(self, nil)
 					self._count_to = 6
 					self._wait = 0
 				else
@@ -129,7 +127,7 @@ local function create_attack(user, props, context, facing, is_recipe, field)
 			self._wait = 0
 
 			explode(self, other, nil, nil)
-			if is_recipe then splash_explosion(self, other, field) end
+			if is_recipe then splash_explosion(self, other) end
 			self._has_collided = true
 		end
 	end
@@ -197,9 +195,6 @@ function card_init(actor, props)
 	local original_offset
 
 	action.on_execute_func = function(self, user)
-		-- obtain field to not call this more than once
-		local field = user:field()
-
 		-- obtain direction user is facing to not call this more than once
 		local facing = user:facing()
 
@@ -236,7 +231,7 @@ function card_init(actor, props)
 		end
 
 		user:set_counterable(true)
-		if lagging_ghost ~= nil then field:spawn(lagging_ghost, user:current_tile()) end
+		if lagging_ghost ~= nil then Field.spawn(lagging_ghost, user:current_tile()) end
 
 		local animation = user:animation()
 		animation:on_complete(function()
@@ -265,11 +260,11 @@ function card_init(actor, props)
 
 			animation:on_frame(4, function()
 				-- create the attack itself
-				local cannonshot = create_attack(user, props, context, facing, is_recipe, field)
+				local cannonshot = create_attack(user, props, context, facing, is_recipe)
 
 				-- obtain tile to spawn the attack on and spawn it using the field
 				local tile = user:current_tile()
-				field:spawn(cannonshot, tile)
+				Field.spawn(cannonshot, tile)
 
 				-- play a sound to indicate the attack.
 				Resources.play_audio(AUDIO)

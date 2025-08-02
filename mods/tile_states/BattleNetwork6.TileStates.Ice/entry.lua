@@ -1,6 +1,5 @@
 ---@param custom_state CustomTileState
 function tile_state_init(custom_state)
-  local field = custom_state:field()
   local tracked_auxprops = {}
 
   custom_state.on_entity_enter_func = function(self, entity)
@@ -35,7 +34,7 @@ function tile_state_init(custom_state)
 
   custom_state.on_replace_func = function(self, tile)
     for id in pairs(tracked_auxprops) do
-      local entity = field:get_entity(id)
+      local entity = Field.get_entity(id)
 
       if not entity then
         tracked_auxprops[id] = nil
@@ -80,7 +79,7 @@ function tile_state_init(custom_state)
       return
     end
 
-    local dest = field:tile_at(current_tile:x() + x_inc, current_tile:y() + y_inc)
+    local dest = Field.tile_at(current_tile:x() + x_inc, current_tile:y() + y_inc)
 
     if not entity:can_move_to(dest) then
       return

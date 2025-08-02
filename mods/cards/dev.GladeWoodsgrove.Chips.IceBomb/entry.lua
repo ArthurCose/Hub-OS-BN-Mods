@@ -62,7 +62,6 @@ end
 function toss_spell(tosser, toss_height, texture, animation_path, target_tile, frames_in_air, arrival_callback)
     local starting_height = -110
     local start_tile = tosser:current_tile()
-    local field = tosser:field()
     local spell = Spell.new(tosser:team())
     local spell_animation = spell:animation()
     spell_animation:load(animation_path)
@@ -102,11 +101,10 @@ function toss_spell(tosser, toss_height, texture, animation_path, target_tile, f
         return true
     end
 
-    field:spawn(spell, start_tile)
+    Field.spawn(spell, start_tile)
 end
 
 function hit_explosion(user, target_tile, props, texture, anim_path, explosion_sound)
-    local field = user:field()
     local spell = Spell.new(user:team())
 
     local spell_animation = spell:animation()
@@ -139,5 +137,5 @@ function hit_explosion(user, target_tile, props, texture, anim_path, explosion_s
     end
 
 
-    field:spawn(spell, target_tile)
+    Field.spawn(spell, target_tile)
 end

@@ -9,14 +9,12 @@ function card_init(actor, props)
 
 	local SNAKE_FINISHED = false
 
-	local field = actor:field()
-
 	action.on_execute_func = function(self, user)
 		self.tile_array = {}
 
 		for i = 0, 6, 1 do
 			for j = 0, 4, 1 do
-				local tile = field:tile_at(i, j)
+				local tile = Field.tile_at(i, j)
 				if tile and user:is_team(tile:team()) and not tile:is_edge() and not tile:is_reserved({}) and not tile:is_walkable() then
 					table.insert(self.tile_array, tile)
 				end
@@ -37,7 +35,7 @@ function card_init(actor, props)
 			for i = start, start + 2, 1 do
 				if i < #self.tile_array + 1 then
 					local snake = spawn_snake(actor, props)
-					field:spawn(snake, self.tile_array[i])
+					Field.spawn(snake, self.tile_array[i])
 				else
 					SNAKE_FINISHED = true
 					break;
@@ -70,7 +68,7 @@ function spawn_snake(user, props)
 		)
 	)
 
-	local target = user:field():find_nearest_characters(user, function(found)
+	local target = Field.find_nearest_characters(user, function(found)
 		if not user:is_team(found:team()) and found:hittable() then
 			return true
 		end

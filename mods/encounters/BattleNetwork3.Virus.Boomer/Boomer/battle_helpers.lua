@@ -5,14 +5,13 @@
 battle_helpers = {}
 
 ---comment
--- field #reference to battlefield
 -- tile #tile to spawn the visual artifact on
 -- texture #texture to use
 -- animation_path #path to animation
 -- animation_state #state to use
 -- position_x #offsetX
 -- position_y #offsetY
-function battle_helpers.spawn_visual_artifact(field, tile, texture, animation_path, animation_state, position_x,
+function battle_helpers.spawn_visual_artifact(tile, texture, animation_path, animation_state, position_x,
                                               position_y)
     local visual_artifact = Artifact.new()
     visual_artifact:set_texture(texture, true)
@@ -24,7 +23,7 @@ function battle_helpers.spawn_visual_artifact(field, tile, texture, animation_pa
     end)
     visual_artifact:sprite():set_offset(position_x * 0.5, position_y * 0.5)
     anim:apply(visual_artifact:sprite())
-    field:spawn(visual_artifact, tile:x(), tile:y())
+    Field.spawn(visual_artifact, tile:x(), tile:y())
 end
 
 battle_helpers.can_move_to_func = function(tile, entity)
@@ -112,9 +111,8 @@ battle_helpers.can_move_to_func_target_enemy = function(tile)
 end
 
 function battle_helpers.find_target(self)
-    local field = self:field()
     local team = self:team()
-    local target_list = field:find_characters( --[[hittable patch--]] function(entity)
+    local target_list = Field.find_characters( --[[hittable patch--]] function(entity)
         if not entity:hittable() then return end
         ( --[[end hittable patch--]] function(other_character)
             return other_character:team() ~= team
@@ -129,13 +127,12 @@ function battle_helpers.find_target(self)
 end
 
 function battle_helpers.jump_to_target_row(character, jump_speed)
-    local field = character:field()
     local target = battle_helpers.find_target(character)
     local my_tile = character:get_tile()
     local y = target:get_tile():y();
     local tile_array = {}
     for x = 1, 6, 1 do
-        local prospective_tile = field:tile_at(x, y)
+        local prospective_tile = Field.tile_at(x, y)
         if battle_helpers.can_move_to_func(prospective_tile, character) and
             my_tile ~= prospective_tile then
             table.insert(tile_array, prospective_tile)

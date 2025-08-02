@@ -30,8 +30,8 @@ local function attack_tile(gunner, attack_spell, tile)
 	anim:on_complete(function()
 		fx:erase()
 	end)
-	gunner:field():spawn(hitbox, tile)
-	gunner:field():spawn(fx, tile)
+	Field.spawn(hitbox, tile)
+	Field.spawn(fx, tile)
 end
 
 local function attack_tile_flinch(gunner, attack_spell, tile)
@@ -60,8 +60,8 @@ local function attack_tile_flinch(gunner, attack_spell, tile)
 	anim:on_complete(function()
 		fx:erase()
 	end)
-	gunner:field():spawn(hitbox, tile)
-	gunner:field():spawn(fx, tile)
+	Field.spawn(hitbox, tile)
+	Field.spawn(fx, tile)
 end
 
 local function attack(gunner, cursor)
@@ -108,7 +108,7 @@ local function attack(gunner, cursor)
 	attack_spell.on_attack_func = function()
 		can_continue_moving = false
 	end
-	gunner:field():spawn(attack_spell, tile)
+	Field.spawn(attack_spell, tile)
 end
 
 local function begin_attack(gunner, cursor)
@@ -146,8 +146,7 @@ local function spawn_cursor(cursor, gunner, tile)
 	Resources.play_audio(Resources.load_audio("scanning_click.ogg"))
 	anim:set_playback(Playback.Once)
 
-	local field = gunner:field()
-	field:spawn(spell, tile)
+	Field.spawn(spell, tile)
 	spell.slide_started = false
 	spell.on_update_func = function(self)
 		if gunner:rank() == Rank.V1 then
@@ -234,8 +233,7 @@ idle_update = function(gunner)
 	local y = gunner:current_tile():y()
 	local team = gunner:team()
 
-	local field = gunner:field()
-	local targets = field:find_characters(function(c)
+	local targets = Field.find_characters(function(c)
 		-- same row, different team
 		return c:team() ~= team and c:current_tile():y() == y
 	end)

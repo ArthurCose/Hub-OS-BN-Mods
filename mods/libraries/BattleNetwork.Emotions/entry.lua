@@ -101,7 +101,7 @@ function Synchro:implement(player)
 
     local current_counterable = {}
 
-    player:field():find_characters(function(character)
+    Field.find_characters(function(character)
       if character:team() == player:team() or not character:counterable() then
         return false
       end

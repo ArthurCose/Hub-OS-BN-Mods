@@ -37,12 +37,9 @@ local function spawn_bees(user, props)
     return
   end
 
-  local field = user:field()
-
   local bees = Spell.new(user:team())
   bees:set_texture(BEES_TEXTURE)
   bees:set_shadow(BEES_SHADOW_TEXTURE)
-  bees:show_shadow()
 
   local animation = bees:animation()
   animation:load(BEES_ANIMATION_PATH)
@@ -73,7 +70,7 @@ local function spawn_bees(user, props)
     local y = math.random(Tile:height() * 2.0)
     artifact:set_offset(x, -y)
 
-    field:spawn(artifact, entity:current_tile())
+    Field.spawn(artifact, entity:current_tile())
 
     -- see if we should delete or attach to an enemy
     remaining_hits = remaining_hits - 1
@@ -141,7 +138,7 @@ local function spawn_bees(user, props)
     if direction_changes < 2 then
       -- target the nearest enemy
 
-      local nearest_enemy = field:find_nearest_characters(bees, function(character)
+      local nearest_enemy = Field.find_nearest_characters(bees, function(character)
         return character:team() ~= bees:team() and character:hittable()
       end)[1]
 
@@ -195,7 +192,7 @@ local function spawn_bees(user, props)
     end
   end
 
-  field:spawn(bees, spawn_tile)
+  Field.spawn(bees, spawn_tile)
 end
 
 ---@param user Entity

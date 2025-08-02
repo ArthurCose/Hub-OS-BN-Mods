@@ -75,7 +75,7 @@ function character_init(self, character_info)
             anim:on_complete(function()
                 artifact:erase()
             end)
-            self:field():spawn(artifact, self:get_tile())
+            Field.spawn(artifact, self:get_tile())
             Resources.play_audio(defense_audio, AudioBehavior.Default)
         end
     end
@@ -209,7 +209,6 @@ function character_init(self, character_info)
     ---Boomerang!
 
     function boomerang(user)
-        local field = user:field()
         local spell = Spell.new(user:team())
         local spell_animation = spell:animation()
         local start_tile = user:get_tile(user:facing(), 1)
@@ -275,13 +274,13 @@ function character_init(self, character_info)
             spell:slide(next_tile, spell.boomer_speed)
         end
         spell.on_attack_func = function()
-            battle_helpers.spawn_visual_artifact(spell:field(), spell:get_tile(), effects_texture, effects_anim, "WOOD"
+            battle_helpers.spawn_visual_artifact(spell:get_tile(), effects_texture, effects_anim, "WOOD"
             , 0, 0)
         end
         spell.on_delete_func = function()
             spell:erase()
         end
-        field:spawn(spell, start_tile)
+        Field.spawn(spell, start_tile)
     end
 end
 

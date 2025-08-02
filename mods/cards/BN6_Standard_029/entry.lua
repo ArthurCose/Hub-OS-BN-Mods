@@ -51,7 +51,7 @@ function card_init(user, props)
 
 			local tile = user:get_tile(user:facing(), 1)
 
-			user:field():spawn(shot, tile)
+			Field.spawn(shot, tile)
 		end)
 	end
 
@@ -62,8 +62,7 @@ local function get_chase_direction(entity)
 	local result = Direction.None
 	local direction_table = { Direction.Up, Direction.Down, Direction.Left, Direction.Right }
 
-	local field = entity:field()
-	local enemy_list = field:find_nearest_characters(entity, function(character)
+	local enemy_list = Field.find_nearest_characters(entity, function(character)
 		if not character then return false end
 		if character:deleted() or character:will_erase_eof() then return false end
 		if not character:spawned() then return false end
@@ -165,10 +164,9 @@ function create_spell(user, props)
 	end
 
 	spell.on_collision_func = function(self, other)
-		local field = self:field()
 		local tile = self:current_tile()
 
-		battle_helpers.spawn_visual_artifact(field, tile, IMPACT_TEXTURE, IMPACT_ANIM_PATH, "ELEC", 0, -other:height() / 2)
+		battle_helpers.spawn_visual_artifact(tile, IMPACT_TEXTURE, IMPACT_ANIM_PATH, "ELEC", 0, -other:height() / 2)
 		Resources.play_audio(HIT_AUDIO)
 
 		self:delete()

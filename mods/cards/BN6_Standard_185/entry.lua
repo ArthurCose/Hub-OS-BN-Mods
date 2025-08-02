@@ -95,7 +95,7 @@ function card_init(user)
             pull_adjacent(coil:get_tile(direction, 2))
         end
 
-        user:field():spawn(coil, target_tile)
+        Field.spawn(coil, target_tile)
     end
 
     return action

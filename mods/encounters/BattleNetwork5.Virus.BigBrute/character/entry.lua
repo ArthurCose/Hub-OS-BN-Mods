@@ -119,10 +119,9 @@ function character_init(self)
 end
 
 function big_brute_teleport(character, is_attacking)
-    local field = character:field()
     local user_team = character:team()
 
-    local target_list = field:find_characters(function(entity)
+    local target_list = Field.find_characters(function(entity)
         if not entity:hittable() then return false end
         if Obstacle.from(entity) ~= nil then return false end
         return entity:team() ~= user_team
@@ -138,7 +137,7 @@ function big_brute_teleport(character, is_attacking)
 
     local target_tile = nil
 
-    allowed_movement_tiles = field:find_tiles(function(other_tile)
+    allowed_movement_tiles = Field.find_tiles(function(other_tile)
         if not character:can_move_to(other_tile) then
             return false
         end
@@ -182,7 +181,7 @@ function big_brute_teleport(character, is_attacking)
     teleport_action.on_action_end_func = function(self)
         local departure_tile = character:current_tile()
 
-        spawn_visual_artifact(departure_tile, character, teleport_texture, teleport_animation_path,
+        spawn_visual_artifact(departure_tile, teleport_texture, teleport_animation_path,
             teleport_action.teleport_size .. "_TELEPORT_FROM", 0, -character_info.height)
 
         character:teleport(target_tile, function()
@@ -202,8 +201,7 @@ function is_tile_free_for_movement(tile, character, must_be_walkable)
     return true
 end
 
-function spawn_visual_artifact(tile, character, texture, animation_path, animation_state, position_x, position_y)
-    local field = character:field()
+function spawn_visual_artifact(tile, texture, animation_path, animation_state, position_x, position_y)
     local visual_artifact = Artifact.new()
     visual_artifact:set_texture(texture, true)
     local anim = visual_artifact:animation()
@@ -213,7 +211,7 @@ function spawn_visual_artifact(tile, character, texture, animation_path, animati
         visual_artifact:delete()
     end)
     visual_artifact:sprite():set_offset(position_x * 0.5, position_y * 0.5)
-    field:spawn(visual_artifact, tile:x(), tile:y())
+    Field.spawn(visual_artifact, tile:x(), tile:y())
 end
 
 function action_teleport(character, target_tile)
@@ -248,7 +246,7 @@ function action_teleport(character, target_tile)
         step1.on_update_func = function(self)
             -- debug_print('action ' .. action_name .. ' step 1 update')
             if not action.arrival_artifact_created then
-                spawn_visual_artifact(target_tile, character, teleport_texture, teleport_animation_path,
+                spawn_visual_artifact(target_tile, teleport_texture, teleport_animation_path,
                     action.teleport_size .. "_TELEPORT_TO", 0, 0)
                 action.arrival_artifact_created = true
             end
@@ -394,7 +392,6 @@ function action_beast_breath(character)
 end
 
 function fire_tower_spell(user, damage, duration, tile)
-    local field = user:field()
     local target_tile = tile
     if target_tile:is_edge() then
         return
@@ -413,7 +410,7 @@ function fire_tower_spell(user, damage, duration, tile)
     spell.on_attack_func = function(self, other)
         local tile = self:current_tile()
         --TODO replace this with volcano effect (gotta make the animation)
-        spawn_visual_artifact(tile, self, impacts_texture, impacts_animation_path, "VOLCANO", 0, 0)
+        spawn_visual_artifact(tile, impacts_texture, impacts_animation_path, "VOLCANO", 0, 0)
     end
 
     spell.on_update_func = function(self)
@@ -463,6 +460,6 @@ function fire_tower_spell(user, damage, duration, tile)
     local anim = spell:animation()
     anim:load(fire_tower_animation_path)
     anim:set_state("START")
-    field:spawn(spell, target_tile)
+    Field.spawn(spell, target_tile)
     return spell
 end

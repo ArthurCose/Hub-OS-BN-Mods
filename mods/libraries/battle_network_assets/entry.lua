@@ -64,7 +64,6 @@ function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
     local action = Action.new(user)
     action:set_lockout(ActionLockout.new_sequence())
 
-    local field = user:field()
     local step = action:create_step()
     local start_poof
 
@@ -72,7 +71,7 @@ function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
         -- default implementation
         target_tile_callback = function()
             local current_tile = user:current_tile()
-            local valid_tiles = field:find_tiles(function(tile)
+            local valid_tiles = Field.find_tiles(function(tile)
                 return user:can_move_to(tile) and tile ~= current_tile
             end)
 
@@ -114,8 +113,8 @@ function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
         end_poof:set_offset(0, y)
 
         local start_tile = user:current_tile()
-        field:spawn(start_poof, start_tile)
-        field:spawn(end_poof, start_tile)
+        Field.spawn(start_poof, start_tile)
+        Field.spawn(end_poof, start_tile)
 
         local start_poof_anim = start_poof:animation()
         start_poof_anim:on_frame(2, function()

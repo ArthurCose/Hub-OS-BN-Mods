@@ -33,7 +33,7 @@ function card_mutate(user, card_index)
 		track_health = user:create_component(Lifetime.ActiveBattle)
 		track_health._stored_value = 0
 		track_health._is_update_value = true
-		track_health._field_list = user:field():find_characters(function(ent)
+		track_health._field_list = Field.find_characters(function(ent)
 			if Living.from(ent) == nil then return false end
 			if ent:current_tile() == nil then return false end
 			if user:is_team(ent:team()) then return false end
@@ -84,8 +84,8 @@ end
 
 ---@param user Entity
 function create_spell(spells, user, props, x_offset, y_offset)
-	local field = user:field()
 	local h_tile = user:get_tile(user:facing(), x_offset)
+	if not h_tile then return end
 	local tile = h_tile:get_tile(Direction.Down, y_offset)
 
 	if not tile then
@@ -106,13 +106,16 @@ function create_spell(spells, user, props, x_offset, y_offset)
 		self:current_tile():attack_entities(self)
 	end
 
-	field:spawn(spell, tile)
+	Field.spawn(spell, tile)
 
 	spells[#spells + 1] = spell
 end
 
 ---@param user Entity
 function spawn_artifact(spells, user, state)
+	local tile = user:get_tile(user:facing(), 1)
+	if not tile then return end
+
 	local fx = Artifact.new()
 	fx:set_facing(user:facing())
 	local anim = fx:animation()
@@ -127,7 +130,6 @@ function spawn_artifact(spells, user, state)
 		end
 	end)
 
-	local field = user:field()
 	fx:set_elevation(10)
-	field:spawn(fx, user:get_tile(user:facing(), 1))
+	Field.spawn(fx, tile)
 end

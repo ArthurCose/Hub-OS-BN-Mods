@@ -201,22 +201,21 @@ return function(player, form, base_animation_path)
         return
       end
 
-      local field = player:field()
       local hit_props = HitProps.new(
         20 * player:attack_level() + 40,
         Hit.Impact | Hit.Flinch | Hit.Drag,
         Element.Wind,
         player:context(),
-        Drag.new(player:facing(), field:width())
+        Drag.new(player:facing(), Field.width())
       )
 
-      field:spawn(create_slash(player, hit_props), forward_tile)
+      Field.spawn(create_slash(player, hit_props), forward_tile)
 
       local team = player:team()
       local x = forward_tile:x()
 
-      for y = 0, field:height() - 1 do
-        field:spawn(create_gust(team, player:facing()), x, y)
+      for y = 0, Field.height() - 1 do
+        Field.spawn(create_gust(team, player:facing()), x, y)
       end
 
       Resources.play_audio(SLASH_SFX)
@@ -248,16 +247,15 @@ return function(player, form, base_animation_path)
 
       local team = player:team()
       local direction = player:facing_away()
-      local field = player:field()
 
       local x = 1
 
       if direction == Direction.Left then
-        x = field:width() - 2
+        x = Field.width() - 2
       end
 
-      for y = 1, field:height() - 2 do
-        field:spawn(create_back_gust(team, direction), x, y)
+      for y = 1, Field.height() - 2 do
+        Field.spawn(create_back_gust(team, direction), x, y)
       end
     end
 

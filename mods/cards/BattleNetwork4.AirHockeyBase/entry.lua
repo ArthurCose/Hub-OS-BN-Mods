@@ -18,7 +18,7 @@ function card_init(user, props)
 		local tile = user:get_tile(dir, 1)
 		if tile then
 			local puck = create_puck(user, props)
-			user:field():spawn(puck, tile)
+			Field.spawn(puck, tile)
 		end
 	end)
 
@@ -110,7 +110,7 @@ function create_puck(user, props)
 		fx_anim:on_complete(function()
 			fx:erase()
 		end)
-		spell:field():spawn(fx, spell:current_tile())
+		Field.spawn(fx, spell:current_tile())
 	end
 
 	spell.on_attack_func = function(self, other)
@@ -131,7 +131,7 @@ function create_puck(user, props)
 			fx_anim:on_complete(function()
 				fx:erase()
 			end)
-			spell:field():spawn(fx, spell:current_tile():x(), spell:current_tile():y())
+			Field.spawn(fx, spell:current_tile():x(), spell:current_tile():y())
 		end
 		self:erase()
 	end

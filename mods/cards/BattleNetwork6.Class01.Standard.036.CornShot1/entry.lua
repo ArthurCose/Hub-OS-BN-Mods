@@ -30,8 +30,6 @@ local function create_and_spawn_explosion(spell, spawn_tile)
 		return
 	end
 
-	local field = spell:field()
-
 	local explosion = Spell.new(spell:team())
 
 	explosion:set_facing(spell:facing())
@@ -90,10 +88,10 @@ local function create_and_spawn_explosion(spell, spawn_tile)
 	end
 
 	-- spawn the explosion
-	field:spawn(explosion, spawn_tile)
+	Field.spawn(explosion, spawn_tile)
 end
 
-local function create_attack(user, props, context, facing, is_recipe, field)
+local function create_attack(user, props, context, facing, is_recipe)
 	local spell = Spell.new(user:team())
 
 	spell._facing = facing
@@ -194,9 +192,6 @@ function card_init(actor, props)
 	)
 
 	action.on_execute_func = function(self, user)
-		-- obtain field to not call this more than once
-		local field = user:field();
-
 		-- obtain direction user is facing to not call this more than once
 		local facing = user:facing();
 
@@ -233,11 +228,11 @@ function card_init(actor, props)
 			user:set_counterable(false)
 
 			-- create the attack itself
-			local cannonshot = create_attack(user, props, context, facing, props.short_name == "CornFst", field)
+			local cannonshot = create_attack(user, props, context, facing, props.short_name == "CornFst")
 
 			-- obtain tile to spawn the attack on and spawn it using the field
 			local tile = user:current_tile()
-			field:spawn(cannonshot, tile)
+			Field.spawn(cannonshot, tile)
 		end)
 	end
 

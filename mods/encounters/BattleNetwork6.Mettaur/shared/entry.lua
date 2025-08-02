@@ -106,10 +106,9 @@ function character_init(self, character_info)
     self.on_battle_start_func = function(self)
         debug_print("battle_start_func called")
         add_enemy_to_tracking(self)
-        local field = self:field()
         local mob_sort_func = function(a, b)
-            local met_a_tile = field:get_entity(a):current_tile()
-            local met_b_tile = field:get_entity(b):current_tile()
+            local met_a_tile = Field.get_entity(a):current_tile()
+            local met_b_tile = Field.get_entity(b):current_tile()
             local var_a = (met_a_tile:x() * 3) + met_a_tile:y()
             local var_b = (met_b_tile:x() * 3) + met_b_tile:y()
             return var_a < var_b
@@ -137,10 +136,9 @@ function character_init(self, character_info)
 end
 
 function find_target(self)
-    local field = self:field()
     local team = self:team()
-    local target_list = field:find_characters(function(entity)
-        if not entity:hittable() then return end
+    local target_list = Field.find_characters(function(entity)
+        if not entity:hittable() then return false end
 
         return entity:team() ~= team
     end)
@@ -291,7 +289,6 @@ end
 function spawn_shockwave(owner, tile, direction, damage, wave_texture, wave_animation, wave_sfx, cascade_frame_index,
                          new_tile_state)
     local team = owner:team()
-    local field = owner:field()
     local cascade_frame = cascade_frame_index
     local spawn_next
     spawn_next = function()
@@ -332,7 +329,7 @@ function spawn_shockwave(owner, tile, direction, damage, wave_texture, wave_anim
             end
         end
 
-        field:spawn(spell, tile)
+        Field.spawn(spell, tile)
     end
 
     spawn_next()

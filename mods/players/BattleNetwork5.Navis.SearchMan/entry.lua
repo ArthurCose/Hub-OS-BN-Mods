@@ -17,12 +17,11 @@ function player_init(player)
     end
 
     player.charged_attack_func = function()
-        local field = player:field()
         local enemy_filter = function(character)
             return character:team() ~= player:team() and character:hittable()
         end
         --Find an enemy to attack.
-        local enemy_list = field:find_nearest_characters(player, enemy_filter)
+        local enemy_list = Field.find_nearest_characters(player, enemy_filter)
         --If one exists, start the scope attack.
         if #enemy_list > 0 then
             local action = Action.new(player, "RIFLE FIRE")
@@ -37,7 +36,7 @@ function player_init(player)
                 local target = enemy_list[1]
                 local tile = target:current_tile()
                 --Spawn the cursor.
-                field:spawn(player.cursor, target:current_tile())
+                Field.spawn(player.cursor, target:current_tile())
                 --Hit Props are necessary to deal damage.
                 local damage_props = HitProps.new(
                     10 + (player:attack_level() * 2),                      --This is the actual damage amount.
@@ -64,7 +63,7 @@ function player_init(player)
                             --Use the props.
                             hitbox:set_hit_props(damage_props)
                             --Spawn it!
-                            field:spawn(hitbox, tile)
+                            Field.spawn(hitbox, tile)
                         end
                     end)
                 end

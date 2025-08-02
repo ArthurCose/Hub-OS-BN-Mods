@@ -82,7 +82,6 @@ end
 function toss_spell(tosser, toss_height, texture, animation_path, target_tile, frames_in_air, arrival_callback)
     local starting_height = -110
     local start_tile = tosser:current_tile()
-    local field = tosser:field()
     local spell = Spell.new(tosser:team())
     local spell_animation = spell:animation()
     spell_animation:load(animation_path)
@@ -120,11 +119,10 @@ function toss_spell(tosser, toss_height, texture, animation_path, target_tile, f
     spell.can_move_to_func = function(tile)
         return true
     end
-    field:spawn(spell, start_tile)
+    Field.spawn(spell, start_tile)
 end
 
 function hit_explosion(user, target_tile, props, texture, anim_path)
-    local field = user:field()
     local spell = Spell.new(user:team())
     local whirlpool = Spell.new(user:team())
     whirlpool:set_texture(explosion_texture)
@@ -170,7 +168,7 @@ function hit_explosion(user, target_tile, props, texture, anim_path)
             )
         )
         if not self.spawned_hitbox then
-            whirlpool:field():spawn(hitbox, whirlpool:current_tile())
+            Field.spawn(hitbox, whirlpool:current_tile())
             self.spawned_hitbox = true
         end
         self:erase()
@@ -182,12 +180,12 @@ function hit_explosion(user, target_tile, props, texture, anim_path)
             spell:current_tile():attack_entities(self)
             spell.has_attacked = true
             if #target_tile:find_entities(query) == 0 then
-                field:spawn(whirlpool, target_tile)
+                Field.spawn(whirlpool, target_tile)
             end
             self:erase()
         end
     end
-    field:spawn(spell, target_tile)
+    Field.spawn(spell, target_tile)
 end
 
 return bomb

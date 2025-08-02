@@ -37,7 +37,7 @@ function card_init(user, props)
             local tile = user:get_tile(user:facing(), 1)
 
             if tile then
-                user:field():spawn(attack, tile)
+                Field.spawn(attack, tile)
             end
         end)
 

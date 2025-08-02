@@ -24,7 +24,7 @@ local function try_hit(entity)
     artifact:erase()
   end)
 
-  entity:field():spawn(artifact, tile)
+  Field.spawn(artifact, tile)
 end
 
 ---@param custom_state CustomTileState

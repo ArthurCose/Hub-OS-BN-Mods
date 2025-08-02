@@ -17,7 +17,6 @@ Sword:use_hand()
 
 ---@param user Entity
 local function create_star(user, hit_props)
-  local field = user:field()
   local spell = Spell.new(user:team())
   spell:set_texture(TEXTURE)
   spell:set_facing(user:facing())
@@ -59,7 +58,7 @@ local function create_star(user, hit_props)
     local offset = spell:movement_offset()
     artifact:set_offset(offset.x, offset.y)
 
-    field:spawn(artifact, spell:current_tile())
+    Field.spawn(artifact, spell:current_tile())
   end
 
   -- movement and attack
@@ -119,7 +118,7 @@ local function create_star(user, hit_props)
     spell:set_movement_offset(x_offset, y_offset)
 
     -- updating tile
-    local tile = field:tile_at(tile_x, tile_y)
+    local tile = Field.tile_at(tile_x, tile_y)
 
     if not tile then
       spell:erase()
@@ -152,8 +151,7 @@ function card_init(user, props)
       local hit_props = HitProps.from_card(props, user:context())
       local star = create_star(user, hit_props)
 
-      local field = user:field()
-      field:spawn(star, tile)
+      Field.spawn(star, tile)
     end
   end)
 end

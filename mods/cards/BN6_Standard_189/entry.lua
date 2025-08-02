@@ -42,8 +42,7 @@ end
 
 function poof_user(user, props)
     local action = Action.new(user)
-    local field = user:field()
-    local tile = targeting(user, field)
+    local tile = targeting(user)
 
     if tile == nil then
         return action
@@ -62,11 +61,11 @@ function poof_user(user, props)
         local poof_position = user:movement_offset()
         poof_position.y = poof_position.y - user:height() / 2
         poof:set_offset(poof_position.x, poof_position.y)
-        field:spawn(poof, user:current_tile())
+        Field.spawn(poof, user:current_tile())
 
         -- spawn shuriken
         local spell = create_shuriken_spell(user, props)
-        field:spawn(spell, tile)
+        Field.spawn(spell, tile)
 
         local cooldown = 60
         local step1 = self:create_step()
@@ -161,7 +160,7 @@ function create_shuriken_spell(user, props)
     return spell
 end
 
-function targeting(user, field)
+function targeting(user)
     local tile;
 
     local enemy_filter = function(character)
@@ -169,7 +168,7 @@ function targeting(user, field)
     end
 
     local enemy_list = nil
-    enemy_list = field:find_nearest_characters(user, enemy_filter)
+    enemy_list = Field.find_nearest_characters(user, enemy_filter)
     if #enemy_list > 0 then tile = enemy_list[1]:current_tile() else tile = nil end
 
     if not tile then

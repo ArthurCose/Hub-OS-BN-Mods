@@ -30,7 +30,7 @@ function card_init(user, props)
 
 		local desired_tile = user:get_tile(user:facing(), 1)
 		if desired_tile and not desired_tile:is_reserved() and desired_tile:is_walkable() then
-			user:field():spawn(cube, desired_tile)
+			Field.spawn(cube, desired_tile)
 		end
 	end
 

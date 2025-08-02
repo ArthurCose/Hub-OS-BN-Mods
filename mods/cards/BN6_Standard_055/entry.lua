@@ -65,10 +65,10 @@ local function resolve_target_column(user)
     end
   end
 
-  local target = user:field():find_nearest_players(user, filter)[1]
+  local target = Field.find_nearest_players(user, filter)[1]
 
   if not target then
-    target = user:field():find_nearest_characters(user, filter)[1]
+    target = Field.find_nearest_characters(user, filter)[1]
   end
 
   if not target then
@@ -107,7 +107,7 @@ local function create_cursor(user, props)
     end
 
     if time == 6 then
-      cursor:field():spawn(
+      Field.spawn(
         create_shot(user, hit_props),
         cursor:current_tile()
       )
@@ -186,19 +186,18 @@ function card_init(user, props)
     end)
 
     -- create and spawn cursor
-    local field = user:field()
     cursor = create_cursor(user, props)
     local spawn_x = resolve_target_column(user)
 
     if not spawn_x then
       if user:facing() == Direction.Right then
-        spawn_x = field:width() - 2
+        spawn_x = Field.width() - 2
       else
         spawn_x = 1
       end
     end
 
-    field:spawn(cursor, spawn_x, field:height() - 2)
+    Field.spawn(cursor, spawn_x, Field.height() - 2)
   end
 
   action.on_action_end_func = function()

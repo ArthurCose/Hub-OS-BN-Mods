@@ -23,7 +23,6 @@ function card_init(user, props)
     local tile_checks = 0
     local step = action:create_step()
     local time = 0
-    local field = user:field()
 
     local mine = Spell.new(Team.Other)
 
@@ -63,7 +62,7 @@ function card_init(user, props)
         explosion:erase()
       end)
 
-      field:spawn(explosion, other:current_tile())
+      Field.spawn(explosion, other:current_tile())
 
       self:erase()
     end
@@ -82,7 +81,7 @@ function card_init(user, props)
       return mine._is_set == false
     end
 
-    local tile_list = field:find_tiles(function(tile)
+    local tile_list = Field.find_tiles(function(tile)
       if not tile:is_walkable() then return false end
 
       if #tile:find_obstacles(function(o)
@@ -127,7 +126,7 @@ function card_init(user, props)
 
         mine:teleport(destination_tile)
       else
-        field:spawn(mine, destination_tile)
+        Field.spawn(mine, destination_tile)
       end
 
       Resources.play_audio(APPEAR_SFX)

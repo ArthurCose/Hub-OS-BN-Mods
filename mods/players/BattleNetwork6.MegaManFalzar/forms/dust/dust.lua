@@ -162,7 +162,6 @@ return function(player, form, base_animation_path)
       spell:set_facing(player:facing())
       spell:set_shadow(SCRAP_REBORN_SHADOW_TEXTURE)
       spell:set_texture(SCRAP_REBORN_TEXTURE)
-      spell:show_shadow()
 
       local spell_anim = spell:animation()
       spell_anim:load(SCRAP_REBORN_ANIMATION_PATH)
@@ -186,7 +185,7 @@ return function(player, form, base_animation_path)
             return
           end
 
-          spell:field():shake(3, 30)
+          Field.shake(3, 30)
           Resources.play_audio(PUNCH_SFX)
 
           if tile:state() == TileState.Cracked then
@@ -240,7 +239,7 @@ return function(player, form, base_animation_path)
         spell:slide(next_tile, 8)
       end
 
-      player:field():spawn(spell, spawn_tile)
+      Field.spawn(spell, spawn_tile)
     end
 
     action:add_anim_action(5, function()
@@ -274,7 +273,7 @@ return function(player, form, base_animation_path)
         artifact:delete()
       end)
 
-      player:field():spawn(artifact, player:current_tile())
+      Field.spawn(artifact, player:current_tile())
     end
 
     ---@type Entity[]
@@ -283,7 +282,7 @@ return function(player, form, base_animation_path)
     action:add_anim_action(4, function()
       Resources.play_audio(VACUUM_SFX)
 
-      player:field():find_obstacles(function(e)
+      Field.find_obstacles(function(e)
         if not e:hittable() or not e:owner() or #inhaled + #inhaling >= 8 then
           return false
         end
@@ -349,7 +348,7 @@ return function(player, form, base_animation_path)
           local global_y = (end_y - start_y) * progress + start_y
 
           -- resolve tile
-          local tile = spell:field():tile_at(
+          local tile = Field.tile_at(
             global_x // TILE_W,
             global_y // TILE_H
           )
@@ -367,7 +366,7 @@ return function(player, form, base_animation_path)
           end
         end
 
-        player:field():spawn(spell, spawn_tile)
+        Field.spawn(spell, spawn_tile)
 
         return false
       end)

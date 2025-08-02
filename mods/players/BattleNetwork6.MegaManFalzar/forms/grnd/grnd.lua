@@ -43,8 +43,8 @@ return function(player, form, base_animation_path)
                   Element.Break
                 )
 
-            FallingRockLib.spawn_falling_rocks(player:field(), player:team(), 3, hit_props)
-            Field:shake(3, 40)
+            FallingRockLib.spawn_falling_rocks(player:team(), 3, hit_props)
+            Field.shake(3, 40)
           end)
       player:add_aux_prop(rock_aux_prop)
 
@@ -102,7 +102,7 @@ return function(player, form, base_animation_path)
       spell.on_collision_func = function(_, other)
         if not hit then
           Resources.play_audio(HIT_SFX)
-          Field:shake(2, 30)
+          Field.shake(2, 30)
           hit = true
         end
 
@@ -114,7 +114,7 @@ return function(player, form, base_animation_path)
         )
       end
 
-      player:field():spawn(spell, spawn_tile)
+      Field.spawn(spell, spawn_tile)
     end
 
     action.on_update_func = function()
@@ -151,7 +151,7 @@ return function(player, form, base_animation_path)
       hole_anim:set_state("HOLE")
 
       local tile = player:current_tile()
-      player:field():spawn(hole, tile)
+      Field.spawn(hole, tile)
       tile:remove_entity(player)
     end)
 
@@ -236,9 +236,8 @@ return function(player, form, base_animation_path)
       poof_a:set_offset(0, -player:height() // 2)
       poof_b:set_offset(0, -player:height() // 2)
 
-      local field = player:field()
-      field:spawn(poof_a, player:current_tile())
-      field:spawn(poof_b, original_tile)
+      Field.spawn(poof_a, player:current_tile())
+      Field.spawn(poof_b, original_tile)
     end)
 
     -- disappear

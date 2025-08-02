@@ -64,8 +64,6 @@ end
 ---@param user Entity
 ---@param props CardProperties
 function SeedBomb:create_action(user, props)
-  local field = user:field()
-
   local action = self._bomb:create_action(user, function(tile)
     if not tile or not tile:is_walkable() then
       return
@@ -86,7 +84,7 @@ function SeedBomb:create_action(user, props)
 
     spell.on_collision_func = function()
       Resources.play_audio(self._tile_sfx)
-      field:spawn(self:create_panel_change_spell(), tile)
+      Field.spawn(self:create_panel_change_spell(), tile)
       spell:erase()
     end
 
@@ -100,10 +98,10 @@ function SeedBomb:create_action(user, props)
 
       for y = tile:y() - 1, tile:y() + 1 do
         for x = tile:x() - 1, tile:x() + 1 do
-          local tile = field:tile_at(x, y)
+          local tile = Field.tile_at(x, y)
 
           if tile and tile:can_set_state(self._tile_state) then
-            field:spawn(self:create_panel_change_spell(), tile)
+            Field.spawn(self:create_panel_change_spell(), tile)
           end
         end
       end
@@ -112,7 +110,7 @@ function SeedBomb:create_action(user, props)
       spell:erase()
     end
 
-    field:spawn(spell, tile)
+    Field.spawn(spell, tile)
   end)
 
   local duration = 0

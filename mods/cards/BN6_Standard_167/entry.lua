@@ -15,15 +15,14 @@ function card_init(user)
 		local team = user:team()
 		local direction = user:facing()
 
-		local field = user:field()
 		---@type Tile[]
 		local stolen_tiles = {}
 
-		for x = 0, field:width() - 1 do
+		for x = 0, Field.width() - 1 do
 			local column_stolen = false
 
-			for y = 0, field:height() - 1 do
-				local tile = field:tile_at(x, y)
+			for y = 0, Field.height() - 1 do
+				local tile = Field.tile_at(x, y)
 				local stolen = false
 
 				if tile and not tile:is_edge() then
@@ -37,7 +36,7 @@ function card_init(user)
 			end
 
 			if column_stolen then
-				field:reclaim_column(x, team)
+				Field.reclaim_column(x, team)
 			end
 		end
 
@@ -59,19 +58,19 @@ function card_init(user)
 				artifact:erase()
 			end)
 
-			field:spawn(artifact, tile)
+			Field.spawn(artifact, tile)
 		end
 
 		Resources.play_audio(INDICATE_SFX)
 
 		-- prioritize nearest opponent player
-		local target = field:find_nearest_players(user, function(player)
+		local target = Field.find_nearest_players(user, function(player)
 			return player:team() ~= user:team() and player:hittable()
 		end)[1]
 
 		if not target then
 			-- switch to nearest opponent character
-			target = field:find_nearest_characters(user, function(character)
+			target = Field.find_nearest_characters(user, function(character)
 				return character:team() ~= user:team() and character:hittable()
 			end)[1]
 		end
@@ -105,10 +104,10 @@ function card_init(user)
 			local hit_props = spell:copy_hit_props()
 			hit_props.flags = hit_props.flags | Hit.PierceInvis | Hit.Drag
 			hit_props.damage = 40
-			hit_props.drag = Drag.new(target:facing_away(), field:width())
+			hit_props.drag = Drag.new(target:facing_away(), Field.width())
 			spell:set_hit_props(hit_props)
 
-			field:spawn(spell, tile)
+			Field.spawn(spell, tile)
 			existing_spell = spell
 		end
 	end

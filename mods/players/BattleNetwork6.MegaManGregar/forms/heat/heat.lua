@@ -65,7 +65,6 @@ end
 
 local function charged_buster(user, props)
   local action = Action.new(user, "CHARACTER_SHOOT")
-  local field = user:field()
   local tile_array = {}
   local frames = { { 1, 67 } }
 
@@ -82,7 +81,7 @@ local function charged_buster(user, props)
     local increment = 1
     if user:facing() == Direction.Left then increment = -1 end
     for i = 1, 3, 1 do
-      local prospective_tile = field:tile_at(x + (i * increment), y)
+      local prospective_tile = Field.tile_at(x + (i * increment), y)
       if prospective_tile and not prospective_tile:is_edge() then
         table.insert(tile_array, prospective_tile)
       end
@@ -115,7 +114,7 @@ local function charged_buster(user, props)
     Resources.play_audio(FLAME_SFX)
 
     if #tile_array > 0 then
-      field:spawn(flame1, tile_array[1])
+      Field.spawn(flame1, tile_array[1])
     end
 
     local time = 0
@@ -129,12 +128,12 @@ local function charged_buster(user, props)
       if time == 5 then
         if #tile_array > 1 then
           -- queue spawn frame 5, should appear frame 6
-          field:spawn(flame2, tile_array[2])
+          Field.spawn(flame2, tile_array[2])
         end
       elseif time == 9 then
         if #tile_array > 2 then
           -- queue spawn frame 9, should appear frame 10
-          field:spawn(flame3, tile_array[3])
+          Field.spawn(flame3, tile_array[3])
         end
       elseif time == 61 - 7 then
         if flame1:spawned() then

@@ -244,8 +244,6 @@ function spawn_attack(user, props, state, offset_list, is_slide, is_pierce)
 	if is_slide == nil then is_slide = false end
 	if is_pierce == nil then is_pierce = false end
 
-	local field = user:field()
-
 	local slash = Spell.new(user:team())
 	slash:set_facing(user:facing())
 
@@ -333,5 +331,5 @@ function spawn_attack(user, props, state, offset_list, is_slide, is_pierce)
 		self:erase()
 	end
 
-	field:spawn(slash, user:get_tile(user:facing(), 1))
+	Field.spawn(slash, user:get_tile(user:facing(), 1))
 end

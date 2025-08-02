@@ -33,28 +33,27 @@ function card_init(user, props)
 	end
 
 	return sword:create_action(user, function()
-		local field = user:field()
 		local team = user:team()
 		local facing = user:facing()
 		local tile1 = user:get_tile(facing, 1)
 
-		create_attack(user, props, team, facing, field, tile1, query)
+		create_attack(user, props, team, facing, tile1, query)
 
 		if crackshoot_type == "CRACKSHOOT_TYPE_DOUBLE" then
 			local tile2 = user:get_tile(facing, 2)
 
-			create_attack(user, props, team, facing, field, tile2, query)
+			create_attack(user, props, team, facing, tile2, query)
 		elseif crackshoot_type == "CRACKSHOOT_TYPE_TRIPLE" then
 			local tile2 = tile1:get_tile(Direction.Up, 1)
 			local tile3 = tile1:get_tile(Direction.Down, 1)
 
-			create_attack(user, props, team, facing, field, tile2, query)
-			create_attack(user, props, team, facing, field, tile3, query)
+			create_attack(user, props, team, facing, tile2, query)
+			create_attack(user, props, team, facing, tile3, query)
 		end
 	end)
 end
 
-function create_attack(user, props, team, facing, field, tile, query)
+function create_attack(user, props, team, facing, tile, query)
 	local spell = Spell.new(team)
 
 	spell:set_facing(facing)
@@ -86,7 +85,7 @@ function create_attack(user, props, team, facing, field, tile, query)
 	end
 
 	if tile and tile:is_walkable() then
-		battle_helpers.create_effect(facing, DUST_TEXTURE, DUST_ANIMPATH, "DEFAULT", 0, 0, -3, field, tile,
+		battle_helpers.create_effect(facing, DUST_TEXTURE, DUST_ANIMPATH, "DEFAULT", 0, 0, -3, tile,
 			Playback.Once, true, nil)
 
 		if #tile:find_entities(query) > 0 then
@@ -120,7 +119,7 @@ function create_attack(user, props, team, facing, field, tile, query)
 			end
 		end
 
-		field:spawn(spell, tile)
+		Field.spawn(spell, tile)
 	end
 	spell.on_collision_func = function(self, other)
 		self:delete()
@@ -133,10 +132,10 @@ function create_attack(user, props, team, facing, field, tile, query)
 	end
 	spell.on_attack_func = function(self, ent)
 		if facing == Direction.Right then
-			battle_helpers.create_effect(facing, EFFECT_TEXTURE, EFFECT_ANIMPATH, "PEASHOT", -20, -15, -999999, field,
+			battle_helpers.create_effect(facing, EFFECT_TEXTURE, EFFECT_ANIMPATH, "PEASHOT", -20, -15, -999999,
 				self:current_tile(), Playback.Once, true, nil)
 		else
-			battle_helpers.create_effect(facing, EFFECT_TEXTURE, EFFECT_ANIMPATH, "PEASHOT", 20, -15, -999999, field,
+			battle_helpers.create_effect(facing, EFFECT_TEXTURE, EFFECT_ANIMPATH, "PEASHOT", 20, -15, -999999,
 				self:current_tile(), Playback.Once, true, nil)
 		end
 		if Character.from(user) ~= nil then

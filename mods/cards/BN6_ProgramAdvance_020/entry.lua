@@ -31,8 +31,8 @@ end
 
 ---@param user Entity
 function create_spell(spells, user, props, x_offset, y_offset)
-	local field = user:field()
 	local h_tile = user:get_tile(user:facing(), x_offset)
+	if not h_tile then return end
 	local tile = h_tile:get_tile(Direction.Down, y_offset)
 
 	if not tile then
@@ -53,13 +53,16 @@ function create_spell(spells, user, props, x_offset, y_offset)
 		self:current_tile():attack_entities(self)
 	end
 
-	field:spawn(spell, tile)
+	Field.spawn(spell, tile)
 
 	spells[#spells + 1] = spell
 end
 
 ---@param user Entity
 function spawn_artifact(spells, user, state)
+	local tile = user:get_tile(user:facing(), 1)
+	if not tile then return end
+
 	local fx = Artifact.new()
 	fx:set_facing(user:facing())
 	local anim = fx:animation()
@@ -74,7 +77,6 @@ function spawn_artifact(spells, user, state)
 		end
 	end)
 
-	local field = user:field()
 	fx:set_elevation(8)
-	field:spawn(fx, user:get_tile(user:facing(), 1))
+	Field.spawn(fx, tile)
 end

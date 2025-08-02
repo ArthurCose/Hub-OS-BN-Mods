@@ -41,7 +41,7 @@ local create_boom = function(catack)
       if own_tile:get_tile(self:facing(), 1):is_edge() then
         self._can_slide = false
         if #self:current_tile():find_entities(catack._tile_query) == 0 then
-          self:teleport(catack:field():tile_at(self:current_tile():x(), 2), function() end)
+          self:teleport(Field.tile_at(self:current_tile():x(), 2), function() end)
 
           self:set_texture(explosion_texture)
 
@@ -242,7 +242,7 @@ function character_init(catack)
                     Drag.None
                   )
                 )
-                catack:field():spawn(hitbox, catack._destination_tile)
+                Field.spawn(hitbox, catack._destination_tile)
               end
             end
           elseif catack:facing() == Direction.Right then
@@ -269,7 +269,7 @@ function character_init(catack)
                     Drag.None
                   )
                 )
-                catack:field():spawn(hitbox, catack._destination_tile)
+                Field.spawn(hitbox, catack._destination_tile)
               end
             end
           end
@@ -299,7 +299,7 @@ function character_init(catack)
               anim:set_playback(Playback.Once)
               anim:on_frame(3, function()
                 local boom = create_boom(catack)
-                catack:field():spawn(boom, catack:get_tile(catack:facing(), 1))
+                Field.spawn(boom, catack:get_tile(catack:facing(), 1))
                 anim:set_state(catack._hide_state)
                 anim:set_playback(Playback.Once)
                 anim:on_complete(function()

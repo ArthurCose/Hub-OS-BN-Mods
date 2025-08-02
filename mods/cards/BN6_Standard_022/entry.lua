@@ -35,7 +35,7 @@ function card_init(actor, props)
 
 			local tile = user:get_tile(user:facing(), 1)
 
-			user:field():spawn(shot, tile)
+			Field.spawn(shot, tile)
 		end)
 	end
 	return action

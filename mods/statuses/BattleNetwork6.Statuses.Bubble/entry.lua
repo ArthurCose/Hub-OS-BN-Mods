@@ -29,7 +29,7 @@ local function spawn_alert(parent)
   local movement_offset = parent:movement_offset()
   alert_artifact:set_offset(movement_offset.x, movement_offset.y - parent:height())
 
-  parent:field():spawn(alert_artifact, parent:current_tile())
+  Field.spawn(alert_artifact, parent:current_tile())
 end
 
 local function spawn_pop(parent)
@@ -58,7 +58,7 @@ local function spawn_pop(parent)
     parent_offset.y + movement_offset.y - parent:height() * 0.5
   )
 
-  parent:field():spawn(artifact, parent:current_tile())
+  Field.spawn(artifact, parent:current_tile())
 
   return artifact
 end

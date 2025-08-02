@@ -49,7 +49,7 @@ function card_init(actor, props)
         action:add_anim_action(2, function()
             self.ray_of_sun = summon_sun(user, props, frame_wait)
             local tile = user:get_tile(user:facing(), 2)
-            actor:field():spawn(self.ray_of_sun, tile)
+            Field.spawn(self.ray_of_sun, tile)
         end)
     end
     action.on_action_end_func = function(self)
@@ -92,7 +92,7 @@ function summon_sun(user, props, frame_wait)
             if self.framedata > 0 then
                 local call_hit = spell_damage_summon(self, props)
                 local tile = user:get_tile(user:facing(), 2)
-                user:field():spawn(call_hit, tile)
+                Field.spawn(call_hit, tile)
                 if sun_noise_countdown <= 0 then
                     Resources.play_audio(sun_noise, AudioBehavior.Default)
                     sun_noise_countdown = 15

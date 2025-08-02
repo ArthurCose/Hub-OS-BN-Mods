@@ -28,7 +28,7 @@ function card_mutate(user, card_index)
 		track_health = user:create_component(Lifetime.ActiveBattle)
 		track_health._stored_value = 0
 		track_health._is_update_value = true
-		track_health._field_list = user:field():find_characters(function(ent)
+		track_health._field_list = Field.find_characters(function(ent)
 			if Living.from(ent) == nil then return false end
 			if ent:current_tile() == nil then return false end
 			if user:is_team(ent:team()) then return false end
@@ -106,7 +106,7 @@ local function spawn_spell(tile, props, user)
 		self:attack_tile()
 	end
 
-	user:field():spawn(spell, tile)
+	Field.spawn(spell, tile)
 end
 
 function card_init(actor, props)
@@ -115,11 +115,10 @@ function card_init(actor, props)
 	action:set_lockout(ActionLockout.new_async(40))
 
 	action.on_execute_func = function(self, user)
-		local field = user:field()
 		local tiles = {
-			field:tile_at(6, 1),
-			field:tile_at(6, 2),
-			field:tile_at(6, 3)
+			Field.tile_at(6, 1),
+			Field.tile_at(6, 2),
+			Field.tile_at(6, 3)
 		}
 
 		for _, tile in ipairs(tiles) do

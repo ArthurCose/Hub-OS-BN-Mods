@@ -91,7 +91,7 @@ function card_init(player, props)
 				return true
 			end
 
-			user:field():spawn(spell, user:get_tile(facing, 1))
+			Field.spawn(spell, user:get_tile(facing, 1))
 		end)
 	end
 	return action

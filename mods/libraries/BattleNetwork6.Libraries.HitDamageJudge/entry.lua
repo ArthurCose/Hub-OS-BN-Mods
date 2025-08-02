@@ -137,7 +137,7 @@ local function queue_judge_action(entity)
     end
 
     local flipped = false
-    entity:field():find_players(function(player)
+    Field.find_players(function(player)
       if player:is_local() and player:team() == Team.Blue then
         flipped = true
       end
@@ -243,7 +243,7 @@ local function queue_judge_action(entity)
       end
 
       -- delete players to force a win
-      Field:find_players(function(player)
+      Field.find_players(function(player)
         if tracked_damage[player:team()] ~= lowest_damage then
           player:delete()
         end
@@ -293,10 +293,8 @@ end
 
 ---@param encounter Encounter
 function HitDamageJudge.init(encounter)
-  local field = encounter:field()
-
   local artifact = Artifact.new()
-  field:spawn(artifact, 0, 0)
+  Field.spawn(artifact, 0, 0)
 
   local component = artifact:create_component(Lifetime.CardSelectOpen)
 
@@ -308,7 +306,7 @@ function HitDamageJudge.init(encounter)
       component:eject()
     elseif TurnGauge.current_turn() == 1 then
       -- init hit damage tracking on all players
-      field:find_players(function(player)
+      Field.find_players(function(player)
         local defense_rule = DefenseRule.new(DefensePriority.Last, DefenseOrder.Always)
 
         defense_rule.filter_func = function(props)

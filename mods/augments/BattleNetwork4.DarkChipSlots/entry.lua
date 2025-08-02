@@ -10,9 +10,7 @@ function augment_init(augment)
 	local mood = 128
 
 	local function create_mood_restoration_prop(action)
-		local field = player:field()
-
-		local list = field:find_characters(function(character)
+		local list = Field.find_characters(function(character)
 			if Living.from(character) == nil then return false end
 			if character:deleted() or character:will_erase_eof() then return false end
 			if character:is_team(player:team()) then return false end
@@ -25,13 +23,13 @@ function augment_init(augment)
 
 		for _, character in ipairs(list) do
 			local character_aux_prop = AuxProp.new()
-				:require_hit_damage(Compare.EQ, hit_props.damage)
-				:require_hit_flags(hit_props.hit_flags)
-				:require_hit_element(hit_props.element)
-				:once()
-				:with_callback(function()
-					mood = mood + 20
-				end)
+					:require_hit_damage(Compare.EQ, hit_props.damage)
+					:require_hit_flags(hit_props.hit_flags)
+					:require_hit_element(hit_props.element)
+					:once()
+					:with_callback(function()
+						mood = mood + 20
+					end)
 
 			character:add_aux_prop(character_aux_prop)
 		end
@@ -52,63 +50,63 @@ function augment_init(augment)
 	end
 
 	local become_evil = AuxProp.new()
-		:require_action(ActionType.Card)
-		:require_card_class(CardClass.Dark)
-		:intercept_action(function(action)
-			return action
-		end)
-		:with_callback(function()
-			mood = 0
-		end)
-		:once()
+			:require_action(ActionType.Card)
+			:require_card_class(CardClass.Dark)
+			:intercept_action(function(action)
+				return action
+			end)
+			:with_callback(function()
+				mood = 0
+			end)
+			:once()
 
 	player:add_aux_prop(become_evil)
 
 	local mood_damage = AuxProp.new()
-		:require_hit_flags_absent(Hit.NoCounter)
-		:require_hit_damage(Compare.GT, 0)
-		:with_callback(function()
-			if player:emotion() == evil_state then return end
-			mood = math.max(1, mood - 10)
-		end)
+			:require_hit_flags_absent(Hit.NoCounter)
+			:require_hit_damage(Compare.GT, 0)
+			:with_callback(function()
+				if player:emotion() == evil_state then return end
+				mood = math.max(1, mood - 10)
+			end)
 
 	player:add_aux_prop(mood_damage)
 
 	local mood_damage_weak = AuxProp.new()
-		:require_hit_flags(Hit.NoCounter)
-		:require_hit_damage(Compare.GT, 0)
-		:require_card_not_class(CardClass.Dark)
-		:with_callback(function()
-			if player:emotion() == evil_state then return end
-			mood = math.max(1, mood - 3)
-		end)
+			:require_hit_flags(Hit.NoCounter)
+			:require_hit_damage(Compare.GT, 0)
+			:require_card_not_class(CardClass.Dark)
+			:with_callback(function()
+				if player:emotion() == evil_state then return end
+				mood = math.max(1, mood - 3)
+			end)
 
 	player:add_aux_prop(mood_damage_weak)
 
 	local mood_recovery = AuxProp.new()
-		:require_card_recover(Compare.GT, 0)
-		:require_action(ActionType.Card)
-		:require_card_not_class(CardClass.Dark)
-		:intercept_action(function(action)
-			return action
-		end)
-		:with_callback(function()
-			mood = math.min(254, mood + 30)
-		end)
+			:require_card_recover(Compare.GT, 0)
+			:require_action(ActionType.Card)
+			:require_card_not_class(CardClass.Dark)
+			:intercept_action(function(action)
+				return action
+			end)
+			:with_callback(function()
+				mood = math.min(254, mood + 30)
+			end)
 
 	player:add_aux_prop(mood_recovery)
 
 	local mood_boost_card = AuxProp.new()
-		:require_card_recover(Compare.EQ, 0)
-		:require_action(ActionType.Card)
-		:require_card_not_class(CardClass.Dark)
-		:intercept_action(function(action)
-			if player:emotion() == evil_state then return action end
+			:require_card_recover(Compare.EQ, 0)
+			:require_action(ActionType.Card)
+			:require_card_not_class(CardClass.Dark)
+			:intercept_action(function(action)
+				if player:emotion() == evil_state then return action end
 
-			create_mood_restoration_prop(action)
+				create_mood_restoration_prop(action)
 
-			return action
-		end)
+				return action
+			end)
 
 	player:add_aux_prop(mood_boost_card)
 

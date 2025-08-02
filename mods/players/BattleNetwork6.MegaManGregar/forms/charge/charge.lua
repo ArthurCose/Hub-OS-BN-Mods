@@ -186,7 +186,7 @@ return function(player, form, base_animation_path)
         poof = bn_assets.MobMove.new("BIG_START")
         local poof_anim = poof:animation()
 
-        player:field():spawn(poof, start_tile)
+        Field.spawn(poof, start_tile)
         poof:set_offset(0, offset_y)
 
         poof_anim:on_frame(2, function()
@@ -201,7 +201,7 @@ return function(player, form, base_animation_path)
         end)
       end)
 
-      player:field():spawn(poof, player:current_tile())
+      Field.spawn(poof, player:current_tile())
     end
 
     action.on_execute_func = function()

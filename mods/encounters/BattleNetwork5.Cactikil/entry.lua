@@ -25,5 +25,5 @@ function encounter_init(mob)
         :create_spawner(cacter_id, Rank.EX)
         :spawn_at(6, 3)
 
-    mob:field():tile_at(3, 2):set_state(TileState.Broken)
+    Field.tile_at(3, 2):set_state(TileState.Broken)
 end

@@ -224,8 +224,6 @@ function spawn_attack(user, props, state, offset_list, is_slide, is_pierce)
 	if is_slide == nil then is_slide = false end
 	if is_pierce == nil then is_pierce = false end
 
-	local field = user:field()
-
 	local slash = Spell.new(user:team())
 	slash:set_facing(user:facing())
 
@@ -271,7 +269,7 @@ function spawn_attack(user, props, state, offset_list, is_slide, is_pierce)
 			copy_props.flags = copy_props.flags & ~Hit.Flash
 			self:set_hit_props(copy_props)
 			local box = SharedHitbox.new(self, 1)
-			field:spawn(box, own_tile)
+			Field.spawn(box, own_tile)
 			-- box:erase()
 			self:set_hit_props(props)
 		end
@@ -282,7 +280,7 @@ function spawn_attack(user, props, state, offset_list, is_slide, is_pierce)
 				-- Set facing.
 				local facing = self:facing()
 
-				local attack_tile = field:tile_at(own_tile:x() + value.x, own_tile:y() + value.y)
+				local attack_tile = Field.tile_at(own_tile:x() + value.x, own_tile:y() + value.y)
 
 				if attack_tile ~= nil then
 					self:attack_tile(attack_tile)
@@ -313,5 +311,5 @@ function spawn_attack(user, props, state, offset_list, is_slide, is_pierce)
 		self:erase()
 	end
 
-	field:spawn(slash, user:get_tile(user:facing(), 1))
+	Field.spawn(slash, user:get_tile(user:facing(), 1))
 end

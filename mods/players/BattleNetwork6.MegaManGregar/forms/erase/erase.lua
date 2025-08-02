@@ -40,7 +40,7 @@ return function(player, form, base_animation_path)
       player:remove_aux_prop(death_curse_aux_prop)
 
       for entity_id, defense_rule in pairs(defense_rules) do
-        local entity = Field:get_entity(entity_id)
+        local entity = Field.get_entity(entity_id)
 
         if entity then
           entity:remove_defense_rule(defense_rule)
@@ -53,7 +53,7 @@ return function(player, form, base_animation_path)
 
   -- create death curse listeners as defense rules
   form.on_update_func = function()
-    player:field():find_characters(function(entity)
+    Field.find_characters(function(entity)
       -- already installed
       if defense_rules[entity:id()] then
         return false
@@ -175,7 +175,7 @@ return function(player, form, base_animation_path)
           Resources.play_audio(HIT_SFX)
         end
 
-        player:field():spawn(spell, tile)
+        Field.spawn(spell, tile)
       end
     end)
 

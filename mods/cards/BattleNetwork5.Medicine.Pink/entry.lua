@@ -19,7 +19,7 @@ local function create_recov(user)
 
     Resources.play_audio(AUDIO)
 
-    user:field():spawn(artifact, user:current_tile())
+    Field.spawn(artifact, user:current_tile())
 end
 
 function card_mutate(player, index)

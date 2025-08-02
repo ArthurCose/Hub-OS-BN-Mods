@@ -21,7 +21,6 @@ function card_init(user)
 		local team = user:team()
 		local direction = user:facing()
 
-		local field = user:field()
 		local x = user:current_tile():x()
 		local found_opponent_panels = false
 
@@ -35,8 +34,8 @@ function card_init(user)
 		while not found_opponent_panels do
 			x = x + test_offset
 
-			for y = 0, field:height() - 1 do
-				local tile = field:tile_at(x, y)
+			for y = 0, Field.height() - 1 do
+				local tile = Field.tile_at(x, y)
 
 				if not tile then
 					-- reached out of bounds, give up
@@ -56,8 +55,8 @@ function card_init(user)
 
 			local has_opponent_panels = false
 
-			for y = 0, field:height() - 1 do
-				local tile = field:tile_at(x, y)
+			for y = 0, Field.height() - 1 do
+				local tile = Field.tile_at(x, y)
 
 				if not tile then
 					-- reached out of bounds, give up
@@ -80,12 +79,12 @@ function card_init(user)
 		x = x + test_offset
 
 		-- spawn panel grab at every tile in the column
-		for y = 0, field:height() - 1 do
-			local tile = field:tile_at(x, y)
+		for y = 0, Field.height() - 1 do
+			local tile = Field.tile_at(x, y)
 
 			if tile and not tile:is_edge() then
 				local spell = PanelGrabLib.create_spell(team, direction)
-				user:field():spawn(spell, tile)
+				Field.spawn(spell, tile)
 			end
 		end
 	end

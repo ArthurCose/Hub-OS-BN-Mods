@@ -52,24 +52,23 @@ local function create_hitbody_spell(character)
     spell:attack_tile()
   end
 
-  character:field():spawn(spell, character:current_tile())
+  Field.spawn(spell, character:current_tile())
 
   return spell
 end
 
 ---@param character _BattleNetwork5.Powie
 local function create_after_shock(character, x_offset, y_offset)
-  local field = character:field()
   local start_tile = character:current_tile()
 
-  local tile = field:tile_at(start_tile:x() + x_offset, start_tile:y() + y_offset)
+  local tile = Field.tile_at(start_tile:x() + x_offset, start_tile:y() + y_offset)
 
   if not tile then
     return
   end
 
   local explosion = Explosion.new()
-  field:spawn(explosion, tile)
+  Field.spawn(explosion, tile)
 
   local spell = Spell.new(character:team())
   spell:set_hit_props(create_hitprops(character))
@@ -79,7 +78,7 @@ local function create_after_shock(character, x_offset, y_offset)
     spell:erase()
   end
 
-  field:spawn(spell, tile)
+  Field.spawn(spell, tile)
 end
 
 ---@param character _BattleNetwork5.Powie
@@ -111,7 +110,7 @@ local function create_ominous_shadow(character)
     end
   end
 
-  character:field():spawn(shadow, character:current_tile())
+  Field.spawn(shadow, character:current_tile())
 
   return shadow
 end
@@ -160,7 +159,7 @@ local function land(character, return_tile, hitbody_spell)
   Resources.play_audio(THUD_SFX, AudioBehavior.Default)
   create_after_shocks(character)
   character:enable_hitbox(true)
-  character:field():shake(8.0, 1.0 * 60)
+  Field.shake(8.0, 1.0 * 60)
 
   character.on_update_func = function()
     ticks = ticks + 1
@@ -258,7 +257,7 @@ end
 
 ---@param character _BattleNetwork5.Powie
 local function find_target(character)
-  local enemies = character:field():find_nearest_characters(character, function(c)
+  local enemies = Field.find_nearest_characters(character, function(c)
     return c:hittable() and c:team() ~= character:team()
   end)
 
@@ -278,9 +277,7 @@ end
 
 ---@param character _BattleNetwork5.Powie
 local function find_valid_jump_location(character)
-  local field = character:field()
-
-  local tiles = field:find_tiles(function(tile)
+  local tiles = Field.find_tiles(function(tile)
     return character:can_move_to(tile)
   end)
 
@@ -363,7 +360,6 @@ local function shared_package_init(character)
   character:set_texture(Resources.load_texture("battle.greyscaled.png"))
   character:load_animation("battle.animation")
   character:set_shadow(Resources.load_texture("small_shadow.png"))
-  character:show_shadow(true)
   character:set_height(38)
   character:ignore_negative_tile_effects(true)
 

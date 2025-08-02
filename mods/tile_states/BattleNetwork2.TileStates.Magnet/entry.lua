@@ -3,8 +3,6 @@ local CONVEYOR_SLIDE_DURATION = 4
 
 ---@param custom_state CustomTileState
 function tile_state_init(custom_state)
-    local field = custom_state:field()
-
     local tracking = {}
 
     custom_state.on_entity_leave_func = function(self, entity)
@@ -55,7 +53,7 @@ function tile_state_init(custom_state)
 
     ---@param tile Tile
     custom_state.on_update_func = function(self, tile)
-        field:find_characters(function(entity)
+        Field.find_characters(function(entity)
             entity_update(entity)
             return false
         end)

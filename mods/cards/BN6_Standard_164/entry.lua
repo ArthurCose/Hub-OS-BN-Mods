@@ -30,7 +30,7 @@ function card_init(user)
 
 		if tile then
 			local spell = PanelGrabLib.create_spell(team, direction)
-			user:field():spawn(spell, tile)
+			Field.spawn(spell, tile)
 		end
 	end
 

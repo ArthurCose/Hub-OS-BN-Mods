@@ -54,7 +54,6 @@ function card_init(user, props)
 
     action:set_lockout(ActionLockout.new_animation())
     action.on_execute_func = function(self, user)
-        local field = user:field();
         local facing = user:facing();
         local attachment = self:create_attachment("BUSTER")
         local attachment_sprite = attachment:sprite()
@@ -85,11 +84,11 @@ function card_init(user, props)
 
                 -- Impact effect
                 battle_helpers.create_effect(facing, vulcan_impact_texture, vulcan_impact_animation_path, "IMPACT",
-                    -10 * 0.5, -55 * 0.5, -3, field, hit_tile, Playback.Once, true, nil)
+                    -10 * 0.5, -55 * 0.5, -3, hit_tile, Playback.Once, true, nil)
 
                 -- Hit particle
                 battle_helpers.create_effect(facing, bullet_hit_texture, bullet_hit_animation_path, "HIT",
-                    math.random(-20, 20) * 0.5, math.random(-55, -30) * 0.5, -3, field, hit_tile, Playback.Once, true,
+                    math.random(-20, 20) * 0.5, math.random(-55, -30) * 0.5, -3, hit_tile, Playback.Once, true,
                     nil)
 
                 create_vulcan_damage(user, vulcan_direction, hit_tile, hit_props)
@@ -124,6 +123,6 @@ function create_vulcan_damage(user, direction, tile, hit_props)
             current_tile:attack_entities(self)
             self:delete()
         end
-        user:field():spawn(spell, new_tile)
+        Field.spawn(spell, new_tile)
     end
 end

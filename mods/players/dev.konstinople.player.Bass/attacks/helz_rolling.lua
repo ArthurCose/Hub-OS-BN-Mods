@@ -90,7 +90,7 @@ local function create_helz_rolling(user, hit_props, direction_priority)
       local spell_sprite = spell:sprite()
       artifact:set_elevation(spell_sprite:origin().y // 2)
 
-      spell:field():spawn(artifact, spell:current_tile())
+      Field.spawn(artifact, spell:current_tile())
       spell:erase()
       return
     end
@@ -156,12 +156,12 @@ return function(user)
 
     if top_tile then
       local rolling = create_helz_rolling(user, hit_props, Direction.Down)
-      user:field():spawn(rolling, top_tile)
+      Field.spawn(rolling, top_tile)
     end
 
     if bottom_tile then
       local rolling = create_helz_rolling(user, hit_props, Direction.Up)
-      user:field():spawn(rolling, bottom_tile)
+      Field.spawn(rolling, bottom_tile)
     end
   end)
 

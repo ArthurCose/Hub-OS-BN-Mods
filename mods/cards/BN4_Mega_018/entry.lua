@@ -12,14 +12,13 @@ function card_init(actor, props)
 
 	action.on_execute_func = function(self, user)
 		Resources.play_audio(hole_audio)
-		local field = actor:field()
 
 		local y = actor:current_tile():y()
 
 		local tile = nil
 
 		for x = 1, 6, 1 do
-			tile = field:tile_at(x, y)
+			tile = Field.tile_at(x, y)
 			if tile and not tile:is_edge() then tile:set_state(TileState.Dark) end
 		end
 	end

@@ -6,14 +6,13 @@ function card_init(actor, props)
 	action:set_lockout(ActionLockout.new_sequence())
 	action.on_execute_func = function(self, user)
 		Resources.play_audio(hole_audio)
-		local field = user:field()
 
-		local dark_holes = field:find_tiles(function(tile)
+		local dark_holes = Field.find_tiles(function(tile)
 			if tile:team() == user:team() then return true end
 			return false
 		end)
 
-		local poison_tiles = field:find_tiles(function(tile)
+		local poison_tiles = Field.find_tiles(function(tile)
 			if tile:team() ~= user:team() then return true end
 			return false
 		end)

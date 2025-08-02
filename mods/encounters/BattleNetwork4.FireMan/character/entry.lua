@@ -77,9 +77,8 @@ local RANK_TO_MOVEMENT_DELAY = apply_bn4_ranks({
 
 ---@param entity Entity
 local function get_nearby_target_tiles(entity)
-  local field = entity:field()
   local team = entity:team()
-  local closest_enemies = field:find_nearest_characters(entity, function(e)
+  local closest_enemies = Field.find_nearest_characters(entity, function(e)
     return e:team() ~= team
   end)
 
@@ -98,7 +97,7 @@ local function get_nearby_target_tiles(entity)
 
   for y = start_y, start_y + 2 do
     for x = start_x, start_x + 2 do
-      local tile = field:tile_at(x, y)
+      local tile = Field.tile_at(x, y)
 
       if tile and not tile:is_edge() and (tile:team() == Team.Other or tile:team() ~= team) then
         target_tiles[#target_tiles + 1] = tile
@@ -202,14 +201,13 @@ local function spawn_hit_artifact(character, offset_y)
     offset_y or 0
   )
 
-  character:field():spawn(artifact, character:current_tile())
+  Field.spawn(artifact, character:current_tile())
 end
 
 ---@param entity Entity
 ---@param prev_tile Tile
 ---@param direction Direction
 local function find_next_tower_tile(entity, prev_tile, direction)
-  local field = entity:field()
   local x = prev_tile:x()
   local y = prev_tile:y()
 
@@ -221,7 +219,7 @@ local function find_next_tower_tile(entity, prev_tile, direction)
     direction_filter = function(e) return e:current_tile():x() > x end
   end
 
-  local enemies = field:find_nearest_characters(entity, function(e)
+  local enemies = Field.find_nearest_characters(entity, function(e)
     return direction_filter(e) and e:hittable() and e:team() ~= entity:team()
   end)
 
@@ -292,7 +290,7 @@ local function create_fire_tower(team, context, damage, direction)
 
       if tile then
         local fire_tower = create_fire_tower(team, context, damage, direction)
-        spell:field():spawn(fire_tower, tile)
+        Field.spawn(fire_tower, tile)
       end
     end
 
@@ -312,7 +310,6 @@ end
 ---@param entity Entity
 local function create_flame_tower_factory(entity, damage)
   local animation = entity:animation()
-  local field = entity:field()
 
   return function()
     local action = Action.new(entity, "FLAME_TOWER")
@@ -335,7 +332,7 @@ local function create_flame_tower_factory(entity, damage)
 
           if tile then
             local spell = create_fire_tower(entity:team(), entity:context(), damage, direction)
-            field:spawn(spell, tile)
+            Field.spawn(spell, tile)
           end
         elseif i == 2 then
           entity:set_counterable(false)
@@ -396,7 +393,6 @@ end
 ---@param entity Entity
 local function create_fire_arm_factory(entity, damage)
   local animation = entity:animation()
-  local field = entity:field()
 
   return function()
     local action = Action.new(entity, "FIRE_ARM_START")
@@ -424,7 +420,7 @@ local function create_fire_arm_factory(entity, damage)
     local function spawn_fire(tile)
       local flame = create_fire_arm_flame(entity, damage)
       flames[#flames + 1] = flame
-      field:spawn(flame, tile)
+      Field.spawn(flame, tile)
     end
 
     action.on_execute_func = function()
@@ -519,7 +515,6 @@ local function spawn_fire_bomb(entity, target_tile, damage)
   local spell = Spell.new(entity:team())
   spell:set_facing(entity:facing_away())
   spell:set_shadow(FIRE_BOMB_SHADOW_TEXTURE)
-  spell:show_shadow()
   spell:set_texture(FIRE_BOMB_TEXTURE)
 
   local animation = spell:animation()
@@ -537,8 +532,6 @@ local function spawn_fire_bomb(entity, target_tile, damage)
     Drag.None
   )
   spell:set_hit_props(hit_props)
-
-  local field = entity:field()
 
   spell.on_spawn_func = function()
     spell:jump(target_tile, Tile:height() * 4, 60)
@@ -573,13 +566,13 @@ local function spawn_fire_bomb(entity, target_tile, damage)
     if tile:is_walkable() then
       hit_props.flags = hit_props.flags | Hit.Flash
       local fire_ring = create_fire_ring(spell:team(), flame_ring_duration, hit_props)
-      field:spawn(fire_ring, tile)
+      Field.spawn(fire_ring, tile)
     end
 
     spell:erase()
   end
 
-  field:spawn(spell, entity:current_tile())
+  Field.spawn(spell, entity:current_tile())
 end
 
 ---@param entity Entity

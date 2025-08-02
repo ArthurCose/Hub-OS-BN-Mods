@@ -11,15 +11,13 @@ bomb:set_execute_sfx(bn_assets.load_audio("lob_bomb.ogg"))
 
 ---@param user Entity
 function card_init(user, props)
-	local field = user:field()
-
 	return bomb:create_action(user, function(tile)
 		if not tile or not tile:is_walkable() then
 			return
 		end
 
 		-- spawn explosion
-		field:spawn(Explosion.new(), tile)
+		Field.spawn(Explosion.new(), tile)
 
 		local spell = Spell.new(user:team())
 		spell:set_facing(user:facing())
@@ -36,6 +34,6 @@ function card_init(user, props)
 			self:erase()
 		end
 
-		field:spawn(spell, tile)
+		Field.spawn(spell, tile)
 	end)
 end

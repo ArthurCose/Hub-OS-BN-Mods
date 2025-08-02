@@ -61,7 +61,6 @@ end
 ---@param user Entity
 local function create_lagging_ghost(user)
   local spawner = Artifact.new()
-  local field = user:field()
 
   local i = 0
   spawner.on_update_func = function()
@@ -87,7 +86,7 @@ local function create_lagging_ghost(user)
     end
 
     local tile = spawner:current_tile()
-    field:spawn(ghost, tile)
+    Field.spawn(ghost, tile)
   end
 
   return spawner
@@ -116,7 +115,6 @@ function PanelStep:wrap_action(wrapped_action)
   start_action:set_lockout(ActionLockout.new_sequence())
 
   local original_tile, dest_tile, lagging_ghost, static_ghost
-  local field = user:field()
 
   start_action.can_move_to_func = can_move_to_func
 
@@ -196,12 +194,12 @@ function PanelStep:wrap_action(wrapped_action)
 
       if i == 2 then
         -- takes 1 frame to spawn, will appear on frame 3
-        field:spawn(static_ghost, original_tile)
+        Field.spawn(static_ghost, original_tile)
       elseif i == 8 then
         -- takes 1 frame to spawn the base entity
         -- and another to spawn the artifact
         -- will appear on frame 10
-        field:spawn(lagging_ghost, dest_tile)
+        Field.spawn(lagging_ghost, dest_tile)
       elseif i == 20 then
         static_ghost:erase()
       elseif not self._return_frame and i > 21 then
@@ -243,7 +241,6 @@ function PanelStep:create_action(user, create_action_steps)
   action:set_lockout(ActionLockout.new_sequence())
 
   local original_tile, dest_tile, lagging_ghost, static_ghost
-  local field = user:field()
   local returned = false
 
   action.can_move_to_func = can_move_to_func
@@ -278,12 +275,12 @@ function PanelStep:create_action(user, create_action_steps)
 
       if i == 2 then
         -- takes 1 frame to spawn, will appear on frame 3
-        field:spawn(static_ghost, original_tile)
+        Field.spawn(static_ghost, original_tile)
       elseif i == 8 then
         -- takes 1 frame to spawn the base entity
         -- and another to spawn the artifact
         -- will appear on frame 10
-        field:spawn(lagging_ghost, dest_tile)
+        Field.spawn(lagging_ghost, dest_tile)
       elseif i == 20 then
         static_ghost:erase()
       elseif not self._return_frame and i > 21 then

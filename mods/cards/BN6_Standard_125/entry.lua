@@ -60,8 +60,6 @@ end
 ---@param user Entity
 ---@param props CardProperties
 local function create_dragon(user, props)
-  local field = user:field()
-
   local spell = Spell.new(user:team())
   spell:set_hit_props(HitProps.from_card(props, user:context()))
   spell:set_facing(Direction.Right)
@@ -84,7 +82,7 @@ local function create_dragon(user, props)
         spell_animation:set_state("UP")
       end)
     else
-      field:spawn(bn_assets.ParticlePoof.new(), spell:current_tile())
+      Field.spawn(bn_assets.ParticlePoof.new(), spell:current_tile())
       spell:delete()
     end
   end)
@@ -111,7 +109,7 @@ local function create_dragon(user, props)
       artifact:erase()
     end)
 
-    field:spawn(artifact, spell:current_tile())
+    Field.spawn(artifact, spell:current_tile())
     Resources.play_audio(HIT_SFX)
   end
 
@@ -164,15 +162,15 @@ local function create_dragon(user, props)
 
       segment.on_update_func = create_movement_updater(segment, direction_bias, function(turn_direction)
         if not turn_direction then
-          field:spawn(bn_assets.ParticlePoof.new(), segment:current_tile())
+          Field.spawn(bn_assets.ParticlePoof.new(), segment:current_tile())
           segment:delete()
         end
       end)
 
-      field:spawn(segment, initial_tile)
+      Field.spawn(segment, initial_tile)
       table.insert(tail_segments, segment)
 
-      field:spawn(bn_assets.ParticlePoof.new(), initial_tile)
+      Field.spawn(bn_assets.ParticlePoof.new(), initial_tile)
     end
 
     -- movement
@@ -188,9 +186,7 @@ function card_init(user, props)
   return Sword:create_action(user, function()
     local dragon = create_dragon(user, props)
 
-    local field = user:field()
-
-    local targets = field:find_nearest_characters(user, function(character)
+    local targets = Field.find_nearest_characters(user, function(character)
       return character:team() ~= user:team() and character:hittable()
     end)
 
@@ -198,23 +194,23 @@ function card_init(user, props)
     local target_tile
 
     if target then
-      target_tile = field:tile_at(target:current_tile():x(), 0)
+      target_tile = Field.tile_at(target:current_tile():x(), 0)
     else
       local tile = user:get_tile(user:facing(), 1)
 
       if tile then
-        target_tile = field:tile_at(tile:x(), 0)
+        target_tile = Field.tile_at(tile:x(), 0)
       end
     end
 
     if not target_tile then
       if user:facing() == Direction.Right then
-        target_tile = field:tile_at(field:width() - 1, 0) --[[@as Tile]]
+        target_tile = Field.tile_at(Field.width() - 1, 0) --[[@as Tile]]
       else
-        target_tile = field:tile_at(1, 0) --[[@as Tile]]
+        target_tile = Field.tile_at(1, 0) --[[@as Tile]]
       end
     end
 
-    field:spawn(dragon, target_tile)
+    Field.spawn(dragon, target_tile)
   end)
 end

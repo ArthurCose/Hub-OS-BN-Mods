@@ -120,7 +120,7 @@ function Shared.spawn_hit_artifact(character, state, offset_x, offset_y)
     movement_offset.y + offset_y
   )
 
-  character:field():spawn(artifact, character:current_tile())
+  Field.spawn(artifact, character:current_tile())
 end
 
 return Shared

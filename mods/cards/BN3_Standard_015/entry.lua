@@ -47,16 +47,18 @@ function card_init(actor, props)
 		flare_anim:set_state("FLARE")
 
 		self:add_anim_action(2, function()
-			local cannonshot = create_attack(user, props)
 			local tile = user:get_tile(user:facing(), 1)
-			actor:field():spawn(cannonshot, tile)
+			if tile then
+				local cannonshot = create_attack(user, props)
+				Field.spawn(cannonshot, tile)
+			end
 		end)
 	end
 
 	action.on_update_func = function()
 		if flare == nil then return end
 		flare_anim:apply(flare)
-		flare_anim:update(flare)
+		flare_anim:update()
 	end
 	return action
 end
@@ -64,8 +66,6 @@ end
 function create_attack(user, props)
 	local spell = Spell.new(user:team())
 	local direction = user:facing()
-	local reverse = user:facing_away()
-	local field = user:field()
 
 	spell:set_facing(direction)
 
@@ -99,7 +99,7 @@ function create_attack(user, props)
 
 				local spawn_tile = burst_tiles[i]
 				if spawn_tile and not spawn_tile:is_edge() then
-					field:spawn(fx, spawn_tile)
+					Field.spawn(fx, spawn_tile)
 					if spawn_tile ~= tile then spawn_tile:attack_entities(self) end
 				end
 			end

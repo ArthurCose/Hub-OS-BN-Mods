@@ -13,9 +13,6 @@ function card_init(actor, props)
     local original_offset
 
     action.on_execute_func = function(self, user)
-        -- obtain field to not call this more than once
-        local field = user:field()
-
         -- obtain direction user is facing to not call this more than once
         local facing = user:facing()
 
@@ -45,11 +42,11 @@ function card_init(actor, props)
             user:set_counterable(false)
 
             -- create the attack itself
-            local airshot = create_attack(user, props, user:context(), facing, field)
+            local airshot = create_attack(user, props, user:context(), facing)
 
             -- obtain tile to spawn the attack on and spawn it using the field
             local tile = user:current_tile()
-            field:spawn(airshot, tile)
+            Field.spawn(airshot, tile)
 
             -- play a sound to indicate the attack.
             Resources.play_audio(SHOOT_SFX)
@@ -100,7 +97,7 @@ function card_init(actor, props)
     return action
 end
 
-function create_attack(user, props, context, facing, field)
+function create_attack(user, props, context, facing)
     local spell = Spell.new(user:team())
     spell:set_facing(facing)
     spell:set_hit_props(

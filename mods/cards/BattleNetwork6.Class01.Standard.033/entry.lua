@@ -45,7 +45,7 @@ function card_init(actor, props)
 			local tile = user:get_tile(user:facing(), 1)
 
 			if tile then
-				user:field():spawn(pulse, tile)
+				Field.spawn(pulse, tile)
 			end
 		end)
 	end

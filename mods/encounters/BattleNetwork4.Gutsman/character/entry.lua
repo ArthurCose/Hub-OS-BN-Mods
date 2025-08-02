@@ -175,7 +175,7 @@ local function spawn_hit_artifact(character, state, offset_x, offset_y)
     movement_offset.y + offset_y
   )
 
-  character:field():spawn(artifact, character:current_tile())
+  Field.spawn(artifact, character:current_tile())
 end
 
 ---@param entity Entity
@@ -191,7 +191,6 @@ local function create_guts_quake_factory(entity, damage)
 
     action:add_anim_action(5, function()
       entity:set_counterable(false)
-      local field = entity:field()
 
       -- create hitbox for hammer
       local hammer_tile = entity:get_tile(entity:facing(), 1)
@@ -210,11 +209,11 @@ local function create_guts_quake_factory(entity, damage)
           hammer_hitbox:attack_tile()
         end
 
-        field:spawn(hammer_hitbox, hammer_tile)
+        Field.spawn(hammer_hitbox, hammer_tile)
 
         if hammer_tile:is_walkable() then
           Resources.play_audio(HAMMER_SFX)
-          field:shake(5, 40)
+          Field.shake(5, 40)
 
           -- spawn rocks
           local hit_props = HitProps.new(
@@ -223,11 +222,11 @@ local function create_guts_quake_factory(entity, damage)
             Element.None
           )
 
-          FallingRockLib.spawn_falling_rocks(field, entity:team(), 3, hit_props)
+          FallingRockLib.spawn_falling_rocks(entity:team(), 3, hit_props)
 
           -- crack panels
           local cracks = RANK_TO_CRACKS[entity:rank()]
-          FallingRockLib.crack_tiles(field, entity:team(), cracks)
+          FallingRockLib.crack_tiles(entity:team(), cracks)
         end
       end
     end)
@@ -306,7 +305,6 @@ end
 ---@param entity Entity
 local function create_guts_mach_gun_factory(entity, damage)
   local animation = entity:animation()
-  local field = entity:field()
 
   return function()
     local action = Action.new(entity, "GUTS_MACH_GUN")
@@ -335,7 +333,7 @@ local function create_guts_mach_gun_factory(entity, damage)
 
         if tile then
           local spell = create_guts_mach_gun_spell(entity, damage)
-          field:spawn(spell, tile)
+          Field.spawn(spell, tile)
         end
       end)
     end
@@ -417,7 +415,6 @@ end
 ---@param damage number
 local function create_guts_punch_factory(entity, guts_punch_range, damage)
   local animation = entity:animation()
-  local field = entity:field()
 
   return function()
     local action = Action.new(entity, "GUTS_PUNCH")
@@ -435,7 +432,7 @@ local function create_guts_punch_factory(entity, guts_punch_range, damage)
 
       if tile then
         spell = create_guts_punch_spell(entity, guts_punch_range, damage)
-        field:spawn(spell, tile)
+        Field.spawn(spell, tile)
       end
 
       if guts_punch_range > 1 then

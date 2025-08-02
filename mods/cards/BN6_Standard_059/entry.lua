@@ -14,8 +14,6 @@ local explosion_sfx = bn_assets.load_audio("explosion_defeatedboss.ogg")
 
 ---@param user Entity
 function card_init(user, props)
-	local field = user:field()
-
 	return bomb:create_action(user, function(main_tile)
 		if not main_tile or not main_tile:is_walkable() then
 			return
@@ -33,14 +31,14 @@ function card_init(user, props)
 		-- spawn explosions
 		for y = center_y - 1, center_y + 1 do
 			for x = center_x - 1, center_x + 1 do
-				local tile = field:tile_at(x, y)
+				local tile = Field.tile_at(x, y)
 
 				if tile then
 					local explosion = Explosion.new()
 					-- don't make a sound
 					explosion.on_spawn_func = nil
 
-					field:spawn(explosion, tile)
+					Field.spawn(explosion, tile)
 
 					local spell = Spell.new(user:team())
 					spell:set_facing(user:facing())
@@ -51,7 +49,7 @@ function card_init(user, props)
 						self:erase()
 					end
 
-					field:spawn(spell, tile)
+					Field.spawn(spell, tile)
 				end
 			end
 		end

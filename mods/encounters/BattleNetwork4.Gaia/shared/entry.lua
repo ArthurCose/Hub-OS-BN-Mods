@@ -12,7 +12,7 @@ local IMPACT_TEXTURE = bn_assets.load_texture("shield_impact.png")
 local IMPACT_ANIM_PATH = bn_assets.fetch_animation_path("shield_impact.animation")
 local TEXTURE = Resources.load_texture("battle.png")
 
-local function spawn_particle(texture, animation_path, state, field, tile)
+local function spawn_particle(texture, animation_path, state, tile)
   local artifact = Artifact.new()
   artifact:set_texture(texture)
   artifact:sprite():set_layer(-5)
@@ -24,14 +24,14 @@ local function spawn_particle(texture, animation_path, state, field, tile)
     artifact:erase()
   end)
 
-  field:spawn(artifact, tile)
+  Field.spawn(artifact, tile)
 
   return artifact
 end
 
 ---@param user Entity
 local function spawn_impact_particle(user)
-  local artifact = spawn_particle(IMPACT_TEXTURE, IMPACT_ANIM_PATH, "DEFAULT", user:field(), user:current_tile())
+  local artifact = spawn_particle(IMPACT_TEXTURE, IMPACT_ANIM_PATH, "DEFAULT", user:current_tile())
   Resources.play_audio(IMPACT_SFX)
 
   artifact:set_offset(
@@ -140,7 +140,6 @@ return function(character, gaia_props)
       IteratorLib.take(1, function()
         local action = Action.new(character, "ATTACK")
         action:add_anim_action(5, function()
-          local field = character:field()
           local tile = character:get_tile(character:facing(), 1)
           local hit_tile = tile and tile:is_walkable()
 
@@ -149,11 +148,11 @@ return function(character, gaia_props)
 
             -- shake the screen for 40f
             local SHAKE_DURATION = 40
-            field:shake(5, SHAKE_DURATION)
+            Field.shake(5, SHAKE_DURATION)
 
             -- crack tiles
             if gaia_props.cracks then
-              FallingRockLib.crack_tiles(field, character:team(), gaia_props.cracks)
+              FallingRockLib.crack_tiles(character:team(), gaia_props.cracks)
             end
 
             -- spawn effects
@@ -173,7 +172,7 @@ return function(character, gaia_props)
 
               -- apply root
               if gaia_props.root then
-                field:find_characters(function(other)
+                Field.find_characters(function(other)
                   if other:team() ~= character:team() then
                     other:apply_status(Hit.Root, 2)
                   end
@@ -182,7 +181,7 @@ return function(character, gaia_props)
               end
 
               -- pierce ground
-              field:find_tiles(function(tile)
+              Field.find_tiles(function(tile)
                 tile:attack_entities(effects_spell)
                 return false
               end)
@@ -195,7 +194,7 @@ return function(character, gaia_props)
                   Element.None
                 )
 
-                FallingRockLib.spawn_falling_rocks(field, character:team(), 3, hit_props)
+                FallingRockLib.spawn_falling_rocks(character:team(), 3, hit_props)
               end
 
               if effects_time > SHAKE_DURATION then
@@ -203,7 +202,7 @@ return function(character, gaia_props)
               end
             end
 
-            field:spawn(effects_spell, tile)
+            Field.spawn(effects_spell, tile)
           end
 
           -- spawn attack
@@ -226,7 +225,7 @@ return function(character, gaia_props)
             character:get_tile(character:facing(), 1):attack_entities(attack_spell)
           end
 
-          field:spawn(attack_spell, tile)
+          Field.spawn(attack_spell, tile)
         end)
         return action
       end),

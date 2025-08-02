@@ -22,7 +22,7 @@ local function folderback_initialize()
 			return;
 		end
 
-		local players = Field:find_players(function() return true end)
+		local players = Field.find_players(function() return true end)
 
 		if #players > 0 then
 			for i = 1, #players, 1 do
@@ -41,7 +41,7 @@ local function folderback_initialize()
 		end
 	end
 
-	Field:spawn(artifact, 0, 0)
+	Field.spawn(artifact, 0, 0)
 end
 
 function card_init(actor, props)
@@ -51,11 +51,11 @@ function card_init(actor, props)
 	local step = action:create_step()
 
 	action.on_execute_func = function(self, user)
-		local players = Field:find_players(function() return true end)
+		local players = Field.find_players(function() return true end)
 
 		Resources.play_audio(AUDIO)
 
-		Field:shake(10, 120)
+		Field.shake(10, 120)
 
 		TurnGauge.set_enabled(false)
 

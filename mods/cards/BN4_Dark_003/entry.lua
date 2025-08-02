@@ -31,8 +31,6 @@ end
 
 ---@param user Entity
 function card_init(user, props)
-    local field = user:field()
-
     return bomb:create_action(user, function(tile)
         if not tile or not tile:is_walkable() then
             return
@@ -52,7 +50,7 @@ function card_init(user, props)
             for x = -1, 1, 1 do
                 for y = -1, 1, 1 do
                     local own_tile = self:current_tile()
-                    local attack_tile = field:tile_at(own_tile:x() + x, own_tile:y() + y)
+                    local attack_tile = Field.tile_at(own_tile:x() + x, own_tile:y() + y)
                     if attack_tile ~= nil then
                         -- spawn explosion
                         local dark_explosion = Artifact.new()
@@ -70,7 +68,7 @@ function card_init(user, props)
                             dark_explosion:erase()
                         end)
 
-                        field:spawn(dark_explosion, attack_tile)
+                        Field.spawn(dark_explosion, attack_tile)
 
                         self:attack_tile(attack_tile)
                     end
@@ -79,6 +77,6 @@ function card_init(user, props)
             self:erase()
         end
 
-        field:spawn(spell, tile)
+        Field.spawn(spell, tile)
     end)
 end

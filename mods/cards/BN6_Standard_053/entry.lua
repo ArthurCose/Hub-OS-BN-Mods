@@ -34,9 +34,11 @@ function card_init(actor, props)
 		end
 		self:add_anim_action(4, function()
 			user:set_counterable(false)
-			local cannonshot = create_attack(user, props)
 			local tile = user:get_tile(user:facing(), 2)
-			actor:field():spawn(cannonshot, tile)
+			if tile then
+				local cannonshot = create_attack(user, props)
+				Field.spawn(cannonshot, tile)
+			end
 		end)
 	end
 	return action
@@ -79,7 +81,7 @@ function create_attack(user, props)
 					spell.hits = spell.hits - 1
 					local hitbox = Hitbox.new(spell:team())
 					hitbox:set_hit_props(spell:copy_hit_props())
-					spell:field():spawn(hitbox, spell:current_tile())
+					Field.spawn(hitbox, spell:current_tile())
 				else
 					spell:erase()
 				end

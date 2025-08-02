@@ -19,7 +19,7 @@ local explosion_animation_path = bn_assets.fetch_animation_path("spell_explosion
 
 ---@param entity Entity
 local function default_random_tile(entity)
-    local tiles = entity:field():find_tiles(function(tile)
+    local tiles = Field.find_tiles(function(tile)
         return entity:can_move_to(tile) and tile ~= entity:current_tile()
     end)
 
@@ -106,7 +106,6 @@ end
 local function spawn_fireball(owner, tile, direction, damage, cascade_frame_index)
     debug_print("in spawn fireball")
     local team = owner:team()
-    local field = owner:field()
     local fireball_texture = Resources.load_texture("fireball.png")
     local fireball_sfx = Resources.load_audio("sfx.ogg")
 
@@ -170,8 +169,8 @@ local function spawn_fireball(owner, tile, direction, damage, cascade_frame_inde
 
                 fx_anim:on_complete(function() fx:erase() end)
 
-                field:spawn(fx, explosion_table[explosions])
-                field:spawn(hitbox, explosion_table[explosions])
+                Field.spawn(fx, explosion_table[explosions])
+                Field.spawn(hitbox, explosion_table[explosions])
             end
         end
         attack:erase()
@@ -194,7 +193,7 @@ local function spawn_fireball(owner, tile, direction, damage, cascade_frame_inde
         end
         rank_relevant_boom(self, explosion_tiles)
     end
-    field:spawn(spell, tile)
+    Field.spawn(spell, tile)
 end
 
 local function create_fireball_action(character)

@@ -66,7 +66,6 @@ function GutsMachGun.new(user, damage)
 
             Resources.play_audio(guts_mach_gun_audio)
 
-            local field = user:field()
             local last_tile = user:current_tile()
 
             spell:set_hit_props(HitProps.new(
@@ -124,7 +123,7 @@ function GutsMachGun.new(user, damage)
                     hit_artifact:erase()
                 end)
 
-                spell:field():spawn(hit_artifact, spell:current_tile())
+                Field.spawn(hit_artifact, spell:current_tile())
                 spell:delete()
             end
 
@@ -140,7 +139,7 @@ function GutsMachGun.new(user, damage)
                 }
             )
 
-            field:spawn(spell, last_tile)
+            Field.spawn(spell, last_tile)
         end)
 
         -- flare attachment

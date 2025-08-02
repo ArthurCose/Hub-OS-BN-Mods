@@ -26,7 +26,7 @@ function card_init(user, props)
 	local timer = 0
 
 	action.on_execute_func = function(self, user)
-		obstacle_list = user:field():find_obstacles(function(obstacle)
+		obstacle_list = Field.find_obstacles(function(obstacle)
 			return obstacle:hittable()
 		end)
 	end
@@ -45,9 +45,8 @@ function card_init(user, props)
 					entity:hit(HitProps.new(0, Hit.None | Hit.Shake, Element.None))
 				end
 
-				local field = entity:field()
 
-				local list = field:find_nearest_characters(entity, function(ent)
+				local list = Field.find_nearest_characters(entity, function(ent)
 					if Living.from(ent) == nil then return false end
 					if ent:is_team(user:team()) then return false end
 					return ent:hittable()
@@ -90,7 +89,7 @@ function card_init(user, props)
 					end
 				end
 
-				field:spawn(replacement_spell, entity:current_tile())
+				Field.spawn(replacement_spell, entity:current_tile())
 			end
 		end
 	end

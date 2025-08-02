@@ -89,8 +89,6 @@ JammedBuster.new = function(user)
   card_action:add_anim_action(2, function()
     Resources.play_audio(sfx);
 
-    local field = user:field()
-
     spell:set_hit_props(HitProps.new(
       0,
       Hit.None,
@@ -138,7 +136,7 @@ JammedBuster.new = function(user)
       spell:erase()
     end
 
-    field:spawn(spell, user:current_tile())
+    Field.spawn(spell, user:current_tile())
   end)
 
   -- flare attachment

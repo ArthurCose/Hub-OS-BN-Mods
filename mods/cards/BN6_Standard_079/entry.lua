@@ -94,20 +94,19 @@ function card_init(user, props)
 			return
 		end
 
-		local field = user:field()
 		local hit_props = HitProps.from_card(
 			props,
 			user:context(),
-			Drag.new(user:facing(), field:width())
+			Drag.new(user:facing(), Field.width())
 		)
 
-		field:spawn(create_slash(user, hit_props), forward_tile)
+		Field.spawn(create_slash(user, hit_props), forward_tile)
 
 		local team = user:team()
 		local x = forward_tile:x()
 
-		for y = 0, field:height() - 1 do
-			field:spawn(create_gust(team, user:facing()), x, y)
+		for y = 0, Field.height() - 1 do
+			Field.spawn(create_gust(team, user:facing()), x, y)
 		end
 
 		Resources.play_audio(AUDIO)

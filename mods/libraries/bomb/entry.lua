@@ -65,9 +65,8 @@ function Bomb:enable_seeking()
       end
     end
 
-    local field = user:field()
     local team = user:team()
-    local enemies = field:find_nearest_characters(user, function(character)
+    local enemies = Field.find_nearest_characters(user, function(character)
       return character:team() ~= team and position_comparison_func(character:current_tile():x())
     end)
 
@@ -76,10 +75,10 @@ function Bomb:enable_seeking()
     end
 
     if user:facing() == Direction.Right then
-      return field:tile_at(field:width() - 1, field:height() // 2)
+      return Field.tile_at(Field.width() - 1, Field.height() // 2)
     end
 
-    return field:tile_at(0, field:height() // 2)
+    return Field.tile_at(0, Field.height() // 2)
   end
 end
 
@@ -236,7 +235,6 @@ function Bomb:create_action(user, spell_callback)
   action:set_lockout(ActionLockout.new_animation())
   action:override_animation_frames(self._user_frame_data)
 
-  local field = user:field()
   local bomb, component, cancelled
 
   local synced_frames = 0
@@ -254,7 +252,7 @@ function Bomb:create_action(user, spell_callback)
     -- create and spawn bomb
     bomb = create_bomb(self)
     bomb:set_facing(user:facing())
-    field:spawn(bomb, user:current_tile())
+    Field.spawn(bomb, user:current_tile())
 
     -- sync bomb position to hand
     local user_anim = user:animation()
@@ -278,7 +276,6 @@ function Bomb:create_action(user, spell_callback)
         -- create shadow
         if self._shadow_texture then
           bomb:set_shadow(self._shadow_texture)
-          bomb:show_shadow(true)
         end
 
         -- eject component and play the animation

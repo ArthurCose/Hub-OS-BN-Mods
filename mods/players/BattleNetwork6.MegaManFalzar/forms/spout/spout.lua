@@ -56,7 +56,7 @@ return function(player, form, base_animation_path)
               artifact:delete()
             end)
 
-            player:field():spawn(artifact, player:current_tile())
+            Field.spawn(artifact, player:current_tile())
           end)
       player:add_aux_prop(aqua_heal_aux_prop)
     end,
@@ -106,7 +106,6 @@ return function(player, form, base_animation_path)
         Drag.None
       )
 
-      local field = player:field()
       local last_tile = player:current_tile()
 
       spell.on_update_func = function()
@@ -161,14 +160,14 @@ return function(player, form, base_animation_path)
             bubbles:delete()
           end)
 
-          field:spawn(bubbles, tile)
+          Field.spawn(bubbles, tile)
         end
 
         spawn_bubbles(spell:current_tile())
         spawn_bubbles(spell:get_tile(spell:facing(), 1))
       end
 
-      field:spawn(spell, last_tile)
+      Field.spawn(spell, last_tile)
     end
 
     action:add_anim_action(5, function()

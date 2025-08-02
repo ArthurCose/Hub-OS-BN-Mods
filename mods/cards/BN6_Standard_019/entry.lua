@@ -12,7 +12,6 @@ local hit_anim_path = bn_assets.fetch_animation_path("bn6_hit_effects.animation"
 local AUDIO = bn_assets.load_audio("fireburn.ogg")
 
 local function create_flame_spell(user, props)
-    local tile = nil
     local spell = Spell.new(user:team())
 
     local animation = spell:animation()
@@ -43,9 +42,9 @@ local function create_flame_spell(user, props)
     spell.has_spawned = false
 
     spell.on_spawn_func = function(self)
-        tile = self:current_tile()
-
         self.has_spawned = true
+
+        local tile = self:current_tile()
 
         if not tile:is_walkable() then return end
 
@@ -75,7 +74,7 @@ local function create_flame_spell(user, props)
             fx:erase()
         end)
 
-        self:field():spawn(fx, tile)
+        Field.spawn(fx, self:current_tile())
     end
 
     spell.on_update_func = function(self)
@@ -100,7 +99,6 @@ end
 
 function card_init(actor, props)
     local action = Action.new(actor, "CHARACTER_SHOOT")
-    local field = actor:field()
     local tile_array = {}
     local frames = { { 1, 35 } }
     action:override_animation_frames(frames)
@@ -146,7 +144,7 @@ function card_init(actor, props)
         -- spawn first flame
         Resources.play_audio(AUDIO)
         if #tile_array > 0 then
-            field:spawn(self.flame1, tile_array[1])
+            Field.spawn(self.flame1, tile_array[1])
         end
 
         local time = 0
@@ -156,12 +154,12 @@ function card_init(actor, props)
             if time == 5 then
                 if #tile_array > 1 then
                     -- queue spawn frame 5, should appear frame 6
-                    field:spawn(self.flame2, tile_array[2])
+                    Field.spawn(self.flame2, tile_array[2])
                 end
             elseif time == 9 then
                 if #tile_array > 2 then
                     -- queue spawn frame 9, should appear frame 10
-                    field:spawn(self.flame3, tile_array[3])
+                    Field.spawn(self.flame3, tile_array[3])
                 end
             elseif time == 25 then
                 despawn_flame(self.flame1)

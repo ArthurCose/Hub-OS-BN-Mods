@@ -23,9 +23,11 @@ function card_init(actor, props)
 		buster_anim:load(BUSTER_ANIM_PATH)
 		buster_anim:set_state("DEFAULT")
 
-		local cannonshot = create_attack(user, props)
 		local tile = user:get_tile(user:facing(), 1)
-		actor:field():spawn(cannonshot, tile)
+		if tile then
+			local cannonshot = create_attack(user, props)
+			Field.spawn(cannonshot, tile)
+		end
 	end
 	return action
 end
@@ -34,7 +36,6 @@ function create_attack(user, props)
 	local spell = Spell.new(user:team())
 	local direction = user:facing()
 	local reverse = user:facing_away()
-	local field = user:field()
 
 	spell:set_facing(direction)
 
@@ -91,7 +92,7 @@ function create_attack(user, props)
 
 				local spawn_tile = burst_tiles[i]
 				if spawn_tile and not spawn_tile:is_edge() then
-					field:spawn(burst, spawn_tile)
+					Field.spawn(burst, spawn_tile)
 					spawn_tile:attack_entities(burst)
 				end
 			end

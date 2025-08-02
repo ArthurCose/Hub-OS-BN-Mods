@@ -63,7 +63,7 @@ local function spawn_tile_hit_artifact(spell, tile)
     artifact:erase()
   end)
 
-  spell:field():spawn(artifact, tile)
+  Field.spawn(artifact, tile)
 end
 
 ---@param user Entity
@@ -91,7 +91,6 @@ function card_init(user, props)
     spell:set_texture(TEXTURE)
     spell:set_hit_props(HitProps.from_card(props, user:context()))
 
-    local field = user:field()
     local can_attack = false
 
     ---@type (Tile|nil)[]
@@ -102,7 +101,7 @@ function card_init(user, props)
     animation:set_state("DEFAULT")
 
     animation:on_frame(2, function()
-      field:spawn(create_ghost(direction, "ARTIFACT_2"), spell:current_tile())
+      Field.spawn(create_ghost(direction, "ARTIFACT_2"), spell:current_tile())
     end)
 
     animation:on_frame(3, function()
@@ -122,7 +121,7 @@ function card_init(user, props)
 
     animation:on_frame(4, function()
       Resources.play_audio(LAND_SFX)
-      field:shake(3, 30)
+      Field.shake(3, 30)
 
       for _, tile in ipairs(side_tiles) do
         if tile and tile:is_walkable() then
@@ -143,7 +142,7 @@ function card_init(user, props)
         spell:get_tile(Direction.Down, 1)
       }
 
-      field:spawn(create_ghost(direction, "ARTIFACT_1"), spell:current_tile())
+      Field.spawn(create_ghost(direction, "ARTIFACT_1"), spell:current_tile())
       Resources.play_audio(SPAWN_SFX)
     end
 
@@ -165,7 +164,7 @@ function card_init(user, props)
       end
     end
 
-    field:spawn(spell, tile)
+    Field.spawn(spell, tile)
   end
 
   return action

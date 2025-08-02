@@ -127,7 +127,7 @@ function SlidingObstacle:create_obstacle()
       end
 
       artifact:set_offset(movement_offset.x, movement_offset.y - obstacle:height() / 2)
-      obstacle:field():spawn(artifact, obstacle:current_tile())
+      Field.spawn(artifact, obstacle:current_tile())
     end
 
     -- delete

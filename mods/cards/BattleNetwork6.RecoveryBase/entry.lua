@@ -10,7 +10,7 @@ function card_init(user, props)
 
     action.on_execute_func = function(self)
         local recov = create_recov(user)
-        user:field():spawn(recov, user:current_tile())
+        Field.spawn(recov, user:current_tile())
         user:set_health(user:health() + props.recover)
         self:end_action()
     end

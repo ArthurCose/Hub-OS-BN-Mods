@@ -25,7 +25,6 @@ function card_init(user)
 	local action = Action.new(user)
 	action:set_lockout(ActionLockout.new_sequence())
 
-	local field = user:field()
 	local tracked_entities = {}
 	local component
 	local defense_rule = DefenseRule.new(DefensePriority.Trap, DefenseOrder.CollisionOnly)
@@ -103,8 +102,8 @@ function card_init(user)
 			poof_a:set_offset(-tile:width() * 0.5, 0)
 			poof_b:set_offset(tile:width() * 0.5, 0)
 
-			opponent:field():spawn(poof_a, tile)
-			opponent:field():spawn(poof_b, tile)
+			Field.spawn(poof_a, tile)
+			Field.spawn(poof_b, tile)
 		end
 
 		trap_action.on_action_end_func = function()
@@ -120,7 +119,7 @@ function card_init(user)
 		alert_sprite:set_offset(0, -opponent:height() / 2)
 		alert_sprite:set_layer(-5)
 
-		field:spawn(alert_artifact, opponent:current_tile())
+		Field.spawn(alert_artifact, opponent:current_tile())
 
 		uninstall_all()
 	end
@@ -152,8 +151,8 @@ function card_init(user)
 		component = user:create_component(Lifetime.Local)
 
 		component.on_update_func = function()
-			field:find_obstacles(track)
-			field:find_characters(track)
+			Field.find_obstacles(track)
+			Field.find_characters(track)
 		end
 
 		defense_rule.on_replace_func = uninstall_all

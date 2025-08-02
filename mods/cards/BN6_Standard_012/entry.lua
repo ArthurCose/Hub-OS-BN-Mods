@@ -13,7 +13,6 @@ local frame_data = ({ { 1, 37 } })
 
 function card_init(actor, props)
 	local action = Action.new(actor, "CHARACTER_SHOOT")
-	local field = actor:field()
 	action:override_animation_frames(frame_data)
 	action:set_lockout(ActionLockout.new_animation())
 
@@ -33,8 +32,8 @@ function card_init(actor, props)
 			local blast = create_attack(user, props)
 
 
-			field:spawn(blast, actor:get_tile(actor:facing(), 1))
-			field:shake(10, 0.5 * 60)
+			Field.spawn(blast, actor:get_tile(actor:facing(), 1))
+			Field.shake(10, 0.5 * 60)
 
 			Resources.play_audio(AUDIO, AudioBehavior.Default)
 		end)
@@ -59,7 +58,7 @@ function card_init(actor, props)
 	return action
 end
 
-function create_basic_effect(field, tile, hit_texture, hit_anim_path, hit_anim_state)
+function create_basic_effect(tile, hit_texture, hit_anim_path, hit_anim_state)
 	local fx = Artifact.new()
 	fx:set_texture(hit_texture)
 	local fx_sprite = fx:sprite()
@@ -72,7 +71,7 @@ function create_basic_effect(field, tile, hit_texture, hit_anim_path, hit_anim_s
 		fx:erase()
 	end)
 
-	field:spawn(fx, tile)
+	Field.spawn(fx, tile)
 
 	return fx
 end
@@ -84,7 +83,6 @@ function filter(ent)
 end
 
 function create_back_attack(user, props)
-	local field = user:field()
 	local spell = Spell.new(user:team())
 	local flags = props.hit_flags & props.hit_flags ~ Hit.Drag
 	spell:set_hit_props(
@@ -110,7 +108,7 @@ function create_back_attack(user, props)
 			sprite:delete()
 		end)
 
-		field:spawn(sprite, tile)
+		Field.spawn(sprite, tile)
 
 		tile:attack_entities(self)
 
@@ -123,13 +121,12 @@ end
 function create_attack(user, props)
 	local direction = user:facing()
 	local away = user:facing_away()
-	local field = user:field()
 	local spell = Spell.new(user:team())
 	spell:set_hit_props(
 		HitProps.from_card(
 			props,
 			user:context(),
-			Drag.new(direction, field:width())
+			Drag.new(direction, Field.width())
 		)
 	)
 
@@ -142,14 +139,14 @@ function create_attack(user, props)
 
 		if not self:is_sliding() then
 			if tile:is_edge() and self.slide_started then
-				field:shake(22, 0.5 * 60)
+				Field.shake(22, 0.5 * 60)
 
 				Resources.play_audio(IMPACT_AUDIO, AudioBehavior.NoOverlap)
 
 				local t = self:get_tile(away, 1)
 				local blast = create_back_attack(user, props)
 
-				field:spawn(blast, t)
+				Field.spawn(blast, t)
 
 				local tile_up = t:get_tile(Direction.Up, 1)
 				local tile_down = t:get_tile(Direction.Down, 1)
@@ -162,7 +159,7 @@ function create_attack(user, props)
 
 				if (tile_up ~= nil and not tile_up:is_edge()) then
 					create_back_attack(user, props)
-					field:spawn(blast, tile_up)
+					Field.spawn(blast, tile_up)
 					if tile_up:state() == TileState.Cracked then
 						tile_up:set_state(TileState.Broken)
 					else
@@ -172,7 +169,7 @@ function create_attack(user, props)
 
 				if (tile_down ~= nil and not tile_down:is_edge()) then
 					blast = create_back_attack(user, props)
-					field:spawn(blast, tile_down)
+					Field.spawn(blast, tile_down)
 					if tile_down:state() == TileState.Cracked then
 						tile_down:set_state(TileState.Broken)
 					else
@@ -180,7 +177,7 @@ function create_attack(user, props)
 					end
 				end
 
-				local effect = create_basic_effect(field, t, BACKROW_BLAST, BACKROW_BLAST_ANIM, "DEFAULT")
+				local effect = create_basic_effect(t, BACKROW_BLAST, BACKROW_BLAST_ANIM, "DEFAULT")
 				effect:set_facing(direction)
 
 				self:delete()
@@ -205,7 +202,7 @@ function create_attack(user, props)
 			sprite:delete()
 		end)
 
-		field:spawn(sprite, other:current_tile())
+		Field.spawn(sprite, other:current_tile())
 
 		Resources.play_audio(IMPACT_AUDIO, AudioBehavior.NoOverlap)
 

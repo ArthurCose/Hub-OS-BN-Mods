@@ -134,10 +134,9 @@ end
 local function get_random_team_tile(blizzardman)
   local current_tile = blizzardman:current_tile()
 
-  local tiles = blizzardman:field()
-      :find_tiles(function(tile)
-        return blizzardman:can_move_to(tile) and current_tile ~= tile
-      end)
+  local tiles = Field.find_tiles(function(tile)
+    return blizzardman:can_move_to(tile) and current_tile ~= tile
+  end)
 
   if #tiles == 0 then
     return nil
@@ -157,31 +156,29 @@ end
 ---@param blizzardman Entity
 local function find_target(blizzardman)
   local blizzardman_team = blizzardman:team()
-  local targets = blizzardman:field()
-      :find_nearest_characters(blizzardman, function(character)
-        return character:hittable() and character:team() ~= blizzardman_team
-      end)
+  local targets = Field.find_nearest_characters(blizzardman, function(character)
+    return character:hittable() and character:team() ~= blizzardman_team
+  end)
 
   return targets[1]
 end
 
 ---@param blizzardman Entity
 local function get_back_tile(blizzardman, y)
-  local field = blizzardman:field()
   local start_x, end_x, x_step
 
   if blizzardman:facing() == Direction.Left then
-    start_x = field:width()
+    start_x = Field.width()
     end_x = 1
     x_step = -1
   else
     start_x = 1
-    end_x = field:width()
+    end_x = Field.width()
     x_step = 1
   end
 
   for x = start_x, end_x, x_step do
-    local tile = field:tile_at(x, y)
+    local tile = Field.tile_at(x, y)
 
     if blizzardman:can_move_to(tile) then
       return tile
@@ -208,21 +205,20 @@ end
 
 ---@param blizzardman Entity
 local function get_front_tile(blizzardman, y)
-  local field = blizzardman:field()
   local start_x, end_x, x_step
 
   if blizzardman:facing() == Direction.Left then
     start_x = 1
-    end_x = field:width()
+    end_x = Field.width()
     x_step = 1
   else
-    start_x = field:width()
+    start_x = Field.width()
     end_x = 1
     x_step = -1
   end
 
   for x = start_x, end_x, x_step do
-    local tile = field:tile_at(x, y)
+    local tile = Field.tile_at(x, y)
 
     if blizzardman:can_move_to(tile) then
       return tile
@@ -269,7 +265,7 @@ local function spawn_snowball_break_artifact(snowball)
     offset.y + movement_offset.y
   )
 
-  snowball:field():spawn(artifact, snowball:current_tile())
+  Field.spawn(artifact, snowball:current_tile())
 end
 
 ---@param character Entity
@@ -294,7 +290,7 @@ local function spawn_snow_hit_artifact(character)
     char_offset.y + char_tile_offset.y * 0.5
   )
 
-  character:field():spawn(artifact, character:current_tile())
+  Field.spawn(artifact, character:current_tile())
 end
 
 ---@param blizzardman Entity
@@ -370,7 +366,7 @@ local function kick_snowball(blizzardman, damage, end_callback)
 
     if spawn_tile then
       local snowball = create_snowball(blizzardman, damage)
-      blizzardman:field():spawn(snowball, spawn_tile)
+      Field.spawn(snowball, spawn_tile)
     end
   end)
 
@@ -470,7 +466,6 @@ local function create_blizzard_breath_factory(blizzardman, damage)
       blizzardman:set_counterable(false)
 
       local facing = blizzardman:facing()
-      local field = blizzardman:field()
 
       local spawn_ice = RANK_TO_BLIZZARD_BREATH_ICE[blizzardman:rank()]
       local function spawn_hitbox(tile, hitbox)
@@ -478,7 +473,7 @@ local function create_blizzard_breath_factory(blizzardman, damage)
           return
         end
 
-        field:spawn(hitbox, tile)
+        Field.spawn(hitbox, tile)
 
         if spawn_ice then
           run_after(blizzardman, 1, function()
@@ -530,9 +525,8 @@ end
 ---@param blizzardman Entity
 local function spawn_falling_snow(blizzardman)
   local team = blizzardman:team()
-  local field = blizzardman:field()
 
-  local tiles = field:find_tiles(function(tile)
+  local tiles = Field.find_tiles(function(tile)
     if not tile:is_walkable() or tile:team() == team then
       return false
     end
@@ -558,7 +552,6 @@ local function spawn_falling_snow(blizzardman)
   snow:set_health(RANK_TO_FALLING_SNOW_HP[blizzardman:rank()])
   snow:enable_hitbox(false)
   snow:set_shadow(Shadow.Small)
-  snow:show_shadow(true)
   snow:set_texture(blizzardman:texture())
   snow:set_height(18)
 
@@ -599,7 +592,7 @@ local function spawn_falling_snow(blizzardman)
       melting_snow:erase()
     end)
 
-    field:spawn(melting_snow, snow:current_tile())
+    Field.spawn(melting_snow, snow:current_tile())
 
     erase_falling_snow(snow)
   end
@@ -638,7 +631,7 @@ local function spawn_falling_snow(blizzardman)
     snow:erase()
   end
 
-  field:spawn(snow, tile)
+  Field.spawn(snow, tile)
   falling_snow_entities[#falling_snow_entities + 1] = snow
 end
 
@@ -648,7 +641,6 @@ end
 local function create_rolling_slider_factory(blizzardman, damage)
   return function()
     local anim = blizzardman:animation()
-    local field = blizzardman:field()
 
     local hitbox = create_continuous_hitbox(blizzardman, damage)
 
@@ -672,7 +664,7 @@ local function create_rolling_slider_factory(blizzardman, damage)
         anim:set_state("ROLLING")
         anim:set_playback(Playback.Loop)
 
-        field:spawn(hitbox, blizzardman:current_tile())
+        Field.spawn(hitbox, blizzardman:current_tile())
         curling_step:complete_step()
       end)
     end
@@ -692,7 +684,7 @@ local function create_rolling_slider_factory(blizzardman, damage)
 
       if not current_tile:is_walkable() then
         if current_tile:is_edge() then
-          blizzardman:field():shake(8, 0.4 * 60)
+          Field.shake(8, 0.4 * 60)
           Resources.play_audio(THUD_SFX, AudioBehavior.Default)
 
           spawn_falling_snow(blizzardman)

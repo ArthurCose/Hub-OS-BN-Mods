@@ -1,4 +1,4 @@
-local function spawn_particle(texture, animation_path, field, tile)
+local function spawn_particle(texture, animation_path, tile)
   if not texture or not animation_path then
     return
   end
@@ -14,7 +14,7 @@ local function spawn_particle(texture, animation_path, field, tile)
     artifact:erase()
   end)
 
-  field:spawn(artifact, tile)
+  Field.spawn(artifact, tile)
 
   return artifact
 end
@@ -116,7 +116,7 @@ local function spawn_shield_artifact(self, user)
     shield:erase()
   end)
 
-  user:field():spawn(shield, user:current_tile())
+  Field.spawn(shield, user:current_tile())
 
   return shield
 end
@@ -124,9 +124,8 @@ end
 ---@param self Shield
 ---@param user Entity
 local function spawn_impact_particle(self, user)
-  local field = user:field()
   local tile = user:current_tile()
-  local artifact = spawn_particle(self._impact_texture, self._impact_animation_path, field, tile)
+  local artifact = spawn_particle(self._impact_texture, self._impact_animation_path, tile)
 
   if not artifact then
     return
@@ -215,8 +214,8 @@ function ShieldReflect:set_attack_animation_path(animation_path)
 end
 
 ---@param self ShieldReflect
-local function spawn_reflect_attack_particle(self, field, tile)
-  local artifact = spawn_particle(self._attack_texture, self._attack_animation_path, field, tile)
+local function spawn_reflect_attack_particle(self, tile)
+  local artifact = spawn_particle(self._attack_texture, self._attack_animation_path, tile)
 
   if not artifact then
     return
@@ -228,7 +227,6 @@ end
 ---@param user Entity
 ---@param damage number
 function ShieldReflect:spawn_spell(user, damage)
-  local field = user:field()
   local direction = user:facing()
 
   local spell = Spell.new(user:team())
@@ -250,7 +248,7 @@ function ShieldReflect:spawn_spell(user, damage)
     if i % 2 == 1 then
       local tile = spell:current_tile()
       tile:attack_entities(spell)
-      spawn_reflect_attack_particle(self, field, tile)
+      spawn_reflect_attack_particle(self, tile)
     else
       local next_tile = spell:get_tile(direction, 1)
 
@@ -265,7 +263,7 @@ function ShieldReflect:spawn_spell(user, damage)
   local tile = user:get_tile(direction, 1)
 
   if tile then
-    field:spawn(spell, tile)
+    Field.spawn(spell, tile)
   end
 end
 

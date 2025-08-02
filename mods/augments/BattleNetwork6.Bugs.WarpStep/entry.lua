@@ -1,7 +1,6 @@
 ---@param augment Augment
 function augment_init(augment)
   local owner = augment:owner()
-  local field = owner:field()
 
   augment.movement_func = function(self, direction)
     local vector = Direction.vector(direction)
@@ -16,7 +15,7 @@ function augment_init(augment)
     local next_tile = dest_tile
 
     while next_tile ~= nil do
-      next_tile = field:tile_at(next_tile:x() + vector.x, next_tile:y() + vector.y)
+      next_tile = Field.tile_at(next_tile:x() + vector.x, next_tile:y() + vector.y)
 
       if next_tile and owner:can_move_to(next_tile) then
         dest_tile = next_tile

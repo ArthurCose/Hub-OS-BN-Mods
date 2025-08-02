@@ -51,7 +51,7 @@ local function spawn_spell(tile, props, user)
 		self:attack_tile()
 	end
 
-	user:field():spawn(spell, tile)
+	Field.spawn(spell, tile)
 end
 
 function card_init(actor, props)
@@ -60,11 +60,10 @@ function card_init(actor, props)
 	action:set_lockout(ActionLockout.new_async(40))
 
 	action.on_execute_func = function(self, user)
-		local field = user:field()
 		local tiles = {
-			field:tile_at(6, 1),
-			field:tile_at(6, 2),
-			field:tile_at(6, 3)
+			Field.tile_at(6, 1),
+			Field.tile_at(6, 2),
+			Field.tile_at(6, 3)
 		}
 
 		for _, tile in ipairs(tiles) do

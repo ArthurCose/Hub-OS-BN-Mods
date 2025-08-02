@@ -44,7 +44,7 @@ local function spawn_hit_artifact(character, state, offset_x, offset_y)
     movement_offset.y + offset_y
   )
 
-  character:field():spawn(artifact, character:current_tile())
+  Field.spawn(artifact, character:current_tile())
 end
 
 
@@ -189,9 +189,8 @@ local function create_guts_punch_action(entity, guts_punch_range, damage)
     local tile = entity:get_tile(entity:facing(), 1)
 
     if tile then
-      local field = entity:field()
       spell = create_guts_punch_spell(entity, guts_punch_range, damage)
-      field:spawn(spell, tile)
+      Field.spawn(spell, tile)
     end
 
     if guts_punch_range > 1 then
@@ -225,7 +224,6 @@ local function guts_quake(entity, cracks, damage)
 
   action:add_anim_action(5, function()
     entity:set_counterable(false)
-    local field = entity:field()
 
     -- create hitbox for hammer
     local hammer_tile = entity:get_tile(entity:facing(), 1)
@@ -244,11 +242,11 @@ local function guts_quake(entity, cracks, damage)
         hammer_hitbox:attack_tile()
       end
 
-      field:spawn(hammer_hitbox, hammer_tile)
+      Field.spawn(hammer_hitbox, hammer_tile)
 
       if hammer_tile:is_walkable() then
         Resources.play_audio(HAMMER_SFX)
-        field:shake(5, 40)
+        Field.shake(5, 40)
 
         -- spawn rocks and crack panels
         local hit_props = HitProps.new(
@@ -257,8 +255,8 @@ local function guts_quake(entity, cracks, damage)
           Element.None
         )
 
-        FallingRockLib.spawn_falling_rocks(field, entity:team(), 3, hit_props)
-        FallingRockLib.crack_tiles(field, entity:team(), cracks)
+        FallingRockLib.spawn_falling_rocks(entity:team(), 3, hit_props)
+        FallingRockLib.crack_tiles(entity:team(), cracks)
       end
     end
   end)
@@ -396,9 +394,8 @@ function player_init(player)
         local tile = player:get_tile(player:facing(), 1)
 
         if tile then
-          local field = player:field()
           local spell = create_guts_mach_gun_spell(player, player:attack_level() * 2)
-          field:spawn(spell, tile)
+          Field.spawn(spell, tile)
         end
       end)
     else

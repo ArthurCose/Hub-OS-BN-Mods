@@ -8,9 +8,6 @@ function player_init(player)
     -- If desired, set a shadow for this Navi. You may use a Small, Large, or Custom shadow.
     player:set_shadow(Shadow.Small)
 
-    -- Since we set a shadow, we must make sure we toggle it, so that it displays in combat.
-    player:show_shadow(true)
-
     -- Save the Package IDs of the Battle Chips we will be using.
     -- This is not entirely necessary, but I feel it keeps things tidy.
     local AirShot = "BattleNetwork6.Class01.Standard.004"

@@ -67,20 +67,19 @@ function create_ratton(ratty)
     spell.on_collision_func = function(self, other)
         self:delete()
     end
-    -- Make sure we have access to the field as a local variable, in case the Ratty is deleted before the Ratton.
-    local field = ratty:field()
+
     spell.on_delete_func = function(self)
         -- If the tile is an edge or broken tile, use a Mob Move effect to get rid of it without "exploding", as it didn't attack.
         if self:current_tile():is_edge() or self:current_tile():state() == TileState.Broken then
             local fx = bn_assets.MobMove.new("SMALL_END")
 
-            field:spawn(fx, self:current_tile())
+            Field.spawn(fx, self:current_tile())
         else
             -- Otherwise, use an explosion animation to get rid of it and play the sound, as it hit something and we want to recognize that.
             -- We can use the built-in Explosion object for this.
             local explosion = Explosion.new()
 
-            self:field():spawn(explosion, self:current_tile())
+            Field.spawn(explosion, self:current_tile())
         end
         self:erase()
     end
@@ -114,11 +113,11 @@ function create_ratton(ratty)
             -- If we haven't turned, we can run the search. Don't run it if we have turned, as it would be a waste of processing power, however little.
             -- At least, a bigger one than checking a boolean, I feel.
             if not has_turned then
-                if #field:find_characters(same_column_query) > 0 then
+                if #Field.find_characters(same_column_query) > 0 then
                     -- While I could write a sorting check for every character it finds in this list to determine who to turn towards
                     -- In the case of multiple found characters, for now it's faster and easier to assume 1 player is the target and
                     -- Target the first entry in the list.
-                    local target = field:find_characters(same_column_query)[1]
+                    local target = Field.find_characters(same_column_query)[1]
                     -- If the Y is less, they're above you. If it's more, they're below you.
                     if target:current_tile():y() < cur_tile:y() then
                         direction = Direction.Up
@@ -213,8 +212,6 @@ function character_init(self)
 
     self._do_once = true
 
-    local field = nil
-
     local reserved_tiles = {}
 
     self._wait_before_moving = 0;
@@ -222,7 +219,6 @@ function character_init(self)
     self:add_aux_prop(StandardEnemyAux.new())
 
     self.on_spawn_func = function(self)
-        field = self:field()
         self._wait_before_moving = self._pause_between_moves
     end
 
@@ -273,7 +269,7 @@ function character_init(self)
                 anim:on_frame(3, function()
                     local ratton = create_ratton(self)
                     local spawn_tile = self:get_tile(self:facing(), 1)
-                    field:spawn(ratton, spawn_tile)
+                    Field.spawn(ratton, spawn_tile)
                 end)
                 anim:on_complete(function()
                     anim:set_state(self._idle_state)

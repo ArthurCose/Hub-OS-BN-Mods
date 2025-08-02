@@ -11,8 +11,8 @@ local PLAY_DURATION = 120
 local EFFECT = Hit.Blind
 local AFFECTS_TEAM = false
 
-local function apply_effect(field, team)
-  field:find_characters(function(character)
+local function apply_effect(team)
+  Field.find_characters(function(character)
     if character:team() == team then
       if not AFFECTS_TEAM then
         return false
@@ -30,7 +30,6 @@ end
 
 ---@param user Entity
 local function create_trumpy(user)
-  local field = user:field()
   local team = user:team()
 
   local trumpy = Obstacle.new(team)
@@ -49,7 +48,7 @@ local function create_trumpy(user)
 
   trumpy.on_delete_func = function()
     trumpy:erase()
-    field:spawn(Explosion.new(), trumpy:current_tile())
+    Field.spawn(Explosion.new(), trumpy:current_tile())
   end
 
   trumpy.can_move_to_func = function(tile)
@@ -93,7 +92,7 @@ local function create_trumpy(user)
       end
     elseif state == "PLAY" then
       if state_remaining_time > 0 then
-        apply_effect(field, team)
+        apply_effect(team)
       else
         animation:set_state("IDLE")
         state_remaining_time = IDLE_DURATION
@@ -116,7 +115,7 @@ function card_init(user)
     local tile = user:get_tile(user:facing(), 1)
 
     if tile and not tile:is_reserved() and tile:is_walkable() then
-      user:field():spawn(create_trumpy(user), tile)
+      Field.spawn(create_trumpy(user), tile)
       Resources.play_audio(APPEAR_SFX)
     end
   end

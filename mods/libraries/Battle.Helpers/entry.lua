@@ -11,9 +11,8 @@ function battle_helpers.shuffle(list)
 end
 
 function battle_helpers.find_all_enemies(user)
-    local field = user:field()
     local user_team = user:team()
-    local list = field:find_characters(function(character)
+    local list = Field.find_characters(function(character)
         if character:team() ~= user_team then
             --if you are not with me, you are against me
             return true
@@ -23,11 +22,10 @@ function battle_helpers.find_all_enemies(user)
 end
 
 function battle_helpers.find_targets_ahead(user)
-    local field = user:field()
     local user_tile = user:current_tile()
     local user_team = user:team()
     local user_facing = user:facing()
-    local list = field:find_entities(function(entity)
+    local list = Field.find_entities(function(entity)
         if Character.from(entity) == nil and Obstacle.from(entity) == nil then
             return false
         end
@@ -64,39 +62,37 @@ function battle_helpers.get_first_target_ahead(user)
     end
 end
 
-function battle_helpers.drop_trace_fx(target_artifact, lifetimems)
-    --drop an afterimage artifact mimicking the appearance of an existing spell/artifact/character and fade it out over it's lifetimems
+function battle_helpers.drop_trace_fx(target_artifact, lifetime_ms)
+    --drop an afterimage artifact mimicking the appearance of an existing spell/artifact/character and fade it out over it's lifetime_ms
     local fx = Artifact.new()
     local anim = target_artifact:animation()
-    local field = target_artifact:field()
     local offset = target_artifact:offset()
     local texture = target_artifact:texture()
     local elevation = target_artifact:elevation()
     fx:set_facing(target_artifact:facing())
-    fx:set_texture(texture, true)
+    fx:set_texture(texture)
     fx:animation():copy_from(anim)
     fx:animation():set_state(anim:state())
     fx:set_offset(offset.x * 0.5, offset.y * 0.5)
     fx:set_elevation(elevation)
     fx:animation():apply(fx:sprite())
-    fx.starting_lifetimems = lifetimems
-    fx.lifetimems = lifetimems
+    local remaining_ms = lifetime_ms
     fx.on_update_func = function(self)
-        self.lifetimems = math.max(0, self.lifetimems - math.floor((1 / 60) * 1000))
-        local alpha = math.floor((fx.lifetimems / fx.starting_lifetimems) * 255)
+        remaining_ms = math.max(0, remaining_ms - math.floor((1 / 60) * 1000))
+        local alpha = math.floor((remaining_ms / lifetime_ms) * 255)
         self:set_color(Color.new(0, 0, 0, alpha))
 
-        if self.lifetimems == 0 then
+        if remaining_ms == 0 then
             self:erase()
         end
     end
 
     local tile = target_artifact:current_tile()
-    field:spawn(fx, tile:x(), tile:y())
+    Field.spawn(fx, tile:x(), tile:y())
     return fx
 end
 
-function battle_helpers.spawn_visual_artifact(field, tile, texture, animation_path, animation_state, position_x,
+function battle_helpers.spawn_visual_artifact(tile, texture, animation_path, animation_state, position_x,
                                               position_y)
     local visual_artifact = Artifact.new()
     visual_artifact:set_texture(texture)
@@ -108,12 +104,12 @@ function battle_helpers.spawn_visual_artifact(field, tile, texture, animation_pa
     end)
     visual_artifact:sprite():set_offset(position_x * 0.5, position_y * 0.5)
     anim:apply(visual_artifact:sprite())
-    field:spawn(visual_artifact, tile:x(), tile:y())
+    Field.spawn(visual_artifact, tile:x(), tile:y())
 end
 
 function battle_helpers.create_effect(effect_facing, effect_texture, effect_animpath, effect_state, offset_x, offset_y,
                                       offset_layer,
-                                      field, tile,
+                                      tile,
                                       playback, erase,
                                       move_function)
     local hitfx = Artifact.new()
@@ -138,14 +134,13 @@ function battle_helpers.create_effect(effect_facing, effect_texture, effect_anim
         end)
     end
 
-    field:spawn(hitfx, tile)
+    Field.spawn(hitfx, tile)
 
     return hitfx
 end
 
 function battle_helpers.create_lagging_ghost(user, color)
     local spawner = Artifact.new()
-    local field = user:field()
 
     local i = 0
     spawner.on_update_func = function()
@@ -171,7 +166,7 @@ function battle_helpers.create_lagging_ghost(user, color)
         end
 
         local tile = spawner:current_tile()
-        field:spawn(ghost, tile)
+        Field.spawn(ghost, tile)
     end
 
     return spawner

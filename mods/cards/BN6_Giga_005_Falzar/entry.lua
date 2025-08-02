@@ -38,7 +38,7 @@ function card_init(user, props)
 		user:boost_augment("BattleNetwork6.ArmChange.BugDeathThunder", 1)
 
 		-- Spawn the visual artifact
-		user:field():spawn(bug_rise, user:current_tile())
+		Field.spawn(bug_rise, user:current_tile())
 	end
 
 	return action

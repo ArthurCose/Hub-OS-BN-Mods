@@ -188,8 +188,6 @@ function player_init(player)
             hit_props
         )
 
-        local field = player:field()
-
         local facing = tile:facing()
         gust:set_facing(facing)
 
@@ -244,7 +242,7 @@ function player_init(player)
             wind_components[other:id()] = slide_component
         end
 
-        field:spawn(gust, tile)
+        Field.spawn(gust, tile)
     end
 
     local function create_cursor()
@@ -277,7 +275,6 @@ function player_init(player)
     local function create_aqua_soul_charge_shot(user, props)
         local spell = Spell.new(user:team())
         local direction = user:facing()
-        local field = user:field()
 
         spell:set_facing(direction)
 
@@ -307,7 +304,7 @@ function player_init(player)
 
                     local spawn_tile = burst_tiles[i]
                     if spawn_tile and not spawn_tile:is_edge() then
-                        field:spawn(fx, spawn_tile)
+                        Field.spawn(fx, spawn_tile)
                         spawn_tile:attack_entities(self)
                     end
                 end
@@ -377,7 +374,7 @@ function player_init(player)
         end
 
         if player:spawned() then
-            player:field():spawn(artifact, player:current_tile())
+            Field.spawn(artifact, player:current_tile())
         end
     end
 
@@ -841,9 +838,7 @@ function player_init(player)
             self._timer = self._timer - 1
             if self._timer > 0 and #player:staged_items() == 0 then return end
 
-            local field = player:field()
-
-            local player_list = field:find_players(function(p)
+            local player_list = Field.find_players(function(p)
                 if not p then return false end
                 if p:deleted() or p:will_erase_eof() then return false end
                 if not p:spawned() then return false end
@@ -1013,7 +1008,7 @@ function player_init(player)
     soul_junk.on_activate_func = function(self)
         handle_form_activation(self, Element.None, {})
 
-        local enemy_list = player:field():find_characters(function(character)
+        local enemy_list = Field.find_characters(function(character)
             return character and character:hittable() and not player:is_team(character:team())
         end)
 
@@ -1034,16 +1029,15 @@ function player_init(player)
     soul_fire.on_activate_func = function(self)
         handle_form_activation(self, Element.Fire, {})
 
-        local field = player:field()
         for x = 1, 6, 1 do
-            field:tile_at(x, 2):set_state(TileState.Grass)
+            Field.tile_at(x, 2):set_state(TileState.Grass)
             if x == 2 or x == 5 then
-                field:tile_at(x, 1):set_state(TileState.Grass)
-                field:tile_at(x, 3):set_state(TileState.Grass)
+                Field.tile_at(x, 1):set_state(TileState.Grass)
+                Field.tile_at(x, 3):set_state(TileState.Grass)
             end
         end
 
-        field:shake(12, 40)
+        Field.shake(12, 40)
 
         overlay = player:create_node()
 
@@ -1073,7 +1067,7 @@ function player_init(player)
         overlay_animation:set_state(player:animation():state())
         overlay_animation:apply(overlay)
 
-        player:field():shake(12, 40)
+        Field.shake(12, 40)
     end
 
     soul_roll.on_activate_func = function(self)
@@ -1089,10 +1083,9 @@ function player_init(player)
 
         player:queue_action(Action.from_card(player, card_properties))
 
-        local field = player:field()
-        local wind_x = field:width() - 1
+        local wind_x = Field.width() - 1
         for y = 1, 3, 1 do
-            table.insert(wind_list, field:tile_at(wind_x, y))
+            table.insert(wind_list, Field.tile_at(wind_x, y))
         end
 
         if player:ignoring_negative_tile_effects() == false then
@@ -1113,7 +1106,7 @@ function player_init(player)
     soul_search.on_activate_func = function(self)
         handle_form_activation(self, Element.None, {})
 
-        local list = player:field():find_entities(function(ent)
+        local list = Field.find_entities(function(ent)
             if ent:will_erase_eof() then return false end
             if ent:deleted() then return false end
             if not ent:spawned() then return false end
@@ -1307,7 +1300,7 @@ function player_init(player)
             self:add_anim_action(5, function()
                 local cannonshot = create_aqua_soul_charge_shot(user, hit_props)
                 local tile = user:current_tile()
-                player:field():spawn(cannonshot, tile)
+                Field.spawn(cannonshot, tile)
             end)
         end
 
@@ -1315,7 +1308,6 @@ function player_init(player)
     end
 
     soul_number.charged_attack_func = function(self)
-        local field = player:field()
         local context = player:context()
 
         return bomb:create_action(player, function(tile)
@@ -1335,8 +1327,8 @@ function player_init(player)
 
             for x = -1, 1, 1 do
                 for y = -1, 1, 1 do
-                    local prospective_tile = field:tile_at(tile_x + x, tile_y + y)
-                    if prospective_tile:is_edge() then goto continue end
+                    local prospective_tile = Field.tile_at(tile_x + x, tile_y + y)
+                    if not prospective_tile or prospective_tile:is_edge() then goto continue end
                     table.insert(tiles, prospective_tile)
                     ::continue::
                 end
@@ -1356,7 +1348,6 @@ function player_init(player)
             )
 
             physical_bomb:set_shadow(Shadow.Small)
-            physical_bomb:show_shadow()
 
             local spawn_explosions = false
             local bomb_flashes = false
@@ -1414,7 +1405,7 @@ function player_init(player)
                         local explosion = Explosion.new()
                         -- no sound
                         explosion.on_spawn_func = nil
-                        field:spawn(Explosion.new(), tiles[i])
+                        Field.spawn(Explosion.new(), tiles[i])
                         self:attack_tile(tiles[i])
                         i = i + 1
                     end
@@ -1432,19 +1423,18 @@ function player_init(player)
                     end) > 0 then
                     self:attack_tile()
                 else
-                    field:spawn(physical_bomb, tile)
+                    Field.spawn(physical_bomb, tile)
                 end
 
                 self:erase()
             end
 
-            field:spawn(spell, tile)
+            Field.spawn(spell, tile)
         end)
     end
 
     soul_metal.charged_attack_func = function(self)
         local action = Action.new(player, "CHARACTER_SPECIAL")
-        local field = player:field()
 
         action.on_execute_func = function()
             local spell = Spell.new(player:team())
@@ -1468,7 +1458,7 @@ function player_init(player)
 
             action:add_anim_action(4, function()
                 can_spell_attack = true
-                field:shake(4, 8)
+                Field.shake(4, 8)
 
                 spell:set_tile_highlight(Highlight.Solid)
             end)
@@ -1478,7 +1468,7 @@ function player_init(player)
             end
 
             local tile = player:current_tile():get_tile(facing, 1)
-            field:spawn(spell, tile)
+            Field.spawn(spell, tile)
         end
 
         return action
@@ -1513,7 +1503,6 @@ function player_init(player)
 
     soul_guts.charged_attack_func = function(self)
         local action = Action.new(player, "CHARACTER_SPECIAL")
-        local field = player:field()
 
         action.on_execute_func = function()
             local spell = Spell.new(player:team())
@@ -1565,7 +1554,7 @@ function player_init(player)
             end
 
             local tile = player:current_tile():get_tile(facing, 1)
-            field:spawn(spell, tile)
+            Field.spawn(spell, tile)
         end
 
         return action
@@ -1582,6 +1571,9 @@ function player_init(player)
             local facing = user:facing()
 
             local do_attack = function()
+                local spawn_tile = user:get_tile(facing, 1)
+                if not spawn_tile then return end
+
                 local spell = Spell.new(user:team())
                 local direction = facing
 
@@ -1642,18 +1634,14 @@ function player_init(player)
 
                     fx:set_offset(math.random(-12, 12), math.random(-8, 8))
 
-                    other:field():spawn(fx, other:current_tile())
+                    Field.spawn(fx, other:current_tile())
 
                     self:erase()
                 end
 
                 spell:set_tile_highlight(Highlight.Solid)
 
-                spell.can_move_to_func = function(tile)
-                    return true
-                end
-
-                user:field():spawn(spell, user:get_tile(facing, 1))
+                Field.spawn(spell, spawn_tile)
             end
 
             self:add_anim_action(2, do_attack)
@@ -1676,12 +1664,11 @@ function player_init(player)
     end
 
     soul_search.charged_attack_func = function()
-        local field = player:field()
         local enemy_filter = function(character)
             return character:team() ~= player:team()
         end
         -- Find an enemy to attack.
-        local enemy_list = field:find_nearest_characters(player, enemy_filter)
+        local enemy_list = Field.find_nearest_characters(player, enemy_filter)
         -- If one exists, start the scope attack.
         if #enemy_list > 0 then
             local action = Action.new(player, "SEARCH_RIFLE")
@@ -1718,7 +1705,7 @@ function player_init(player)
                 local tile = target:current_tile()
 
                 -- Spawn the cursor.
-                field:spawn(player._cursor, target:current_tile())
+                Field.spawn(player._cursor, target:current_tile())
 
                 -- Hit Props are necessary to deal damage.
                 local damage_props = HitProps.new(
@@ -1749,7 +1736,7 @@ function player_init(player)
                             hitbox:set_hit_props(damage_props)
 
                             -- Spawn it!
-                            field:spawn(hitbox, tile)
+                            Field.spawn(hitbox, tile)
                         end
                     end)
                 end

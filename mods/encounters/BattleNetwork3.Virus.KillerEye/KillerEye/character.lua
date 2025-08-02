@@ -113,7 +113,6 @@ end
 
 function create_scanner(owner)
     local team = owner:team()
-    local field = owner:field()
     local direction = owner.current_direction
     local max_scans = 9
 
@@ -175,7 +174,7 @@ function create_scanner(owner)
         action_shock(owner)
         owner.wait_time = 0
     end
-    field:spawn(spell, spell.nextile)
+    Field.spawn(spell, spell.nextile)
 end
 
 function getAttackAnim(char)
@@ -230,9 +229,7 @@ end
 
 function spawn_laser(owner)
     --spawn paralyzing laser for owner
-    local owner_id = owner:id()
     local team = owner:team()
-    local field = owner:field()
     local direction = owner.current_direction
     local tile = owner:get_tile(direction, 1)
     local laser_hit_props = HitProps.new(
@@ -283,9 +280,9 @@ function spawn_laser(owner)
                 if (spell.current_entity == nil) then
                     local hitbox = Hitbox.new(spell:team())
                     hitbox:set_hit_props(laser_hit_props)
-                    spell:field():spawn(hitbox, spell:current_tile())
+                    Field.spawn(hitbox, spell:current_tile())
                     spell.current_entity = entitiesOnTile[1]
-                    battle_helpers.spawn_visual_artifact(spell:field(), spell:get_tile(), effects_texture,
+                    battle_helpers.spawn_visual_artifact(spell:get_tile(), effects_texture,
                         effects_anim
                         , "ELEC"
                         , 0, 0)
@@ -297,7 +294,7 @@ function spawn_laser(owner)
         end
         if tile == nil or tile:is_edge() then return end
         table.insert(owner.laserspells, spell)
-        field:spawn(spell, tile)
+        Field.spawn(spell, tile)
     end
     spawn_next()
 end

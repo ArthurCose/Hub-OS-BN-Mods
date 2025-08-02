@@ -17,7 +17,7 @@ local PANEL_SFX = bn_assets.load_audio("paneldamage.ogg")
 
 ---@param team Team
 ---@param tile? Tile
-local function spawn_explosion(team, hit_props, field, tile)
+local function spawn_explosion(team, hit_props, tile)
 	if not tile or tile:state() == TileState.Void then
 		return
 	end
@@ -42,12 +42,11 @@ local function spawn_explosion(team, hit_props, field, tile)
 	spell_animation:on_complete(function() spell:erase() end)
 
 	tile:attack_entities(spell)
-	field:spawn(spell, tile)
+	Field.spawn(spell, tile)
 end
 
 ---@param user Entity
 function card_init(user, props)
-	local field = user:field()
 	local team = user:team()
 
 	return bomb:create_action(user, function(tile)
@@ -64,8 +63,8 @@ function card_init(user, props)
 			Drag.None
 		)
 
-		spawn_explosion(team, hit_props, field, tile:get_tile(Direction.Up, 1))
-		spawn_explosion(team, hit_props, field, tile)
-		spawn_explosion(team, hit_props, field, tile:get_tile(Direction.Down, 1))
+		spawn_explosion(team, hit_props, tile:get_tile(Direction.Up, 1))
+		spawn_explosion(team, hit_props, tile)
+		spawn_explosion(team, hit_props, tile:get_tile(Direction.Down, 1))
 	end)
 end

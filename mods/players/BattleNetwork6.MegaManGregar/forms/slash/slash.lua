@@ -99,7 +99,7 @@ return function(player, form, base_animation_path)
           Resources.play_audio(HIT_SFX)
         end
 
-        player:field():spawn(spell, tile)
+        Field.spawn(spell, tile)
       end
     end)
 

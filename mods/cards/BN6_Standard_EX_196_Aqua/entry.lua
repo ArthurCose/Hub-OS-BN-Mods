@@ -20,7 +20,7 @@ function card_init(actor, props)
     action.on_execute_func = function(self, user)
         local fx = ParticlePoof.new()
         fx:set_height(user:height() * 2)
-        actor:field():spawn(fx, actor:current_tile())
+        Field.spawn(fx, actor:current_tile())
     end
     return action
 end

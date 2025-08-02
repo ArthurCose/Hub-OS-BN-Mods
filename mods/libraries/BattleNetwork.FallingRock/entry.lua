@@ -18,12 +18,11 @@ local ROCK_INITIAL_HEIGHT = calculate_elevation_after(FALL_TIME, ROCK_ACC, 0)
 local PARTICLE_ACC = 0.15
 
 ---Spawns up to `count` falling rocks, aims for enemy characters
----@param field Field
 ---@param team Team the team of the attacker, tiles on this team will not be cracked
 ---@param count number
-function Lib.crack_tiles(field, team, count)
+function Lib.crack_tiles(team, count)
   -- find enemy tiles
-  local enemy_tiles = field:find_tiles(function(tile)
+  local enemy_tiles = Field.find_tiles(function(tile)
     local tile_team = tile:team()
     return (tile_team ~= team or tile_team == Team.Other) and not tile:is_edge()
   end)
@@ -41,13 +40,12 @@ function Lib.crack_tiles(field, team, count)
 end
 
 ---Spawns up to `count` falling rocks, aims for enemy characters
----@param field Field
 ---@param team Team the team of the attacker
 ---@param count number
 ---@param hit_props HitProps
-function Lib.spawn_falling_rocks(field, team, count, hit_props)
+function Lib.spawn_falling_rocks(team, count, hit_props)
   -- find enemy tiles
-  local enemy_tiles = field:find_tiles(function(tile)
+  local enemy_tiles = Field.find_tiles(function(tile)
     local tile_team = tile:team()
     return (tile_team ~= team or tile_team == Team.Other) and not tile:is_edge()
   end)
@@ -78,7 +76,7 @@ function Lib.spawn_falling_rocks(field, team, count, hit_props)
     local tile = table.remove(tiles_with_enemy, math.random(#tiles_with_enemy))
 
     local rock = Lib.create_falling_rock(team, hit_props)
-    field:spawn(rock, tile)
+    Field.spawn(rock, tile)
 
     count = count - 1
   end
@@ -88,7 +86,7 @@ function Lib.spawn_falling_rocks(field, team, count, hit_props)
     local tile = table.remove(tiles_without_enemy, math.random(#tiles_without_enemy))
 
     local rock = Lib.create_falling_rock(team, hit_props)
-    field:spawn(rock, tile)
+    Field.spawn(rock, tile)
   end
 end
 
@@ -99,7 +97,6 @@ function Lib.create_falling_rock(team, hit_props)
   spell:set_hit_props(hit_props)
   spell:set_texture(TEXTURE)
   spell:set_shadow(BIG_SHADOW)
-  spell:show_shadow(true)
   spell:set_never_flip(true)
 
   local animation = spell:animation()
@@ -115,11 +112,11 @@ function Lib.create_falling_rock(team, hit_props)
 
     local particle_a = Lib.create_smashed_particle(-0.5, -3)
     particle_a:set_elevation(elevation)
-    spell:field():spawn(particle_a, tile)
+    Field.spawn(particle_a, tile)
 
     local particle_b = Lib.create_smashed_particle(0.5, -2.5)
     particle_b:set_elevation(elevation)
-    spell:field():spawn(particle_b, tile)
+    Field.spawn(particle_b, tile)
   end
 
   local vel = 0
@@ -162,7 +159,6 @@ function Lib.create_smashed_particle(vel_x, vel_y)
   artifact:set_texture(TEXTURE)
   artifact:set_shadow(SMALL_SHADOW)
   artifact:set_never_flip(true)
-  artifact:show_shadow(true)
 
   local animation = artifact:animation()
   animation:load(ANIMATION_PATH)

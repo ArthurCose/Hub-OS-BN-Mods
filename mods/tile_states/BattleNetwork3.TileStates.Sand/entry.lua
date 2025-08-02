@@ -1,6 +1,5 @@
 ---@param custom_state CustomTileState
 function tile_state_init(custom_state)
-  local field = custom_state:field()
   custom_state.on_entity_stop_func = function(self, entity, prev_tile)
     if entity:ignoring_negative_tile_effects() then return end
 
@@ -17,6 +16,6 @@ function tile_state_init(custom_state)
       artifact:delete()
     end)
 
-    field:spawn(artifact, entity:current_tile())
+    Field.spawn(artifact, entity:current_tile())
   end
 end

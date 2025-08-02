@@ -14,16 +14,15 @@ function card_init(actor, props)
 	end
 
 	local wind_timer = 0
-	local field = actor:field()
-	local wind_tile = field:tile_at(0, 0)
+	local wind_tile = Field.tile_at(0, 0)
 
 	action.on_update_func = function(self)
 		wind_timer = wind_timer + 1
 
 		if wind_timer >= 40 then
-			for x = 1, field:width(), 1 do
-				for y = 1, field:height(), 1 do
-					local spell_tile = field:tile_at(x, y)
+			for x = 1, Field.width(), 1 do
+				for y = 1, Field.height(), 1 do
+					local spell_tile = Field.tile_at(x, y)
 					if spell_tile == nil then goto continue end
 
 					local spell = Spell.new(actor:team())
@@ -42,7 +41,7 @@ function card_init(actor, props)
 						self:erase()
 					end
 
-					field:spawn(spell, spell_tile)
+					Field.spawn(spell, spell_tile)
 
 					::continue::
 				end
@@ -85,7 +84,7 @@ function card_init(actor, props)
 				end
 
 				if math.floor(offset.x / 40) > self._current_tile_pos.x then
-					self._current_tile_pos.x = math.min(field:width(), self._current_tile_pos.x + 1)
+					self._current_tile_pos.x = math.min(Field.width(), self._current_tile_pos.x + 1)
 				end
 
 				if math.floor(offset.y / 30) > self._current_tile_pos.y then
@@ -93,7 +92,7 @@ function card_init(actor, props)
 				end
 			end
 
-			field:spawn(wind, wind_tile)
+			Field.spawn(wind, wind_tile)
 		end
 	end
 

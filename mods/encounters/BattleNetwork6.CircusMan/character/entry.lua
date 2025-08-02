@@ -50,7 +50,7 @@ local function default_random_tile(entity)
         target_x = 6
     end
 
-    local tiles = entity:field():find_tiles(function(tile)
+    local tiles = Field.find_tiles(function(tile)
         return tile:x() == target_x and entity:can_move_to(tile) and tile ~= entity:current_tile()
     end)
 
@@ -124,7 +124,6 @@ end
 ---@param callback fun(success: boolean)
 local function spawn_clap(entity, callback)
     local team = entity:team()
-    local field = entity:field()
 
     local main_spell = Spell.new(team)
     main_spell:set_hit_props(
@@ -183,9 +182,9 @@ local function spawn_clap(entity, callback)
     main_spell.on_update_func = function()
         local tile = main_spell:current_tile()
         local x = tile:x()
-        local top_tile = field:tile_at(x, 1) --[[@as Tile]]
-        local center_tile = field:tile_at(x, 2) --[[@as Tile]]
-        local bottom_tile = field:tile_at(x, 3) --[[@as Tile]]
+        local top_tile = Field.tile_at(x, 1) --[[@as Tile]]
+        local center_tile = Field.tile_at(x, 2) --[[@as Tile]]
+        local bottom_tile = Field.tile_at(x, 3) --[[@as Tile]]
 
         time = time + 1
 
@@ -196,8 +195,8 @@ local function spawn_clap(entity, callback)
         end
 
         if time == 12 then
-            field:spawn(spell_top, tile)
-            field:spawn(spell_bottom, tile)
+            Field.spawn(spell_top, tile)
+            Field.spawn(spell_bottom, tile)
             entity.set_hands_visible(false)
         end
 
@@ -215,7 +214,7 @@ local function spawn_clap(entity, callback)
 
     -- find a place to spawn
     local x = 2
-    local enemies = field:find_characters(function(enemy)
+    local enemies = Field.find_characters(function(enemy)
         return enemy:team() ~= team and enemy:hittable()
     end)
 
@@ -223,14 +222,14 @@ local function spawn_clap(entity, callback)
         local enemy = enemies[math.random(#enemies)]
         x = enemy:current_tile():x()
     else
-        local tiles = field:find_tiles(function(tile)
+        local tiles = Field.find_tiles(function(tile)
             return tile:team() ~= team
         end)
         local tile = tiles[math.random(#tiles)]
         x = tile:x()
     end
 
-    field:spawn(main_spell, x, 2)
+    Field.spawn(main_spell, x, 2)
 end
 
 ---@param entity CircusMan
@@ -366,12 +365,11 @@ local function spawn_lion(ring, damage)
         lion:delete()
     end
 
-    ring:field():spawn(lion, ring:current_tile())
+    Field.spawn(lion, ring:current_tile())
 end
 
 ---@param entity CircusMan
 local function spawn_ring_of_fire(entity)
-    local field = entity:field()
     local tile = lion_random_tile(entity)
 
     if not tile then
@@ -406,7 +404,7 @@ local function spawn_ring_of_fire(entity)
         end
     end
 
-    field:spawn(ring, tile)
+    Field.spawn(ring, tile)
 end
 
 ---@param entity CircusMan
@@ -451,7 +449,6 @@ end
 ---@param callback fun(success: boolean)
 local function spawn_cage(entity, callback)
     local team = entity:team()
-    local field = entity:field()
 
     local cage = Obstacle.new(team)
     cage:set_health(50)
@@ -589,7 +586,7 @@ local function spawn_cage(entity, callback)
                 (math.random() * 2 - 1) * Tile:width(),
                 -math.random(0, Tile:height() * 2)
             )
-            field:spawn(particle, tile)
+            Field.spawn(particle, tile)
         end
 
         if attack_time == HIT_RATE * entity.cage_hits then
@@ -598,7 +595,7 @@ local function spawn_cage(entity, callback)
     end
 
     -- figure out where to spawn
-    local enemies = field:find_characters(function(enemy)
+    local enemies = Field.find_characters(function(enemy)
         return enemy:team() ~= team and entity:hittable()
     end)
 
@@ -608,7 +605,7 @@ local function spawn_cage(entity, callback)
     end
 
     local enemy = enemies[math.random(#enemies)]
-    field:spawn(cage, enemy:current_tile())
+    Field.spawn(cage, enemy:current_tile())
 end
 
 ---@param entity CircusMan
@@ -723,6 +720,7 @@ function character_init(entity)
 
     entity:set_texture(TEXTURE)
     entity:set_shadow(SHADOW_TEXTURE)
+    entity:show_shadow(false)
     local animation = entity:animation()
     animation:load(ANIMATION_PATH)
 

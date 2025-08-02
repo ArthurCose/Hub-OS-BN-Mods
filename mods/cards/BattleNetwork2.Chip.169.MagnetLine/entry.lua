@@ -8,10 +8,9 @@ function card_init(actor, props)
 	action:set_lockout(ActionLockout.new_sequence())
 
 	action.on_execute_func = function(self, user)
-		local field = actor:field()
 		self._dir = actor:facing()
 		self._count = 0
-		self._max = field:width()
+		self._max = Field.width()
 
 		local step1 = self:create_step()
 
@@ -22,7 +21,7 @@ function card_init(actor, props)
 		local tracked_states = {}
 		local y = actor:current_tile():y()
 
-		local tiles = field:find_tiles(function(tile)
+		local tiles = Field.find_tiles(function(tile)
 			if not tile then return false end
 			if tile:is_edge() then return false end
 			if tile:y() ~= y then return false end

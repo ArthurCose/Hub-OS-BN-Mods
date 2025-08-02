@@ -4,13 +4,12 @@ function card_init(actor, props)
 	local ParticlePoof = require("BattleNetwork.SmokePoof")
 	local action = Action.new(actor, "CHARACTER_IDLE")
 	action:set_lockout(ActionLockout.new_sequence())
-	local field = actor:field()
 	local tile_array = {}
 	local cooldown = 0
 	action.on_execute_func = function(self, user)
 		for i = 0, 6, 1 do
 			for j = 0, 6, 1 do
-				local tile = field:tile_at(i, j)
+				local tile = Field.tile_at(i, j)
 				if tile and not tile:is_edge() and tile:state() ~= TileState.Broken then
 					table.insert(tile_array, tile)
 				end
@@ -25,7 +24,7 @@ function card_init(actor, props)
 						local tile2 = tile_array[index]
 						if tile2:state() ~= TileState.Cracked then
 							local fx = ParticlePoof.new()
-							field:spawn(fx, tile2)
+							Field.spawn(fx, tile2)
 							tile2:set_state(TileState.Cracked)
 							Resources.play_audio(AUDIO)
 						else

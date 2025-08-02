@@ -12,7 +12,6 @@ function battle_helpers.spawn_visual_artifact(character, tile, texture, animatio
     visual_artifact:set_texture(texture)
     local anim = visual_artifact:animation()
     local sprite = visual_artifact:sprite()
-    local field = character:field()
     local facing = character:facing()
     anim:load(animation_path)
     anim:set_state(animation_state)
@@ -25,14 +24,13 @@ function battle_helpers.spawn_visual_artifact(character, tile, texture, animatio
     visual_artifact:set_facing(facing)
     visual_artifact:set_offset(position_x * 0.5, position_y * 0.5)
     anim:apply(sprite)
-    field:spawn(visual_artifact, tile:x(), tile:y())
+    Field.spawn(visual_artifact, tile:x(), tile:y())
     return visual_artifact
 end
 
 function battle_helpers.find_all_enemies(user)
-    local field = user:field()
     local user_team = user:team()
-    local list = field:find_characters( --[[hittable patch--]] function(entity)
+    local list = Field.find_characters( --[[hittable patch--]] function(entity)
         if not entity:hittable() then return end
         ( --[[end hittable patch--]] function(character)
             if character:team() ~= user_team then
@@ -45,11 +43,10 @@ function battle_helpers.find_all_enemies(user)
 end
 
 function battle_helpers.find_targets_ahead(user)
-    local field = user:field()
     local user_tile = user:current_tile()
     local user_team = user:team()
     local user_facing = user:facing()
-    local list = field:find_entities( --[[hittable patch--]] function(entity)
+    local list = Field.find_entities( --[[hittable patch--]] function(entity)
         if not entity:hittable() then return end
         ( --[[end hittable patch--]] function(entity)
             if Character.from(entity) == nil and Obstacle.from(entity) == nil then
@@ -103,7 +100,6 @@ function battle_helpers.drop_trace_fx(target_artifact, lifetime_ms)
     --drop an afterimage artifact mimicking the appearance of an existing spell/artifact/character and fade it out over it's lifetime_ms
     local fx = Artifact.new()
     local anim = target_artifact:animation()
-    local field = target_artifact:field()
     local offset = target_artifact:offset()
     local texture = target_artifact:texture()
     local elevation = target_artifact:elevation()
@@ -127,7 +123,7 @@ function battle_helpers.drop_trace_fx(target_artifact, lifetime_ms)
     end
 
     local tile = target_artifact:current_tile()
-    field:spawn(fx, tile:x(), tile:y())
+    Field.spawn(fx, tile:x(), tile:y())
     return fx
 end
 

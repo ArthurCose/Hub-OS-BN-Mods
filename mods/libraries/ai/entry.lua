@@ -272,9 +272,8 @@ function Lib.find_setup_tiles(entity, tile_suggester, tile_filter, entity_filter
     return false
   end
 
-  local field = entity:field()
-  field:find_characters(find_entity_callback)
-  field:find_obstacles(find_entity_callback)
+  Field.find_characters(find_entity_callback)
+  Field.find_obstacles(find_entity_callback)
 
   return tiles
 end
@@ -284,9 +283,8 @@ end
 ---@param min_dist number? starts at 1
 ---@param max_dist number? defaults to the field width
 function Lib.pick_same_row_tile(entity, min_dist, max_dist)
-  local field = entity:field()
   local team = entity:team()
-  local enemies = field:find_nearest_characters(entity, function(e)
+  local enemies = Field.find_nearest_characters(entity, function(e)
     return not e:deleted() and e:team() ~= team
   end)
 
@@ -295,7 +293,7 @@ function Lib.pick_same_row_tile(entity, min_dist, max_dist)
   end
 
   min_dist = math.max(1, min_dist or 1)
-  max_dist = max_dist or field:width()
+  max_dist = max_dist or Field.width()
 
   ---@type Tile[]
   local possible_tiles = {}
@@ -306,8 +304,8 @@ function Lib.pick_same_row_tile(entity, min_dist, max_dist)
     local enemy_x = enemy_tile:x()
     local y = enemy_tile:y()
 
-    for x = 1, field:width() - 1 do
-      local tile = field:tile_at(x, y)
+    for x = 1, Field.width() - 1 do
+      local tile = Field.tile_at(x, y)
       local dist = math.abs(x - enemy_x)
 
       if not tile or dist < min_dist or dist > max_dist or not entity:can_move_to(tile) then
@@ -340,9 +338,8 @@ end
 ---Finds the furthest tile away from each enemy in both directions for movement, returns one of them
 ---@param entity Entity
 function Lib.pick_far_same_row_tile(entity)
-  local field = entity:field()
   local team = entity:team()
-  local enemies = field:find_nearest_characters(entity, function(e)
+  local enemies = Field.find_nearest_characters(entity, function(e)
     return not e:deleted() and e:team() ~= team
   end)
 
@@ -364,8 +361,8 @@ function Lib.pick_far_same_row_tile(entity)
 
     -- find the furthest tile on the right
 
-    for x = field:width() - 1, enemy_x + 1, -1 do
-      local tile = field:tile_at(x, y)
+    for x = Field.width() - 1, enemy_x + 1, -1 do
+      local tile = Field.tile_at(x, y)
 
       if not tile or not entity:can_move_to(tile) then
         goto continue
@@ -386,7 +383,7 @@ function Lib.pick_far_same_row_tile(entity)
     -- find the furthest tile on the left
 
     for x = 1, enemy_x - 1 do
-      local tile = field:tile_at(x, y)
+      local tile = Field.tile_at(x, y)
 
       if not tile or not entity:can_move_to(tile) then
         goto continue
@@ -415,20 +412,19 @@ end
 ---Finds the tiles closest to the edge in both directions, returns one of them
 ---@param entity Entity
 function Lib.pick_far_tile(entity)
-  local field = entity:field()
   local x_start = 1
 
   local facing = entity:facing()
   if facing == Direction.Left then
-    x_start = field:width() - 2
+    x_start = Field.width() - 2
   end
 
   ---@type Tile[]
   local possible_tiles = {}
   local current_tile = entity:current_tile()
 
-  for y = 1, field:height() - 2 do
-    local tile = field:tile_at(x_start, y)
+  for y = 1, Field.height() - 2 do
+    local tile = Field.tile_at(x_start, y)
 
     while tile do
       if entity:can_move_to(tile) and tile ~= current_tile then
@@ -452,10 +448,9 @@ end
 function Lib.pick_same_team_tile(entity)
   local current_tile = entity:current_tile()
 
-  local tiles = entity:field()
-      :find_tiles(function(tile)
-        return entity:can_move_to(tile) and current_tile ~= tile
-      end)
+  local tiles = Field.find_tiles(function(tile)
+    return entity:can_move_to(tile) and current_tile ~= tile
+  end)
 
   if #tiles == 0 then
     return nil

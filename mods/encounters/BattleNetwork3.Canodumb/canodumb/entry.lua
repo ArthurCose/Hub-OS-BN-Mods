@@ -7,7 +7,6 @@ local cannon_sfx = bn_assets.load_audio("cannon.ogg")
 local Cursor = {}
 
 local function spawn_barrel_smoke(canodumb)
-  local field = canodumb:field()
   local tile = canodumb:current_tile()
 
   local artifact = Artifact.new()
@@ -28,7 +27,7 @@ local function spawn_barrel_smoke(canodumb)
     artifact:erase()
   end)
 
-  field:spawn(artifact, tile:x(), tile:y())
+  Field.spawn(artifact, tile:x(), tile:y())
 end
 
 local function attack_tile(canodumb, attack_spell, tile)
@@ -86,7 +85,7 @@ local function attack(canodumb, cursor)
   end
 
   -- attach the spell so attacks can register
-  canodumb:field():spawn(attack_spell, 0, 0)
+  Field.spawn(attack_spell, 0, 0)
 end
 
 local function begin_attack(canodumb, cursor)
@@ -118,8 +117,7 @@ local function spawn_cursor(cursor, canodumb, tile)
   anim:set_state(canodumb._cursor_state)
   anim:set_playback(Playback.Once)
 
-  local field = canodumb:field()
-  field:spawn(spell, tile)
+  Field.spawn(spell, tile)
 
   spell.on_update_func = function()
     cursor.remaining_frames = cursor.remaining_frames - 1
@@ -193,8 +191,7 @@ idle_update = function(canodumb, dt)
   local y = canodumb:get_tile():y()
   local team = canodumb:team()
 
-  local field = canodumb:field()
-  local targets = field:find_characters(function(c)
+  local targets = Field.find_characters(function(c)
     -- same row, different team
     return c:team() ~= team and c:get_tile():y() == y
   end)

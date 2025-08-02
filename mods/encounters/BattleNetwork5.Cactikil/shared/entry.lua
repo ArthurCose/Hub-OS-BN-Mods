@@ -23,7 +23,7 @@ local function create_substitute(character)
   end
 
   substitute.on_delete_func = function()
-    substitute:field():spawn(Explosion.new(), substitute:current_tile())
+    Field.spawn(Explosion.new(), substitute:current_tile())
     substitute:erase()
   end
 
@@ -31,7 +31,7 @@ local function create_substitute(character)
   anim:copy_from(character:animation())
   anim:set_state("HEADLESS")
 
-  character:field():spawn(substitute, character:current_tile())
+  Field.spawn(substitute, character:current_tile())
 
   return substitute
 end
@@ -41,7 +41,6 @@ local function create_hit_spell(character)
   local spell = Spell.new(character:team())
   spell:set_facing(character:facing())
   spell:set_shadow(Shadow.Small)
-  spell:show_shadow(true)
   spell:sprite():set_layer(5)
 
   spell:set_hit_props(
@@ -83,7 +82,7 @@ local function spawn_teleport_out_artifact(character)
   local char_movement_offset = character:movement_offset()
   artifact:set_offset(char_offset.x + char_movement_offset.x * 0.5, char_offset.y + char_movement_offset.y * 0.5)
 
-  character:field():spawn(artifact, character:get_tile())
+  Field.spawn(artifact, character:get_tile())
 end
 
 local function return_to_body(character, substitute)
@@ -127,7 +126,7 @@ local function begin_rolling(character)
   local counter = 0
 
   local start_tile = character:get_tile(character:facing(), 1)
-  character:field():spawn(spell, start_tile)
+  Field.spawn(spell, start_tile)
   character:teleport(start_tile, function()
     character:enable_sharing_tile(true)
   end)

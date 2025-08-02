@@ -14,7 +14,6 @@ local ROCK_DEBRIS_ANIMATION_PATH = bn_assets.fetch_animation_path("rock_debris_b
 local PARTICLE_ACC = 1
 
 local function spawn_rock_particle(parent, remaining_time)
-  local field = parent:field()
   local position = parent:movement_offset()
   position.y = position.y - parent:height() / 2
 
@@ -50,11 +49,11 @@ local function spawn_rock_particle(parent, remaining_time)
       local poof = bn_assets.ParticlePoof.new("SMALL")
       poof:set_offset(position.x, position.y)
       poof:sprite():set_layer(-2)
-      field:spawn(poof, artifact:current_tile())
+      Field.spawn(poof, artifact:current_tile())
     end
   end
 
-  field:spawn(artifact, parent:current_tile())
+  Field.spawn(artifact, parent:current_tile())
 end
 
 local function shatter_rock(entity)
@@ -64,7 +63,7 @@ local function shatter_rock(entity)
   local offset = entity:movement_offset()
   poof:set_offset(offset.x, offset.y - entity:height() / 2)
   poof:sprite():set_layer(-2)
-  entity:field():spawn(poof, entity:current_tile())
+  Field.spawn(poof, entity:current_tile())
 
   spawn_rock_particle(entity, 20)
   spawn_rock_particle(entity, 15)
@@ -77,7 +76,7 @@ local function shatter_ice(entity)
   local offset = entity:movement_offset()
   poof:set_offset(offset.x, offset.y - entity:height() / 2)
   poof:sprite():set_layer(-2)
-  entity:field():spawn(poof, entity:current_tile())
+  Field.spawn(poof, entity:current_tile())
 end
 
 function Lib.new_ice_cube()

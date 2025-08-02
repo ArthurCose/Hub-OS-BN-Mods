@@ -1,4 +1,3 @@
----@diagnostic disable: inject-field
 local USE_SFX = Resources.load_audio("use_shuffle.ogg")
 local SHUFFLE_SFX = Resources.load_audio("shuffle.wav")
 local PREVIEW_TEXTURE = Resources.load_texture("preview.png")
