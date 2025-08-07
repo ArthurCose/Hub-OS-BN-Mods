@@ -61,10 +61,13 @@ end
 
 local function spawn_spell(tile, props, user)
 	local spell = Spell.new(user:team())
+	spell:set_facing(user:facing_away())
 	spell:set_hit_props(
-		HitProps.from_card(props),
-		user:context(),
-		Drag.new(tile:facing(), 1)
+		HitProps.from_card(
+			props,
+			user:context(),
+			Drag.new(tile:facing(), 1)
+		)
 	)
 
 	spell:set_tile_highlight(Highlight.Solid)
@@ -115,14 +118,18 @@ function card_init(actor, props)
 	action:set_lockout(ActionLockout.new_async(40))
 
 	action.on_execute_func = function(self, user)
-		local tiles = {
-			Field.tile_at(6, 1),
-			Field.tile_at(6, 2),
-			Field.tile_at(6, 3)
-		}
+		local x = Field.width() - 2
 
-		for _, tile in ipairs(tiles) do
-			spawn_spell(tile, props, user)
+		if user:facing() == Direction.Left then
+			x = 1
+		end
+
+		for y = 0, Field.height() - 1 do
+			local tile = Field.tile_at(x, y)
+
+			if tile and not tile:is_edge() then
+				spawn_spell(tile, props, user)
+			end
 		end
 
 		Resources.play_audio(lance_audio)
