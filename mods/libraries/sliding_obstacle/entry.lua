@@ -78,7 +78,11 @@ function SlidingObstacle:create_obstacle()
   -- set health
   obstacle:set_health(self.health or 200)
 
-  local rule = DefenseRule.new(DefensePriority.Body, DefenseOrder.CollisionOnly)
+  -- immune to anything that isn't drag
+  obstacle:add_aux_prop(AuxProp.new():declare_immunity(~Hit.Drag))
+
+  -- delete when hit with Element.Break or similar
+  local rule = DefenseRule.new(DefensePriority.Last, DefenseOrder.CollisionOnly)
   rule.defense_func = function(_, _, _, hit_props)
     if
         hit_props.element == Element.Break or
@@ -89,9 +93,9 @@ function SlidingObstacle:create_obstacle()
     end
   end
   rule.filter_func = function(hit_props)
+    -- extend drag
     if hit_props.drag.distance > 0 then
-      -- force a drag distance of one, we'll handle moving further
-      hit_props.drag.distance = 1
+      hit_props.drag.distance = math.max(Field.width(), Field.height())
     end
 
     return hit_props
@@ -134,9 +138,6 @@ function SlidingObstacle:create_obstacle()
     obstacle:delete()
   end
 
-  -- upon passing the defense check, does nothing
-  obstacle.on_attack_func = function() end
-
   obstacle.can_move_to_func = function(tile)
     -- we can move as long as the tile is walkable
     -- and there's no obstacles already on it
@@ -158,11 +159,8 @@ function SlidingObstacle:create_obstacle()
     return not obstacles_here
   end
 
-  -- slide + duration tracker
+  -- duration tracker
   local remaining_time = self.duration
-  local continue_slide = false
-  local prev_tile = {}
-  local cube_speed = 4
 
   obstacle.on_update_func = function(self)
     if remaining_time then
@@ -184,30 +182,6 @@ function SlidingObstacle:create_obstacle()
     end
 
     tile:attack_entities(self)
-
-    local direction = self:facing()
-
-    if self:is_sliding() then
-      table.insert(prev_tile, 1, tile)
-      prev_tile[cube_speed + 1] = nil
-      local target_tile = tile:get_tile(direction, 1)
-      if self:can_move_to(target_tile) then
-        continue_slide = true
-      else
-        continue_slide = false
-      end
-    else
-      -- become aware of which direction you just moved in, turn to face that direction
-      if prev_tile[cube_speed] then
-        if prev_tile[cube_speed]:get_tile(direction, 1):x() ~= tile:x() then
-          direction = self:facing_away()
-          self:set_facing(direction)
-        end
-      end
-    end
-    if not self:is_sliding() and continue_slide then
-      self:slide(self:get_tile(direction, 1), cube_speed)
-    end
   end
 
   if self.delete_func then
