@@ -23,6 +23,11 @@ function Sword:set_default_blade_animation_path(animation_path)
   self._default_blade_animation_path = animation_path
 end
 
+--- Specifies a blade animation state to use instead of DEFAULT.
+function Sword:set_default_blade_animation_state(state)
+  self._default_blade_animation_state = state
+end
+
 --- Specifies a blade texture that must be used.
 function Sword:set_blade_texture(texture)
   self._blade_texture = texture
@@ -32,6 +37,11 @@ end
 --- Expects a 4 frame DEFAULT state on the animation.
 function Sword:set_blade_animation_path(animation_path)
   self._blade_animation_path = animation_path
+end
+
+--- Specifies a blade animation state to use instead of DEFAULT.
+function Sword:set_blade_animation_state(state)
+  self._blade_animation_state = state
 end
 
 --- [frame_number, duration][]
@@ -126,7 +136,7 @@ local function create_blade(self, hilt, user)
   if self._blade_texture then
     blade_sprite:set_texture(self._blade_texture)
     blade_anim:load(self._blade_animation_path)
-    blade_anim:set_state("DEFAULT")
+    blade_anim:set_state(self._blade_animation_state or "DEFAULT")
   elseif actor_animation:has_state("BLADE") then
     blade_sprite:set_texture(user:texture())
     blade_sprite:set_palette(user:palette())
@@ -135,7 +145,7 @@ local function create_blade(self, hilt, user)
   else
     blade_sprite:set_texture(self._default_blade_texture)
     blade_anim:load(self._default_blade_animation_path)
-    blade_anim:set_state("DEFAULT")
+    blade_anim:set_state(self._default_blade_animation_state or "DEFAULT")
   end
 
   return blade

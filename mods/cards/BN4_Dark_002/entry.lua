@@ -4,8 +4,9 @@ local bn_assets = require("BattleNetwork.Assets")
 local SwordLib = require("dev.konstinople.library.sword")
 
 local sword = SwordLib.new_sword()
-sword:set_default_blade_texture(bn_assets.load_texture("sword_blades.png"))
-sword:set_default_blade_animation_path(bn_assets.fetch_animation_path("sword_blades.animation"))
+sword:set_blade_texture(bn_assets.load_texture("sword_blades.png"))
+sword:set_blade_animation_path(bn_assets.fetch_animation_path("sword_blades.animation"))
+sword:set_blade_animation_state("DARK")
 
 local SLASH_TEXTURE = bn_assets.load_texture("sword_slashes.png")
 local SLASH_ANIM_PATH = bn_assets.fetch_animation_path("sword_slashes.animation")
