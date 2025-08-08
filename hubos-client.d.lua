@@ -437,7 +437,7 @@ Defense = {}
 --- Hit flags combined into a single value see [HitProps](https://docs.hubos.dev/client/lua-api/attack-api/hit-props)
 ---
 --- The default value is `Hit.PierceInvis`
----@field hit_weaknesses number
+---@field hit_weaknesses Hit | number
 --- The maximum time the rule should last for in game frames.
 ---
 --- The default value is 120.
@@ -967,8 +967,7 @@ function Entity:get_tile(direction, distance) end
 ---@return Tile
 function Entity:current_tile() end
 
---- Returns the [Field](https://docs.hubos.dev/client/lua-api/field-api/field)
----@return Field
+--- Deprecated. Use [Field](https://docs.hubos.dev/client/lua-api/field-api/field) directly.
 function Entity:field() end
 
 --- Returns true if the entity has spawned.
@@ -2044,6 +2043,10 @@ function Augment:owner() end
 ---@param tag string
 ---@return boolean
 function Augment:has_tag(tag) end
+
+--- Returns true if the augment was deleted from the owner. Calls to other functions will error if this is true.
+---@return boolean
+function Augment:deleted() end
 
 --- Dedicates a button slot in Card Select to the specified card. Internally defined as a [CardSelectButton](https://docs.hubos.dev/client/lua-api/entity-api/player#cardselectbutton).
 --- Overrides the card button created on the Player.
@@ -3289,8 +3292,7 @@ function Encounter:set_field_size(width, height) end
 ---@param path string
 function Encounter:set_music(path) end
 
---- Returns [Field](https://docs.hubos.dev/client/lua-api/field-api/field)
----@return Field
+--- Deprecated. Use [Field](https://docs.hubos.dev/client/lua-api/field-api/field) directly.
 function Encounter:field() end
 
 --- - `enabled`: defaults to true.
@@ -3366,8 +3368,7 @@ function Spawner:spawn_at(col, row) end
 ---@param callback fun(entity: Entity)
 function Mutator:mutate(callback) end
 
---- Returns [Field](https://docs.hubos.dev/client/lua-api/field-api/field)
----@return Field
+--- Deprecated. Use [Field](https://docs.hubos.dev/client/lua-api/field-api/field) directly.
 function CustomTileState:field() end
 
 --- - `entity`: the [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity) to tie the action to.

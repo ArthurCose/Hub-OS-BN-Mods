@@ -10,14 +10,15 @@ local boom_texture = Resources.load_texture("spell_explosion.png")
 local boom_anim = "spell_explosion.animation"
 
 function get_endloop_tile(plane)
+    local field = plane:field()
     local y = plane:get_tile():y()
     if plane:rank() ~= Rank.V1 then
         local target = find_best_target(plane)
         if target and not target:deleted() then y = target:get_tile():y() end
     end
-    local dest = Field.tile_at(7, tonumber(y))
+    local dest = field:tile_at(7, tonumber(y))
     if plane:facing() == Direction.Right then
-        dest = Field.tile_at(0, tonumber(y))
+        dest = field:tile_at(0, tonumber(y))
     end
     plane._is_looping = true
     return dest
@@ -25,6 +26,7 @@ end
 
 function find_best_target(plane)
     local target = nil
+    local field = plane:field()
     local query = function(c)
         if c:team() ~= plane:team() then
             if Obstacle.from(c) ~= nil then return false end
@@ -32,7 +34,7 @@ function find_best_target(plane)
         end
         return false
     end
-    local potential_threats = Field.find_characters(query)
+    local potential_threats = field:find_characters(query)
     local goal_hp = 100
     if #potential_threats > 0 then
         for i = 1, #potential_threats, 1 do
@@ -58,6 +60,7 @@ function create_attack(plane)
         )
     )
     local do_once = true
+    local field = plane:field()
     local flash_before_strike = math.min(10, math.floor(plane._count_between_attack_sends / 2))
     spell.on_update_func = function(self)
         if flash_before_strike <= 0 then
@@ -74,7 +77,7 @@ function create_attack(plane)
                     blast_fx:erase()
                     self:erase()
                 end)
-                Field.spawn(blast_fx, self:get_tile())
+                field:spawn(blast_fx, self:get_tile())
             end
         else
             flash_before_strike = flash_before_strike - 1
@@ -198,6 +201,7 @@ function character_init(plane)
     plane.on_spawn_func = function(self)
         --shadow
         plane:set_shadow(Resources.load_texture("Plane Shadow.png"))
+        plane:show_shadow();
         self._original_tile = self:get_tile()
         if self:facing() == Direction.Right then
             self._obstacle_slide_goal_x = 40
@@ -211,11 +215,12 @@ function character_init(plane)
 
     local on_collision_func = function(self, other)
         if Obstacle.from(other) ~= nil then
+            local field = self:field()
             if not self:is_sliding() and self:get_tile():is_edge() and not self:is_teleporting() and not self._is_looping then
                 local y = self._original_tile:y()
-                local dest = Field.tile_at(7, tonumber(y))
+                local dest = field:tile_at(7, tonumber(y))
                 if self:facing() == Direction.Right then
-                    dest = Field.tile_at(0, tonumber(y))
+                    dest = field:tile_at(0, tonumber(y))
                 end
                 self:teleport(dest, noop)
             end
@@ -285,6 +290,7 @@ function character_init(plane)
                 if self:get_tile() == target_tile then
                     if self._do_once then
                         local plane_blast = create_attack(self)
+                        local field = self:field()
                         local fx = Artifact.new()
                         fx:set_texture(boom_texture, true)
                         local animation = fx:animation()
@@ -294,8 +300,8 @@ function character_init(plane)
                         animation:on_complete(function()
                             fx:erase()
                         end)
-                        Field.spawn(fx, target_tile)
-                        Field.spawn(plane_blast, target_tile)
+                        field:spawn(fx, target_tile)
+                        field:spawn(plane_blast, target_tile)
                         self:delete()
                         Resources.play_audio(boom_sound)
                     end
@@ -308,11 +314,12 @@ function character_init(plane)
                 if self._should_shoot then
                     if self._do_once then
                         self._do_once = false
+                        local field = plane:field()
                         plane._attack_range = {}
                         for i = 1, 6, 1 do
-                            local tile = Field.tile_at(i, 2)
-                            local top_tile = Field.tile_at(i, 2):get_tile(Direction.Up, 1)
-                            local bottom_tile = Field.tile_at(i, 2):get_tile(Direction.Down, 1)
+                            local tile = field:tile_at(i, 2)
+                            local top_tile = field:tile_at(i, 2):get_tile(Direction.Up, 1)
+                            local bottom_tile = field:tile_at(i, 2):get_tile(Direction.Down, 1)
                             local team = self:team()
                             if tile and not tile:is_edge() and tile:team() ~= team or top_tile and not top_tile:is_edge() and top_tile:team() ~= team or bottom_tile and not bottom_tile:is_edge() and bottom_tile:team() ~= team then
                                 if tile:x() > self:get_tile():x() and self:facing() == Direction.Right or tile:x() < self:get_tile():x() and self:facing() == Direction.Left then
@@ -359,6 +366,7 @@ function character_init(plane)
                             self:set_offset(0.0 * 0.5, self:offset().y - 2 * 0.5)
                         end
                     else
+                        local field = self:field()
                         if j == #self._attack_range and plane:facing() == Direction.Right or j == 0 and self:facing() == Direction.Left then
                             if self._stop_shooting_once then
                                 self._stop_shooting_once = false
@@ -388,7 +396,7 @@ function character_init(plane)
                         else
                             if self._current_attack_delay <= 0 then
                                 local plane_blast = create_attack(self)
-                                Field.spawn(plane_blast, self._attack_range[j])
+                                field:spawn(plane_blast, self._attack_range[j])
                                 self._current_attack_delay = self._count_between_attack_sends
                                 if self:facing() == Direction.Right then
                                     j = j + 1
@@ -412,7 +420,7 @@ function character_init(plane)
                                 Drag.None
                             )
                         )
-                        Field.spawn(hitbox, self:get_tile())
+                        self:field():spawn(hitbox, self:get_tile())
                         self._spawned_hitbox = true
                     end
                     if self._movement_loops > 0 then

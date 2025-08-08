@@ -151,7 +151,7 @@ local function create_noise_crush(shademan)
         end
 
         hitbox:set_hit_props(props)
-        if not shademan:deleted() then Field.spawn(hitbox, other:current_tile()) end
+        if not shademan:deleted() then shademan:field():spawn(hitbox, other:get_tile()) end
         self:erase()
     end
     return spell
@@ -187,6 +187,7 @@ local function spawn_bat(shademan)
     bat.on_collision_func = function(self, other)
         self:delete()
     end
+    local field = shademan:field()
     bat.on_delete_func = function(self)
         self:erase()
     end
@@ -204,8 +205,8 @@ local function spawn_bat(shademan)
         if self:deleted() then return end
         if self:is_sliding() == false then
             local dest = self:get_tile(direction, 1)
-            if #Field.find_characters(same_column_query) > 0 and not has_turned then
-                local target = Field.find_characters(same_column_query)[1]
+            if #field:find_characters(same_column_query) > 0 and not has_turned then
+                local target = field:find_characters(same_column_query)[1]
                 if target:get_tile():y() < self:get_tile():y() then
                     direction = Direction.Up
                 else
@@ -227,6 +228,7 @@ local function spawn_bat(shademan)
 end
 
 local function do_noise_crush(self, anim)
+    local field = self:field()
     local anim = self:animation()
     anim:set_state("WING_OPEN")
     self:set_counterable(true)
@@ -246,10 +248,10 @@ local function do_noise_crush(self, anim)
         noise_fx_anim:apply(act.noise_fx:sprite())
         noise_fx_anim:set_playback(Playback.Loop)
         act:add_anim_action(1, function()
-            Field.spawn(act.noise_crush, self:get_tile(self:facing(), 1))
+            field:spawn(act.noise_crush, self:get_tile(self:facing(), 1))
         end)
         act:add_anim_action(16, function()
-            Field.spawn(act.noise_fx, self:get_tile(self:facing(), 1))
+            field:spawn(act.noise_fx, self:get_tile(self:facing(), 1))
         end)
     end
     action.on_action_end_func = function(act)
@@ -266,6 +268,7 @@ local function do_noise_crush(self, anim)
 end
 
 local function do_claw_attack(self, anim)
+    local field = self:field()
     local anim = self:animation()
     self:set_counterable(true)
     local action = Action.new(self, "CLAW_ATTACK")
@@ -301,7 +304,7 @@ local function do_claw_attack(self, anim)
             copytile2:highlight(Highlight.Flash)
         end
         act:add_anim_action(2, function()
-            Field.spawn(spell, spell_tile)
+            field:spawn(spell, spell_tile)
         end)
         act:add_anim_action(3, function()
             self:set_counterable(false)
@@ -324,6 +327,7 @@ local function do_bat_attack(self, anim)
         if ent:health() <= 0 then return false end
         return Obstacle.from(ent) ~= nil and ent:name() ~= "Bat" or Character.from(ent) ~= nil
     end
+    local field = self:field()
     self.anim:set_state("WING_OPEN")
     self.anim:on_complete(function()
         self.anim:set_state("WING_LOOP")
@@ -340,8 +344,8 @@ local function do_bat_attack(self, anim)
         if bat_tile ~= nil then
             local bat = spawn_bat(self)
             local fx = ParticlePoof.new()
-            Field.spawn(fx, bat_tile)
-            Field.spawn(bat, bat_tile)
+            field:spawn(fx, bat_tile)
+            field:spawn(bat, bat_tile)
         end
         self.anim:set_state("WING_CLOSE")
         self.anim:on_complete(function()
@@ -352,6 +356,7 @@ local function do_bat_attack(self, anim)
 end
 
 local function move_towards_foe(self, target, is_bite, anim)
+    local field = self:field()
     local own_tile = self:get_tile()
     local desired_tile = nil
     local target_tile = nil
@@ -430,12 +435,13 @@ local function move_towards_foe(self, target, is_bite, anim)
 end
 
 local function move_at_random(self)
+    local field = self:field()
     local moved = false
     local target_tile = nil
     local tile_array = {}
     for x = 1, 6, 1 do
         for y = 1, 3, 1 do
-            local prospective_tile = Field.tile_at(x, y)
+            local prospective_tile = field:tile_at(x, y)
             if prospective_tile and self:can_move_to(prospective_tile) and self:is_team(prospective_tile:team()) then
                 table.insert(tile_array, prospective_tile)
             end
@@ -470,10 +476,11 @@ end
 
 function find_best_target(plane)
     local target = nil
+    local field = plane:field()
     local query = function(c)
         return c:team() ~= plane:team()
     end
-    local potential_threats = Field.find_characters(query)
+    local potential_threats = field:find_characters(query)
     local goal_hp = 99999
     if #potential_threats > 0 then
         for i = 1, #potential_threats, 1 do
@@ -492,6 +499,7 @@ function character_init(self)
     local rank = self:rank()
     local previous_tile = nil
     local last_attack = nil
+    local field = nil
 
     self:set_texture(Resources.load_texture("shademan.png"))
 
@@ -536,15 +544,17 @@ function character_init(self)
     self.target = nil
     self.tile_table = {}
     self.on_spawn_func = function(self)
+        field = self:field()
         for x = 1, 6, 1 do
             for y = 1, 3, 1 do
-                local check_tile = Field.tile_at(x, y)
+                local check_tile = field:tile_at(x, y)
                 if check_tile and not check_tile:is_edge() and self:is_team(check_tile:team()) then
                     table.insert(
                         self.tile_table, check_tile)
                 end
             end
         end
+        field = self:field()
         previous_tile = self:get_tile()
         self.target = nil
     end
