@@ -38,7 +38,7 @@ function status_init(status)
   end
 
   for _, augment in ipairs(entity:augments()) do
-    if augment:has_tag("FLAT_BLOCK") then
+    if not augment:deleted() and augment:has_tag("UNINSTALL") then
       entity:boost_augment(augment:id(), -augment:level())
     end
   end

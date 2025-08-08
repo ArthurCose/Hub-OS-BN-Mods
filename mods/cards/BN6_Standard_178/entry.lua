@@ -74,7 +74,7 @@ function card_init(user)
 
       -- uninstall bugs
       for _, augment in ipairs(user:augments()) do
-        if augment:has_tag("BUG") then
+        if not augment:deleted() and augment:has_tag("BUG") then
           user:boost_augment(augment:id(), -augment:level())
         end
       end
