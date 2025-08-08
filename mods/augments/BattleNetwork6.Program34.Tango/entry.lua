@@ -129,14 +129,121 @@ local function heal_and_create_barrier(user)
     user:add_defense_rule(barrier_defense_rule)
 end
 
+---@param owner Entity
+local function create_action(owner)
+    local action = Action.new(owner)
+
+    local props = CardProperties.new()
+    props.time_freeze = true
+    props.short_name = "Tango"
+    props.prevent_time_freeze_counter = true
+
+    action:set_card_properties(props)
+
+    action:set_lockout(ActionLockout.new_sequence())
+
+    local executed = false
+
+    action.on_execute_func = function()
+        executed = true
+
+        local step = action:create_step()
+        local tango_artifact = Artifact.new(owner:team())
+        tango_artifact:set_texture(TEXTURE)
+
+        tango_artifact:set_shadow(Shadow.Small)
+
+        tango_artifact:set_facing(owner:facing())
+
+        tango_artifact:set_elevation(76)
+
+        local tango_anim = tango_artifact:animation()
+        tango_anim:load(ANIM_PATH)
+
+        local has_given_buff = false
+        tango_anim:set_state("SPAWN")
+
+        local increment = 4
+
+        step.on_update_func = function()
+            local elevation = tango_artifact:elevation()
+
+            if elevation > 0 and has_given_buff == false then
+                tango_artifact:set_elevation(elevation - increment)
+            elseif has_given_buff == true and tango_anim:state() == "SPAWN" then
+                tango_artifact:set_elevation(elevation + increment)
+                if tango_artifact:elevation() >= 76 then
+                    tango_artifact:erase()
+                    action:end_action()
+                end
+            end
+        end
+
+        tango_anim:on_complete(function()
+            tango_anim:set_state("STAND")
+            tango_anim:on_complete(function()
+                tango_anim:set_state("BOX")
+                tango_anim:on_frame(4, function()
+                    has_given_buff = true
+                    local orb_artifact = Artifact.new(owner:team())
+                    orb_artifact:set_texture(ORB_TEXTURE)
+
+                    local orb_anim = orb_artifact:animation()
+                    orb_anim:load(ORB_ANIM_PATH)
+
+                    orb_anim:set_state("SPAWN")
+
+                    orb_anim:on_complete(function()
+                        orb_anim:set_state("LOOP")
+                        orb_anim:set_playback(Playback.Loop)
+                    end)
+
+                    local tango_do_once = true
+                    orb_artifact.on_update_func = function(artifact_self)
+                        if tango_do_once == true then
+                            artifact_self:queue_movement(Movement.new_jump(owner:current_tile(), 20, 8))
+                            tango_do_once = false
+                        else
+                            if artifact_self:is_jumping() == false then
+                                heal_and_create_barrier(owner)
+                                artifact_self:erase()
+                            end
+                        end
+                    end
+
+                    Field.spawn(orb_artifact, tango_artifact:current_tile())
+                end)
+
+                tango_anim:on_complete(function()
+                    tango_anim:set_state("CLOSE")
+                    tango_anim:on_complete(function()
+                        tango_anim:set_state("SPAWN")
+                        tango_anim:set_playback(Playback.Reverse)
+                        tango_anim:on_complete(function()
+                            -- action:end_action()
+                            -- tango_artifact:erase()
+                        end)
+                    end)
+                end)
+            end)
+        end)
+
+        Field.spawn(tango_artifact, owner:get_tile(owner:facing(), 1) or owner:current_tile())
+    end
+
+    action.on_action_end_func = function()
+        if not executed then
+            -- keep trying to execute
+            owner:queue_action(create_action(owner))
+        end
+    end
+
+    return action
+end
+
 ---@param augment Augment
 function augment_init(augment)
     local owner = augment:owner()
-    -- Only for pvp. Needs at least one player of the enemy team
-    local find_func = function(entity) return not owner:is_team(entity:team()) end
-
-    -- If enemy players are not found, then do nothing
-    if #Field.find_players(find_func) == 0 then return end
 
     -- If we've bugged this program, it won't activate, so do nothing.
     if owner:get_augment("BattleNetwork6.Bugs.TangoDisabled") ~= nil then return end
@@ -145,105 +252,17 @@ function augment_init(augment)
     local component = owner:create_component(Lifetime.ActiveBattle)
 
     component.on_update_func = function(self)
-        if owner:health() < math.floor(owner:max_health() / 4) and not owner:is_inactionable() and not owner:is_immobile() then
-            local action = Action.new(owner)
-
-            local props = CardProperties.new()
-            props.time_freeze = true
-            props.short_name = "Tango"
-            props.prevent_freeze_counter = true
-
-            action:set_card_properties(props)
-
-            action:set_lockout(ActionLockout.new_sequence())
-
-            action.on_execute_func = function()
-                local step = action:create_step()
-                local tango_artifact = Artifact.new(owner:team())
-                tango_artifact:set_texture(TEXTURE)
-
-                tango_artifact:set_shadow(Shadow.Small)
-
-                tango_artifact:set_facing(owner:facing())
-
-                tango_artifact:set_elevation(76)
-
-                local tango_anim = tango_artifact:animation()
-                tango_anim:load(ANIM_PATH)
-
-                tango_anim._has_given_buff = false
-                tango_anim:set_state("SPAWN")
-
-                local increment = 4
-
-                step.on_update_func = function()
-                    local elevation = tango_artifact:elevation()
-
-                    if elevation > 0 and tango_anim._has_given_buff == false then
-                        tango_artifact:set_elevation(elevation - increment)
-                    elseif tango_anim._has_given_buff == true and tango_anim:state() == "SPAWN" then
-                        tango_artifact:set_elevation(elevation + increment)
-                        if tango_artifact:elevation() >= 76 then
-                            tango_artifact:erase()
-                            action:end_action()
-                        end
-                    end
-                end
-
-                tango_anim:on_complete(function()
-                    tango_anim:set_state("STAND")
-                    tango_anim:on_complete(function()
-                        tango_anim:set_state("BOX")
-                        tango_anim:on_frame(4, function()
-                            tango_anim._has_given_buff = true
-                            local orb_artifact = Artifact.new(owner:team())
-                            orb_artifact:set_texture(ORB_TEXTURE)
-
-                            local orb_anim = orb_artifact:animation()
-                            orb_anim:load(ORB_ANIM_PATH)
-
-                            orb_anim:set_state("SPAWN")
-
-                            orb_anim:on_complete(function()
-                                orb_anim:set_state("LOOP")
-                                orb_anim:set_playback(Playback.Loop)
-                            end)
-
-                            local tango_do_once = true
-                            orb_artifact.on_update_func = function(artifact_self)
-                                if tango_do_once == true then
-                                    artifact_self:queue_movement(Movement.new_jump(owner:current_tile(), 20, 8))
-                                    tango_do_once = false
-                                else
-                                    if artifact_self:is_jumping() == false then
-                                        heal_and_create_barrier(owner)
-                                        artifact_self:erase()
-                                    end
-                                end
-                            end
-
-                            Field.spawn(orb_artifact, tango_artifact:current_tile())
-                        end)
-
-                        tango_anim:on_complete(function()
-                            tango_anim:set_state("CLOSE")
-                            tango_anim:on_complete(function()
-                                tango_anim:set_state("SPAWN")
-                                tango_anim:set_playback(Playback.Reverse)
-                                tango_anim:on_complete(function()
-                                    -- action:end_action()
-                                    -- tango_artifact:erase()
-                                end)
-                            end)
-                        end)
-                    end)
-                end)
-
-                Field.spawn(tango_artifact, owner:get_tile(owner:facing(), 1) or owner:current_tile())
-            end
-
-            owner:queue_action(action)
-            self:eject()
+        if owner:health() > math.floor(owner:max_health() / 4) or owner:is_inactionable() or owner:is_immobile() then
+            return
         end
+
+        -- Only for pvp. Needs at least one player of the enemy team
+        local find_func = function(entity) return not owner:is_team(entity:team()) end
+
+        -- If enemy players are not found, then do nothing
+        if #Field.find_players(find_func) == 0 then return end
+
+        owner:queue_action(create_action(owner))
+        self:eject()
     end
 end
