@@ -9,6 +9,7 @@ local Lib = {}
 local HIT_TEXTURE = bn_assets.load_texture("bn6_hit_effects.png")
 local HIT_ANIMATION_PATH = bn_assets.fetch_animation_path("bn6_hit_effects.animation")
 local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
+local BREAK_SFX = bn_assets.load_audio("paneldamage.ogg")
 local ROCK_DEBRIS_TEXTURE = bn_assets.load_texture("rock_debris_bn6.png")
 local ROCK_DEBRIS_ANIMATION_PATH = bn_assets.fetch_animation_path("rock_debris_bn6.animation")
 
@@ -60,6 +61,8 @@ end
 local function shatter_rock(entity)
   entity:erase()
 
+  Resources.play_audio(BREAK_SFX)
+
   local poof = bn_assets.ParticlePoof.new()
   local offset = entity:movement_offset()
   poof:set_offset(offset.x, offset.y - entity:height() / 2)
@@ -72,6 +75,8 @@ end
 
 local function shatter_ice(entity)
   entity:erase()
+
+  Resources.play_audio(BREAK_SFX)
 
   local poof = bn_assets.ParticlePoof.new()
   local offset = entity:movement_offset()
