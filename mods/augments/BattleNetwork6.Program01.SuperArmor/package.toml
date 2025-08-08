@@ -4,19 +4,20 @@ id = "BattleNetwork6.Program01.SuperArmor"
 name = "SuprArmr"
 flat = true
 description = "Do not flinch when hit"
-colors = [ "red" ]
+colors = ["red"]
 shape = [
-  [ 0, 0, 0, 0, 0 ],
-  [ 0, 0, 1, 0, 0 ],
-  [ 0, 1, 1, 1, 0 ],
-  [ 0, 0, 0, 0, 0 ],
-  [ 0, 0, 0, 0, 0 ]
+  [0, 0, 0, 0, 0],
+  [0, 0, 1, 0, 0],
+  [0, 1, 1, 1, 0],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0]
 ]
+tags = ["UNINSTALL"]
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [ ]
+characters = []
+libraries = []
+cards = []

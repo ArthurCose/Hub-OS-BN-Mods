@@ -13,6 +13,7 @@ shape = [
     [0, 0, 0, 0, 0]
 ]
 byproducts = ["BattleNetwork6.Bugs.WarpStep"]
+tags = ["UNINSTALL"]
 
 [dependencies]
 augments = ["BattleNetwork6.Bugs.WarpStep"]
