@@ -8,6 +8,7 @@ local Lib = {}
 
 local HIT_TEXTURE = bn_assets.load_texture("bn6_hit_effects.png")
 local HIT_ANIMATION_PATH = bn_assets.fetch_animation_path("bn6_hit_effects.animation")
+local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
 local ROCK_DEBRIS_TEXTURE = bn_assets.load_texture("rock_debris_bn6.png")
 local ROCK_DEBRIS_ANIMATION_PATH = bn_assets.fetch_animation_path("rock_debris_bn6.animation")
 
@@ -87,6 +88,7 @@ function Lib.new_ice_cube()
   IceCube:set_collision_texture(HIT_TEXTURE)
   IceCube:set_collision_animation_path(HIT_ANIMATION_PATH)
   IceCube:set_collision_animation_state("AQUA")
+  IceCube:set_collision_sfx(HIT_SFX)
   IceCube:set_element(Element.Aqua)
   IceCube:set_health(60)
   IceCube:set_duration(6000)
@@ -103,6 +105,7 @@ function Lib.new_rock_cube()
   RockCube:set_collision_texture(HIT_TEXTURE)
   RockCube:set_collision_animation_path(HIT_ANIMATION_PATH)
   RockCube:set_collision_animation_state("BREAKING")
+  RockCube:set_collision_sfx(HIT_SFX)
   RockCube:set_duration(6000)
   RockCube:set_delete_func(shatter_rock)
 
@@ -116,6 +119,7 @@ function Lib.new_boulder()
   Boulder:set_collision_texture(HIT_TEXTURE)
   Boulder:set_collision_animation_path(HIT_ANIMATION_PATH)
   Boulder:set_collision_animation_state("BREAKING")
+  Boulder:set_collision_sfx(HIT_SFX)
   Boulder:set_delete_func(shatter_rock)
 
   return Boulder
