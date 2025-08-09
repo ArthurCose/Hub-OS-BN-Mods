@@ -13,6 +13,7 @@ end
 
 function card_init(actor, props)
 	local action = Action.new(actor, "CHARACTER_SHOOT")
+	action:override_animation_frames({ { 1, 1 }, { 2, 3 }, { 3, 3 }, { 1, 15 } })
 
 	action:set_lockout(ActionLockout.new_animation())
 
