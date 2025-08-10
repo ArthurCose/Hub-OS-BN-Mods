@@ -10,9 +10,9 @@ function card_init(user, props)
     action.on_execute_func = function()
         local antidamage_rule = DefenseRule.new(DefensePriority.Trap, DefenseOrder.CollisionOnly)
 
-        local has_blocked = false
+        local activated = false
 
-        antidamage_rule.defense_func = function(defense, attacker, defender)
+        antidamage_rule.defense_func = function(defense, attacker)
             if defense:damage_blocked() then
                 return
             end
@@ -21,16 +21,18 @@ function card_init(user, props)
 
             --Simulate cursor removing traps
             if hit_props.element == Element.Cursor or hit_props.secondary_element == Element.Cursor then
-                defender:remove_defense_rule(antidamage_rule)
+                user:remove_defense_rule(antidamage_rule)
                 return
             end
 
-            if hit_props.damage >= 10 then
-                defense:block_damage()
-                if not has_blocked then
-                    Player.from(defender):queue_action(poof_user(user, props))
-                    defender:remove_defense_rule(antidamage_rule)
+            if activated then
+                if hit_props.flags & Hit.Impact ~= 0 then
+                    -- block all impact damage while we're waiting for the action to complete
+                    defense:block_damage()
                 end
+            elseif hit_props.damage >= 10 then
+                defense:block_damage()
+                user:queue_action(poof_user(user, props, antidamage_rule))
             end
         end
 
@@ -40,16 +42,16 @@ function card_init(user, props)
     return action
 end
 
-function poof_user(user, props)
+---@param user Entity
+---@param props CardProperties
+---@param defense_rule DefenseRule
+function poof_user(user, props, defense_rule)
     local action = Action.new(user)
-    local tile = targeting(user)
-
-    if tile == nil then
-        return action
-    end
+    local executed = false
 
     action:set_lockout(ActionLockout.new_sequence()) --Sequence lockout required to use steps & avoid issues with idle
     action.on_execute_func = function(self, user)
+        executed = true
         Resources.play_audio(AUDIO, AudioBehavior.Default)
 
         -- hide the player and disable hitbox
@@ -64,8 +66,12 @@ function poof_user(user, props)
         Field.spawn(poof, user:current_tile())
 
         -- spawn shuriken
-        local spell = create_shuriken_spell(user, props)
-        Field.spawn(spell, tile)
+        local tile = targeting(user)
+
+        if tile then
+            local spell = create_shuriken_spell(user, props)
+            Field.spawn(spell, tile)
+        end
 
         local cooldown = 60
         local step1 = self:create_step()
@@ -79,8 +85,14 @@ function poof_user(user, props)
     end
 
     action.on_action_end_func = function()
-        user:reveal()
-        user:enable_hitbox(true)
+        if executed then
+            user:reveal()
+            user:enable_hitbox(true)
+            user:remove_defense_rule(defense_rule)
+        else
+            -- requeue
+            user:queue_action(poof_user(user, props, defense_rule))
+        end
     end
 
     return action
