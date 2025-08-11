@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "BattleNetwork6.ProgramAdvance.024"
+name = "BodyGrd"
+long_name = "BodyGuard"
+icon_texture_path = "icon.png"
+damage = 100
+time_freeze = true
+conceal = true
+element = "sword"
+description = "Sword element. Shoots 10 stars, 100 damage per hit."
+hit_flags = ["Impact", "Flinch"]
+card_class = "recipe"
+tags = ["PROGRAM_ADVANCE", "BN6", "EXE6"]
+recipes = [
+  { mix = [{ name = "AntiNavi" }, { name = "AntiSwrd" }, { name = "AntiDmg" }] }
+]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

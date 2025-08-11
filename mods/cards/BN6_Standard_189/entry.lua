@@ -1,7 +1,8 @@
+---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
 local AUDIO = bn_assets.load_audio("antidmg.ogg")
-local SHURIKEN_TEXTURE = Resources.load_texture("shuriken.png")
-local SHURIKEN_ANIMATON_PATH = "shuriken.animation"
+local SHURIKEN_TEXTURE = bn_assets.load_texture("shuriken.png")
+local SHURIKEN_ANIMATON_PATH = bn_assets.fetch_animation_path("shuriken.animation")
 
 function card_init(user, props)
     local action = Action.new(user)
@@ -9,8 +10,9 @@ function card_init(user, props)
     action:set_lockout(ActionLockout.new_sequence()) --Sequence lockout required to use steps & avoid issues with idle
     action.on_execute_func = function()
         local antidamage_rule = DefenseRule.new(DefensePriority.Trap, DefenseOrder.CollisionOnly)
-
         local activated = false
+
+        local context = user:context()
 
         antidamage_rule.defense_func = function(defense, attacker)
             if defense:damage_blocked() then
@@ -32,7 +34,7 @@ function card_init(user, props)
                 end
             elseif hit_props.damage >= 10 then
                 defense:block_damage()
-                user:queue_action(poof_user(user, props, antidamage_rule))
+                user:queue_action(poof_user(user, context, props, antidamage_rule))
             end
         end
 
@@ -43,38 +45,32 @@ function card_init(user, props)
 end
 
 ---@param user Entity
+---@param context AttackContext
 ---@param props CardProperties
 ---@param defense_rule DefenseRule
-function poof_user(user, props, defense_rule)
-    local action = Action.new(user)
+function poof_user(user, context, props, defense_rule)
+    local action = Action.new(user, "CHARACTER_MOVE")
+    action:override_animation_frames({ { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } })
     local executed = false
 
     action:set_lockout(ActionLockout.new_sequence()) --Sequence lockout required to use steps & avoid issues with idle
-    action.on_execute_func = function(self, user)
+    action.on_execute_func = function()
         executed = true
         Resources.play_audio(AUDIO, AudioBehavior.Default)
 
-        -- hide the player and disable hitbox
-        user:hide()
+        -- disable hitbox
         user:enable_hitbox(false)
-
-        -- spawn poof
-        local poof = bn_assets.ParticlePoof.new()
-        local poof_position = user:movement_offset()
-        poof_position.y = poof_position.y - user:height() / 2
-        poof:set_offset(poof_position.x, poof_position.y)
-        Field.spawn(poof, user:current_tile())
 
         -- spawn shuriken
         local tile = targeting(user)
 
         if tile then
-            local spell = create_shuriken_spell(user, props)
+            local spell = create_shuriken_spell(user, context, props)
             Field.spawn(spell, tile)
         end
 
         local cooldown = 60
-        local step1 = self:create_step()
+        local step1 = action:create_step()
         step1.on_update_func = function(self)
             if cooldown <= 0 then
                 self:complete_step()
@@ -84,6 +80,18 @@ function poof_user(user, props, defense_rule)
         end
     end
 
+    action:add_anim_action(3, function()
+        local poof = bn_assets.ParticlePoof.new()
+        local poof_position = user:movement_offset()
+        poof_position.y = poof_position.y - user:height() / 2
+        poof:set_offset(poof_position.x, poof_position.y)
+        Field.spawn(poof, user:current_tile())
+    end)
+
+    action.on_animation_end_func = function()
+        user:hide()
+    end
+
     action.on_action_end_func = function()
         if executed then
             user:reveal()
@@ -91,14 +99,14 @@ function poof_user(user, props, defense_rule)
             user:remove_defense_rule(defense_rule)
         else
             -- requeue
-            user:queue_action(poof_user(user, props, defense_rule))
+            user:queue_action(poof_user(user, context, props, defense_rule))
         end
     end
 
     return action
 end
 
-function create_shuriken_spell(user, props)
+function create_shuriken_spell(user, context, props)
     local spell = Spell.new(user:team())
     spell:set_facing(user:facing())
     spell:sprite():set_layer(-5)
@@ -110,16 +118,16 @@ function create_shuriken_spell(user, props)
     spell:set_hit_props(
         HitProps.from_card(
             props,
-            user:context(),
+            context,
             Drag.None
         )
     )
 
     spell:set_tile_highlight(Highlight.Solid)
 
-    local total_frames = 20
-    local increment_x = 4
-    local increment_y = 8
+    local total_frames = 15
+    local increment_x = 8
+    local increment_y = 12
 
     if spell:facing() == Direction.Left then
         increment_x = -increment_x
@@ -133,7 +141,7 @@ function create_shuriken_spell(user, props)
         x = x + increment_x
         y = y + increment_y
 
-        if y >= 0 then
+        if y > 0 then
             local tile = spell:current_tile()
             spell:set_tile_highlight(Highlight.None)
 
@@ -145,18 +153,6 @@ function create_shuriken_spell(user, props)
                 spell.on_update_func = nil
 
                 spell_anim:set_state("SHINE")
-                spell_anim:on_frame(5, function()
-                    spell:hide()
-                end)
-                spell_anim:on_frame(7, function()
-                    spell:reveal()
-                end)
-                spell_anim:on_frame(9, function()
-                    spell:hide()
-                end)
-                spell_anim:on_frame(11, function()
-                    spell:reveal()
-                end)
                 spell_anim:on_complete(function()
                     spell:erase()
                 end)
@@ -173,7 +169,7 @@ function create_shuriken_spell(user, props)
 end
 
 function targeting(user)
-    local tile;
+    local tile
 
     local enemy_filter = function(character)
         return character:team() ~= user:team() and character:hittable()
