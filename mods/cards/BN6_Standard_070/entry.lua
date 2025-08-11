@@ -25,6 +25,7 @@ end
 ---@param user Entity
 function create_spell(spells, user, props, x_offset, y_offset)
 	local h_tile = user:get_tile(user:facing(), x_offset)
+	if not h_tile then return end
 	local tile = h_tile:get_tile(Direction.Down, y_offset)
 
 	if not tile then

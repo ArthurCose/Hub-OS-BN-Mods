@@ -19,7 +19,7 @@ function card_init(actor, props)
 	action:set_lockout(ActionLockout.new_animation())
 	action.on_execute_func = function(self, user)
 		local buster = self:create_attachment("BUSTER")
-		buster:sprite():set_texture(BUSTER_TEXTURE, true)
+		buster:sprite():set_texture(BUSTER_TEXTURE)
 		buster:sprite():set_layer(-1)
 		self:add_anim_action(1, function()
 			user:set_counterable(true)
@@ -47,7 +47,7 @@ end
 function create_attack(user, props)
 	local spell = Spell.new(user:team())
 
-	spell.hits = 8
+	local hits = 8
 	spell:set_facing(user:facing())
 	spell:set_tile_highlight(Highlight.Solid)
 	spell:set_texture(TEXTURE)
@@ -77,8 +77,8 @@ function create_attack(user, props)
 			anim:set_playback(Playback.Loop)
 
 			anim:on_complete(function()
-				if spell.hits > 1 then
-					spell.hits = spell.hits - 1
+				if hits > 1 then
+					hits = hits - 1
 					local hitbox = Hitbox.new(spell:team())
 					hitbox:set_hit_props(spell:copy_hit_props())
 					Field.spawn(hitbox, spell:current_tile())
