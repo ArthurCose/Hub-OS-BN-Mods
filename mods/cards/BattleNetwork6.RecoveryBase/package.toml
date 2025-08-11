@@ -15,6 +15,7 @@ card_class = "standard"
 limit = 0
 conceal = true
 can_boost = false
+hidden = true
 
 [defines]
 characters = []
