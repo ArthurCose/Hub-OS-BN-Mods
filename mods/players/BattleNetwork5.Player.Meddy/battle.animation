@@ -13,10 +13,10 @@ frame x="272" y="1" w="33" h="55" originx="17" originy="49" duration="0.05"
 frame x="272" y="58" w="32" h="56" originx="16" originy="50" duration="0.05"
 
 animation state="CHARACTER_MOVE"
-frame x="272" y="58" w="32" h="56" originx="16" originy="50" duration="0.033"
+frame x="272" y="58" w="32" h="56" originx="16" originy="50" duration="0.017"
+frame x="272" y="58" w="32" h="56" originx="16" originy="50" duration="0.017"
 frame x="189" y="109" w="34" h="60" originx="16" originy="54" duration="0.017"
 frame x="189" y="109" w="34" h="60" originx="16" originy="54" duration="0.017"
-frame x="272" y="58" w="32" h="56" originx="16" originy="50" duration="0.033"
 
 animation state="CHARACTER_SWING_HILT"
 frame x="234" y="58" w="36" h="54" originx="21" originy="47" duration="0.133"
