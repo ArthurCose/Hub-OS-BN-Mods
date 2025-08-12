@@ -1,0 +1,16 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.131"
+name = "AirSpin1"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+description = "Spits out hurricane attack"
+long_description = "400 HP. Spins once every 10f. Spins an additional time for each time it gets hit with a Wind attack."
+damage = 50
+element = "wind"
+codes = ['F', 'G', 'R']
+limit = 4
+hit_flags = ["Impact", "Flinch"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
