@@ -1,11 +1,17 @@
-function card_init(player)
-    local action = Action.new(player, "CHARACTER_IDLE");
-    action.on_execute_func = function(self, user)
-        local intangible_rule = IntangibleRule.new();
+---@type BattleNetwork.Assets
+local bn_assets = require("BattleNetwork.Assets")
+local SFX = bn_assets.load_audio("invis.ogg")
+
+---@param user Entity
+function card_init(user)
+    local action = Action.new(user, "CHARACTER_IDLE")
+
+    action.on_execute_func = function()
+        local intangible_rule = IntangibleRule.new()
         -- 6 seconds at 60 frames per second.
-        intangible_rule.duration = 360;
+        intangible_rule.duration = 360
         -- This is the default weakness, but this is to show you how to set it.
-        intangible_rule.hit_weaknesses = Hit.PierceInvis;
+        intangible_rule.hit_weaknesses = Hit.PierceInvis
 
         -- Create a rule to cause sprite flickering
         local component = user:create_component(Lifetime.Scene)
@@ -37,9 +43,10 @@ function card_init(player)
         end
 
         -- Add the rule. Use false to remove a rule, and don't pass a rule in to use a default intangibility.
-        user:set_intangible(true, intangible_rule);
+        user:set_intangible(true, intangible_rule)
 
-        -- Resources.play_audio(AudioType.Invisible)
+        Resources.play_audio(SFX)
     end
+
     return action
 end

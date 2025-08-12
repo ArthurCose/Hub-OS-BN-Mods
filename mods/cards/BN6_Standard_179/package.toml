@@ -4,7 +4,7 @@ id = "BattleNetwork6.Class01.Standard.179"
 name = "Invisibl"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "*" ]
+codes = ["*"]
 damage = 0
 time_freeze = true
 element = "none"
@@ -14,10 +14,5 @@ limit = 3
 long_description = "For 6 seconds most attacks will pass through you. Any attack that can pierce Flashing will break it."
 can_boost = false
 
-[defines]
-characters = [ ]
-
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [ ]
+libraries = ["BattleNetwork.Assets"]
