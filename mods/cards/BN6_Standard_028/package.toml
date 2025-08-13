@@ -9,7 +9,7 @@ codes = ["G", "R", "S"]
 element = "aqua"
 hit_flags = ["Impact", "Bubble"]
 damage = 100
-limit = 3
+limit = 2
 
 [dependencies]
 libraries = ["BattleNetwork.Assets"]

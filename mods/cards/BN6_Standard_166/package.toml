@@ -11,6 +11,7 @@ element = "none"
 description = "20 damage for every stolen sq"
 can_boost = false
 hit_flags = ["Flinch", "PierceInvis", "Drag", "Flash"]
+limit = 4
 
 [defines]
 characters = []
