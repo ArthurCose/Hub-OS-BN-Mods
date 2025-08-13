@@ -70,6 +70,8 @@ local function create_obstacle(user, hit_props)
   obstacle:set_hit_props(hit_props)
   obstacle:set_owner(user)
 
+  obstacle:add_aux_prop(AuxProp.new():declare_immunity(~0))
+
   obstacle:set_texture(OBSTACLE_TEXTURE)
   local animation = obstacle:animation()
   animation:load(OBSTACLE_ANIMATION_PATH)
