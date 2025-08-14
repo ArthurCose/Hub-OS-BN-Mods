@@ -11,6 +11,7 @@ local IteratorLib = require("dev.konstinople.library.iterator")
 local AiPlan = {}
 AiPlan.__index = AiPlan
 
+---@package
 ---@return AiPlan
 function AiPlan.new()
   local plan = {}
@@ -19,6 +20,7 @@ function AiPlan.new()
 end
 
 ---Automatically calls AiPlan:set_action_iter_factory()
+---@package
 ---@param action_factory fun(): Action
 function AiPlan.new_single_action(action_factory)
   local plan = AiPlan.new()
@@ -183,10 +185,7 @@ end
 ---@class dev.konstinople.library.ai
 local Lib = {
   new_ai = Ai.new,
-  new_plan = AiPlan.new,
-  new_single_action_plan = AiPlan.new_single_action,
   Ai = Ai,
-  AiPlan = AiPlan,
   IteratorLib = IteratorLib,
 }
 

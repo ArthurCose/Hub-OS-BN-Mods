@@ -1,0 +1,14 @@
+animation state="ARROW"
+frame x="31" y="25" w="29" h="7" originx="14" originy="3" duration="0.017"
+
+animation state="CURSOR"
+frame x="1" y="1" w="29" h="29" originx="14" originy="15" duration="0.033"
+
+animation state="CURSOR_LOCK_ON"
+frame x="1" y="1" w="29" h="29" originx="14" originy="15" duration="2f"
+frame x="31" y="1" w="29" h="23" originx="14" originy="12" duration="3f"
+frame x="23" y="33" w="21" h="21" originx="10" originy="11" duration="8f"
+frame x="1" y="33" w="21" h="21" originx="10" originy="11" duration="5f"
+frame x="23" y="33" w="21" h="21" originx="10" originy="11" duration="5f"
+frame x="1" y="33" w="21" h="21" originx="10" originy="11" duration="5f"
+frame x="23" y="33" w="21" h="21" originx="10" originy="11" duration="2f"

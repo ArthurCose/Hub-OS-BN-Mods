@@ -1,0 +1,7 @@
+[package]
+category = "status"
+id = "BattleNetwork6.Statuses.EnemyAlert"
+name = "Enemy Alert Status"
+description = "Used by Piranhas."
+icon_texture_path = "icon.png"
+flag_name = "EnemyAlert"
