@@ -138,7 +138,6 @@ function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
                 end
 
                 tile:add_entity(user)
-                user:set_facing(tile:facing())
 
                 if reserve then
                     tile:reserve_for(user)
@@ -160,26 +159,6 @@ function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
     end
 
     return action
-end
-
-Lib.HitParticle = {}
-
----@param state_name string
----@param offset_x number
----@param offset_y number
-function Lib.HitParticle.new(state_name, offset_x, offset_y)
-    local artifact = Artifact.new()
-    artifact:set_texture(Lib.load_texture("bn6_hit_effects.png"))
-    artifact:load_animation(Lib.fetch_animation_path("bn6_hit_effects.animation"))
-    local animation = artifact:animation()
-    animation:set_state(state_name)
-    animation:on_complete(function()
-        artifact:delete()
-    end)
-
-    artifact:set_offset(offset_x, offset_y)
-
-    return artifact
 end
 
 return Lib
