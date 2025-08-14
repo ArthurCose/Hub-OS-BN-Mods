@@ -266,6 +266,8 @@ return function(character, props)
 
   character:set_idle()
 
+  character:add_aux_prop(StandardEnemyAux.new())
+
   character:register_status_callback(Hit.EnemyAlert, function()
     character:cancel_actions()
     animation:set_state("SHOOT_STARTUP")
