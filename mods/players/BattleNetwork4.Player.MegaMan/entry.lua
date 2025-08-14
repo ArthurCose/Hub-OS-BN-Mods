@@ -742,6 +742,7 @@ function player_init(player)
     local function create_or_update_soul_turn_tracker()
         -- Delete the tracker if it exists. We may have changed forms while another was still active.
         if soul_turn_tracker ~= nil then soul_turn_tracker:eject() end
+        should_end_form = false
 
         soul_turn_tracker = player:create_component(Lifetime.CardSelectOpen)
 
