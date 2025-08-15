@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork3.Class01.Standard.026"
+past_ids = ["dev.delta.card.iceball"]
+name = "IceBall"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["F", "I", "M", "Q", "S", "*"]
+damage = 120
+element = "aqua"
+hit_flags = ["Impact", "Flinch", "Flash"]
+description = "Freezes 3rd sqr. ahead"
+limit = 4
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.bomb"]
+tile_states = ["BattleNetwork6.TileStates.Ice"]

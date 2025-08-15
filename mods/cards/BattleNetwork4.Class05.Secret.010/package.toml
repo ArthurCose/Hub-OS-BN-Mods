@@ -1,0 +1,16 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class05.Secret.010"
+past_ids = ["dev.delta.card.seekbom1"]
+name = "SeekBom1"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["B", "R", "S", "*"]
+damage = 80
+element = "cursor"
+hit_flags = ["Impact", "Flinch", "Flash"]
+description = "Throws a bomb at the enemy"
+limit = 4
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.bomb"]

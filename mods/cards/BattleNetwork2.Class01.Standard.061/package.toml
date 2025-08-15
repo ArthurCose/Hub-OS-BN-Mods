@@ -1,0 +1,27 @@
+[package]
+category = "card"
+id = "BattleNetwork2.Class01.Standard.061"
+past_ids = ["dev.delta.card.blower"]
+name = "Blower"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "P", "R", "T", "W", "Z" ]
+damage = 40
+time_freeze = false
+element = "fire"
+description = "4hit strm\n2 squares\nahead"
+
+[defines]
+characters = [ ]
+
+[dependencies]
+characters = [ ]
+libraries = [
+    "BattleNetwork.Assets"
+]
+cards = [ ]
+tile_states = [
+    "BattleNetwork5.TileStates.Lava",
+    "BattleNetwork6.TileStates.Grass",
+    "BattleNetwork6.TileStates.Ice"
+]
