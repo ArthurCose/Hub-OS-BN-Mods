@@ -34,7 +34,7 @@ return function(player, form, base_animation_path)
       boost_custom_component = player:create_component(Lifetime.CardSelectOpen)
       boost_custom_component.on_update_func = function()
         if custom_boosts < 3 then
-          player:boost_augment("HubOS.Augments.Custom1", 1)
+          player:boost_augment("HubOS.Augments.Hand+", 1)
           custom_boosts = custom_boosts + 1
         end
       end
@@ -49,7 +49,7 @@ return function(player, form, base_animation_path)
       boost_custom_component:eject()
 
       if custom_boosts > 0 then
-        player:boost_augment("HubOS.Augments.Custom1", -custom_boosts)
+        player:boost_augment("HubOS.Augments.Hand+", -custom_boosts)
       end
     end
   })

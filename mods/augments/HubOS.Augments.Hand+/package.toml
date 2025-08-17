@@ -1,0 +1,7 @@
+[package]
+category = "augment"
+id = "HubOS.Augments.Hand+"
+past_ids = ["HubOS.Augments.Custom1"]
+name = "Hidden Hand+"
+description = "A Hand+1 Boost not tied to any system."
+hand_size_boost = 1
