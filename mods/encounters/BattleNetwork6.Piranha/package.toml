@@ -9,10 +9,6 @@ preview_texture_path = "preview.png"
 id = "BattleNetwork6.Piranha.Enemy"
 path = "piranha"
 
-[[defines.characters]]
-id = "BattleNetwork6.RarePiranha.Enemy"
-path = "rare_piranha"
-
 [dependencies]
 libraries = ["BattleNetwork.Assets"]
 statuses = ["BattleNetwork6.Statuses.EnemyAlert"]
