@@ -10,5 +10,5 @@ id = "BattleNetwork6.Piranha.Enemy"
 path = "piranha"
 
 [dependencies]
-libraries = ["BattleNetwork.Assets"]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.ai"]
 statuses = ["BattleNetwork6.Statuses.EnemyAlert"]

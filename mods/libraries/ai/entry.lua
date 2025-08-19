@@ -96,21 +96,6 @@ local function pick_plan(rolls, plans)
   return plans[#plans]
 end
 
----@return Ai
----@param entity Entity
-function Ai.new(entity)
-  local ai = {
-    _entity = entity,
-    _plans = {},
-    _rolls = 0
-  }
-  setmetatable(ai, Ai)
-
-  ai:_create_component()
-
-  return ai
-end
-
 function Ai:create_plan()
   local plan = AiPlan.new()
   self._plans[#self._plans + 1] = plan
@@ -184,10 +169,23 @@ end
 
 ---@class dev.konstinople.library.ai
 local Lib = {
-  new_ai = Ai.new,
-  Ai = Ai,
   IteratorLib = IteratorLib,
 }
+
+---@return Ai
+---@param entity Entity
+function Lib.new_ai(entity)
+  local ai = {
+    _entity = entity,
+    _plans = {},
+    _rolls = 0
+  }
+  setmetatable(ai, Ai)
+
+  ai:_create_component()
+
+  return ai
+end
 
 ---@param entity Entity
 ---@param card_props CardProperties
