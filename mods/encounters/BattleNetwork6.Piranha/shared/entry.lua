@@ -252,6 +252,7 @@ end
 ---@param character Entity
 ---@param props _BattleNetwork6.PiranhaProps
 return function(character, props)
+  character:set_element(Element.Aqua)
   character:set_health(props.health)
   character:ignore_negative_tile_effects()
   character:set_texture(TEXTURE)
