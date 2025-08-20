@@ -30,7 +30,7 @@ return function(player, form, base_animation_path)
 
       death_curse_aux_prop = AuxProp.new():intercept_action(function(action)
         local card_properties = action:copy_card_properties()
-        death_curse_active = card_properties.package_id and card_properties.element == Element.None
+        death_curse_active = card_properties.package_id ~= "" and card_properties.element == Element.None
         return action
       end)
       player:add_aux_prop(death_curse_aux_prop)
