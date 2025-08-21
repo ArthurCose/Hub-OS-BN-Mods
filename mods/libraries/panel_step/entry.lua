@@ -19,6 +19,12 @@ function PanelStep:set_return_frame(return_frame)
   self._return_frame = return_frame
 end
 
+---Called when an action executes to resolve a destination
+---@param callback fun(user: Entity): Tile?
+function PanelStep:set_dest_func(callback)
+  self._dest_func = callback
+end
+
 ---@param user Entity
 local function create_ghost(user)
   local ghost = Artifact.new()
@@ -121,7 +127,12 @@ function PanelStep:wrap_action(wrapped_action)
   start_action.on_execute_func = function()
     -- resolve tiles on execute, in case the user moved before the action exited queue
     original_tile = user:current_tile()
-    dest_tile = user:get_tile(user:facing(), 2)
+
+    if self._dest_func then
+      dest_tile = self._dest_func(user)
+    else
+      dest_tile = user:get_tile(user:facing(), 2)
+    end
 
     if not dest_tile or test_dest_tile(dest_tile) then
       -- invalid dest, return early
@@ -247,7 +258,12 @@ function PanelStep:create_action(user, create_action_steps)
 
   action.on_execute_func = function()
     original_tile = user:current_tile()
-    dest_tile = user:get_tile(user:facing(), 2)
+
+    if self._dest_func then
+      dest_tile = self._dest_func(user)
+    else
+      dest_tile = user:get_tile(user:facing(), 2)
+    end
 
     if not dest_tile or test_dest_tile(dest_tile) then
       dest_tile = nil
