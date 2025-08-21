@@ -35,6 +35,7 @@ function card_init(user, props)
             elseif hit_props.damage >= 10 then
                 defense:block_damage()
                 user:queue_action(poof_user(user, context, props, antidamage_rule))
+                activated = true
             end
         end
 
