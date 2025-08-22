@@ -5,9 +5,14 @@ local ANIMATION_PATH = bn_assets.fetch_animation_path("panelgrab.animation")
 local START_SFX = bn_assets.load_audio("panelgrab1.ogg")
 local END_SFX = bn_assets.load_audio("panelgrab2.ogg")
 
+
+---@class PanelGrabOptions
+---@field claim boolean?
+
 ---@param team Team
 ---@param direction Direction
-local function create_spell(team, direction)
+---@param options PanelGrabOptions?
+local function create_spell(team, direction, options)
   local spell = Spell.new(team)
   spell:set_facing(direction)
   spell:set_texture(TEXTURE)
@@ -40,7 +45,11 @@ local function create_spell(team, direction)
       spell:delete()
     end)
 
-    spell:current_tile():set_team(team, direction)
+    if not options or options.claim ~= false then
+      -- only claim if options.claim is not explicitly set to false
+      spell:current_tile():set_team(team, direction)
+    end
+
     spell:attack_tile()
 
     Resources.play_audio(END_SFX, AudioBehavior.NoOverlap)

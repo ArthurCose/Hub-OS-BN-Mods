@@ -99,7 +99,7 @@ function card_init(user)
 
 			total_stolen = total_stolen - 1
 
-			local spell = PanelGrabLib.create_spell(team, direction)
+			local spell = PanelGrabLib.create_spell(team, direction, { claim = false })
 
 			local hit_props = spell:copy_hit_props()
 			hit_props.flags = hit_props.flags | Hit.PierceInvis | Hit.Drag
