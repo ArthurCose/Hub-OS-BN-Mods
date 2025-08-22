@@ -63,24 +63,15 @@ function card_init(user)
 
 		Resources.play_audio(INDICATE_SFX)
 
-		-- prioritize nearest opponent player
-		local target = Field.find_nearest_players(user, function(player)
-			return player:team() ~= user:team() and player:hittable()
-		end)[1]
+		-- find characters
+		local targets = Field.find_characters(function(character)
+			return character:team() ~= user:team() and character:hittable()
+		end)
 
-		if not target then
-			-- switch to nearest opponent character
-			target = Field.find_nearest_characters(user, function(character)
-				return character:team() ~= user:team() and character:hittable()
-			end)[1]
-		end
-
-		if not target then
+		if #targets == 0 then
 			-- nothing to do
 			return
 		end
-
-		local tile = target:current_tile()
 
 		local attack_step = action:create_step()
 		local total_stolen = #stolen_tiles
@@ -99,16 +90,30 @@ function card_init(user)
 
 			total_stolen = total_stolen - 1
 
-			local spell = PanelGrabLib.create_spell(team, direction, { claim = false })
+			local already_hit = {}
 
-			local hit_props = spell:copy_hit_props()
-			hit_props.flags = hit_props.flags | Hit.PierceInvis | Hit.Drag
-			hit_props.damage = 40
-			hit_props.drag = Drag.new(target:facing_away(), Field.width())
-			spell:set_hit_props(hit_props)
+			for _, target in ipairs(targets) do
+				local tile = target:current_tile()
 
-			Field.spawn(spell, tile)
-			existing_spell = spell
+				if already_hit[tile] then
+					goto continue
+				end
+
+				already_hit[tile] = true
+
+				local spell = PanelGrabLib.create_spell(team, direction, { claim = false })
+
+				local hit_props = spell:copy_hit_props()
+				hit_props.flags = hit_props.flags | Hit.PierceInvis | Hit.Drag
+				hit_props.damage = 40
+				hit_props.drag = Drag.new(target:facing_away(), Field.width())
+				spell:set_hit_props(hit_props)
+
+				Field.spawn(spell, tile)
+				existing_spell = spell
+
+				::continue::
+			end
 		end
 	end
 
