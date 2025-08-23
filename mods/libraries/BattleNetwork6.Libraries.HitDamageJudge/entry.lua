@@ -6,6 +6,8 @@ local SHADOW_COLOR = Color.new(33, 41, 41)
 
 local SECONDS = 60
 
+local battle_ended = false
+
 ---@class HitDamageJudge
 local HitDamageJudge = {
   RANDOMIZED_TIME = 72,
@@ -255,6 +257,12 @@ local function queue_judge_action(entity)
     end
   end
 
+  action.on_update_func = function()
+    if battle_ended then
+      action:end_action()
+    end
+  end
+
   action.on_action_end_func = function()
     Hud:remove_node(banner_node)
     clear_comparison()
@@ -277,6 +285,12 @@ local function start_timer(entity)
 
   local component = entity:create_component(Lifetime.ActiveBattle)
   component.on_update_func = function()
+    if battle_ended then
+      component:eject()
+      set_timer_text("")
+      return
+    end
+
     remaining_time = remaining_time - 1
 
     if remaining_time == 0 then
@@ -296,9 +310,18 @@ function HitDamageJudge.init(encounter)
   local artifact = Artifact.new()
   Field.spawn(artifact, 0, 0)
 
+  encounter:on_battle_end(function()
+    battle_ended = true
+  end)
+
   local component = artifact:create_component(Lifetime.CardSelectOpen)
 
   component.on_update_func = function()
+    if battle_ended then
+      component:eject()
+      return
+    end
+
     if TurnGauge.current_turn() == TurnGauge.turn_limit() then
       -- count down to judgement
       start_timer(artifact)

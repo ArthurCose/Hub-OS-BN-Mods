@@ -115,10 +115,16 @@ Team = {
 ---
 ---@enum AudioBehavior
 AudioBehavior = {
-  --- Audio will play regardless of other audio.
+  --- Audio will play regardless of other audio. Same as `AudioBehavior.Overlap`
   Default = 0,
-  --- Audio will not play if another instance of itself is playing with NoOverlap or LoopSection.
+  --- Audio will play regardless of other audio.
+  Overlap = 0,
+  --- Audio will not play if another instance of itself is playing with NoOverlap, Restart, or LoopSection.
   NoOverlap = 0,
+  --- If this audio is already playing with NoOverlap or Restart, it will be restarted. Looping audio will not be restarted.
+  ---
+  --- Plays the audio as normal if there is no other instance of itself.
+  Restart = 0,
   --- The sound will continue playing if it was already playing. If AudioBehavior.LoopSection was applied, it will stop looping at `end_sample`
   EndLoop = 0,
 }
@@ -797,6 +803,9 @@ DeckCard = {}
 ---@field code string
 --- Number, used by other mods for conditional behavior.
 ---@field recover number
+--- Number, represents the increase in damage from boosts. You should also modify `damage` when adjusting this value, as `damage` represents the final damage value.
+--- Subtract this value from `damage` to get the original damage value.
+---@field boosted_damage number
 --- Number, influences generated [HitProps](https://docs.hubos.dev/client/lua-api/attack-api/hit-props).
 ---
 --- Displayed during time freeze.
