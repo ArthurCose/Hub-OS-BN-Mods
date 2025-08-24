@@ -103,11 +103,11 @@ local function create_move_factory(blizzardman, end_idle_duration, select_tile)
         animation:set_state("MOVE")
         animation:set_playback(Playback.Reverse)
 
-        animation:on_complete(function()
-          if tile ~= nil then
-            blizzardman:teleport(tile)
-          end
+        if tile ~= nil then
+          blizzardman:teleport(tile)
+        end
 
+        animation:on_complete(function()
           move_step:complete_step()
           animation:set_state("IDLE")
         end)
