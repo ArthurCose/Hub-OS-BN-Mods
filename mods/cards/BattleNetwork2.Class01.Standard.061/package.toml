@@ -10,6 +10,8 @@ damage = 40
 time_freeze = false
 element = "fire"
 description = "4hit strm\n2 squares\nahead"
+hit_flags = ["Impact", "Flinch"]
+limit = 5
 
 [defines]
 characters = [ ]

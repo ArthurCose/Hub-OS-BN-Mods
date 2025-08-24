@@ -12,7 +12,7 @@ description = "Press A for 3panl beam attk"
 card_class = "Mega"
 limit = 1
 can_boost = true
-hit_flags = ["Impact", "PierceInvis", "PierceGuard", ]
+hit_flags = ["Impact", "PierceInvis", "PierceGuard", "Paralyze"]
 tags = ["BN6", "EXE6", "NAVI", "VERSION_GREGAR"]
 
 [dependencies]
