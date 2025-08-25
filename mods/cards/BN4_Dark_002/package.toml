@@ -4,7 +4,7 @@ id = "BattleNetwork4.Class05.Dark.002.Sword"
 name = "DrkSword"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ " " ]
+codes = [" "]
 damage = 0
 time_freeze = false
 regular_allowed = false
@@ -15,14 +15,8 @@ limit = 0
 conceal = true
 long_description = "A Dark Chip. Slashes 3x2 and forces forward movement."
 can_boost = false
-tags = [
-    "FOE_HEALTH_EQUALS_POWER",
-    "EXE4",
-    "BN4"
-]
+tags = ["FOE_HEALTH_EQUALS_POWER", "EXE4", "BN4"]
 
 [dependencies]
-libraries = [
-    "BattleNetwork.Assets",
-    "dev.konstinople.library.sword"
-]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
+augments = ["BattleNetwork4.Bugs.ForwardMovement"]

@@ -1,0 +1,6 @@
+[package]
+category = "augment"
+id = "BattleNetwork4.Bugs.BackwardMovement"
+name = "BackwardBug"
+description = "Causes backward movement."
+tags = ["BUG"]

@@ -13,19 +13,8 @@ bomb:set_bomb_shadow(bn_assets.load_texture("bomb_shadow.png"))
 bomb:set_execute_sfx(bn_assets.load_audio("lob_bomb.ogg"))
 
 function card_mutate(user, card_index)
-    local movement_component = user:create_component(Lifetime.ActiveBattle)
-    movement_component._wait_timer = 7
-    movement_component._count = 0
-
-    movement_component.on_update_func = function(self)
-        local owner = self:owner()
-        self._count = self._count + 1
-        if self._count % self._wait_timer == 0 and Living.from(owner) ~= nil then
-            if owner:is_inactionable() or owner:is_immobile() or owner:is_moving() then return end
-            local movement = Movement.new_teleport(owner:get_tile(owner:facing_away(), 1))
-
-            owner:queue_movement(movement)
-        end
+    if Player.from(user) then
+        user:boost_augment("BattleNetwork4.Bugs.BackwardMovement", 1)
     end
 end
 

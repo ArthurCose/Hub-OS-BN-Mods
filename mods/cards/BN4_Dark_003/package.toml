@@ -4,19 +4,18 @@ id = "BattleNetwork4.Class05.Dark.003.Bomb"
 name = "DarkBomb"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ " " ]
+codes = [" "]
 damage = 200
 time_freeze = false
 element = "none"
 description = "ATK 9PNL\n3SQ\nAHEAD"
 long_description = "9 PANEL EXPLOSION 3 SQUARES AHEAD"
 limit = 0
-hit_flags = [ "Impact", "Flinch", "Flash" ]
+hit_flags = ["Impact", "Flinch", "Flash"]
 card_class = "dark"
 conceal = true
 
-[defines]
-characters = [ ]
-
+# conceal = true
 [dependencies]
 libraries = ["BattleNetwork.Assets", "dev.konstinople.library.bomb"]
+augments = ["BattleNetwork4.Bugs.BackwardMovement"]
