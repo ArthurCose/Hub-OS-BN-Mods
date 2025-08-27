@@ -30,6 +30,7 @@ local direction_tests = {
 }
 
 ---@param user Entity
+---@param props CardProperties
 local function spawn_bees(user, props)
   local spawn_tile = user:get_tile(user:facing(), 1)
 
@@ -220,15 +221,15 @@ function card_init(user, props)
 
     defense_rule = DefenseRule.new(DefensePriority.Action, DefenseOrder.CollisionOnly)
 
-    defense_rule.defense_func = function(defense, _, _, props)
-      if props.element == Element.Fire or props.secondary_element == Element.Fire then
+    defense_rule.defense_func = function(defense, _, _, hit_props)
+      if hit_props.element == Element.Fire or hit_props.secondary_element == Element.Fire then
         -- we can't block fire, but it doesn't remove our defense
         return
       end
 
       defense:block_damage()
 
-      if defense:impact_blocked() or props.flags & Hit.Impact == 0 then
+      if defense:impact_blocked() or hit_props.flags & Hit.Impact == 0 then
         -- non impact
         return
       end
