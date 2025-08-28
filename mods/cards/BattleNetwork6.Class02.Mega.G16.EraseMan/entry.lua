@@ -89,6 +89,7 @@ function card_init(actor, props)
 	-- Creation depends on if we're dotting or shooting.
 	local create_dot = function(is_attack)
 		local dot = Spell.new(actor:team())
+		dot:set_facing(actor:facing())
 		local dot_sprite = dot:sprite()
 
 		dot_sprite:set_layer(-20)
