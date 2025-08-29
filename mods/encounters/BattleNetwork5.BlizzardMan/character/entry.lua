@@ -86,7 +86,6 @@ local function create_move_factory(blizzardman, end_idle_duration, select_tile)
   return function()
     local action = Action.new(blizzardman, "MOVE")
     action:set_lockout(ActionLockout.new_sequence())
-    action:allow_auto_tile_reservation()
 
     local move_step = action:create_step()
 
@@ -381,7 +380,6 @@ local function create_snow_rolling_factory(blizzardman, damage)
   return function()
     local action = Action.new(blizzardman)
     action:set_lockout(ActionLockout.new_sequence())
-    action:allow_auto_tile_reservation()
 
     local step = action:create_step()
 
@@ -646,6 +644,7 @@ local function create_rolling_slider_factory(blizzardman, damage)
 
     local action = Action.new(blizzardman, "CURLING_UP")
     action:set_lockout(ActionLockout.new_sequence())
+    action:allow_auto_tile_reservation(false)
 
     local curling_step = action:create_step()
     local rolling_step = action:create_step()

@@ -90,7 +90,6 @@ local function create_move_factory(entity, end_idle_duration, select_tile)
 
     local action = Action.new(entity)
     action:set_lockout(ActionLockout.new_sequence())
-    action:allow_auto_tile_reservation()
 
     action.on_execute_func = function()
       entity:queue_default_player_movement(tile)

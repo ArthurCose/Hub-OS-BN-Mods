@@ -130,29 +130,8 @@ function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
             local tile = target_tile_callback()
 
             if tile and tile ~= start_tile and user:can_move_to(tile) and (not Living.from(user) or not user:is_immobile()) then
-                local reserve = not user:sharing_tile()
-                local start_reserve_count = start_tile:reserve_count_for(user)
-
-                if reserve then
-                    start_tile:remove_reservation_for(user)
-                end
-
                 tile:add_entity(user)
                 user:set_facing(tile:facing())
-
-                if reserve then
-                    tile:reserve_for(user)
-
-                    action.on_action_end_func = function()
-                        -- remove extra reservation from auto reserve
-                        tile:remove_reservation_for(user)
-
-                        -- fix double unreserve
-                        if start_reserve_count > 1 then
-                            start_tile:reserve_for(user)
-                        end
-                    end
-                end
             end
 
             user:current_tile():add_entity(end_poof)
