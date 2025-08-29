@@ -110,7 +110,7 @@ function card_init(actor, props)
 			end
 
 			-- Play the appropriate sound. In this case, the dot's beep noise.
-			Resources.play_audio(DOT_AUDIO)
+			Resources.play_audio(DOT_AUDIO, AudioBehavior.NoOverlap)
 		else
 			-- Set texture and animation path as usual
 			dot_sprite:set_texture(ERASE_BEAM_TEXTURE)
@@ -156,7 +156,7 @@ function card_init(actor, props)
 			end
 
 			-- Play the appropriate sound. In this case, the attack noise.
-			Resources.play_audio(ATTACK_AUDIO)
+			Resources.play_audio(ATTACK_AUDIO, AudioBehavior.NoOverlap)
 		end
 
 

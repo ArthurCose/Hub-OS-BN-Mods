@@ -158,7 +158,7 @@ function create_scanner(owner)
         if (spell.wait_frames == 8) then
             spell:teleport(spell.nextile)
             spell.scans = spell.scans + 1
-            Resources.play_audio(scan_sfx, AudioBehavior.Default)
+            Resources.play_audio(scan_sfx, AudioBehavior.NoOverlap)
             spell.nextile = spell.nextile:get_tile(direction, 1)
             spell.wait_frames = 0
         end
