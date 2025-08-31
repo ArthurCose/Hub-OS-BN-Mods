@@ -160,21 +160,23 @@ local function spawn_bees(user, props)
         elseif same_x and same_y then
           -- on the same tile as the enemy? reverse direction
           direction = Direction.reverse(direction)
-        elseif moving_horizontally then
-          -- moving horizontally, switch to vertical
+        elseif moving_horizontally and not same_y then
+          -- need to move vertically
           if enemy_tile:y() > bees_tile:y() then
             direction = Direction.Down
           elseif enemy_tile:y() < bees_tile:y() then
             direction = Direction.Up
           end
         else
-          -- moving vertically, switch to horizontal
+          -- need to move horizontally
           if enemy_tile:x() > bees_tile:x() then
             direction = Direction.Right
           elseif enemy_tile:x() < bees_tile:x() then
             direction = Direction.Left
           end
+        end
 
+        if direction == Direction.Left or direction == Direction.Right then
           bees:set_facing(direction)
         end
 
