@@ -2,7 +2,8 @@ local TEXTURE = Resources.load_texture("artifact.png")
 local AUDIO = Resources.load_audio("sfx.ogg")
 
 function card_init(user)
-    local action = Action.new(user, "CHARACTER_BUFF")
+    local action = Action.new(user)
+    action:set_lockout(ActionLockout.new_async(20))
 
     action.on_execute_func = function()
         local recov = create_recov(user)

@@ -5,14 +5,13 @@ local ANIMATION = bn_helpers.fetch_animation_path("recover.animation")
 local AUDIO = bn_helpers.load_audio("recover.ogg")
 
 function card_init(user, props)
-    local action = Action.new(user, "CHARACTER_IDLE")
+    local action = Action.new(user)
     action:set_lockout(ActionLockout.new_async(30))
 
     action.on_execute_func = function(self)
         local recov = create_recov(user)
         Field.spawn(recov, user:current_tile())
         user:set_health(user:health() + props.recover)
-        self:end_action()
     end
 
     return action

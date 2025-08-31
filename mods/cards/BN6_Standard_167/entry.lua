@@ -104,7 +104,7 @@ function card_init(user)
 				local spell = PanelGrabLib.create_spell(team, direction, { claim = false })
 
 				local hit_props = spell:copy_hit_props()
-				hit_props.flags = hit_props.flags | Hit.PierceInvis | Hit.Drag
+				hit_props.flags = hit_props.flags | Hit.PierceInvis | Hit.Drag | Hit.Flash
 				hit_props.damage = 40
 				hit_props.drag = Drag.new(target:facing_away(), Field.width())
 				spell:set_hit_props(hit_props)

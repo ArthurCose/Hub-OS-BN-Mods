@@ -41,7 +41,7 @@ local function create_movement_updater(entity, direction_bias, turn_callback)
         direction = Direction.Up
       end
 
-      if not next_tile or next_tile:is_edge() then
+      if not next_tile then
         turn_direction = Direction.reverse(direction_bias)
         next_tile = entity:get_tile(turn_direction, 1)
       end
@@ -134,7 +134,7 @@ local function create_dragon(user, props)
       last_tile = current_tile
     end
 
-    if tile_pending_change and TILE_STATE then
+    if tile_pending_change and TILE_STATE and last_tile:is_walkable() then
       last_tile:set_state(TILE_STATE)
     end
 

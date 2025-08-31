@@ -11,7 +11,7 @@ time_freeze = false
 element = "none"
 description = "Restore 300HP to self!"
 card_class = "standard"
-limit = 1
+limit = 2
 can_boost = false
 
 [defines]
