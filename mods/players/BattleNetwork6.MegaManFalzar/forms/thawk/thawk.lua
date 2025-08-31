@@ -28,8 +28,14 @@ return function(player, form, base_animation_path)
           :increase_card_multiplier(1)
       player:add_aux_prop(wood_boost_aux_prop)
 
+      local immunities = Hit.Freeze | Hit.Paralyze | Hit.Blind | Hit.Confuse
+
+      if Hit.Bubble then
+        immunities = immunities | Hit.Bubble
+      end
+
       status_guard_aux_prop = AuxProp.new()
-          :declare_immunity(Hit.Freeze | Hit.Paralyze | Hit.Blind | Hit.Confuse)
+          :declare_immunity(immunities)
       player:add_aux_prop(status_guard_aux_prop)
     end,
     deactivate_callback = function()
