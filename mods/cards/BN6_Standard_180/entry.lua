@@ -52,7 +52,7 @@ function create_barrier(user)
 
 	aura_animate_component.on_update_func = function(self)
 		barrier_animation:apply(barrier)
-		barrier_animation:update(barrier)
+		barrier_animation:update()
 	end
 
 	local aura_destroy_component = user:create_component(Lifetime.Battle)
@@ -73,8 +73,6 @@ function create_barrier(user)
 		if remove_barrier and not fading then
 			fading = true
 			user:remove_defense_rule(barrier_defense_rule)
-
-			barrier_animation:set_playback(Playback.Once)
 
 			barrier_animation:on_complete(function()
 				user:sprite():remove_node(barrier)

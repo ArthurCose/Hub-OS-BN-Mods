@@ -21,6 +21,7 @@ function card_init(user, props)
 	return action
 end
 
+---@param user Entity
 function create_barrier(user)
 	local HP = 100
 
@@ -73,8 +74,6 @@ function create_barrier(user)
 		if remove_barrier and not fading then
 			fading = true
 			user:remove_defense_rule(barrier_defense_rule)
-
-			barrier_animation:set_playback(Playback.Once)
 
 			barrier_animation:on_complete(function()
 				user:sprite():remove_node(barrier)

@@ -74,8 +74,6 @@ function create_barrier(user)
 			fading = true
 			user:remove_defense_rule(barrier_defense_rule)
 
-			barrier_animation:set_playback(Playback.Once)
-
 			barrier_animation:on_complete(function()
 				user:sprite():remove_node(barrier)
 				aura_animate_component:eject()
