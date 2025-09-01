@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class02.Mega.022.BlastMan"
+name = "BlastMan"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "B", "*" ]
+damage = 120
+time_freeze = true
+element = "fire"
+description = "Head fwd & launch blst attk"
+card_class = "Mega"
+limit = 3
+can_boost = true
+regular_allowed = true
+hit_flags = ["Impact", "Flinch", "Flash"]
+tags = ["BN6", "EXE6", "NAVI"]
+
+[dependencies]
+libraries = [ "BattleNetwork.Assets" ]
