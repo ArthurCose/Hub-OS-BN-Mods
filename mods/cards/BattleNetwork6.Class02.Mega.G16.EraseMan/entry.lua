@@ -12,12 +12,12 @@ local NAVI_ANIM_PATH = bn_assets.fetch_animation_path("eraseman.animation")
 local DOT_AUDIO = bn_assets.load_audio("magnum_cursor.ogg")
 local ATTACK_AUDIO = bn_assets.load_audio("shock.ogg")
 
-
+---@param actor Entity
+---@param props CardProperties
 function card_init(actor, props)
 	local action = Action.new(actor)
 	action:set_lockout(ActionLockout.new_sequence())
-
-	local step = action:create_step()
+	action:create_step()
 
 	-- Don't start overall timer or direction timer until we actually do stuff, or it'll come out funny
 	local timer_start = false
@@ -28,12 +28,11 @@ function card_init(actor, props)
 	-- Overall timer, chip will execute without input after this many frames
 	local timer = 360
 
-	-- Setup EraseMan's sprite and animation.
-	-- Done separately from the actual state and texture assignments for a reason.
-	-- We need this to be accessible by other local functions down below.
-	local navi = Artifact.new(actor:team())
-	local navi_sprite = navi:sprite()
-	local navi_animation = navi:animation()
+	-- How long to let the beam animation play out before EraseMan vanishes
+	local endlag = 60
+
+	-- Separate from timer for comparison's sake
+	local change_time_counter = 0
 
 	-- Timer between direction shifts, depends on navi chip version
 	local direction_change_timer;
@@ -45,21 +44,18 @@ function card_init(actor, props)
 		direction_change_timer = 20
 	end
 
-	-- How long to let the beam animation play out before EraseMan vanishes
-	local endlag = 60
+	---@type Entity
+	local navi
+	---@type Animation
+	local navi_animation
 
-	-- Separate from timer for comparison's sake
-	local change_time_counter = 0
-
-	local direction = actor:facing()
-	local up_direction = Direction.join(direction, Direction.Up)
-	local down_direction = Direction.join(direction, Direction.Down)
-
-	local tile = actor:current_tile()
-
+	---@type Tile[]
 	local forward_list = {}
+	---@type Tile[]
 	local up_list = {}
+	---@type Tile[]
 	local down_list = {}
+	---@type Tile[]?
 	local current_list = nil
 
 	local function populate_direction_list(dir, list)
@@ -69,7 +65,7 @@ function card_init(actor, props)
 		-- I need to continually increment in one of three unknowable directions until I hit an edge tile.
 		while true do
 			-- So, assign the tile to check
-			local check_tile = tile:get_tile(dir, x)
+			local check_tile = actor:current_tile():get_tile(dir, x)
 
 			-- If the tile is nonexisting, OR if it IS existing BUT is an edge tile, then break the loop off.
 			if check_tile == nil or check_tile ~= nil and check_tile:is_edge() then
@@ -103,10 +99,13 @@ function card_init(actor, props)
 
 			dot_animation:set_state("DEFAULT")
 
-			dot._despawn_timer = direction_change_timer
+			local despawn_timer = direction_change_timer
 			dot.on_update_func = function(self)
-				self._despawn_timer = self._despawn_timer - 1
-				if self._despawn_timer == 0 or actor:input_has(Input.Pressed.Use) then self:erase() end
+				despawn_timer = despawn_timer - 1
+
+				if despawn_timer == 0 or actor:input_has(Input.Pressed.Use) or timer <= 0 then
+					self:erase()
+				end
 			end
 
 			-- Play the appropriate sound. In this case, the dot's beep noise.
@@ -178,59 +177,31 @@ function card_init(actor, props)
 		end
 	end
 
-	-- Populate the lists.
-	-- The Up and Down lists only get populated if they're valid directions.
-	-- This simulates EraseMan not wasting his time with directions where there aren't any victims.
-	if not tile:get_tile(Direction.Up, 1):is_edge() then
-		up_list = populate_direction_list(up_direction, up_list)
-	end
-
-	forward_list = populate_direction_list(direction, forward_list)
-
-	if not tile:get_tile(Direction.Down, 1):is_edge() then
-		down_list = populate_direction_list(down_direction, down_list)
-	end
-
-	-- Store them as options
 	local options = { up_list, forward_list, down_list }
 	local options_index = 1
+	local options_inc = 1
 
 	-- Direction changes on a separate timer from the overall
 	-- This function controls that mechanic
 	local function check_direction()
 		if current_list == nil then
-			local i = 1
+			current_list = options[1]
+		else
+			-- Increment and bounce until we find an option in bounds
+			while true do
+				options_index = options_index + options_inc
+				current_list = options[options_index]
 
-			while current_list == nil and i < #options do
-				if #options[i] > 0 then
-					current_list = options[i]
-					options_index = i
+				if not current_list then
+					-- bounce
+					options_inc = -options_inc
+					options_index = options_index + options_inc * 2
+					current_list = options[options_index]
+				end
+
+				if #current_list ~= 0 then
 					break
 				end
-
-				-- Increment the variable, or you'll softlock with an infinite loop sometimes
-				-- While loops do not increment for you, unlike For loops.
-				i = i + 1
-			end
-		else
-			if options_index == #options then
-				options_index = 1
-			else
-				options_index = options_index + 1
-			end
-
-			current_list = options[options_index]
-
-			-- Redundant? Certainly.
-			-- Safe, though? Absolutely.
-			while #current_list == 0 do
-				if options_index == #options then
-					options_index = 1
-				else
-					options_index = options_index + 1
-				end
-
-				current_list = options[options_index]
 			end
 		end
 
@@ -239,36 +210,76 @@ function card_init(actor, props)
 		spawn_dots(false)
 	end
 
-	navi_sprite:set_texture(NAVI_TEXTURE)
-	navi_animation:load(NAVI_ANIM_PATH)
+	action.on_execute_func = function(self, user)
+		local direction = actor:facing()
+		local up_direction = Direction.join(direction, Direction.Up)
+		local down_direction = Direction.join(direction, Direction.Down)
 
-	-- Spawn EraseMan in by repurposing his movement
-	navi_animation:set_state("MOVE_FINISH")
+		local tile = user:current_tile()
 
-	-- Only once, no looping necessary
-	navi_animation:set_playback(Playback.Once)
+		-- Populate the lists.
+		-- The Up and Down lists only get populated if they're valid directions.
+		-- This simulates EraseMan not wasting his time with directions where there aren't any victims.
+		if not tile:get_tile(Direction.Up, 1):is_edge() then
+			up_list = populate_direction_list(up_direction, up_list)
+		end
 
-	-- On complete, change his animation state
-	navi_animation:on_complete(function()
-		navi_animation:set_state("ERASE_BEAM_START")
+		forward_list = populate_direction_list(direction, forward_list)
 
-		-- Again, once, no looping necessary
+		if not tile:get_tile(Direction.Down, 1):is_edge() then
+			down_list = populate_direction_list(down_direction, down_list)
+		end
+
+		-- Store them as options
+		options = { up_list, forward_list, down_list }
+
+		for i = #options, 1, -1 do
+			if #options[i] == 0 then
+				table.remove(options, i)
+			end
+		end
+
+		-- Setup EraseMan's sprite and animation.
+		-- Done separately from the actual state and texture assignments for a reason.
+		-- We need this to be accessible by other local functions down below.
+		navi = Artifact.new(actor:team())
+		local navi_sprite = navi:sprite()
+		navi_animation = navi:animation()
+
+		navi:set_facing(direction)
+		navi_sprite:set_texture(NAVI_TEXTURE)
+		navi_animation:load(NAVI_ANIM_PATH)
+
+		-- Spawn EraseMan in by repurposing his movement
+		navi_animation:set_state("MOVE_FINISH")
+
+		-- Only once, no looping necessary
 		navi_animation:set_playback(Playback.Once)
 
-		-- Yet again change the completion to allow the timer to start and check the beam direction
+		if #options == 0 then
+			action:end_action()
+			return
+		end
+
+		-- On complete, change his animation state
 		navi_animation:on_complete(function()
-			timer_start = true
+			navi_animation:set_state("ERASE_BEAM_START")
 
-			-- Since the list starts out undefined, it'll find the first good list to work with.
-			check_direction()
+			-- Again, once, no looping necessary
+			navi_animation:set_playback(Playback.Once)
+
+			-- Yet again change the completion to allow the timer to start and check the beam direction
+			navi_animation:on_complete(function()
+				timer_start = true
+
+				-- Since the list starts out undefined, it'll find the first good list to work with.
+				check_direction()
+			end)
 		end)
-	end)
 
-	action.on_execute_func = function(self, user)
 		user:hide()
 		Field.spawn(navi, user:current_tile())
 	end
-
 
 	action.on_update_func = function()
 		if begin_countdown == true then
@@ -276,12 +287,6 @@ function card_init(actor, props)
 			if endlag == 0 then
 				navi_animation:set_state("MOVE_START")
 				navi_animation:on_complete(function()
-					-- Erase the navi
-					navi:erase()
-
-					-- Reveal the player again
-					actor:reveal()
-
 					-- And end the action.
 					action:end_action()
 				end)
@@ -302,7 +307,7 @@ function card_init(actor, props)
 			change_time_counter = 0
 		end
 
-		if actor:input_has(Input.Pressed.Use) then
+		if actor:input_has(Input.Pressed.Use) or timer <= 0 then
 			-- Skip direction check and go directly to spawning
 			-- Pass in true for the parameter to ensure we attack this time
 			spawn_dots(true)
@@ -310,6 +315,16 @@ function card_init(actor, props)
 			-- Stop the timer, we're finishing up anyway
 			timer_start = false
 			begin_countdown = true
+		end
+	end
+
+	action.on_action_end_func = function()
+		-- Reveal the player again
+		actor:reveal()
+
+		if navi and not navi:deleted() then
+			-- Erase the navi
+			navi:erase()
 		end
 	end
 
