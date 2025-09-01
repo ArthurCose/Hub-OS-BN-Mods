@@ -1,21 +1,21 @@
 [package]
 category = "card"
-id = "dev.GladeWoodsgrove.Chips.IceBomb"
-name = "IceBomb"
+id = "dev.GladeWoodsgrove.Chips.FrostBomb"
+past_ids = ["dev.GladeWoodsgrove.Chips.IceBomb"]
+name = "FrostBom"
 damage = 10
 element = "aqua"
 description = "Bomb freezes 3sq ahead!"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "A", "I", "J", "Q", "U" ]
+codes = [ "B", "F", "I" ]
 limit = 0
 conceal = true
-hit_flags = ["Impact"]
-
-[defines]
-characters = [ ]
+hit_flags = ["Impact", "Freeze"]
+status_durations = [
+    {flag_name = "Freeze", duration = 60}
+]
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [ ]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.bomb"]
+tile_states = ["BattleNetwork6.TileStates.Ice"]

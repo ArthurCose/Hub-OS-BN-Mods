@@ -1,0 +1,9 @@
+animation state="SPAWN"
+frame duration="0.05" x="46" y="98" w="11" h="12" originx="4" originy="8"
+frame duration="0.05" x="2" y="98" w="18" h="21" originx="8" originy="16"
+frame duration="0.05" x="62" y="55" w="21" h="30" originx="10" originy="24"
+frame duration="0.05" x="2" y="55" w="26" h="39" originx="13" originy="32"
+frame duration="0.017" x="2" y="2" w="32" h="49" originx="15" originy="40"
+
+animation state="LOOP"
+frame duration="0.017" x="38" y="2" w="32" h="49" originx="15" originy="40"

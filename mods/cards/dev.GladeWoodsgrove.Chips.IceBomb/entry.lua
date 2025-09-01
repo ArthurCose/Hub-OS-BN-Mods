@@ -1,143 +1,71 @@
-local attachment_texture = Resources.load_texture("attachment.png")
-local attachment_animation_path = "attachment.animation"
+local bn_assets = require("BattleNetwork.Assets")
 
-local ice_tower_texture = Resources.load_texture("freezebomb/frost_tower.png")
-local ice_animation_path = "freezebomb/frost_tower.animation"
+---@type BombLib
+local BombLib = require("dev.konstinople.library.bomb")
 
-local explosion_sfx = Resources.load_audio("explosion.ogg")
-local throw_sfx = Resources.load_audio("toss_item.ogg")
+local bomb = BombLib.new_bomb()
+bomb:set_bomb_texture(bn_assets.load_texture("bomb.png"))
+bomb:set_bomb_animation_path(bn_assets.fetch_animation_path("bomb.animation"))
+bomb:set_bomb_shadow(bn_assets.load_texture("bomb_shadow.png"))
+bomb:set_execute_sfx(bn_assets.load_audio("lob_bomb.ogg"))
 
-function card_init(actor, props)
-    local action = Action.new(actor, "CHARACTER_THROW")
-    local override_frames = { { 1, 4 }, { 2, 4 }, { 3, 4 }, { 4, 4 }, { 5, 4 } }
-    local frame_data = override_frames
+local ice_tower_texture = bn_assets.load_texture("ice_spike.png")
+local ice_animation_path = bn_assets.fetch_animation_path("ice_spike.animation")
 
-    action:override_animation_frames(frame_data)
-    action:set_lockout(ActionLockout.new_animation())
+local PANEL_SFX = bn_assets.load_audio("physical_object_land.ogg")
 
-    local hit_props = HitProps.new(
-        props.damage,
-        props.hit_flags,
-        props.element,
-        actor:context(),
-        Drag.None
-    )
+---@param user Entity
+function card_init(user, props)
+    return bomb:create_action(user, function(tile)
+        if not tile or not tile:is_walkable() then
+            return
+        end
 
-    action.on_execute_func = function(self, user)
-        local attachment = self:create_attachment("HAND")
-        local attachment_sprite = attachment:sprite()
-        attachment_sprite:set_texture(attachment_texture)
-        attachment_sprite:set_layer(-2)
+        if not tile:is_reserved() then
+            tile:set_state(TileState.Ice)
+        end
 
-        local attachment_animation = attachment:animation()
-        attachment_animation:load(attachment_animation_path)
-        attachment_animation:set_state("DEFAULT")
+        Resources.play_audio(PANEL_SFX)
 
-        self:add_anim_action(3, function()
-            attachment_sprite:hide()
-            --self.remove_attachment(attachment)
-            local tiles_ahead = 3
-            local frames_in_air = 40
-            local toss_height = 70
-            local facing = user:facing()
-            local target_tile = user:get_tile(facing, tiles_ahead)
+        local spell = Spell.new(user:team())
 
-            if not target_tile then return end
+        spell:set_facing(user:facing())
 
-            action.on_landing = function()
-                if target_tile:is_walkable() then
-                    hit_explosion(user, target_tile, hit_props, ice_tower_texture, ice_animation_path, explosion_sfx)
-                end
+        spell:set_texture(ice_tower_texture)
+
+        local spell_anim = spell:animation()
+        spell_anim:load(ice_animation_path)
+
+        spell_anim:set_state("SPAWN")
+
+        spell_anim:on_complete(function()
+            spell_anim:set_state("LOOP")
+        end)
+
+        spell:set_hit_props(
+            HitProps.from_card(
+                props,
+                user:context(),
+                Drag.None
+            )
+        )
+
+        local timer = 80
+
+        spell.on_update_func = function(self)
+            timer = timer - 1
+            if timer == 0 then
+                spell_anim:set_state("SPAWN")
+                spell_anim:set_playback(Playback.Reverse)
+                spell_anim:on_complete(function()
+                    spell:erase()
+                end)
+                return
             end
 
-            toss_spell(user, toss_height, attachment_texture, attachment_animation_path, target_tile, frames_in_air,
-                action.on_landing)
-
-            Resources.play_audio(throw_sfx)
-        end)
-    end
-    return action
-end
-
-function toss_spell(tosser, toss_height, texture, animation_path, target_tile, frames_in_air, arrival_callback)
-    local starting_height = -110
-    local start_tile = tosser:current_tile()
-    local field = tosser:field()
-    local spell = Spell.new(tosser:team())
-    local spell_animation = spell:animation()
-    spell_animation:load(animation_path)
-    spell_animation:set_state("DEFAULT")
-    if tosser:height() > 1 then
-        starting_height = -(tosser:height() + 40)
-    end
-
-    spell.jump_started = false
-    spell.starting_y_offset = starting_height
-    spell.starting_x_offset = 10
-    if tosser:facing() == Direction.Left then
-        spell.starting_x_offset = -10
-    end
-    spell.y_offset = spell.starting_y_offset
-    spell.x_offset = spell.starting_x_offset
-    local sprite = spell:sprite()
-    sprite:set_texture(texture)
-    spell:set_offset(spell.x_offset * 0.5, spell.y_offset * 0.5)
-
-    spell.on_update_func = function(self)
-        if not spell.jump_started then
-            self:jump(target_tile, toss_height, (frames_in_air), (frames_in_air))
-            self.jump_started = true
+            self:current_tile():attack_entities(self)
         end
-        if self.y_offset < 0 then
-            self.y_offset = self.y_offset + math.abs(self.starting_y_offset / frames_in_air)
-            self.x_offset = self.x_offset - math.abs(self.starting_x_offset / frames_in_air)
-            self:set_offset(self.x_offset * 0.5, self.y_offset * 0.5)
-        else
-            arrival_callback()
-            self:delete()
-        end
-    end
 
-    spell.can_move_to_func = function(tile)
-        return true
-    end
-
-    field:spawn(spell, start_tile)
-end
-
-function hit_explosion(user, target_tile, props, texture, anim_path, explosion_sound)
-    local field = user:field()
-    local spell = Spell.new(user:team())
-
-    local spell_animation = spell:animation()
-    spell_animation:load(anim_path)
-    spell_animation:set_state("DEFAULT")
-    local sprite = spell:sprite()
-    sprite:set_texture(texture)
-    spell_animation:apply(sprite)
-    sprite:set_layer(-2)
-    spell_animation:on_complete(function()
-        spell:erase()
+        Field.spawn(spell, tile)
     end)
-
-    spell:set_hit_props(props)
-    spell.has_attacked = false
-    spell.on_update_func = function(self)
-        if not spell.has_attacked then
-            Resources.play_audio(explosion_sound)
-            spell:current_tile():attack_entities(self)
-            spell.has_attacked = true
-        end
-    end
-
-    spell.on_attack_func = function(self, other)
-        local freeze_prop = AuxProp.new()
-            :apply_status(Hit.Freeze, 30)
-            :immediate()
-
-        other:add_aux_prop(freeze_prop)
-    end
-
-
-    field:spawn(spell, target_tile)
 end

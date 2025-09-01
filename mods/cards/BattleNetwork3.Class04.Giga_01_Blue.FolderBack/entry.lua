@@ -59,6 +59,12 @@ function card_init(actor, props)
 
 		TurnGauge.set_enabled(false)
 
+		local health_drain = AuxProp.new()
+			:drain_health(math.floor(user:max_health() / 4))
+			:immediate()
+
+		user:add_aux_prop(health_drain)
+
 		for p = 1, #players, 1 do
 			local player_id = players[p]:id()
 			local tracker = trackers[player_id]
@@ -69,8 +75,10 @@ function card_init(actor, props)
 
 				local shuffled = {}
 				for i, v in ipairs(tracker._deck) do
-					local pos = math.random(1, #shuffled + 1)
-					table.insert(shuffled, pos, v)
+					if v.package_id ~= "BattleNetwork3.Class04.Giga_01_Blue.FolderBack" then
+						local pos = math.random(1, #shuffled + 1)
+						table.insert(shuffled, pos, v)
+					end
 				end
 
 				for c = 1, #shuffled, 1 do

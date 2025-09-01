@@ -1,7 +1,6 @@
 function player_init(player)
 	player:set_name("Iceman")
-	-- player:set_health(1000)
-	-- player:set_element(Element.Aqua)
+
 	player:set_height(33.0)
 
 	local base_texture = Resources.load_texture("battle.png")
@@ -15,7 +14,7 @@ function player_init(player)
 
 	player.calculate_charge_time = function()
 		local level = player:charge_level()
-		return 140 - (level * 10);
+		return math.max(90, (140 - (level * 10)));
 	end
 
 	player.normal_attack_func = function(player)
@@ -23,7 +22,7 @@ function player_init(player)
 	end
 
 	player.charged_attack_func = function(self)
-		local card_properties = CardProperties.from_package("dev.GladeWoodsgrove.Chips.IceBomb")
+		local card_properties = CardProperties.from_package("dev.GladeWoodsgrove.Chips.FrostBomb")
 		card_properties.damage = player:attack_level() * 10
 
 		return Action.from_card(self, card_properties)
