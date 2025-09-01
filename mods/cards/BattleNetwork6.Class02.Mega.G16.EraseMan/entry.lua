@@ -158,7 +158,6 @@ function card_init(actor, props)
 			Resources.play_audio(ATTACK_AUDIO, AudioBehavior.NoOverlap)
 		end
 
-
 		return dot
 	end
 
@@ -263,6 +262,16 @@ function card_init(actor, props)
 
 		-- On complete, change his animation state
 		navi_animation:on_complete(function()
+			if not navi:current_tile():is_walkable() then
+				-- fail if eraseman is on a hole tile
+				navi_animation:set_state("MOVE_FINISH")
+				navi_animation:set_playback(Playback.Reverse)
+				navi_animation:on_complete(function()
+					action:end_action()
+				end)
+				return
+			end
+
 			navi_animation:set_state("ERASE_BEAM_START")
 
 			-- Again, once, no looping necessary
