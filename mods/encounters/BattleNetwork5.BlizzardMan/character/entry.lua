@@ -718,7 +718,10 @@ local function create_rolling_slider_factory(blizzardman, damage)
       blizzardman:set_offset(0, 0)
       blizzardman:set_counterable(false)
       blizzardman:enable_sharing_tile(false)
-      original_tile:add_entity(blizzardman)
+
+      if original_tile then
+        original_tile:add_entity(blizzardman)
+      end
     end
 
     return action
