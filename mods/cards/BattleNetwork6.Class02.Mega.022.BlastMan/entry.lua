@@ -18,6 +18,10 @@ function card_init(user, props)
 	local end_timer_started = false
 
 	local function attempt_fireball(tile)
+		if not tile then
+			return
+		end
+
 		local fireball = Spell.new(user:team())
 		fireball:set_facing(user:facing())
 		fireball:set_hit_props(
@@ -82,7 +86,7 @@ function card_init(user, props)
 		local start_x = 0
 
 		if direction == Direction.Left then
-			start_x = Field.width()
+			start_x = Field.width() - 1
 		end
 
 		-- Setup the navi's sprite and animation.
