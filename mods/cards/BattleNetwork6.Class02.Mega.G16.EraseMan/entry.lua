@@ -37,7 +37,7 @@ function card_init(user, props)
 	local change_time_counter = 0
 
 	-- Timer between direction shifts, depends on navi chip version
-	local direction_change_timer;
+	local direction_change_timer
 	if props.short_name == "ErasMnEX" then
 		direction_change_timer = 16
 	elseif props.short_name == "ErasMnSP" then
@@ -45,6 +45,8 @@ function card_init(user, props)
 	else
 		direction_change_timer = 20
 	end
+
+	local previously_visible
 
 	---@type Entity
 	local navi
@@ -210,6 +212,8 @@ function card_init(user, props)
 	end
 
 	action.on_execute_func = function(self, user)
+		previously_visible = user:sprite():visible()
+
 		local direction = user:facing()
 		local up_direction = Direction.join(direction, Direction.Up)
 		local down_direction = Direction.join(direction, Direction.Down)
@@ -315,11 +319,13 @@ function card_init(user, props)
 	end
 
 	action.on_action_end_func = function()
-		-- Reveal the player again
-		user:reveal()
+		if previously_visible then
+			user:reveal()
+		else
+			user:hide()
+		end
 
 		if navi and not navi:deleted() then
-			-- Erase the navi
 			navi:erase()
 		end
 	end

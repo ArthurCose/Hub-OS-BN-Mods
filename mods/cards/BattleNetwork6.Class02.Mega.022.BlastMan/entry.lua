@@ -16,6 +16,7 @@ function card_init(user, props)
 
 	local end_timer = 6 * (Field.width() + 2)
 	local end_timer_started = false
+	local previously_visible
 
 	local function attempt_fireball(tile)
 		if not tile then
@@ -82,6 +83,7 @@ function card_init(user, props)
 	local navi_animation
 
 	action.on_execute_func = function(self, user)
+		previously_visible = user:sprite():visible()
 		local direction = user:facing()
 		local start_x = 0
 
@@ -143,7 +145,11 @@ function card_init(user, props)
 	end
 
 	action.on_action_end_func = function()
-		user:reveal()
+		if previously_visible then
+			user:reveal()
+		else
+			user:hide()
+		end
 
 		if navi and not navi:deleted() then
 			navi:erase()
