@@ -4,7 +4,7 @@ id = "BattleNetwork6.Class02.Mega.022.BlastMan"
 name = "BlastMan"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "B", "*" ]
+codes = ["B", "*"]
 damage = 120
 time_freeze = true
 element = "fire"
@@ -17,4 +17,4 @@ hit_flags = ["Impact", "Flinch", "Flash"]
 tags = ["BN6", "EXE6", "NAVI"]
 
 [dependencies]
-libraries = [ "BattleNetwork.Assets" ]
+libraries = ["BattleNetwork.Assets", "BattleNetwork6.Libraries.ChipNavi"]

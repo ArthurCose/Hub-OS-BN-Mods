@@ -1,3 +1,5 @@
+---@type BattleNetwork6.Libraries.ChipNavi
+local ChipNaviLib = require("BattleNetwork6.Libraries.ChipNavi")
 local bn_assets = require("BattleNetwork.Assets")
 
 local NAVI_TEXTURE = bn_assets.load_texture("navi_blastman.png")
@@ -5,35 +7,21 @@ local NAVI_ANIM_PATH = bn_assets.fetch_animation_path("navi_blastman.animation")
 
 local ATTACK_AUDIO = bn_assets.load_audio("firehit4.ogg")
 
----@param actor Entity
+---@param user Entity
 ---@param props CardProperties
-function card_init(actor, props)
-	local action = Action.new(actor, "CHARACTER_MOVE")
-
-	action:override_animation_frames({ { 1, 2 }, { 2, 2 }, { 3, 2 } })
-
+function card_init(user, props)
+	local action = Action.new(user)
 	action:set_lockout(ActionLockout.new_sequence())
 	action:create_step()
 
-	local end_timer = 28 + (6 * Field.width())
+	local end_timer = 6 * (Field.width() + 2)
+	local end_timer_started = false
 
 	local function attempt_fireball(tile)
-		local facing = Direction.Right
-		local end_x = Field.width()
-
-		if tile:x() > 0 then
-			facing = Direction.Left
-			end_x = 0
-		end
-
-		local check_tile = tile:get_tile(facing, 1)
-
-		if not check_tile then return end
-		if check_tile:is_edge() then return end
-
-		local fireball = Spell.new(actor:team())
+		local fireball = Spell.new(user:team())
+		fireball:set_facing(user:facing())
 		fireball:set_hit_props(
-			HitProps.from_card(props, actor:context())
+			HitProps.from_card(props, user:context())
 		)
 
 		fireball:set_texture(NAVI_TEXTURE)
@@ -49,12 +37,14 @@ function card_init(actor, props)
 
 		fireball.on_update_func = function(self)
 			if not self:is_sliding() then
-				if self:current_tile():x() >= end_x then
+				local next_tile = self:get_tile(self:facing(), 1)
+
+				if not next_tile then
 					self:erase()
 					return
 				end
 
-				self:slide(self:current_tile():get_tile(facing, 1), 6)
+				self:slide(next_tile, 6)
 			end
 
 			self:attack_tile()
@@ -88,21 +78,17 @@ function card_init(actor, props)
 	local navi_animation
 
 	action.on_execute_func = function(self, user)
-		action:add_anim_action(3, function()
-			actor:hide()
-		end)
-
-		local direction = actor:facing()
+		local direction = user:facing()
 		local start_x = 0
 
-		if user:team() == Team.Blue or (user:team() == Team.Other and direction == Direction.Left) then
+		if direction == Direction.Left then
 			start_x = Field.width()
 		end
 
 		-- Setup the navi's sprite and animation.
 		-- Done separately from the actual state and texture assignments for a reason.
 		-- We need this to be accessible by other local functions down below.
-		navi = Artifact.new(actor:team())
+		navi = Artifact.new(user:team())
 
 		local navi_sprite = navi:sprite()
 		navi_animation = navi:animation()
@@ -111,31 +97,28 @@ function card_init(actor, props)
 		navi_sprite:set_texture(NAVI_TEXTURE)
 		navi_animation:load(NAVI_ANIM_PATH)
 
-		-- Spawn navi using movement state
-		navi_animation:set_state("CHARACTER_MOVE", { { 3, 2 }, { 2, 2 }, { 1, 2 } })
-
-		-- Only once, no looping necessary
-		navi_animation:set_playback(Playback.Once)
-
-		-- On complete, change his animation state
-
 		local spawn_tile = user:current_tile()
-		navi_animation:on_complete(function()
-			navi_animation:set_state("CHARACTER_FIRE_START")
 
-			navi_animation:set_playback(Playback.Once)
+		ChipNaviLib.swap_in(navi, user, function()
+			navi_animation:set_state("CHARACTER_IDLE")
 
 			navi_animation:on_complete(function()
-				navi_animation:set_state("CHARACTER_FIRE_HORI_LOOP")
+				navi_animation:set_state("CHARACTER_FIRE_START")
 
-				navi_animation:set_playback(Playback.Loop)
+				navi_animation:on_complete(function()
+					navi_animation:set_state("CHARACTER_FIRE_HORI_LOOP")
+					navi_animation:set_playback(Playback.Loop)
 
-				navi_animation:on_frame(2, function()
-					Resources.play_audio(ATTACK_AUDIO)
-					for y = -1, 1, 1 do
-						attempt_fireball(Field.tile_at(start_x, spawn_tile:y() + y))
-					end
-				end, true)
+					navi_animation:on_frame(2, function()
+						end_timer_started = true
+
+						Resources.play_audio(ATTACK_AUDIO)
+
+						for y = -1, 1, 1 do
+							attempt_fireball(Field.tile_at(start_x, spawn_tile:y() + y))
+						end
+					end, true)
+				end)
 			end)
 		end)
 
@@ -143,19 +126,23 @@ function card_init(actor, props)
 	end
 
 	action.on_update_func = function()
+		if not end_timer_started then
+			return
+		end
 		end_timer = end_timer - 1
 
 		if end_timer == 0 then
-			navi_animation:set_state("CHARACTER_MOVE", { { 1, 2 }, { 2, 2 }, { 3, 2 } })
-			navi_animation:on_complete(function()
-				if navi and not navi:deleted() then
-					-- Erase the navi
-					navi:erase()
-				end
-
-				actor:reveal()
+			ChipNaviLib.swap_in(user, navi, function()
 				action:end_action()
 			end)
+		end
+	end
+
+	action.on_action_end_func = function()
+		user:reveal()
+
+		if navi and not navi:deleted() then
+			navi:erase()
 		end
 	end
 

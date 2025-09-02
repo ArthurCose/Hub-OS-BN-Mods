@@ -1,3 +1,5 @@
+---@type BattleNetwork6.Libraries.ChipNavi
+local ChipNaviLib = require("BattleNetwork6.Libraries.ChipNavi")
 local bn_assets = require("BattleNetwork.Assets")
 
 local ERASE_BEAM_TEXTURE = bn_assets.load_texture("erase_beam.png")
@@ -6,16 +8,16 @@ local ERASE_BEAM_ANIM_PATH = bn_assets.fetch_animation_path("erase_beam.animatio
 local DOT_TEXTURE = bn_assets.load_texture("erase_beam_dot.png")
 local DOT_ANIM_PATH = bn_assets.fetch_animation_path("erase_beam_dot.animation")
 
-local NAVI_TEXTURE = bn_assets.load_texture("eraseman.png")
-local NAVI_ANIM_PATH = bn_assets.fetch_animation_path("eraseman.animation")
+local NAVI_TEXTURE = bn_assets.load_texture("navi_eraseman.png")
+local NAVI_ANIM_PATH = bn_assets.fetch_animation_path("navi_eraseman.animation")
 
 local DOT_AUDIO = bn_assets.load_audio("magnum_cursor.ogg")
 local ATTACK_AUDIO = bn_assets.load_audio("shock.ogg")
 
----@param actor Entity
+---@param user Entity
 ---@param props CardProperties
-function card_init(actor, props)
-	local action = Action.new(actor)
+function card_init(user, props)
+	local action = Action.new(user)
 	action:set_lockout(ActionLockout.new_sequence())
 	action:create_step()
 
@@ -65,7 +67,7 @@ function card_init(actor, props)
 		-- I need to continually increment in one of three unknowable directions until I hit an edge tile.
 		while true do
 			-- So, assign the tile to check
-			local check_tile = actor:current_tile():get_tile(dir, x)
+			local check_tile = user:current_tile():get_tile(dir, x)
 
 			-- If the tile is nonexisting, OR if it IS existing BUT is an edge tile, then break the loop off.
 			if check_tile == nil or check_tile ~= nil and check_tile:is_edge() then
@@ -84,8 +86,8 @@ function card_init(actor, props)
 
 	-- Creation depends on if we're dotting or shooting.
 	local create_dot = function(is_attack)
-		local dot = Spell.new(actor:team())
-		dot:set_facing(actor:facing())
+		local dot = Spell.new(user:team())
+		dot:set_facing(user:facing())
 		local dot_sprite = dot:sprite()
 
 		dot_sprite:set_layer(-20)
@@ -103,7 +105,7 @@ function card_init(actor, props)
 			dot.on_update_func = function(self)
 				despawn_timer = despawn_timer - 1
 
-				if despawn_timer == 0 or actor:input_has(Input.Pressed.Use) or timer <= 0 then
+				if despawn_timer == 0 or user:input_has(Input.Pressed.Use) or timer <= 0 then
 					self:erase()
 				end
 			end
@@ -124,7 +126,7 @@ function card_init(actor, props)
 			-- Any valid CardProperties will work for this, you know?
 				HitProps.from_card(
 					props,
-					actor:context(),
+					user:context(),
 					Drag.None
 				)
 			)
@@ -146,7 +148,7 @@ function card_init(actor, props)
 
 			-- Attack using the update func
 			dot.on_update_func = function(self)
-				if navi_animation:state() == "MOVE_START" then
+				if endlag == 0 then
 					self:erase()
 					return
 				end
@@ -166,8 +168,6 @@ function card_init(actor, props)
 	local function spawn_dots(is_attack)
 		-- Do nothing if the direction is not set.
 		if current_list == nil then return end
-
-		if is_attack == true then navi_animation:set_state("ERASE_BEAM_FIRE") end
 
 		for i = 1, #current_list, 1 do
 			local dot = create_dot(is_attack)
@@ -210,7 +210,7 @@ function card_init(actor, props)
 	end
 
 	action.on_execute_func = function(self, user)
-		local direction = actor:facing()
+		local direction = user:facing()
 		local up_direction = Direction.join(direction, Direction.Up)
 		local down_direction = Direction.join(direction, Direction.Down)
 
@@ -241,7 +241,7 @@ function card_init(actor, props)
 		-- Setup EraseMan's sprite and animation.
 		-- Done separately from the actual state and texture assignments for a reason.
 		-- We need this to be accessible by other local functions down below.
-		navi = Artifact.new(actor:team())
+		navi = Artifact.new(user:team())
 		local navi_sprite = navi:sprite()
 		navi_animation = navi:animation()
 
@@ -249,36 +249,23 @@ function card_init(actor, props)
 		navi_sprite:set_texture(NAVI_TEXTURE)
 		navi_animation:load(NAVI_ANIM_PATH)
 
-		-- Spawn EraseMan in by repurposing his movement
-		navi_animation:set_state("MOVE_FINISH")
-
-		-- Only once, no looping necessary
-		navi_animation:set_playback(Playback.Once)
-
-		if #options == 0 then
-			action:end_action()
-			return
-		end
-
-		-- On complete, change his animation state
-		navi_animation:on_complete(function()
-			if not navi:current_tile():is_walkable() then
+		ChipNaviLib.swap_in(navi, user, function()
+			if not navi:current_tile():is_walkable() or #options == 0 then
 				-- fail if eraseman is on a hole tile
-				navi_animation:set_state("MOVE_FINISH")
-				navi_animation:set_playback(Playback.Reverse)
-				navi_animation:on_complete(function()
+				ChipNaviLib.swap_in(user, navi, function()
 					action:end_action()
 				end)
+
 				return
 			end
 
-			navi_animation:set_state("ERASE_BEAM_START")
-
-			-- Again, once, no looping necessary
+			navi_animation:set_state("CHARACTER_IDLE")
 			navi_animation:set_playback(Playback.Once)
 
 			-- Yet again change the completion to allow the timer to start and check the beam direction
 			navi_animation:on_complete(function()
+				navi_animation:set_state("CHARACTER_IDLE")
+				navi_animation:set_playback(Playback.Loop)
 				timer_start = true
 
 				-- Since the list starts out undefined, it'll find the first good list to work with.
@@ -286,7 +273,6 @@ function card_init(actor, props)
 			end)
 		end)
 
-		user:hide()
 		Field.spawn(navi, user:current_tile())
 	end
 
@@ -294,9 +280,7 @@ function card_init(actor, props)
 		if begin_countdown == true then
 			endlag = endlag - 1
 			if endlag == 0 then
-				navi_animation:set_state("MOVE_START")
-				navi_animation:on_complete(function()
-					-- And end the action.
+				ChipNaviLib.swap_in(user, navi, function()
 					action:end_action()
 				end)
 			end
@@ -316,10 +300,13 @@ function card_init(actor, props)
 			change_time_counter = 0
 		end
 
-		if actor:input_has(Input.Pressed.Use) or timer <= 0 then
+		if user:input_has(Input.Pressed.Use) or timer <= 0 then
 			-- Skip direction check and go directly to spawning
-			-- Pass in true for the parameter to ensure we attack this time
-			spawn_dots(true)
+			navi_animation:set_state("ERASE_BEAM_FIRE")
+			navi_animation:on_complete(function()
+				-- Pass in true for the parameter to ensure we attack this time
+				spawn_dots(true)
+			end)
 
 			-- Stop the timer, we're finishing up anyway
 			timer_start = false
@@ -329,7 +316,7 @@ function card_init(actor, props)
 
 	action.on_action_end_func = function()
 		-- Reveal the player again
-		actor:reveal()
+		user:reveal()
 
 		if navi and not navi:deleted() then
 			-- Erase the navi

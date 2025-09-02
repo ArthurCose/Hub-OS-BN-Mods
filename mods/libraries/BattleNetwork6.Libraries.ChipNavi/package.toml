@@ -1,0 +1,5 @@
+[package]
+category = "library"
+name = "Chip Navi Lib"
+id = "BattleNetwork6.Libraries.ChipNavi"
+description = "Handles enter and exit animations for navi chips. Requires a CHARACTER_MOVE state on the navi entity."
