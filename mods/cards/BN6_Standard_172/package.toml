@@ -4,19 +4,14 @@ id = "BattleNetwork6.Class01.Standard.172"
 name = "ComingRd"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "*" ]
+codes = ["*"]
 damage = 0
 time_freeze = true
 element = "none"
 description = "Pull an enemy to the front"
 
-[defines]
-characters = [ ]
-
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [ ]
+libraries = ["BattleNetwork.Assets"]
 tile_states = [
     "BattleNetwork6.TileStates.ConveyorLeft",
     "BattleNetwork6.TileStates.ConveyorRight"
