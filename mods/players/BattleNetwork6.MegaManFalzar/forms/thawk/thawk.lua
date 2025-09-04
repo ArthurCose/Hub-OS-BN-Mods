@@ -28,7 +28,7 @@ return function(player, form, base_animation_path)
           :increase_card_multiplier(1)
       player:add_aux_prop(wood_boost_aux_prop)
 
-      local immunities = Hit.Freeze | Hit.Paralyze | Hit.Blind | Hit.Confuse
+      local immunities = Hit.Freeze | Hit.Paralyze | Hit.Blind | Hit.Confuse | Hit.Root
 
       if Hit.Bubble then
         immunities = immunities | Hit.Bubble

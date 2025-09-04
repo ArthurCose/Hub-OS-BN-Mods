@@ -461,7 +461,7 @@ function player_init(player)
     local wind_shoes = {};
     local wind_list_index = 1;
     local active_aux_props = {}
-    local status_guard_list = Hit.Freeze | Hit.Paralyze | Hit.Blind | Hit.Confuse
+    local status_guard_list = Hit.Freeze | Hit.Paralyze | Hit.Blind | Hit.Confuse | Hit.Root
 
     -- Blue Moon soul abilities
     local mult_up = AuxProp.new()
