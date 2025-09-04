@@ -91,7 +91,7 @@ function card_init(user, props)
     spell:set_texture(TEXTURE)
     spell:set_hit_props(HitProps.from_card(props, user:context()))
 
-    local can_attack = false
+    local landed = false
 
     ---@type (Tile|nil)[]
     local side_tiles
@@ -138,7 +138,7 @@ function card_init(user, props)
         end
       end
 
-      can_attack = true
+      landed = true
     end)
 
     animation:on_complete(function()
@@ -156,18 +156,14 @@ function card_init(user, props)
     end
 
     spell.on_update_func = function()
-      if not can_attack then
+      if not landed then
         for _, tile in ipairs(side_tiles) do
           if tile then
             tile:set_highlight(Highlight.Solid)
           end
         end
-      end
 
-      spell:current_tile():set_highlight(Highlight.Solid)
-
-      if can_attack then
-        spell:attack_tile()
+        spell:current_tile():set_highlight(Highlight.Solid)
       end
     end
 
