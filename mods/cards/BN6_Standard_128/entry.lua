@@ -147,12 +147,10 @@ function card_init(user, props)
     end
 
     spell.on_update_func = function()
-      for _, tile in ipairs(side_tiles) do
-        if tile then
-          tile:set_highlight(Highlight.Solid)
-
-          if can_attack then
-            spell:attack_tile(tile)
+      if not can_attack then
+        for _, tile in ipairs(side_tiles) do
+          if tile then
+            tile:set_highlight(Highlight.Solid)
           end
         end
       end
