@@ -20,7 +20,7 @@ function card_init(user, props)
 		-- Attack in a two deep, three tall formation
 		create_spell(spells, user, props, 1, -1)
 		create_spell(spells, user, props, 1, 0)
-		create_spell(spells, user, props, 1, 2)
+		create_spell(spells, user, props, 1, 1)
 		create_spell(spells, user, props, 2, -1)
 		create_spell(spells, user, props, 2, 0)
 		create_spell(spells, user, props, 2, 1)
