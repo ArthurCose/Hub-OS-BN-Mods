@@ -120,6 +120,15 @@ function card_init(user, props)
     end)
 
     animation:on_frame(4, function()
+      spell:attack_tile()
+
+      if not spell:current_tile():is_walkable() then
+        local artifact = bn_assets.MobMove.new("MEDIUM_START")
+        Field.spawn(artifact, spell:current_tile())
+        spell:delete()
+        return
+      end
+
       Resources.play_audio(LAND_SFX)
       Field.shake(3, 30)
 
