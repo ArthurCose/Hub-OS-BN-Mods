@@ -10,6 +10,7 @@ function player_init(player)
     player:set_texture(Resources.load_texture("battle.png"))
     player:set_fully_charged_color(Color.new(120, 63, 152))
     player:set_charge_position(10, -35)
+    player:ignoring_hole_tiles()
 
     -- create cape
     local cape_sync_node = player:create_sync_node()
