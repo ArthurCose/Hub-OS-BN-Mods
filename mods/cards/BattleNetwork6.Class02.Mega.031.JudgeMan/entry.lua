@@ -43,7 +43,7 @@ function card_init(actor, props)
 		previously_visible = user:sprite():visible()
 
 		local stolen_tiles = Field.find_tiles(function(tile)
-			if tile:team() == tile:original_team() then return false end
+			if tile:original_team() ~= user:team() or tile:team() == tile:original_team() then return false end
 
 			if #tile:find_obstacles(function()
 						return true
