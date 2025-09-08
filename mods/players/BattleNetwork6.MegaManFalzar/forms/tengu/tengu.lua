@@ -3,12 +3,20 @@ local bn_assets = require("BattleNetwork.Assets")
 ---@type SwordLib
 local SwordLib = require("dev.konstinople.library.sword")
 local shared = require("../shared")
+---@type BattleNetwork.WindGust
+local WindGustLib = require("BattleNetwork.WindGust")
 
 local FORM_MUG = _folder_path .. "mug.png"
 
 local sword = SwordLib.new_sword()
 sword:set_blade_texture(Resources.load_texture("racket.png"))
 sword:set_blade_animation_path(_folder_path .. "racket.animation")
+
+local forward_gust_builder = WindGustLib.new_wind_gust()
+forward_gust_builder:set_sync_movements()
+
+local backward_gust_builder = WindGustLib.new_wind_gust()
+backward_gust_builder:set_despawn_on_team_tile()
 
 local SLASH_TEXTURE = bn_assets.load_texture("wind_slash.png")
 local SLASH_ANIM_PATH = bn_assets.fetch_animation_path("wind_slash.animation")
@@ -18,53 +26,6 @@ local GUST_TEXTURE = bn_assets.load_texture("wind_puff.png")
 local GUST_ANIMATION_PATH = bn_assets.fetch_animation_path("wind_puff.animation")
 local WIND_SFX = bn_assets.load_audio("wind_burst.ogg")
 
-
-local function create_gust(team, direction)
-  local spell = Spell.new(team)
-  spell:set_hit_props(HitProps.new(0, 0, Element.Wind))
-
-  local i = 0
-  spell.on_update_func = function()
-    local tile = spell:current_tile()
-    spell:attack_tile()
-
-    i = i + 1
-
-    local has_obstacles = false
-    tile:find_obstacles(function()
-      has_obstacles = true
-      return false
-    end)
-
-    if has_obstacles then
-      spell:erase()
-      return
-    end
-
-    if spell:is_moving() then
-      return
-    end
-
-    local next_tile = tile:get_tile(direction, 1)
-
-    if not next_tile or next_tile:is_edge() then
-      spell:erase()
-      return
-    end
-
-    tile:find_characters(function(character)
-      if character:team() ~= team then
-        character:slide(next_tile, 4)
-      end
-
-      return false
-    end)
-
-    spell:slide(next_tile, 4)
-  end
-
-  return spell
-end
 
 ---@param user Entity
 local function create_slash(user, hit_props)
@@ -94,9 +55,7 @@ local function create_slash(user, hit_props)
 end
 
 local function create_back_gust(team, direction)
-  local spell = Spell.new(team)
-  spell:set_facing(direction)
-  spell:set_hit_props(HitProps.new(0, 0, Element.Wind))
+  local spell = backward_gust_builder:create_spell(team, direction)
 
   spell:set_texture(GUST_TEXTURE)
   local animation = spell:animation()
@@ -107,54 +66,6 @@ local function create_back_gust(team, direction)
     spell:set_offset(-8, 0)
   else
     spell:set_offset(8, 0)
-  end
-
-  local i = 0
-  spell.on_update_func = function()
-    local tile = spell:current_tile()
-    spell:attack_tile()
-
-    i = i + 1
-
-    local has_obstacles = false
-    tile:find_obstacles(function()
-      has_obstacles = true
-      return false
-    end)
-
-    if has_obstacles then
-      spell:erase()
-      return
-    end
-
-    local next_tile = tile:get_tile(direction, 1)
-
-    if next_tile then
-      -- back gusts push continuously, not only when centered on a tile
-      tile:find_characters(function(character)
-        if character:team() ~= team then
-          character:slide(next_tile, 4)
-        end
-
-        return false
-      end)
-    end
-
-    if spell:is_moving() then
-      return
-    end
-
-    if tile:team() == spell:team() then
-      spell:erase()
-      return
-    end
-
-    if not next_tile or next_tile:is_edge() then
-      spell:erase()
-      return
-    end
-
-    spell:slide(next_tile, 4)
   end
 
   return spell
@@ -215,7 +126,8 @@ return function(player, form, base_animation_path)
       local x = forward_tile:x()
 
       for y = 0, Field.height() - 1 do
-        Field.spawn(create_gust(team, player:facing()), x, y)
+        local gust = forward_gust_builder:create_spell(team, player:facing())
+        Field.spawn(gust, x, y)
       end
 
       Resources.play_audio(SLASH_SFX)
