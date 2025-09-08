@@ -16,4 +16,7 @@ byproducts = ["BattleNetwork6.Bugs.PanelBug"]
 tags = ["UNINSTALL"]
 
 [dependencies]
-augments = ["BattleNetwork6.Bugs.PanelBug"]
+augments = [
+    "HubOS.Augments.IgnoreNegativeTileEffects",
+    "BattleNetwork6.Bugs.PanelBug"
+]

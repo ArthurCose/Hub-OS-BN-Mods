@@ -2,9 +2,9 @@
 function augment_init(augment)
   local player = augment:owner()
 
-  player:ignore_negative_tile_effects(true)
+  player:boost_augment("HubOS.Augments.IgnoreNegativeTileEffects", 1)
 
   augment.on_delete_func = function()
-    player:ignore_negative_tile_effects(false)
+    player:boost_augment("HubOS.Augments.IgnoreNegativeTileEffects", -1)
   end
 end

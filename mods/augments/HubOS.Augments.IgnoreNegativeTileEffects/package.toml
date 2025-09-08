@@ -1,0 +1,4 @@
+[package]
+category = "augment"
+id = "HubOS.Augments.IgnoreNegativeTileEffects"
+name = "Ignore Negative Tile Effects Augment"
