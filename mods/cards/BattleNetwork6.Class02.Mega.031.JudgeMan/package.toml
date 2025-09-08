@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class02.Mega.031.JudgeMan"
+name = "JudgeMan"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["J", "*"]
+damage = 100
+time_freeze = true
+element = "elec"
+description = "Whip 3 panels forward"
+card_class = "Mega"
+limit = 1
+can_boost = true
+hit_flags = ["Flinch", "Paralyze", "PierceInvis"]
+status_durations = [{ flag_name = "Paralyze", duration = 120 }]
+tags = ["BN6", "EXE6", "NAVI"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "BattleNetwork6.Libraries.ChipNavi"]

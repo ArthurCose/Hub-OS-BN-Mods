@@ -1,0 +1,7 @@
+imagePath="C:/Users/seven/OneDrive/Documents/My Games/Hub OS/mods/cards/BattleNetwork2.Class01.Standard.084.NOBeam1/beam.png"
+
+animation state="DEFAULT"
+frame duration="0.05" x="0" y="0" w="24" h="36" originx="16" originy="33" flipx="1" flipy="0"
+frame duration="0.05" x="24" y="0" w="24" h="36" originx="16" originy="33" flipx="1" flipy="0"
+frame duration="0.05" x="48" y="0" w="24" h="36" originx="16" originy="33" flipx="1" flipy="0"
+frame duration="0.05" x="72" y="0" w="24" h="36" originx="16" originy="33" flipx="1" flipy="0"

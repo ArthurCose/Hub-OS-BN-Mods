@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork3.Class01.Standard.084.NOBeam1"
+name = "NoBeam1"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["B", "C", "F", "G", "K"]
+damage = 150
+hit_flags = ["Flinch", "Flash", "Paralyze"]
+status_durations = [{ flag_name = "Paralyze", duration = 90 }]
+element = "none"
+description = "Fires if obstcl behind"
+limit = 4
+regular_allowed = false
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "Battle.Helpers"]

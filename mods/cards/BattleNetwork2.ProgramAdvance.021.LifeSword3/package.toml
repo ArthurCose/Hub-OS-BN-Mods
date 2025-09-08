@@ -1,0 +1,34 @@
+[package]
+category = "card"
+id = "BattleNetwork2.ProgramAdvance.021.LifeSword3"
+name = "LifeSrd3"
+icon_texture_path = "icon.png"
+codes = ["*"]
+damage = 400
+time_freeze = false
+element = "none"
+description = ""
+long_description = "Same damage as BN6 LifeSword, kept the name for consistency's sake."
+hit_flags = ["Flash", "Flinch"]
+limit = 0
+card_class = "recipe"
+tags = ["PROGRAM_ADVANCE", "BN2", "EXE2"]
+recipes = [
+  { mix = [
+    { name = "FireBlde" },
+    { name = "AquaBlde" },
+    { name = "ElecBlde" }
+  ] }
+]
+
+[defines]
+characters = []
+
+[dependencies]
+characters = []
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
+cards = [
+  "BattleNetwork2.Class01.Standard.029",
+  "BattleNetwork2.Class01.Standard.030",
+  "BattleNetwork2.Class01.Standard.031"
+]

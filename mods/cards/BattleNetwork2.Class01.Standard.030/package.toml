@@ -1,0 +1,16 @@
+[package]
+category = "card"
+id = "BattleNetwork2.Class01.Standard.030"
+name = "AquaBlde"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["A", "F", "J", "R", "Z", "*"]
+damage = 90
+hit_flags = ["Flinch", "Flash"]
+element = "aqua"
+secondary_element = "sword"
+description = "Water sword cuts 2 horiz."
+limit = 5
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
