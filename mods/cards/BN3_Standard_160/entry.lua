@@ -25,6 +25,7 @@ function card_init(actor, props)
 						if tile2:state() ~= TileState.Broken then
 							local fx = bn_helpers.ParticlePoof.new()
 							Field.spawn(fx, tile2)
+							tile2:set_state(TileState.Cracked)
 							tile2:set_state(TileState.Broken)
 							Resources.play_audio(AUDIO)
 						else
