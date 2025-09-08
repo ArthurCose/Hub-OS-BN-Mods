@@ -39,7 +39,7 @@ local function create_gust_hitbox(team, direction, tile)
   end
 
   spell.on_attack_func = function(_, other)
-    if not Character.from(other) or other:team() == team then
+    if not Character.from(other) then
       return
     end
 
