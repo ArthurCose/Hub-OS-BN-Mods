@@ -62,7 +62,7 @@ Buster_Action.new = function(user, charged, damage, action_user)
 
         spell:set_hit_props(HitProps.new(
             damage,
-            Hit.None,
+            Hit.Impact,
             Element.None,
             context,
             Drag.None

@@ -208,10 +208,11 @@ Shadow = {
 ---@enum Hit
 ---@type { [string]: Hit }
 Hit = {}
+Hit.None = Hit._
 Hit.RetainIntangible = Hit._
 Hit.NoCounter = Hit._
 Hit.Drag = Hit._
-Hit.Impact = Hit._
+Hit.Drain = Hit._
 Hit.Flinch = Hit._
 Hit.Flash = Hit._
 Hit.Shake = Hit._
@@ -1193,7 +1194,7 @@ function Entity:create_component(lifetime) end
 ---@return AttackContext
 function Entity:context() end
 
---- Starts a new context using the specified [action type](https://docs.hubos.dev/client/lua-api/entity-api/entity#aux_proprequire_actionaction_types).
+--- Starts a new context using the specified [action type](https://docs.hubos.dev/client/lua-api/defense-api/aux-prop#aux_proprequire_actionaction_types).
 --- Not necessary, but useful for actions queued in a script context.
 ---
 --- ```lua

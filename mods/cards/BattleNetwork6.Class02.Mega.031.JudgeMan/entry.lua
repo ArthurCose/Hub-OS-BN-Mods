@@ -1,6 +1,7 @@
 ---@type BattleNetwork6.Libraries.ChipNavi
 local ChipNaviLib = require("BattleNetwork6.Libraries.ChipNavi")
 
+---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
 
 local NAVI_TEXTURE = bn_assets.load_texture("navi_judgeman.png")
@@ -99,6 +100,10 @@ function card_init(actor, props)
 			local book_tile = book:current_tile()
 			local goal_tile = target:current_tile()
 
+			if book_tile == goal_tile then
+				return Direction.None
+			end
+
 			local book_direction = Direction.None
 
 			local book_pos = { x = book_tile:x(), y = book_tile:y() }
@@ -140,7 +145,7 @@ function card_init(actor, props)
 		end
 
 		local function spawn_book(tile)
-			if not tile then return end
+			if not tile or not tile:is_walkable() then return end
 
 			local book = Spell.new(user:team())
 
@@ -153,9 +158,6 @@ function card_init(actor, props)
 					Drag.None
 				)
 			)
-
-			book._can_erase = false
-			book._erase_timer = 5
 
 			local book_sprite = book:sprite()
 
@@ -179,52 +181,56 @@ function card_init(actor, props)
 				self:erase()
 			end
 
-			book._change_timer = 999
+			local change_timer = 999
 			book_anim:on_complete(function()
-				book._change_timer = 5
+				change_timer = 5
 			end)
 
 			local entity_list = Field.find_nearest_characters(user, function(e)
 				return e:team() ~= user:team()
 			end)
 
-			book._target = nil
-			if #entity_list > 0 then book._target = entity_list[1] end
+			local target = entity_list[1]
+
+			local function poof_away()
+				local artifact = bn_assets.MobMove.new("MEDIUM_START")
+				local offset = book:movement_offset()
+				artifact:set_offset(offset.x, offset.y)
+				Field.spawn(artifact, book:current_tile())
+				book:delete()
+			end
 
 			book.on_update_func = function(self)
-				if self._change_timer > 0 then
-					self._change_timer = self._change_timer - 1
+				if change_timer > 0 then
+					change_timer = change_timer - 1
 					return
-				elseif self._change_timer == 0 then
+				elseif change_timer == 0 then
 					self:animation():set_state("BOOK_BITE")
 					self:animation():set_playback(Playback.Loop)
 
-					self._change_timer = -1
+					change_timer = -1
 					return
 				end
 
-				if self._can_erase == true then
-					self._erase_timer = self._erase_timer - 1
-
-					if self._erase_timer == 0 then self:delete() end
-
+				if not book:current_tile():is_walkable() then
+					poof_away()
 					return
 				end
 
 				self:attack_tile()
 
 				if not self:is_sliding() then
-					local dir = get_book_direction(self, self._target)
+					local dir = get_book_direction(self, target)
 
 					if dir == Direction.None then
-						self._can_erase = true
+						poof_away()
 						return
 					end
 
 					local next_tile = self:get_tile(dir, 1)
 
 					if not next_tile then
-						self._can_erase = true
+						self:delete()
 						return
 					end
 
@@ -233,7 +239,9 @@ function card_init(actor, props)
 			end
 
 			book.on_collision_func = function(self)
-				self._can_erase = true
+				local particle = bn_assets.HitParticle.new("SPARK_1", math.random(-16, 16), 0)
+				Field.spawn(particle, self:current_tile())
+				self:delete()
 			end
 
 			Field.spawn(book, tile)
