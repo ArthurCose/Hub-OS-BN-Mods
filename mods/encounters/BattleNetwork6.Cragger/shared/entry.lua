@@ -208,6 +208,10 @@ return function(character, props)
   local remaining_blink = 0
 
   defense_rule.filter_func = function(hit_props)
+    if hit_props.flags & Hit.Drain ~= 0 then
+      return hit_props
+    end
+
     if hit_props.element == Element.Break or hit_props.secondary_element == Element.Break or hit_props.flags & Hit.PierceGuard ~= 0 then
       character:delete()
       return hit_props
