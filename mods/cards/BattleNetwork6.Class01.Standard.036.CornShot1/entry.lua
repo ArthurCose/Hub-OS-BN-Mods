@@ -6,18 +6,7 @@ local explosion_animation_path = bn_helpers.fetch_animation_path("explosion_ener
 local BUSTER_TEXTURE = bn_helpers.load_texture("bn6_cornshot_buster.png")
 local IMPACT_TEXTURE = bn_helpers.load_texture("explosion_energy_bomb.png")
 
-local HIT_OBSTACLE = bn_helpers.load_audio("hit_obstacle.ogg")
-local HIT_ENEMY = bn_helpers.load_audio("hit_impact.ogg")
-
 local AUDIO = bn_helpers.load_audio("circusman_clap.ogg")
-
-local function play_explosion_audio(other)
-	if Obstacle.from(other) ~= nil then
-		Resources.play_audio(HIT_OBSTACLE)
-	else
-		Resources.play_audio(HIT_ENEMY)
-	end
-end
 
 local function create_and_spawn_explosion(spell, spawn_tile)
 	if spawn_tile == nil or spawn_tile:is_edge() then return end
@@ -66,10 +55,6 @@ local function create_and_spawn_explosion(spell, spawn_tile)
 		if self._can_attack == true then self:attack_tile() end
 	end
 
-	explosion.on_attack_func = function(self, other)
-		play_explosion_audio(other)
-	end
-
 	explosion.on_collision_func = function(self, other)
 		self._has_collided = true
 
@@ -81,8 +66,6 @@ local function create_and_spawn_explosion(spell, spawn_tile)
 		create_and_spawn_explosion(self, tile_forward)
 		create_and_spawn_explosion(self, tile_up_forward)
 		create_and_spawn_explosion(self, tile_down_forward)
-
-		play_explosion_audio(other)
 
 		other:current_tile():set_state(TileState.Grass)
 	end
@@ -145,17 +128,9 @@ local function create_attack(user, props, context, facing, is_recipe)
 	spell.on_collision_func = function(self, other)
 		self._has_collided = true
 
-		play_explosion_audio(other)
-
 		create_and_spawn_explosion(self, other:current_tile())
 
 		other:current_tile():set_state(TileState.Grass)
-	end
-
-	-- No specialty on actually dealing damage, but left in as reference
-	-- "Other" is the entity hit by the attack
-	spell.on_attack_func = function(self, other)
-		play_explosion_audio(other)
 	end
 
 	-- On delete, simply remove the spell.

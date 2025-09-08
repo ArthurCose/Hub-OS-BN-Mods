@@ -129,7 +129,7 @@ local function spawn_clap(entity, callback)
     main_spell:set_hit_props(
         HitProps.new(
             entity.damage,
-            Hit.Impact | Hit.Flinch | Hit.Flash,
+            Hit.Flinch | Hit.Flash,
             Element.None,
             entity:context()
         )
@@ -334,7 +334,7 @@ local function spawn_lion(ring, damage)
     lion:set_hit_props(
         HitProps.new(
             damage,
-            Hit.Impact | Hit.Flinch | Hit.Flash,
+            Hit.Flinch | Hit.Flash,
             Element.None,
             lion:context()
         )
@@ -690,7 +690,7 @@ end
 function character_init(entity)
     entity:set_name("CrcusMan")
     entity:set_height(60)
-    entity.cage_hit_flags = Hit.Impact | Hit.PierceInvis | Hit.Flinch
+    entity.cage_hit_flags = Hit.PierceInvis | Hit.Flinch
 
     local rank = entity:rank()
     if rank == Rank.V1 then

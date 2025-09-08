@@ -3,42 +3,26 @@ category = "card"
 id = "BattleNetwork6.ProgramAdvance.020"
 name = "Life Sword"
 icon_texture_path = "icon.png"
-codes = [ "*" ]
+codes = ["*"]
 damage = 400
 time_freeze = false
 element = "none"
 description = ""
-hit_flags = [ "Impact", "Flash", "Flinch" ]
+hit_flags = ["Flash", "Flinch"]
 limit = 0
 card_class = "recipe"
-tags = [
-    "PROGRAM_ADVANCE",
-    "BN6",
-    "EXE6"
-]
-
+tags = ["PROGRAM_ADVANCE", "BN6", "EXE6"]
 recipes = [
-  {mix = [
-    { name = "Sword" },
-    { name = "WideSwrd" },
-    { name = "LongSwrd" }
-  ]},
-   {mix = [
-    { name = "Sword" },
-    { name = "WideBlde" },
-    { name = "LongBlde" }
-  ]}
+  { mix = [{ name = "Sword" }, { name = "WideSwrd" }, { name = "LongSwrd" }] },
+  { mix = [{ name = "Sword" }, { name = "WideBlde" }, { name = "LongBlde" }] }
 ]
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [
-    "BattleNetwork.Assets",
-    "dev.konstinople.library.sword"
-]
+characters = []
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
 cards = [
   "BattleNetwork6.Class01.Standard.070",
   "BattleNetwork6.Class01.Standard.071",

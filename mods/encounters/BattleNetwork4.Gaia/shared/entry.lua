@@ -74,19 +74,18 @@ return function(character, gaia_props)
       return
     end
 
-    if hit_props.flags & Hit.Impact == 0 then
-      -- non impact
+    if hit_props.flags & Hit.Drain ~= 0 then
+      -- drain
       return
     end
 
     defense:block_damage()
 
-
-    if defense:impact_blocked() then
+    if defense:responded() then
       return
     end
 
-    defense:block_impact()
+    defense:set_responded()
 
     spawn_impact_particle(character)
   end
@@ -190,7 +189,7 @@ return function(character, gaia_props)
               if effects_time == 30 then
                 local hit_props = HitProps.new(
                   gaia_props.damage,
-                  Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceGuard,
+                  Hit.Flinch | Hit.Flash | Hit.PierceGuard,
                   Element.None
                 )
 
@@ -210,7 +209,7 @@ return function(character, gaia_props)
           attack_spell:set_hit_props(
             HitProps.new(
               gaia_props.damage,
-              Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceGuard | Hit.PierceGround,
+              Hit.Flinch | Hit.Flash | Hit.PierceGuard | Hit.PierceGround,
               Element.None,
               character:context()
             )

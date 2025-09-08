@@ -9,7 +9,6 @@ sword:use_hand()
 local OBSTACLE_TEXTURE = Resources.load_texture("obstacle.png")
 local OBSTACLE_ANIMATION_PATH = "obstacle.animation"
 local LAUNCH_SFX = bn_assets.load_audio("dust_launch.ogg")
-local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
 
 local AIR_TEXTURE = bn_assets.load_texture("airspin.png")
 local AIR_ANIMATION_PATH = bn_assets.fetch_animation_path("airspin.animation")
@@ -86,8 +85,6 @@ local function create_obstacle(user, hit_props)
   end
 
   obstacle.on_collision_func = function()
-    Resources.play_audio(HIT_SFX)
-
     -- self destruct
     Field.spawn(Explosion.new(), obstacle:current_tile())
     obstacle:delete()

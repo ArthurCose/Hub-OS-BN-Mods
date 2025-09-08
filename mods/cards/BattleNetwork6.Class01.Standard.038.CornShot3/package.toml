@@ -4,14 +4,13 @@ id = "BattleNetwork6.Class01.Standard.038.CornShot3"
 name = "CornSht3"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "P", "Q", "R" ]
+codes = ["P", "Q", "R"]
 damage = 70
 time_freeze = false
 element = "wood"
 description = "Damages enemies w/corn."
 limit = 3
-
-hit_flags = ["Impact", "Flinch"]
+hit_flags = ["Flinch"]
 
 [dependencies]
 cards = ["BattleNetwork6.Class01.Standard.036.CornShot1"]

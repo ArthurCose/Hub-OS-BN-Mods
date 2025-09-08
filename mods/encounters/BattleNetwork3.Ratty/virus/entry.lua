@@ -31,7 +31,7 @@ function create_ratton(ratty)
     spell:set_hit_props(
         HitProps.new(
             ratty._attack,
-            Hit.Flinch | Hit.Impact | Hit.Flash,
+            Hit.Flinch | Hit.Flash,
             Element.None,
             ratty:context(),
             Drag.None

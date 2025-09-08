@@ -4,24 +4,19 @@ id = "BattleNetwork6.Class01.Standard.033"
 name = "ElcPuls1"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "J", "L", "S" ]
+codes = ["J", "L", "S"]
 damage = 100
 time_freeze = false
 element = "elec"
 description = "Paralyze w/ elec pulse"
 limit = 3
-hit_flags = ["Impact", "Paralyze", "PierceInvis", "Flinch"]
-status_durations = [
-  { flag_name = "Paralyze", duration = 90 }
-]
+hit_flags = ["Paralyze", "PierceInvis", "Flinch"]
+status_durations = [{ flag_name = "Paralyze", duration = 90 }]
 
 [dependencies]
 augments = [
-    "BattleNetwork6.Bugs.BattleHPBug",
-    "BattleNetwork6.Bugs.DamageHPBug",
-    "BattleNetwork6.Bugs.CustomBug"
+  "BattleNetwork6.Bugs.BattleHPBug",
+  "BattleNetwork6.Bugs.DamageHPBug",
+  "BattleNetwork6.Bugs.CustomBug"
 ]
-libraries = [
-    "BattleNetwork.Assets",
-    "Battle.Helpers"
-]
+libraries = ["BattleNetwork.Assets", "Battle.Helpers"]

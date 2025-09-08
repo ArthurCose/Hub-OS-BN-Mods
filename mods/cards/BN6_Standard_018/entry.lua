@@ -7,7 +7,6 @@ local buster_animation_path = bn_helpers.fetch_animation_path("yoyo_buster.anima
 local yoyo_animation_path = bn_helpers.fetch_animation_path("yoyo_projectile.animation")
 
 local yoyo_sfx = bn_helpers.load_audio("yoyo_sfx.ogg")
-local hit_sfx = bn_helpers.load_audio("hit_impact.ogg")
 
 function card_init(user, props)
     local action = Action.new(user, "CHARACTER_SHOOT")
@@ -86,7 +85,6 @@ function create_attack(owner, props)
     local disabled = false
 
     spell.on_collision_func = function()
-        Resources.play_audio(hit_sfx, AudioBehavior.Default)
         disabled = true
     end
 

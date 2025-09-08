@@ -6,12 +6,9 @@ icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
 codes = ["A", "C", "P", "*"]
 damage = 60
-hit_flags = ["Impact"]
+hit_flags = []
 description = "Bounce an attk back at them!"
 limit = 5
 
 [dependencies]
-libraries = [
-  "BattleNetwork.Assets",
-  "dev.konstinople.library.shield",
-]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.shield"]

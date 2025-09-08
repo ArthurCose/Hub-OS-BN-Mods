@@ -7,16 +7,11 @@ time_freeze = false
 element = "fire"
 description = "Crcks 3 sqrs ahd with fire"
 long_description = "Send groundbreaking flames 3 tiles ahead!"
-codes = [ " " ]
-hit_flags = [ "Flinch", "Flash", "Impact" ]
-tags = [
-    "EXE4",
-    "BN4"
-]
+codes = [" "]
+hit_flags = ["Flinch", "Flash"]
+tags = ["EXE4", "BN4"]
 limit = 0
 conceal = true
 
 [dependencies]
-libraries = [
-    "BattleNetwork.Assets"
-]
+libraries = ["BattleNetwork.Assets"]

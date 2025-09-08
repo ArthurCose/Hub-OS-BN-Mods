@@ -70,7 +70,7 @@ function GutsMachGun.new(user, damage)
 
             spell:set_hit_props(HitProps.new(
                 damage,
-                Hit.Impact,
+                Hit.None,
                 Element.None,
                 context,
                 Drag.None

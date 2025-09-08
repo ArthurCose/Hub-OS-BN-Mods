@@ -39,11 +39,11 @@ function player_init(player)
                 Field.spawn(player.cursor, target:current_tile())
                 --Hit Props are necessary to deal damage.
                 local damage_props = HitProps.new(
-                    10 + (player:attack_level() * 2),                      --This is the actual damage amount.
-                    Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceInvis, --The flags used. Flinch makes them reel back, Flash makes them mercy invulnerable, and Pierce ignores mercy invuln.
-                    Element.Cursor,                                        --The element.
-                    player:context(),                                      --Used for stuff like knowing who fired the attack.
-                    Drag.None                                              --Does it move you when it hits? In this case, no.
+                    10 + (player:attack_level() * 2),         --This is the actual damage amount.
+                    Hit.Flinch | Hit.Flash | Hit.PierceInvis, --The flags used. Flinch makes them reel back, Flash makes them mercy invulnerable, and Pierce ignores mercy invuln.
+                    Element.Cursor,                           --The element.
+                    player:context(),                         --Used for stuff like knowing who fired the attack.
+                    Drag.None                                 --Does it move you when it hits? In this case, no.
                 )
                 local gun = Resources.load_audio("gun.ogg")
                 --This feels silly, but it works, so what's really silly here?

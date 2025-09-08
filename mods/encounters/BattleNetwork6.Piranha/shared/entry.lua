@@ -10,9 +10,8 @@ local ANIMATION_PATH = "battle.animation"
 local SPELL_TEXTURE = Resources.load_texture("spell.png")
 local SPELL_ANIMATION_PATH = "spell.animation"
 
-local CURSOR_SFX = bn_assets.load_audio("cursor_lockon.ogg")
+-- local CURSOR_SFX = bn_assets.load_audio("cursor_lockon.ogg")
 local SHOOT_SFX = bn_assets.load_audio("spreader2.ogg")
-local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
 
 
 ---@class _BattleNetwork6.PiranhaProps
@@ -150,7 +149,7 @@ local function create_arrow(character, props)
   spell:set_hit_props(
     HitProps.new(
       props.attack,
-      Hit.Impact | Hit.Flinch | Hit.Flash,
+      Hit.Flinch | Hit.Flash,
       Element.Aqua,
       character:context()
     )
@@ -169,8 +168,6 @@ local function create_arrow(character, props)
 
   spell.on_collision_func = function()
     spell:delete()
-
-    Resources.play_audio(HIT_SFX)
 
     local particle = bn_assets.HitParticle.new(
       "AQUA",

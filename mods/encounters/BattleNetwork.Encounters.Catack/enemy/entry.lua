@@ -23,7 +23,7 @@ local create_boom = function(catack)
   spell:set_hit_props(
     HitProps.new(
       catack._attack,
-      Hit.Impact | Hit.Drag | Hit.Flinch | Hit.Flash,
+      Hit.Drag | Hit.Flinch | Hit.Flash,
       Element.None,
       catack:context(),
       Drag.new(direction, 1)
@@ -236,7 +236,7 @@ function character_init(catack)
                 hitbox:set_hit_props(
                   HitProps.new(
                     10,
-                    Hit.Impact | Hit.Flinch,
+                    Hit.Flinch,
                     Element.None,
                     catack:context(),
                     Drag.None
@@ -263,7 +263,7 @@ function character_init(catack)
                 hitbox:set_hit_props(
                   HitProps.new(
                     10,
-                    Hit.Impact | Hit.Flinch,
+                    Hit.Flinch,
                     Element.None,
                     catack:context(),
                     Drag.None

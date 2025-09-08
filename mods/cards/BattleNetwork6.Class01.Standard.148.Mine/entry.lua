@@ -6,9 +6,6 @@ local ANIM_PATH = bn_assets.fetch_animation_path("mine.animation")
 
 local APPEAR_SFX = bn_assets.load_audio("mine.ogg")
 
-local HIT_OBSTACLE = bn_assets.load_audio("hit_obstacle.ogg")
-local HIT_ENTITY = bn_assets.load_audio("hit_impact.ogg")
-
 local EXPLOSION_TEXTURE = bn_assets.load_texture("mine_explosion.png")
 local EXPLOSION_ANIM_PATH = bn_assets.fetch_animation_path("mine_explosion.animation")
 
@@ -49,14 +46,6 @@ function card_init(user, props)
       local explosion_animation = explosion:animation()
       explosion_animation:load(EXPLOSION_ANIM_PATH)
       explosion_animation:set_state("DEFAULT")
-
-      explosion.on_spawn_func = function()
-        if Obstacle.from(other) ~= nil then
-          Resources.play_audio(HIT_OBSTACLE)
-        else
-          Resources.play_audio(HIT_ENTITY)
-        end
-      end
 
       explosion_animation:on_complete(function()
         explosion:erase()

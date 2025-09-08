@@ -7,7 +7,7 @@ name = "BblStar3"
 description = "Seals an enemy in a bubble."
 codes = ["G", "R", "S"]
 element = "aqua"
-hit_flags = ["Impact", "Bubble"]
+hit_flags = ["Bubble"]
 damage = 100
 limit = 2
 

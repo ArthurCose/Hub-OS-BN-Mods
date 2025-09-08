@@ -5,7 +5,6 @@ local BUSTER_ANIM_PATH = bn_helpers.fetch_animation_path("spread_buster.animatio
 local BURST_TEXTURE = bn_helpers.load_texture("spread_impact.png")
 local BURST_ANIM_PATH = bn_helpers.fetch_animation_path("spread_impact.animation")
 local AUDIO = bn_helpers.load_audio("spreader.ogg")
-local HIT_AUDIO = bn_helpers.load_audio("hit_impact.ogg")
 
 function card_init(actor, props)
 	local action = Action.new(actor, "CHARACTER_SHOOT")
@@ -66,9 +65,6 @@ function create_attack(user, props)
 		if self.should_erase == true then
 			self:delete()
 		elseif self.has_collided == true and self.hit_timer % 10 == 0 then -- Strike every ten frames.
-			-- Play sounds
-			Resources.play_audio(HIT_AUDIO, AudioBehavior.NoOverlap)
-
 			-- Strike tiles
 			for i = 1, #self.hit_tiles[self.hit_tiles_index], 1 do
 				local spawn_tile = self.hit_tiles[self.hit_tiles_index][i]

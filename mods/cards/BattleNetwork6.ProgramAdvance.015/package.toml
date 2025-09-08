@@ -3,27 +3,25 @@ category = "card"
 id = "BattleNetwork6.ProgramAdvance.015"
 name = "DestPuls"
 icon_texture_path = "icon.png"
-codes = [ "*" ]
+codes = ["*"]
 damage = 400
 time_freeze = false
 element = "none"
 description = ""
-hit_flags = ["Impact", "PierceInvis", "Paralyze", "Blind"]
+hit_flags = ["PierceInvis", "Paralyze", "Blind"]
 limit = 0
 card_class = "recipe"
-tags = [
-    "PROGRAM_ADVANCE",
-    "BN6",
-    "EXE6"
-]
-
+tags = ["PROGRAM_ADVANCE", "BN6", "EXE6"]
 status_durations = [
-    { flag_name = "Paralyze", duration = 150 },
-    { flag_name = "Blind", duration = 1200 }
+  { flag_name = "Paralyze", duration = 150 },
+  { flag_name = "Blind", duration = 1200 }
 ]
-
 recipes = [
-  { mix = [ { name = "ElcPuls1" }, { name = "ElcPuls2" }, { name = "ElcPuls3" } ] }
+  { mix = [
+    { name = "ElcPuls1" },
+    { name = "ElcPuls2" },
+    { name = "ElcPuls3" }
+  ] }
 ]
 
 [dependencies]

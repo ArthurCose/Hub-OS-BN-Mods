@@ -3,7 +3,6 @@ local bn_helpers = require("BattleNetwork.Assets")
 local BUSTER_TEXTURE = bn_helpers.load_texture("airshot.png")
 local BUSTER_ANIMATION_PATH = bn_helpers.fetch_animation_path("airshot.animation")
 local SHOOT_SFX = bn_helpers.load_audio("spreader.ogg")
-local HIT_SFX = bn_helpers.load_audio("hit_impact.ogg")
 
 function card_init(actor, props)
     local action = Action.new(actor, "CHARACTER_SHOOT")
@@ -161,9 +160,6 @@ function create_attack(user, props, context, facing)
 
     -- Upon hitting anything, delete self
     spell.on_collision_func = function(self, other)
-        -- todo: small explosion
-        Resources.play_audio(HIT_SFX)
-
         -- delete the spell
         self:delete()
     end

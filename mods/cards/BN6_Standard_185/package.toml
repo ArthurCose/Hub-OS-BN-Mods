@@ -7,4 +7,4 @@ preview_texture_path = "preview.png"
 codes = ["*"]
 description = "Draw in enmy with mag force"
 limit = 5
-hit_flags = ["Drag"]
+hit_flags = ["Drain", "Drag"]

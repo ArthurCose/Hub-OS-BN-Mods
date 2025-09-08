@@ -4,7 +4,7 @@ id = "BattleNetwork6.Class01.Standard.022.WideShot"
 name = "WideSht"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "P", "Q", "R" ]
+codes = ["P", "Q", "R"]
 damage = 100
 time_freeze = false
 element = "aqua"
@@ -12,8 +12,7 @@ description = "Fires 3sq shotgun blast!"
 long_description = "Hits panels above and below, travels, and stops on contact."
 limit = 3
 card_class = "standard"
-hit_flags = ["Impact", "Flinch", "Flash"]
+hit_flags = ["Flinch", "Flash"]
 
 [dependencies]
-libraries = [ "BattleNetwork.Assets" ]
-
+libraries = ["BattleNetwork.Assets"]

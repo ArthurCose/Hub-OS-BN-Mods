@@ -14,7 +14,7 @@ local function attack_tile(gunner, attack_spell, tile)
 	local hitbox = Hitbox.new(gunner:team())
 	hitbox:set_hit_props(HitProps.new(
 		gunner._attack,
-		Hit.Flinch | Hit.Impact,
+		Hit.Flinch,
 		Element.Cursor,
 		gunner:context(),
 		Drag.None
@@ -44,7 +44,7 @@ local function attack_tile_flinch(gunner, attack_spell, tile)
 	local hitbox = Hitbox.new(gunner:team())
 	hitbox:set_hit_props(HitProps.new(
 		gunner._attack,
-		Hit.Flinch | Hit.Impact | Hit.Flash,
+		Hit.Flinch | Hit.Flash,
 		Element.Cursor,
 		gunner:context(),
 		Drag.None

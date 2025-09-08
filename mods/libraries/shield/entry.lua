@@ -142,8 +142,8 @@ local function spawn_impact_particle(self, user)
 end
 
 ---@param user Entity
----@param impact_callback? fun()
-function Shield:create_action(user, impact_callback)
+---@param response_callback? fun()
+function Shield:create_action(user, response_callback)
   local action = Action.new(user, "CHARACTER_IDLE")
   action:set_lockout(ActionLockout.new_animation())
   action:override_animation_frames({ { 1, self._duration } })
@@ -169,17 +169,17 @@ function Shield:create_action(user, impact_callback)
 
       defense:block_damage()
 
-      if defense:impact_blocked() or props.flags & Hit.Impact == 0 then
-        -- non impact
+      if defense:responded() or props.flags & Hit.Drain ~= 0 then
+        -- can't respond
         return
       end
 
-      defense:block_impact()
+      defense:set_responded()
 
       spawn_impact_particle(self, user)
 
-      if impact_callback then
-        impact_callback()
+      if response_callback then
+        response_callback()
       end
     end
 
@@ -234,7 +234,7 @@ function ShieldReflect:spawn_spell(user, damage)
   spell:set_hit_props(
     HitProps.new(
       damage,
-      Hit.Impact,
+      Hit.None,
       Element.None,
       user:context()
     )

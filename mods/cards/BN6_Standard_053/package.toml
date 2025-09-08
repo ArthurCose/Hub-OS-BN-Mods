@@ -8,7 +8,7 @@ codes = ["L", "R", "T"]
 damage = 20
 time_freeze = false
 element = "wind"
-hit_flags = ["Impact", "Flinch"]
+hit_flags = ["Flinch"]
 description = "8hit strm\n2 squares\nahead"
 limit = 5
 

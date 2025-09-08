@@ -29,7 +29,7 @@ end
 local function create_hitprops(character)
   return HitProps.new(
     character._damage,
-    Hit.Impact | Hit.Flinch | Hit.Flash,
+    Hit.Flinch | Hit.Flash,
     Element.None,
     character:context(),
     Drag.None

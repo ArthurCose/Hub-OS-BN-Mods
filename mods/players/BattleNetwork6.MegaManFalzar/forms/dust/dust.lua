@@ -15,7 +15,6 @@ local SCRAP_REBORN_ANIMATION_PATH = _folder_path .. "scrap_reborn.animation"
 local SCRAP_REBORN_SHADOW_TEXTURE = Resources.load_texture("scrap_reborn_shadow.png")
 local LAUNCH_SFX = bn_assets.load_audio("dust_launch.ogg")
 local PUNCH_SFX = bn_assets.load_audio("golemhit.ogg")
-local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
 
 ---@param player Entity
 ---@param form PlayerForm
@@ -78,7 +77,7 @@ return function(player, form, base_animation_path)
       spell:set_hit_props(
         HitProps.new(
           200,
-          Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceGuard,
+          Hit.Flinch | Hit.Flash | Hit.PierceGuard,
           Element.Break,
           player:context()
         )
@@ -91,7 +90,6 @@ return function(player, form, base_animation_path)
       )
 
       spell.on_collision_func = function(_, other)
-        Resources.play_audio(HIT_SFX)
         shared.spawn_hit_artifact(
           other,
           "BREAKING",
@@ -154,7 +152,7 @@ return function(player, form, base_animation_path)
 
       spell:set_hit_props(HitProps.new(
         10 * player:attack_level() + 50,
-        Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceGuard,
+        Hit.Flinch | Hit.Flash | Hit.PierceGuard,
         Element.Break,
         player:context()
       ))
@@ -201,7 +199,6 @@ return function(player, form, base_animation_path)
       end
 
       spell.on_collision_func = function(_, other)
-        Resources.play_audio(HIT_SFX)
         shared.spawn_hit_artifact(
           other,
           "BREAKING",

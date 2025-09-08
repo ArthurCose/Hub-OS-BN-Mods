@@ -28,7 +28,7 @@ function card_init(user, props)
       end
 
       if activated then
-        if hit_props.flags & Hit.Impact ~= 0 then
+        if hit_props.flags & Hit.Drain == 0 then
           -- block all impact damage while we're waiting for the action to complete
           defense:block_damage()
         end

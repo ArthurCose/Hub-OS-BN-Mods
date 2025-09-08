@@ -5,7 +5,7 @@ name = "LavaSeed"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
 codes = ["H", "K", "P"]
-hit_flags = ["Impact", "Flinch"]
+hit_flags = ["Flinch"]
 description = "Makes 9sq lava zone 3sq ahead"
 limit = 4
 

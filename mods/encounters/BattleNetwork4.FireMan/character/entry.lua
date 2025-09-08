@@ -8,7 +8,6 @@ local Ai = require("dev.konstinople.library.ai")
 ---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
 
-local IMPACT_SFX = bn_assets.load_audio("hit_impact.ogg")
 local FIRE_ARM_SFX = bn_assets.load_audio("dragon4.ogg")
 local FIRE_BOMB_SFX = bn_assets.load_audio("fire_bomb.ogg")
 
@@ -243,7 +242,7 @@ local function create_fire_tower(team, context, damage, direction)
   spell:set_never_flip(true)
   spell:set_hit_props(HitProps.new(
     damage,
-    Hit.Impact | Hit.Flinch | Hit.Flash,
+    Hit.Flinch | Hit.Flash,
     Element.Fire,
     context,
     Drag.None
@@ -298,7 +297,6 @@ local function create_fire_tower(team, context, damage, direction)
   end
 
   spell.on_collision_func = function(_, other)
-    Resources.play_audio(IMPACT_SFX)
     spawn_hit_artifact(other, -math.random(math.floor(other:height())))
     spell:erase()
   end
@@ -357,7 +355,7 @@ local function create_fire_arm_flame(entity, damage)
   spell:sprite():set_layer(-1)
   spell:set_hit_props(HitProps.new(
     damage,
-    Hit.Impact | Hit.Flinch | Hit.Flash,
+    Hit.Flinch | Hit.Flash,
     Element.Fire,
     entity:context(),
     Drag.None
@@ -382,7 +380,6 @@ local function create_fire_arm_flame(entity, damage)
   end
 
   spell.on_collision_func = function(_, other)
-    Resources.play_audio(IMPACT_SFX)
     spawn_hit_artifact(other)
   end
 
@@ -497,7 +494,6 @@ local function create_fire_ring(team, duration, hit_props)
   end
 
   spell.on_collision_func = function(_, other)
-    Resources.play_audio(IMPACT_SFX)
     spawn_hit_artifact(other)
     spell:erase()
   end
@@ -525,7 +521,7 @@ local function spawn_fire_bomb(entity, target_tile, damage)
 
   local hit_props = HitProps.new(
     damage,
-    Hit.Impact | Hit.Flinch,
+    Hit.Flinch,
     Element.Fire,
     entity:context(),
     Drag.None
@@ -539,7 +535,6 @@ local function spawn_fire_bomb(entity, target_tile, damage)
   local tested_direct_hit = false
 
   spell.on_collision_func = function()
-    Resources.play_audio(IMPACT_SFX)
     spell:erase()
   end
 

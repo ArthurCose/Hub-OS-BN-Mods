@@ -7,7 +7,6 @@ local FORM_MUG = _folder_path .. "mug.png"
 local SLASH_TEXTURE = bn_assets.load_texture("slash_cross_charge_shot.png")
 local SLASH_ANIMATION_PATH = bn_assets.fetch_animation_path("slash_cross_charge_shot.animation")
 local SLASH_SFX = bn_assets.load_audio("sword.ogg")
-local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
 
 local ANIMATION_PATH = _folder_path .. "battle.animation"
 
@@ -65,7 +64,7 @@ return function(player, form, base_animation_path)
 
         spell:set_hit_props(HitProps.new(
           20 * player:attack_level() + 60,
-          Hit.Impact | Hit.Flinch | Hit.Flash,
+          Hit.Flinch | Hit.Flash,
           Element.None,
           player:context()
         ))
@@ -96,7 +95,6 @@ return function(player, form, base_animation_path)
 
         spell.on_collision_func = function()
           stopped = true
-          Resources.play_audio(HIT_SFX)
         end
 
         Field.spawn(spell, tile)

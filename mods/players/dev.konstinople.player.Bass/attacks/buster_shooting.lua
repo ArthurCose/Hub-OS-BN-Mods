@@ -12,7 +12,6 @@ local bn_assets = require("BattleNetwork.Assets")
 local SHOT_TEXTURE = bn_assets.load_texture("gunner_shot_burst.png")
 local SHOT_ANIMATION = bn_assets.fetch_animation_path("gunner_shot_burst.animation")
 local SHOT_SFX = bn_assets.load_audio("gunner_shot.ogg")
-local IMPACT_SFX = bn_assets.load_audio("hit_impact.ogg")
 
 local HIT_TEXTURE = bn_assets.load_texture("bn6_hit_effects.png")
 local HIT_ANIM_PATH = bn_assets.fetch_animation_path("bn6_hit_effects.animation")
@@ -34,10 +33,6 @@ local function create_gunner_shot(user, hit_props)
     animation:on_complete(function()
         spell:delete()
     end)
-
-    spell.on_collision_func = function()
-        Resources.play_audio(IMPACT_SFX)
-    end
 
     spell.on_spawn_func = function()
         spell:attack_tile()
@@ -96,7 +91,7 @@ end
 return function(user)
     local hit_props = HitProps.new(
         user:attack_level() * 3,
-        Hit.Impact | Hit.PierceGround,
+        Hit.PierceGround,
         Element.None,
         user:context()
     )

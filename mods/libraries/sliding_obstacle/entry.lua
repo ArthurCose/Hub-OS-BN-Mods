@@ -33,11 +33,6 @@ function SlidingObstacle:set_collision_animation_state(state)
   self.collision_state = state
 end
 
---- Optional
-function SlidingObstacle:set_collision_sfx(audio)
-  self.collision_sfx = audio
-end
-
 --- Defaults:
 --- - 500 for Boulders
 --- - 200 for Cubes
@@ -110,7 +105,7 @@ function SlidingObstacle:create_obstacle()
   -- define default collision hitprops
   obstacle:set_hit_props(HitProps.new(
     self.damage or 200,
-    Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceGuard,
+    Hit.Flinch | Hit.Flash | Hit.PierceGuard,
     self.element or Element.Break,
     nil,
     Drag.None
@@ -137,10 +132,6 @@ function SlidingObstacle:create_obstacle()
 
       artifact:set_offset(movement_offset.x, movement_offset.y - obstacle:height() / 2)
       Field.spawn(artifact, obstacle:current_tile())
-    end
-
-    if self.collision_sfx then
-      Resources.play_audio(self.collision_sfx)
     end
 
     -- delete

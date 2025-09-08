@@ -333,8 +333,8 @@ function HitDamageJudge.init(encounter)
         local defense_rule = DefenseRule.new(DefensePriority.Last, DefenseOrder.Always)
 
         defense_rule.filter_func = function(props)
-          if props.damage <= 0 or props.flags & Hit.Impact == 0 then
-            -- we only track damage for hits marked as Hit.Impact
+          if props.damage <= 0 or props.flags & Hit.Drain ~= 0 then
+            -- ignore drain
             return props
           end
 

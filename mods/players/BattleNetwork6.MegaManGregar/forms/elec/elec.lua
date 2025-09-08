@@ -7,7 +7,6 @@ local FORM_MUG = _folder_path .. "mug.png"
 local THUNDERBOLT_TEXTURE = Resources.load_texture("thunderbolt.png")
 local THUNDERBOLT_ANIMATION_PATH = _folder_path .. "thunderbolt.animation"
 local THUNDERBOLT_SFX = bn_assets.load_audio("dollthunder.ogg")
-local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
 
 ---@param player Entity
 ---@param form PlayerForm
@@ -77,7 +76,7 @@ return function(player, form, base_animation_path)
 
         spell:set_hit_props(HitProps.new(
           20 * player:attack_level() + 40,
-          Hit.Impact | Hit.Flinch | Hit.Flash,
+          Hit.Flinch | Hit.Flash,
           Element.Elec,
           player:context()
         ))
@@ -107,7 +106,6 @@ return function(player, form, base_animation_path)
 
         spell.on_collision_func = function(_, other)
           shared.spawn_hit_artifact(other, "ELEC", math.random(-8, 8), -other:height() // 2 + math.random(-8, 8))
-          Resources.play_audio(HIT_SFX)
         end
 
         Field.spawn(spell, tile)

@@ -60,11 +60,11 @@ function character_init(self, character_info)
                 --cant block breaking hits
                 return
             end
-            if attacker_hit_props.flags & Hit.Impact == 0 then
+            if attacker_hit_props.flags & Hit.Drain ~= 0 then
                 --cant block non impact hits
                 return
             end
-            defense:block_impact()
+            defense:set_responded()
             defense:block_damage()
             local artifact = Spell.new(self:team())
             artifact:set_texture(defense_texture)
@@ -216,7 +216,7 @@ function character_init(self, character_info)
         spell:set_hit_props(
             HitProps.new(
                 user.damage,
-                Hit.Impact | Hit.Flinch,
+                Hit.Flinch,
                 Element.Wood,
                 user:context(),
                 Drag.None

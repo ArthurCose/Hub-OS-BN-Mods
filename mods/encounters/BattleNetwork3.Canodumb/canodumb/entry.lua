@@ -39,7 +39,7 @@ local function attack_tile(canodumb, attack_spell, tile)
   -- set the cursor up for damage
   attack_spell:set_hit_props(HitProps.new(
     canodumb._attack,
-    Hit.Flinch | Hit.Impact | Hit.Flash,
+    Hit.Flinch | Hit.Flash,
     Element.None,
     canodumb:context(),
     Drag.None
@@ -107,7 +107,7 @@ local function spawn_cursor(cursor, canodumb, tile)
   spell:sprite():set_layer(-1)
   spell:set_hit_props(HitProps.new(
     0,
-    Hit.None,
+    Hit.Drain,
     Element.None,
     canodumb:context()
   ))

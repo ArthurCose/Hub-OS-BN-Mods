@@ -4,18 +4,16 @@ id = "BattleNetwork6.Class01.Standard.187"
 name = "ElemTrap"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "G", "S", "U", "*" ]
+codes = ["G", "S", "U", "*"]
 damage = 240
 time_freeze = true
 element = "none"
 description = "Trap enmy and attk with elem"
 can_boost = true
 limit = 2
-hit_flags = ["Impact", "Flinch"]
+hit_flags = ["Flinch"]
 conceal = true
 
 # this section is optional
 [dependencies]
-libraries = [
-    "BattleNetwork.Assets"
-]
+libraries = ["BattleNetwork.Assets"]

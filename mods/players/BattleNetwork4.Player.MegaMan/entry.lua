@@ -178,7 +178,7 @@ function player_init(player)
 
         local hit_props = HitProps.new(
             0,
-            Hit.None,
+            Hit.Drain,
             Element.None,
             player:context(),
             Drag.None
@@ -1292,7 +1292,7 @@ function player_init(player)
 
             local hit_props = HitProps.new(
                 20,
-                Hit.Impact | Hit.Flinch | Hit.NoCounter,
+                Hit.Flinch | Hit.NoCounter,
                 Element.Aqua,
                 player:context(),
                 Drag.None
@@ -1340,7 +1340,7 @@ function player_init(player)
             spell:set_hit_props(
                 HitProps.new(
                     10,
-                    Hit.Impact | Hit.Flinch | Hit.Flash,
+                    Hit.Flinch | Hit.Flash,
                     Element.None,
                     Element.None,
                     context,
@@ -1361,7 +1361,7 @@ function player_init(player)
                 physical_bomb:set_hit_props(
                     HitProps.new(
                         result * 10,
-                        Hit.Impact | Hit.Flinch | Hit.Flash,
+                        Hit.Flinch | Hit.Flash,
                         Element.None,
                         Element.None,
                         context,
@@ -1444,7 +1444,7 @@ function player_init(player)
             spell:set_hit_props(
                 HitProps.new(
                     150,
-                    Hit.Impact | Hit.PierceGuard | Hit.PierceGround | Hit.Drag | Hit.NoCounter,
+                    Hit.PierceGuard | Hit.PierceGround | Hit.Drag | Hit.NoCounter,
                     Element.None,
                     Element.Break,
                     player:context(),
@@ -1517,7 +1517,7 @@ function player_init(player)
             spell:set_hit_props(
                 HitProps.new(
                     60,
-                    Hit.Impact | Hit.NoCounter,
+                    Hit.NoCounter,
                     Element.None,
                     Element.None,
                     player:context(),
@@ -1545,7 +1545,7 @@ function player_init(player)
                 other:hit(
                     HitProps.new(
                         0,
-                        Hit.None | Hit.Drag,
+                        Hit.Drain | Hit.Drag,
                         Element.None,
                         Element.None,
                         player:context(),
@@ -1592,7 +1592,7 @@ function player_init(player)
 
                 local hit_props = HitProps.new(
                     30,
-                    Hit.Impact | Hit.Flinch | Hit.Flash,
+                    Hit.Flinch | Hit.Flash,
                     Element.None,
                     user:context(),
                     Drag.None
@@ -1711,7 +1711,7 @@ function player_init(player)
                 -- Hit Props are necessary to deal damage.
                 local damage_props = HitProps.new(
                     10,
-                    Hit.Impact | Hit.Flinch | Hit.PierceInvis | Hit.RetainIntangible,
+                    Hit.Flinch | Hit.PierceInvis | Hit.RetainIntangible,
                     Element.Cursor,
                     player:context(),
                     Drag.None

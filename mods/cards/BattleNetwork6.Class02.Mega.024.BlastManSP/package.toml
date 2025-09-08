@@ -4,7 +4,7 @@ id = "BattleNetwork6.Class02.Mega.024.BlastManSP"
 name = "BlastMn\ue001"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "B" ]
+codes = ["B"]
 damage = 250
 time_freeze = true
 element = "fire"
@@ -12,7 +12,7 @@ description = "Head fwd & launch blst attk"
 card_class = "Mega"
 limit = 1
 can_boost = true
-hit_flags = ["Impact", "Flinch", "Flash"]
+hit_flags = ["Flinch", "Flash"]
 tags = ["BN6", "EXE6", "NAVI"]
 
 [dependencies]

@@ -5,23 +5,21 @@ past_ids = ["dev.delta.card.twister"]
 name = "Twister"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "N", "O", "T", "U", "Y", ]
+codes = ["N", "O", "T", "U", "Y"]
 damage = 20
 time_freeze = false
 element = "wood"
 description = "8hit strm\n2 squares\nahead"
-hit_flags = ["Impact", "Flinch"]
+hit_flags = ["Flinch"]
 limit = 5
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [
-    "BattleNetwork.Assets"
-]
-cards = [ ]
+characters = []
+libraries = ["BattleNetwork.Assets"]
+cards = []
 tile_states = [
     "BattleNetwork5.TileStates.Lava",
     "BattleNetwork6.TileStates.Grass",

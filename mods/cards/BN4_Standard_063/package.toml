@@ -11,7 +11,7 @@ element = "break"
 description = "Ricochet attack to right"
 long_description = "Bounce the puck off the walls!"
 limit = 4
-hit_flags = ["Impact", "Flinch", "PierceGuard", "Shake"]
+hit_flags = ["Flinch", "PierceGuard", "Shake"]
 
 [defines]
 characters = []

@@ -4,7 +4,6 @@ local SwordLib = require("dev.konstinople.library.sword")
 local bn_assets = require("BattleNetwork.Assets")
 
 local SPAWN_SFX = bn_assets.load_audio("dragon1.ogg")
-local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
 local TEXTURE = Resources.load_texture("dragon.png")
 local ANIMATION_PATH = _folder_path .. "dragon.animation"
 local HIT_EFFECT_TEXTURE = bn_assets.load_texture("bn6_hit_effects.png")
@@ -110,7 +109,6 @@ local function create_dragon(user, props)
     end)
 
     Field.spawn(artifact, spell:current_tile())
-    Resources.play_audio(HIT_SFX)
   end
 
   spell.on_update_func = function()

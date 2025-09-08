@@ -229,7 +229,7 @@ function character_init(basher)
                                 -- Resources.play_audio(AudioType.Explode)
                                 local props = HitProps.new(
                                     self.attack,
-                                    Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceGuard,
+                                    Hit.Flinch | Hit.Flash | Hit.PierceGuard,
                                     Element.None,
                                     self:context(),
                                     Drag.None

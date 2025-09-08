@@ -8,7 +8,6 @@ local FallingRockLib = require("BattleNetwork.FallingRock")
 ---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
 
-local IMPACT_SFX = bn_assets.load_audio("hit_impact.ogg")
 local HAMMER_SFX = bn_assets.load_audio("gaia_hammer.ogg")
 local GUTS_MACH_GUN_SFX = bn_assets.load_audio("guts_mach_gun.ogg")
 local GUTS_PUNCH_LAUNCH_SFX = bn_assets.load_audio("dust_launch.ogg")
@@ -198,7 +197,7 @@ local function create_guts_quake_factory(entity, damage)
         hammer_hitbox = Spell.new(entity:team())
         hammer_hitbox:set_hit_props(HitProps.new(
           damage,
-          Hit.Impact | Hit.Flinch,
+          Hit.Flinch,
           Element.None,
           entity:context(),
           Drag.None
@@ -217,7 +216,7 @@ local function create_guts_quake_factory(entity, damage)
           -- spawn rocks
           local hit_props = HitProps.new(
             damage,
-            Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceGuard,
+            Hit.Flinch | Hit.Flash | Hit.PierceGuard,
             Element.None
           )
 
@@ -249,7 +248,7 @@ local function create_guts_mach_gun_spell(entity, damage)
   spell:set_offset(0, -27)
   spell:set_hit_props(HitProps.new(
     damage,
-    Hit.Impact | Hit.Flinch,
+    Hit.Flinch,
     Element.None,
     entity:context(),
     Drag.None
@@ -292,8 +291,6 @@ local function create_guts_mach_gun_spell(entity, damage)
   end
 
   spell.on_collision_func = function(self, other)
-    Resources.play_audio(IMPACT_SFX)
-
     spawn_hit_artifact(other, "PEASHOT", math.random(-8, 8), math.random(-8, 8) + spell:offset().y)
     spell:erase()
   end
@@ -353,15 +350,13 @@ local function create_guts_punch_spell(entity, guts_punch_range, damage)
   spell:set_facing(entity:facing())
   spell:set_hit_props(HitProps.new(
     damage,
-    Hit.Impact | Hit.Flinch | Hit.Drag,
+    Hit.Flinch | Hit.Drag,
     Element.None,
     entity:context(),
     Drag.new(entity:facing(), 1)
   ))
 
   spell.on_collision_func = function(_, other)
-    Resources.play_audio(IMPACT_SFX)
-
     spawn_hit_artifact(other, "SPARK_1", math.random(-8, 8), math.random(-8, 8) - 25)
 
     if guts_punch_range >= 1 then

@@ -4,7 +4,7 @@ id = "BattleNetwork6.Class02.Mega.G18.EraseMnSP"
 name = "EraseMn\ue001"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "K" ]
+codes = ["K"]
 damage = 210
 time_freeze = true
 element = "cursor"
@@ -12,7 +12,7 @@ description = "Press A for 3panl beam attk"
 card_class = "Mega"
 limit = 1
 can_boost = true
-hit_flags = ["Impact", "PierceInvis", "PierceGuard", "Paralyze"]
+hit_flags = ["PierceInvis", "PierceGuard", "Paralyze"]
 tags = ["BN6", "EXE6", "NAVI", "VERSION_GREGAR"]
 
 [dependencies]

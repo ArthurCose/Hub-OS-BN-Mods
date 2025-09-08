@@ -11,7 +11,6 @@ local ARTIFACT_TEXTURE = bn_assets.load_texture("golmhit_artifact.png")
 local ARTIFACT_ANIMATION_PATH = bn_assets.fetch_animation_path("golmhit_artifact.animation")
 local FIST_SPAWN_SFX = bn_assets.load_audio("golmhit1.ogg")
 local FIST_LAND_SFX = bn_assets.load_audio("golmhit2.ogg")
-local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
 
 local DAMAGE_REDUCED_SFX = bn_assets.load_audio("damage_reduced.ogg")
 
@@ -69,7 +68,7 @@ local function create_fist(character, warning_spell, props)
   spell:set_hit_props(
     HitProps.new(
       props.attack,
-      Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceGuard | Hit.PierceGround,
+      Hit.Flinch | Hit.Flash | Hit.PierceGuard | Hit.PierceGround,
       Element.None,
       character:context()
     )
@@ -109,10 +108,6 @@ local function create_fist(character, warning_spell, props)
 
   spell.on_spawn_func = function()
     Resources.play_audio(FIST_SPAWN_SFX, AudioBehavior.Restart)
-  end
-
-  spell.on_collision_func = function()
-    Resources.play_audio(HIT_SFX, AudioBehavior.Default)
   end
 
   if props.deletes_chips then

@@ -3,7 +3,6 @@ local bn_assets = require("BattleNetwork.Assets")
 
 local TEXTURE = Resources.load_texture("trumpy.png")
 local APPEAR_SFX = bn_assets.load_audio("appear.ogg")
-local HIT_SFX = bn_assets.load_audio("hit_obstacle.ogg")
 local MUSIC_SFX = bn_assets.load_audio("timpani.ogg")
 local MUSIC_INTERVAL = 64
 local IDLE_DURATION = 140 -- acts as 170f cooldown, warn animation is 30f
@@ -41,10 +40,6 @@ local function create_trumpy(user)
   local animation = trumpy:animation()
   animation:load("trumpy.animation")
   animation:set_state("IDLE")
-
-  trumpy:register_status_callback(Hit.Impact, function()
-    Resources.play_audio(HIT_SFX)
-  end)
 
   trumpy.on_delete_func = function()
     trumpy:erase()

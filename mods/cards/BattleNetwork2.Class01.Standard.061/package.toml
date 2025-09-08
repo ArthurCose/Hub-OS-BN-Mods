@@ -5,23 +5,21 @@ past_ids = ["dev.delta.card.blower"]
 name = "Blower"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "P", "R", "T", "W", "Z" ]
+codes = ["P", "R", "T", "W", "Z"]
 damage = 40
 time_freeze = false
 element = "fire"
 description = "4hit strm\n2 squares\nahead"
-hit_flags = ["Impact", "Flinch"]
+hit_flags = ["Flinch"]
 limit = 5
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [
-    "BattleNetwork.Assets"
-]
-cards = [ ]
+characters = []
+libraries = ["BattleNetwork.Assets"]
+cards = []
 tile_states = [
     "BattleNetwork5.TileStates.Lava",
     "BattleNetwork6.TileStates.Grass",

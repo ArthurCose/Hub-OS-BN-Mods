@@ -5,7 +5,7 @@ name = "SeaSeed"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
 codes = ["D", "J", "M", "*"]
-hit_flags = ["Impact", "Flinch"]
+hit_flags = ["Flinch"]
 description = "Makes 9sq wtr zone 3sq ahead"
 limit = 4
 

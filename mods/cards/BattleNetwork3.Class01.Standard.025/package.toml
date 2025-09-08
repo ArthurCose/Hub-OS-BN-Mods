@@ -8,7 +8,7 @@ preview_texture_path = "preview.png"
 codes = ["A", "D", "F", "L", "P", "*"]
 damage = 160
 element = "break"
-hit_flags = ["Impact", "Flinch", "Flash", "PierceGuard"]
+hit_flags = ["Flinch", "Flash", "PierceGuard"]
 description = "Breaks 3rd panel ahead"
 limit = 4
 

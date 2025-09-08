@@ -9,7 +9,6 @@ local FORM_MUG = _folder_path .. "mug.png"
 local DRILL_TEXTURE = bn_assets.load_texture("drill_arm.png")
 local DRILL_ANIMATION_PATH = bn_assets.fetch_animation_path("drill_arm.animation")
 local DRILL_SFX = bn_assets.load_audio("drillarm3.ogg")
-local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
 
 ---@param player Entity
 ---@param form PlayerForm
@@ -39,7 +38,7 @@ return function(player, form, base_animation_path)
             local hit_props =
                 HitProps.new(
                   20 * player:attack_level() + 30,
-                  Hit.Impact | Hit.Flinch,
+                  Hit.Flinch,
                   Element.Break
                 )
 
@@ -84,7 +83,7 @@ return function(player, form, base_animation_path)
       spell:set_hit_props(
         HitProps.new(
           10 * player:attack_level() + 10,
-          Hit.Impact | Hit.PierceGuard | Hit.Drag,
+          Hit.PierceGuard | Hit.Drag,
           Element.Break,
           player:context(),
           Drag.new(player:facing(), 1)
@@ -101,7 +100,6 @@ return function(player, form, base_animation_path)
 
       spell.on_collision_func = function(_, other)
         if not hit then
-          Resources.play_audio(HIT_SFX)
           Field.shake(2, 30)
           hit = true
         end

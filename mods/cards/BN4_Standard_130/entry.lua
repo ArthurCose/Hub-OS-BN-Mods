@@ -29,7 +29,7 @@ function card_init(actor, props)
 					spell:set_hit_props(
 						HitProps.new(
 							0,
-							Hit.None,
+							Hit.Drain,
 							Element.Wind,
 							actor:context(),
 							Drag.None

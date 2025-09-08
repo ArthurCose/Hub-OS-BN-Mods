@@ -9,13 +9,13 @@ description = "Crcks 3 sqrs ahd with fire"
 long_description = "Send groundbreaking flames 3 tiles ahead!"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "C", "D", "E" ]
-hit_flags = ["Flinch", "Flash", "Impact"]
+codes = ["C", "D", "E"]
+hit_flags = ["Flinch", "Flash"]
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [ "BattleNetwork6.Class01.Standard.019" ]
+characters = []
+libraries = []
+cards = ["BattleNetwork6.Class01.Standard.019"]

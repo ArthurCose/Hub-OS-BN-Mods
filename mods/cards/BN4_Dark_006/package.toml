@@ -4,18 +4,16 @@ id = "BattleNetwork4.Class05.Dark.006.Spreader"
 name = "DrkSpred"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ " " ]
+codes = [" "]
 damage = 400
 time_freeze = false
 element = "none"
 description = "SPREADER\nBLASTS\nWIDE"
-hit_flags = [ "Impact" ]
+hit_flags = []
 limit = 0
 conceal = true
 card_class = "dark"
 
 [dependencies]
 augments = ["BattleNetwork4.Bugs.PanelBug"]
-libraries = [
-    "BattleNetwork.Assets"
-]
+libraries = ["BattleNetwork.Assets"]

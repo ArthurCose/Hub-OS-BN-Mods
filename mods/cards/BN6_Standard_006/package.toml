@@ -4,19 +4,19 @@ id = "BattleNetwork6.Class01.Standard.006"
 name = "Vulcan2"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "D", "F", "L" ]
+codes = ["D", "F", "L"]
 damage = 15
 time_freeze = false
 element = "none"
 description = "4-shot to pierce 1 panel!"
 long_description = "A four-round burst which hits the panel behind the target as well."
 limit = 5
-hit_flags = ["Impact", "Flinch"]
+hit_flags = ["Flinch"]
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [ "Battle.Helpers" ]
-cards = [ "BattleNetwork6.Class01.Standard.005" ]
+characters = []
+libraries = ["Battle.Helpers"]
+cards = ["BattleNetwork6.Class01.Standard.005"]

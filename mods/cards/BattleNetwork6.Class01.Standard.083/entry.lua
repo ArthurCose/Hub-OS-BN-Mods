@@ -25,7 +25,7 @@ function create_slash(animation_state, user, props)
 	spell:set_hit_props(
 		HitProps.new(
 			props.damage,
-			Hit.Impact | Hit.Flinch,
+			Hit.Flinch,
 			Element.Sword,
 			user:context(),
 			Drag.None

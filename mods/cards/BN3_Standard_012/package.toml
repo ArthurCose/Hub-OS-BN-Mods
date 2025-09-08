@@ -4,15 +4,13 @@ id = "BattleNetwork3.Class01.Standard.012.V-Gun"
 name = "V-Gun"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "D", "G", "L", "P", "V", "*" ]
+codes = ["D", "G", "L", "P", "V", "*"]
 damage = 30
 time_freeze = false
 element = "none"
 description = "Explodes 2 diag. squares"
-hit_flags = [ "Impact" ]
+hit_flags = []
 limit = 5
 
 [dependencies]
-libraries = [
-    "BattleNetwork.Assets"
-]
+libraries = ["BattleNetwork.Assets"]

@@ -50,7 +50,7 @@ function player_init(player)
 					snowman:set_hit_props(
 						HitProps.new(
 							50,
-							Hit.Impact | Hit.Flinch | Hit.Flash | Hit.Drag,
+							Hit.Flinch | Hit.Flash | Hit.Drag,
 							Element.Aqua,
 							user:context(),
 							Drag.new(snowman:facing(), 1)
@@ -106,7 +106,7 @@ function player_init(player)
 				self:add_anim_action(3, function()
 					local hit_props = HitProps.new(
 						10,
-						Hit.Impact | Hit.Drag,
+						Hit.Drag,
 						Element.None,
 						player:context(),
 						Drag.new(user:facing(), 1)

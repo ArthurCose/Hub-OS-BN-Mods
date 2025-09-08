@@ -4,20 +4,18 @@ id = "BattleNetwork6.Class01.Standard.013"
 name = "TankCan2"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "L", "S", "V" ]
+codes = ["L", "S", "V"]
 damage = 160
 time_freeze = false
 element = "none"
 description = "3sqr blst if hits end row"
-hit_flags = [ "Impact", "Flinch", "Flash", "Drag" ]
+hit_flags = ["Flinch", "Flash", "Drag"]
 limit = 4
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [
-    "BattleNetwork6.Class01.Standard.012"
-]
+characters = []
+libraries = []
+cards = ["BattleNetwork6.Class01.Standard.012"]

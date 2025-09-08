@@ -4,21 +4,19 @@ id = "BattleNetwork6.Class01.Standard.004"
 name = "AirShot"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "*" ]
+codes = ["*"]
 damage = 20
 time_freeze = false
 element = "wind"
 description = "Knock enmy back 1 square"
 long_description = "Fire a quick-moving Wind bullet which pushes targets back 1 square. Can dispel Auras."
 limit = 4
-hit_flags = ["Impact", "Flinch", "Drag"]
+hit_flags = ["Flinch", "Drag"]
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [
-    "BattleNetwork.Assets"
-]
-cards = [ ]
+characters = []
+libraries = ["BattleNetwork.Assets"]
+cards = []

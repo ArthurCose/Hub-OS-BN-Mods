@@ -4,7 +4,7 @@ id = "BattleNetwork6.Class01.Standard.016"
 name = "GunDelS2"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "B", "E", "R" ]
+codes = ["B", "E", "R"]
 time_freeze = false
 element = "none"
 secondary_element = "none"
@@ -13,14 +13,12 @@ card_class = "standard"
 can_boost = false
 description = "Hits row 2pnl ahd w/sunshne"
 long_description = "Sunshine spread drains HP, breaks obstacles two panels ahead!"
-hit_flags = [ "None", "NoCounter", "PierceInvis" ]
+hit_flags = ["Drain", "NoCounter", "PierceInvis"]
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [
-    "BattleNetwork6.Class01.Standard.015"
-]
+characters = []
+libraries = []
+cards = ["BattleNetwork6.Class01.Standard.015"]

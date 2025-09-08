@@ -4,20 +4,14 @@ id = "BattleNetwork6.Class01.Standard.036.CornShot1"
 name = "CornSht1"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "J", "K", "L" ]
+codes = ["J", "K", "L"]
 damage = 50
 time_freeze = false
 element = "wood"
 description = "Damages enemies w/corn."
 limit = 5
-
-hit_flags = ["Impact", "Flinch"]
+hit_flags = ["Flinch"]
 
 [dependencies]
-libraries = [
-    "BattleNetwork.Assets"
-]
-
-tile_states = [
-    "BattleNetwork6.TileStates.Grass"
-]
+libraries = ["BattleNetwork.Assets"]
+tile_states = ["BattleNetwork6.TileStates.Grass"]

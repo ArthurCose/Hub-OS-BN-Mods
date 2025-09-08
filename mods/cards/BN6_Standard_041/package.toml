@@ -7,7 +7,7 @@ name = "RskyHny3"
 description = "Bees attk whle hive defending"
 codes = ["A", "D", "M"]
 element = "wood"
-hit_flags = ["Impact", "Flinch"]
+hit_flags = ["Flinch"]
 damage = 20
 limit = 3
 

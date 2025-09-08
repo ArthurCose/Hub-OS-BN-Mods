@@ -3,7 +3,6 @@ local bn_assets = require("BattleNetwork.Assets")
 
 local ROLLING_TEXTURE = bn_assets.load_texture("hells_rolling.png")
 local ROLLING_ANIMATION = bn_assets.fetch_animation_path("hells_rolling.animation")
-local IMPACT_SFX = bn_assets.load_audio("hit_impact.ogg")
 local SWING_SFX = bn_assets.load_audio("hells_rolling.ogg")
 
 ---@type SwordLib
@@ -74,10 +73,6 @@ local function create_helz_rolling(user, hit_props, direction_priority)
   animation:set_state("DEFAULT")
   animation:set_playback(Playback.Loop)
 
-  spell.on_collision_func = function()
-    Resources.play_audio(IMPACT_SFX)
-  end
-
   local function normal_update()
     spell:attack_tile()
 
@@ -129,7 +124,7 @@ end
 return function(user)
   local hit_props = HitProps.new(
     50 + user:attack_level() * 10,
-    Hit.Impact | Hit.Flinch | Hit.Flash,
+    Hit.Flinch | Hit.Flash,
     Element.None,
     user:context()
   )

@@ -308,7 +308,7 @@ local function create_snowball(blizzardman, damage)
 
   snowball:set_hit_props(HitProps.new(
     damage,
-    Hit.Impact | Hit.Flash | Hit.Flinch,
+    Hit.Flash | Hit.Flinch,
     Element.Aqua,
     blizzardman:context(),
     Drag.None
@@ -418,7 +418,7 @@ local function create_continuous_hitbox(blizzardman, damage)
 
   spell:set_hit_props(HitProps.new(
     damage,
-    Hit.Impact | Hit.Flash | Hit.Flinch,
+    Hit.Flash | Hit.Flinch,
     Element.Aqua,
     blizzardman:context(),
     Drag.None
@@ -560,7 +560,7 @@ local function spawn_falling_snow(blizzardman)
 
   snow:set_hit_props(HitProps.new(
     10,
-    Hit.Impact | Hit.Flash | Hit.Flinch,
+    Hit.Flash | Hit.Flinch,
     Element.Aqua,
     blizzardman:context(),
     Drag.None

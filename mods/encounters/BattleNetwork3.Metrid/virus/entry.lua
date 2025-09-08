@@ -25,7 +25,7 @@ local function create_meteor(metrid)
     local meteor = Spell.new(metrid:team())
     meteor:set_tile_highlight(Highlight.Flash)
     meteor:set_facing(metrid:facing())
-    local flags = Hit.Impact | Hit.Flash | Hit.Flinch | Hit.PierceGround
+    local flags = Hit.Flash | Hit.Flinch | Hit.PierceGround
     if metrid:rank() == Rank.NM then
         flags = flags & ~Hit.Flash
     end

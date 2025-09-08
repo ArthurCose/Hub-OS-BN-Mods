@@ -7,7 +7,6 @@ local FORM_MUG = _folder_path .. "mug.png"
 local BEAM_TEXTURE = Resources.load_texture("delete_beam.png")
 local BEAM_ANIMATION_PATH = _folder_path .. "delete_beam.animation"
 local BEAM_SFX = bn_assets.load_audio("delete_beam.ogg")
-local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
 
 ---@param player Entity
 ---@param form PlayerForm
@@ -133,7 +132,7 @@ return function(player, form, base_animation_path)
 
         spell:set_hit_props(HitProps.new(
           20 * player:attack_level() + 40,
-          Hit.Impact | Hit.Flinch | Hit.Flash | Hit.PierceInvis,
+          Hit.Flinch | Hit.Flash | Hit.PierceInvis,
           Element.None,
           player:context()
         ))
@@ -169,10 +168,6 @@ return function(player, form, base_animation_path)
           spell_anim:on_complete(function()
             spell:delete()
           end)
-        end
-
-        spell.on_collision_func = function()
-          Resources.play_audio(HIT_SFX)
         end
 
         Field.spawn(spell, tile)

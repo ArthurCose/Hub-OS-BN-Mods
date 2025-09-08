@@ -203,7 +203,7 @@ return function(player, form, base_animation_path)
 
       local hit_props = HitProps.new(
         20 * player:attack_level() + 40,
-        Hit.Impact | Hit.Flinch | Hit.Drag,
+        Hit.Flinch | Hit.Drag,
         Element.Wind,
         player:context(),
         Drag.new(player:facing(), Field.width())

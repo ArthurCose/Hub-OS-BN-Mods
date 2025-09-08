@@ -10,7 +10,6 @@ local BUBBLES_TEXTURE = bn_assets.load_texture("bn4_bubble_impact.png")
 local BUBBLES_ANIMATION_PATH = bn_assets.fetch_animation_path("bn4_bubble_impact.animation")
 local BUBBLES_SFX = bn_assets.load_audio("bubbler.ogg")
 local SHOOT_SFX = bn_assets.load_audio("spreader.ogg")
-local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
 
 local RECOVER_TEXTURE = bn_assets.load_texture("recover.png")
 local RECOVER_ANIMATION_PATH = bn_assets.fetch_animation_path("recover.animation")
@@ -100,7 +99,7 @@ return function(player, form, base_animation_path)
 
       local hit_props = HitProps.new(
         10 * player:attack_level() + 20,
-        Hit.Impact | Hit.Flinch | Hit.Flash,
+        Hit.Flinch | Hit.Flash,
         Element.Aqua,
         player:context(),
         Drag.None
@@ -147,10 +146,6 @@ return function(player, form, base_animation_path)
 
           bubbles.on_spawn_func = function()
             bubbles:attack_tile()
-          end
-
-          bubbles.on_collision_func = function()
-            Resources.play_audio(HIT_SFX)
           end
 
           local bubbles_anim = bubbles:animation()

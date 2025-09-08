@@ -398,7 +398,7 @@ function fire_tower_spell(user, damage, duration, tile)
     end
     local spell = Spell.new(user:team())
     spell:set_texture(fire_tower_texture, true)
-    spell:set_hit_props(HitProps.new(damage, Hit.Impact | Hit.Flash | Hit.Flinch,
+    spell:set_hit_props(HitProps.new(damage, Hit.Flash | Hit.Flinch,
         Element.Fire, user:context(),
         Drag.None))
     spell.elapsed = 0

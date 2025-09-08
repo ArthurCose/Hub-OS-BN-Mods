@@ -13,7 +13,7 @@ long_description = "Attack by throwing a panel in front of you forward!"
 can_boost = true
 card_class = "standard"
 limit = 5
-hit_flags = ["Impact", "Flinch"]
+hit_flags = ["Flinch"]
 tags = ["BN6", "EXE6", "CRACKSHOOT_TYPE_SINGLE"]
 
 [defines]

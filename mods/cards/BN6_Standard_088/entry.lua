@@ -3,8 +3,6 @@ local bn_assets = require("BattleNetwork.Assets")
 ---@type dev.konstinople.library.sword
 local SwordLib = require("dev.konstinople.library.sword")
 
-local AUDIO_DAMAGE = bn_assets.load_audio("hit_impact.ogg")
-local AUDIO_DAMAGE_OBS = bn_assets.load_audio("hit_obstacle.ogg")
 local CRACKSHOOT_AUDIO = bn_assets.load_audio("panel_toss2.ogg")
 local BLOCKED = bn_assets.load_audio("panel_toss_failed.ogg")
 
@@ -127,9 +125,6 @@ function create_attack(user, props, team, facing, tile, query)
 	spell.on_delete_func = function(self)
 		self:erase()
 	end
-	spell.can_move_to_func = function(self, tile)
-		return true
-	end
 	spell.on_attack_func = function(self, ent)
 		if facing == Direction.Right then
 			battle_helpers.create_effect(facing, EFFECT_TEXTURE, EFFECT_ANIMPATH, "PEASHOT", -20, -15, -999999,
@@ -137,11 +132,6 @@ function create_attack(user, props, team, facing, tile, query)
 		else
 			battle_helpers.create_effect(facing, EFFECT_TEXTURE, EFFECT_ANIMPATH, "PEASHOT", 20, -15, -999999,
 				self:current_tile(), Playback.Once, true, nil)
-		end
-		if Character.from(user) ~= nil then
-			Resources.play_audio(AUDIO_DAMAGE)
-		elseif Obstacle.from(ent) ~= nil then
-			Resources.play_audio(AUDIO_DAMAGE_OBS)
 		end
 	end
 	return spell

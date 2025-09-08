@@ -10,7 +10,7 @@ damage = 50
 element = "wind"
 codes = ['F', 'G', 'R']
 limit = 4
-hit_flags = ["Impact", "Flinch"]
+hit_flags = ["Flinch"]
 
 [dependencies]
 libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]

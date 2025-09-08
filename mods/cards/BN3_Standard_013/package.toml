@@ -4,15 +4,13 @@ id = "BattleNetwork3.Class01.Standard.013.SideGun"
 name = "Sidegun"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "C", "H", "M", "S", "Y", "*" ]
+codes = ["C", "H", "M", "S", "Y", "*"]
 damage = 30
 time_freeze = false
 element = "none"
 description = "Explodes up,down on hit"
-hit_flags = [ "Impact" ]
+hit_flags = []
 limit = 5
 
 [dependencies]
-libraries = [
-    "BattleNetwork.Assets"
-]
+libraries = ["BattleNetwork.Assets"]

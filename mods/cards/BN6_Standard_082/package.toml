@@ -4,21 +4,18 @@ id = "BattleNetwork6.Class01.Standard.082"
 name = "NeoVari"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "N" ]
+codes = ["N"]
 damage = 220
 time_freeze = false
 element = "sword"
 description = "A magical shifting sword."
 limit = 1
 regular_allowed = false
-hit_flags = [ "Impact", "Flinch", "Flash" ]
+hit_flags = ["Flinch", "Flash"]
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [
-    "BattleNetwork.Assets",
-    "dev.konstinople.library.sword"
-]
+characters = []
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]

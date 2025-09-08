@@ -46,7 +46,7 @@ local function create_hit_spell(character)
   spell:set_hit_props(
     HitProps.new(
       character._damage,
-      Hit.Impact | Hit.Flinch | Hit.Flash,
+      Hit.Flinch | Hit.Flash,
       Element.Wood,
       character:context(),
       Drag.None

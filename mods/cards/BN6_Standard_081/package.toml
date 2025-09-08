@@ -4,20 +4,17 @@ id = "BattleNetwork6.Class01.Standard.081"
 name = "VarSwrd"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "K", "V", "W" ]
+codes = ["K", "V", "W"]
 damage = 160
 time_freeze = false
 element = "sword"
 description = "A magical shifting sword."
 limit = 4
-hit_flags = [ "Impact", "Flinch", "Flash" ]
+hit_flags = ["Flinch", "Flash"]
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [
-    "BattleNetwork.Assets",
-    "dev.konstinople.library.sword"
-]
+characters = []
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]

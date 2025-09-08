@@ -7,7 +7,6 @@ local FORM_MUG = _folder_path .. "mug.png"
 local SLASH_TEXTURE = bn_assets.load_texture("sword_slashes.png")
 local SLASH_ANIMATION_PATH = bn_assets.fetch_animation_path("sword_slashes.animation")
 local SLASH_SFX = bn_assets.load_audio("thawk_swing.ogg")
-local HIT_SFX = bn_assets.load_audio("hit_impact.ogg")
 
 ---@param player Entity
 ---@param form PlayerForm
@@ -82,7 +81,7 @@ return function(player, form, base_animation_path)
 
         spell:set_hit_props(HitProps.new(
           20 * player:attack_level() + 40,
-          Hit.Impact | Hit.Flinch,
+          Hit.Flinch,
           Element.Wood,
           Element.Sword,
           player:context()
@@ -101,10 +100,6 @@ return function(player, form, base_animation_path)
         spell.on_spawn_func = function()
           attack_column(spell:current_tile())
           attack_column(spell:get_tile(spell:facing(), 1))
-        end
-
-        spell.on_collision_func = function()
-          Resources.play_audio(HIT_SFX)
         end
 
         Field.spawn(spell, tile)

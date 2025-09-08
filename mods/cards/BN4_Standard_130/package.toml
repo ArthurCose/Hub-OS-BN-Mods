@@ -4,16 +4,14 @@ id = "BattleNetwork4.Class01.Standard.130"
 name = "NrthWind"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "E", "N", "T", "*" ]
+codes = ["E", "N", "T", "*"]
 damage = 0
 time_freeze = true
 element = "wind"
 description = "Wind blws off aura, barriers"
 long_description = "Remove all enemy Barriers & Auras."
 limit = 4
-hit_flags = [ "None" ]
+hit_flags = ["Drain"]
 
 [dependencies]
-libraries = [
-    "BattleNetwork.Assets"
-]
+libraries = ["BattleNetwork.Assets"]

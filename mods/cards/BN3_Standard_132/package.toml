@@ -4,7 +4,7 @@ id = "BattleNetwork3.Class01.Standard.132"
 name = "Snake"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "D", "E", "I", "R", "Y" ]
+codes = ["D", "E", "I", "R", "Y"]
 damage = 40
 time_freeze = true
 element = "wood"
@@ -12,12 +12,12 @@ description = "Call out snakes from hole"
 long_description = "Summon a Snake from every unoccupied empty or broken tile on your side of the field."
 card_class = "standard"
 limit = 4
-hit_flags = ["Impact", "Flinch"]
+hit_flags = ["Flinch"]
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [ ]
+characters = []
+libraries = []
+cards = []

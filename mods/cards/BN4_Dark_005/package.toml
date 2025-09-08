@@ -4,7 +4,7 @@ id = "BattleNetwork4.Class05.Dark.005.Lance"
 name = "DrkLance"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ " " ]
+codes = [" "]
 damage = 0
 time_freeze = false
 element = "none"
@@ -14,14 +14,8 @@ can_boost = true
 card_class = "dark"
 limit = 0
 conceal = true
-hit_flags = ["Impact", "Flinch", "Drag"]
-tags = [
-    "HALF_FOE_HEALTH_EQUALS_POWER",
-    "EXE4",
-    "BN4"
-]
+hit_flags = ["Flinch", "Drag"]
+tags = ["HALF_FOE_HEALTH_EQUALS_POWER", "EXE4", "BN4"]
 
 [dependencies]
-libraries = [
-    "BattleNetwork.Assets"
-]
+libraries = ["BattleNetwork.Assets"]

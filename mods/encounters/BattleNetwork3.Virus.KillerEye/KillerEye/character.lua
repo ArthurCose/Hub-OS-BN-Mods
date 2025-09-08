@@ -126,7 +126,7 @@ function create_scanner(owner)
     spell:set_hit_props(
         HitProps.new(
             0,
-            Hit.None,
+            Hit.Drain,
             Element.None,
             owner:context(),
             Drag.new()

@@ -16,7 +16,7 @@ local function create_spell(team, direction, options)
   local spell = Spell.new(team)
   spell:set_facing(direction)
   spell:set_texture(TEXTURE)
-  spell:set_hit_props(HitProps.new(10, Hit.Impact | Hit.Flinch, Element.None))
+  spell:set_hit_props(HitProps.new(10, Hit.Flinch, Element.None))
 
   local animation = spell:animation()
   animation:load(ANIMATION_PATH)

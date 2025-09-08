@@ -7,7 +7,6 @@ local CURSOR_ANIMATION = bn_assets.fetch_animation_path("gunner_cursor.animation
 local SHOT_TEXTURE = bn_assets.load_texture("gunner_shot_burst.png")
 local SHOT_ANIMATION = bn_assets.fetch_animation_path("gunner_shot_burst.animation")
 local SHOT_SFX = bn_assets.load_audio("gunner_shot.ogg")
-local SHOT_IMPACT_SFX = bn_assets.load_audio("hit_impact.ogg")
 
 local frame_data = { { 1, 4 } }
 
@@ -35,10 +34,6 @@ local function create_shot(user, hit_props)
   animation:on_complete(function()
     spell:delete()
   end)
-
-  spell.on_collision_func = function()
-    Resources.play_audio(SHOT_IMPACT_SFX)
-  end
 
   spell.on_spawn_func = function()
     spell:attack_tile()

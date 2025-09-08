@@ -4,7 +4,7 @@ id = "BattleNetwork6.Class01.Standard.018"
 name = "YoYo"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "L", "M", "N", "*" ]
+codes = ["L", "M", "N", "*"]
 time_freeze = false
 element = "none"
 secondary_element = "sword"
@@ -14,14 +14,12 @@ card_class = "standard"
 can_boost = true
 description = "YoYo atk reaches 3sq ahead"
 long_description = "Fire a bladed YoYo which hits three times, three tiles ahead, damaging in its path!"
-hit_flags = [ "Impact", "Flinch" ]
+hit_flags = ["Flinch"]
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [
-    "BattleNetwork.Assets"
-]
-cards = [ ]
+characters = []
+libraries = ["BattleNetwork.Assets"]
+cards = []

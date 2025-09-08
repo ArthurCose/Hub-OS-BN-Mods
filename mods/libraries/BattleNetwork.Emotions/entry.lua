@@ -45,7 +45,7 @@ function Synchro:implement(player)
 
   local hit_aux_prop = AuxProp.new()
       :require_emotion(EMOTION_NAME)
-      :require_hit_flags(Hit.Impact)
+      :require_hit_flags_absent(Hit.Drain)
       :require_hit_damage(Compare.GT, 0)
       :with_callback(function()
         player:set_emotion("DEFAULT")

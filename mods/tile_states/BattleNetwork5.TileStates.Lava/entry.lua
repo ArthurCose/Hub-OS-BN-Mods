@@ -8,7 +8,7 @@ local function try_hit(entity)
     return
   end
 
-  entity:hit(HitProps.new(50, Hit.Flinch | Hit.Impact, Element.Fire))
+  entity:hit(HitProps.new(50, Hit.Flinch, Element.Fire))
 
   local tile = entity:current_tile()
   tile:set_state(TileState.Normal)

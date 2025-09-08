@@ -3,7 +3,6 @@ local bn_assets = require("BattleNetwork.Assets")
 local soldier_texture = bn_assets.load_texture("colonel_soldier.png")
 local soldier_anim_path = bn_assets.fetch_animation_path("colonel_soldier.animation")
 
-local hit_sound = bn_assets.load_audio("hit_impact.ogg")
 local gun_sound = bn_assets.load_audio("gunner_shot.ogg")
 
 function create_soldier_shot(user, props, facing)
@@ -31,8 +30,6 @@ function create_soldier_shot(user, props, facing)
         end
     end
     spell.on_collision_func = function(self, other)
-        Resources.play_audio(hit_sound)
-
         local next_tile = self:get_tile(self:facing(), 1)
         if next_tile then
             next_tile:attack_entities(self)

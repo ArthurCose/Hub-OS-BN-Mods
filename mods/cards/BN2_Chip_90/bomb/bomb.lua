@@ -29,7 +29,7 @@ bomb.card_init = function(user, props)
 
     local hit_props = HitProps.new(
         10,
-        Hit.Impact | Hit.Flinch | Hit.Flash,
+        Hit.Flinch | Hit.Flash,
         props.element,
         user:context(),
         Drag.None
@@ -161,7 +161,7 @@ function hit_explosion(user, target_tile, props, texture, anim_path)
         hitbox:set_hit_props(
             HitProps.new(
                 hitbox_damage,
-                Hit.Impact | Hit.Flinch | Hit.Flash,
+                Hit.Flinch | Hit.Flash,
                 props.element,
                 nil,
                 Drag.None

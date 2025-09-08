@@ -3,25 +3,18 @@ category = "card"
 id = "BattleNetwork6.ProgramAdvance.003"
 name = "Giga Cannon 3"
 icon_texture_path = "icon.png"
-codes = [ "*" ]
+codes = ["*"]
 damage = 500
 time_freeze = false
 element = "none"
 description = "Giga lvl cannon attack!"
-hit_flags = [ "Impact", "Flinch", "Flash" ]
+hit_flags = ["Flinch", "Flash"]
 limit = 0
 card_class = "recipe"
-tags = [
-    "PROGRAM_ADVANCE",
-    "BN6",
-    "EXE6"
-]
-
+tags = ["PROGRAM_ADVANCE", "BN6", "EXE6"]
 recipes = [
   { id = "BattleNetwork6.Class01.Standard.003", codes = ["R", "S", "T"] }
 ]
 
 [dependencies]
-cards = [
-  "BattleNetwork6.Class01.Standard.003"
-]
+cards = ["BattleNetwork6.Class01.Standard.003"]

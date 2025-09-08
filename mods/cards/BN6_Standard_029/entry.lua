@@ -9,7 +9,6 @@ local IMPACT_ANIM_PATH = bn_assets.fetch_animation_path("bn6_hit_effects.animati
 
 local THUNDER_AUDIO = bn_assets.load_audio("thunder.ogg")
 local BUG_DEATH_THUNDER_AUDIO = bn_assets.load_audio("bug_death_thunder.ogg")
-local HIT_AUDIO = bn_assets.load_audio("hit_impact.ogg")
 
 -- forward decl
 local create_spell
@@ -167,7 +166,6 @@ function create_spell(user, props)
 		local tile = self:current_tile()
 
 		battle_helpers.spawn_visual_artifact(tile, IMPACT_TEXTURE, IMPACT_ANIM_PATH, "ELEC", 0, -other:height() / 2)
-		Resources.play_audio(HIT_AUDIO)
 
 		self:delete()
 	end

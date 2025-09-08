@@ -7,16 +7,11 @@ time_freeze = false
 element = "elec"
 description = "Pralyzing electric ring atk!"
 long_description = "Fires a stunning, electrified ring straight ahead."
-codes = [ " " ]
-hit_flags = [ "Impact", "Paralyze" ]
-tags = [
-    "EXE4",
-    "BN4"
-]
+codes = [" "]
+hit_flags = ["Paralyze"]
+tags = ["EXE4", "BN4"]
 limit = 0
 conceal = true
 
 [dependencies]
-libraries = [
-    "BattleNetwork.Assets"
-]
+libraries = ["BattleNetwork.Assets"]

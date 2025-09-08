@@ -4,16 +4,16 @@ id = "BattleNetwork6.Class03.Giga.005.Falzar.BugDeathThunder"
 name = "BgDthThd"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "V" ]
+codes = ["V"]
 damage = 0
 time_freeze = true
 element = "elec"
 description = "Use Bug Frag with DarkThnd!"
 can_boost = false
 limit = 1
-hit_flags = ["Impact", "Flinch", "Paralyze"]
+hit_flags = ["Flinch", "Paralyze"]
 card_class = "giga"
 regular_allowed = true
 
 [dependencies]
-augments = [ "BattleNetwork6.ArmChange.BugDeathThunder" ]
+augments = ["BattleNetwork6.ArmChange.BugDeathThunder"]

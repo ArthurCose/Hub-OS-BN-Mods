@@ -4,14 +4,14 @@ id = "BattleNetwork6.Class01.Standard.029.Thunder"
 name = "Thunder"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "B", "R", "S", "*" ]
+codes = ["B", "R", "S", "*"]
 damage = 40
 time_freeze = false
 element = "elec"
 description = "Pralyzing electric attack!"
 can_boost = true
 limit = 5
-hit_flags = ["Impact", "Flinch", "Paralyze"]
+hit_flags = ["Flinch", "Paralyze"]
 
 # this section is optional
 [defines]
@@ -19,4 +19,4 @@ characters = []
 
 # this section is optional
 [dependencies]
-libraries = [ "BattleNetwork.Assets", "Battle.Helpers" ]
+libraries = ["BattleNetwork.Assets", "Battle.Helpers"]

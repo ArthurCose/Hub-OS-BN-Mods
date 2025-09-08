@@ -189,7 +189,7 @@ function begin_guard(character)
                 --cant block breaking hits with guard
                 return
             end
-            defense:block_impact()
+            defense:set_responded()
             defense:block_damage()
             if attacker_hit_props.damage > 0 then
                 Resources.play_audio(tink_sfx, AudioBehavior.Default)
@@ -301,7 +301,7 @@ function spawn_shockwave(owner, tile, direction, damage, wave_texture, wave_anim
         spell:set_tile_highlight(Highlight.Solid)
         spell:set_hit_props(HitProps.new(
             damage,
-            Hit.Flinch | Hit.Flash | Hit.Impact,
+            Hit.Flinch | Hit.Flash,
             Element.None,
             owner:context(),
             Drag.new()

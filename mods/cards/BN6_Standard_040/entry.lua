@@ -10,7 +10,6 @@ local HIT_EFFECT_TEXTURE = bn_assets.load_texture("bn6_hit_effects.png")
 local HIT_EFFECT_ANIMATION_PATH = bn_assets.fetch_animation_path("bn6_hit_effects.animation")
 local BEES_SFX = bn_assets.load_audio("bees.ogg")
 local GUARD_SFX = bn_assets.load_audio("guard.ogg")
-local IMPACT_SFX = bn_assets.load_audio("hit_impact.ogg")
 
 local SLIDE_DURATION = 13
 
@@ -53,9 +52,6 @@ local function spawn_bees(user, props)
   local remaining_hits = 5
 
   bees.on_attack_func = function(_, entity)
-    -- play sfx
-    Resources.play_audio(IMPACT_SFX)
-
     -- spawn hit artifact
     local artifact = Artifact.new()
     artifact:set_texture(HIT_EFFECT_TEXTURE)
@@ -231,12 +227,12 @@ function card_init(user, props)
 
       defense:block_damage()
 
-      if defense:impact_blocked() or hit_props.flags & Hit.Impact == 0 then
+      if defense:responded() or hit_props.flags & Hit.Drain ~= 0 then
         -- non impact
         return
       end
 
-      defense:block_impact()
+      defense:set_responded()
 
       if extra_spawn_cooldown == 0 then
         extra_spawn_cooldown = 10

@@ -4,17 +4,15 @@ id = "BattleNetwork6.Class03.Giga.004.Gregar"
 name = "ColForce"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "Q" ]
+codes = ["Q"]
 damage = 30
 time_freeze = false
 element = "none"
 description = "Smn Col. army in open pnls"
 card_class = "giga"
 limit = 1
-hit_flags = ["Impact", "Flinch", "Paralyze"]
-status_durations = [
-    {flag_name = "Paralyze", duration = 120}
-]
+hit_flags = ["Flinch", "Paralyze"]
+status_durations = [{ flag_name = "Paralyze", duration = 120 }]
 
 [dependencies]
 libraries = ["BattleNetwork.Assets"]

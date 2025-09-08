@@ -42,7 +42,7 @@ function card_init(user, props)
 			else
 				while self._shake_wait > 0 do
 					self._shake_wait = self._shake_wait - 1
-					entity:hit(HitProps.new(0, Hit.None | Hit.Shake, Element.None))
+					entity:hit(HitProps.new(0, Hit.Drain | Hit.Shake, Element.None))
 				end
 
 

@@ -4,20 +4,16 @@ id = "BattleNetwork6.Class01.Standard.084"
 name = "Muramasa"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "M" ]
+codes = ["M"]
 damage = 0
 time_freeze = false
-hit_flags = ["Impact", "Flinch", "Flash"]
+hit_flags = ["Flinch", "Flash"]
 element = "sword"
 description = "Atk power equal amt of lostHP"
 long_description = "Deals damage equal to Max HP minus Current HP. Strikes two tiles ahead."
 card_class = "standard"
 limit = 1
-tags = [
-    "DAMAGE_EQUALS_POWER",
-    "BN6",
-    "EXE6"
-]
+tags = ["DAMAGE_EQUALS_POWER", "BN6", "EXE6"]
 
 [dependencies]
 libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
