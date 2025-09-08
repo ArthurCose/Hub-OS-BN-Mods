@@ -1,6 +1,12 @@
 ---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
 
+---@type BattleNetwork.WindGust
+local WindGustLib = require("BattleNetwork.WindGust")
+
+local wind_gust_builder = WindGustLib.new_wind_gust()
+wind_gust_builder:set_sync_movements()
+
 ---@type SwordLib
 local SwordLib = require("dev.konstinople.library.sword")
 
@@ -11,52 +17,6 @@ sword:set_blade_animation_path(bn_assets.fetch_animation_path("windrack.animatio
 local SLASH_TEXTURE = bn_assets.load_texture("wind_slash.png")
 local SLASH_ANIM_PATH = bn_assets.fetch_animation_path("wind_slash.animation")
 local AUDIO = bn_assets.load_audio("windrack.ogg")
-
-local function create_gust(team, direction)
-	local spell = Spell.new(team)
-	spell:set_hit_props(HitProps.new(0, 0, Element.Wind))
-
-	local i = 0
-	spell.on_update_func = function()
-		local tile = spell:current_tile()
-		spell:attack_tile()
-
-		i = i + 1
-
-		local has_obstacles = false
-		tile:find_obstacles(function()
-			has_obstacles = true
-			return false
-		end)
-
-		if has_obstacles then
-			spell:erase()
-			return
-		end
-
-		if spell:is_moving() then
-			return
-		end
-
-		local next_tile = tile:get_tile(direction, 1)
-
-		if not next_tile or next_tile:is_edge() then
-			spell:erase()
-			return
-		end
-
-		tile:find_characters(function(character)
-			if character:team() ~= team then
-				character:slide(next_tile, 4)
-			end
-			return false
-		end)
-
-		spell:slide(next_tile, 4)
-	end
-
-	return spell
-end
 
 ---@param user Entity
 local function create_slash(user, hit_props)
@@ -106,7 +66,8 @@ function card_init(user, props)
 		local x = forward_tile:x()
 
 		for y = 0, Field.height() - 1 do
-			Field.spawn(create_gust(team, user:facing()), x, y)
+			local gust = wind_gust_builder:create_spell(team, user:facing())
+			Field.spawn(gust, x, y)
 		end
 
 		Resources.play_audio(AUDIO)
