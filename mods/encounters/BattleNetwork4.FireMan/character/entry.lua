@@ -286,7 +286,7 @@ local function create_fire_tower(team, context, damage, direction)
     if i == 24 then
       local tile = find_next_tower_tile(spell, spell:current_tile(), direction)
 
-      if tile then
+      if tile and tile:is_walkable() then
         local fire_tower = create_fire_tower(team, context, damage, direction)
         Field.spawn(fire_tower, tile)
       end
@@ -327,7 +327,7 @@ local function create_flame_tower_factory(entity, damage)
           local direction = entity:facing()
           local tile = entity:get_tile(direction, 1)
 
-          if tile then
+          if tile and tile:is_walkable() then
             local spell = create_fire_tower(entity:team(), entity:context(), damage, direction)
             Field.spawn(spell, tile)
           end
