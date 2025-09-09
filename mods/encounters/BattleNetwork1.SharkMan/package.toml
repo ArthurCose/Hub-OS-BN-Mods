@@ -1,0 +1,13 @@
+[package]
+category = "encounter"
+id = "BattleNetwork1.SharkMan"
+name = "SharkMan"
+description = ""
+preview_texture_path = "preview.png"
+
+[[defines.characters]]
+id = "BattleNetwork1.SharkMan.Enemy"
+path = "sharkman"
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
