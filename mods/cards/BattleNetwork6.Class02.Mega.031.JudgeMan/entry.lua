@@ -280,7 +280,7 @@ function card_init(actor, props)
 						Resources.play_audio(ATTACK_AUDIO)
 
 						for x = 1, 3, 1 do
-							spawn_hitbox(Field.tile_at(spawn_tile:x() + x, spawn_tile:y()))
+							spawn_hitbox(spawn_tile:get_tile(navi:facing(), x))
 						end
 					end, true)
 
