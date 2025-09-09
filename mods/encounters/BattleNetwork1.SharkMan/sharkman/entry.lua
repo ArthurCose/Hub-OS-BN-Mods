@@ -1,6 +1,3 @@
---- todo:
---- - water tower
-
 ---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
 
