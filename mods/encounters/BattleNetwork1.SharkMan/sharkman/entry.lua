@@ -442,7 +442,11 @@ function character_init(character)
     for _, offset in ipairs(try_offsets) do
       local x = current_tile:x() + offset[1]
       local y = current_tile:y() + offset[2]
-      local tile = Field.tile_at(x, y) or find_valid_column_tiles(x)[1]
+      local tile = Field.tile_at(x, y)
+
+      if not tile or not tile:is_walkable() or tile:team() ~= character:team() then
+        tile = find_valid_column_tiles(x)[1]
+      end
 
       if tile then
         local fin = create_fin(character, fins)
