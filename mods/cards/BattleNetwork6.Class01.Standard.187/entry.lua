@@ -24,6 +24,14 @@ function card_init(user, props)
 		component:eject()
 	end
 
+	defense_rule.defense_func = function(defense, _, _, hit_props)
+		if defense:damage_blocked() then return end
+
+		if hit_props.element == Element.Cursor or hit_props.secondary_element == Element.Cursor then
+			uninstall_all()
+		end
+	end
+
 	local create_boom = function(user, element, secondary_element, is_first)
 		local state
 		local sound

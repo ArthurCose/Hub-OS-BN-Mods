@@ -26,10 +26,8 @@ function card_init(user, props)
 
 		local has_blocked = false
 
-		antisword_rule.defense_func = function(defense, attacker, defender)
+		antisword_rule.defense_func = function(defense, _, defender, hit_props)
 			if defense:damage_blocked() then return end
-
-			local hit_props = attacker:copy_hit_props()
 
 			--Simulate cursor removing traps
 			if hit_props.element == Element.Cursor or hit_props.secondary_element == Element.Cursor then
