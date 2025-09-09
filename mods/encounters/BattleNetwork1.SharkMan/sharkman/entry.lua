@@ -378,6 +378,7 @@ function character_init(character)
 
   character:set_element(Element.Aqua)
   character:set_health(character_stats.health)
+  character:set_height(48)
 
   character:set_texture(TEXTURE)
   local animation = character:animation()
