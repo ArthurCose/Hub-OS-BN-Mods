@@ -14,6 +14,10 @@ local SPLASH_ANIM_PATH = "splash.animation"
 local AQUA_TOWER_TEXTURE = Resources.load_texture("aqua_tower.png")
 local AQUA_TOWER_ANIMATION_PATH = "aqua_tower.animation"
 
+---@class _BattleNetwork1.Sharkman.Data
+---@field real_fin Entity
+---@field fins Entity[]
+
 local stats_by_rank = {
   [Rank.V1] = {
     health = 700,
@@ -284,8 +288,8 @@ local function can_attack(fin, fins)
 end
 
 ---@param character Entity
----@param fins Entity[]
-local function create_fin(character, fins)
+---@param data _BattleNetwork1.Sharkman.Data
+local function create_fin(character, data)
   local fin = Obstacle.new(character:team())
   fin:set_texture(TEXTURE)
   fin:set_health(9999)
@@ -320,7 +324,34 @@ local function create_fin(character, fins)
   local moving_direction = Direction.Down
   local cooling_down = true
 
+  ---@type Component?
+  local fishing_component
+
   fin.on_update_func = function()
+    if fin == data.real_fin and (character:is_inactionable() or character:is_immobile()) then
+      -- fishing specific, since sharkman is so janky
+
+      if fishing_component then
+        return
+      end
+
+      fishing_component = fin:create_component(Lifetime.Scene)
+      fishing_component.on_update_func = function()
+        character:current_tile():add_entity(fin)
+
+        local offset = character:movement_offset()
+        fin:set_movement_offset(offset.x, offset.y)
+      end
+
+      return
+    end
+
+    if fishing_component then
+      character:current_tile():add_entity(fin)
+      fishing_component:eject()
+      fishing_component = nil
+    end
+
     if character:deleted() then
       fin:delete()
       return
@@ -339,7 +370,7 @@ local function create_fin(character, fins)
       return
     end
 
-    if not cooling_down and can_attack(fin, fins) then
+    if not cooling_down and can_attack(fin, data.fins) then
       fin:queue_action(create_fin_attack_action(fin))
       return
     end
@@ -383,10 +414,11 @@ function character_init(character)
   animation:set_state("FIN_IDLE")
   character:hide()
 
-  ---@type Entity
-  local real_fin
-  ---@type Entity[]
-  local fins = {}
+  ---@type _BattleNetwork1.Sharkman.Data
+  local data = {
+    real_fin = character, -- this is just to satisfy the type, we'll switch this soon
+    fins = {}
+  }
 
   local reservation_exclusion_ids = {}
 
@@ -428,9 +460,9 @@ function character_init(character)
   character.on_spawn_func = function()
     local current_tile = character:current_tile()
 
-    real_fin = create_fin(character, fins)
-    Field.spawn(real_fin, current_tile)
-    fins[#fins + 1] = real_fin
+    data.real_fin = create_fin(character, data)
+    Field.spawn(data.real_fin, current_tile)
+    data.fins[#data.fins + 1] = data.real_fin
 
     local try_offsets = {
       { -1, -1 },
@@ -449,21 +481,21 @@ function character_init(character)
       end
 
       if tile then
-        local fin = create_fin(character, fins)
+        local fin = create_fin(character, data)
         Field.spawn(fin, tile)
-        fins[#fins + 1] = fin
+        data.fins[#data.fins + 1] = fin
 
         -- todo listen for delete just in case?
       end
 
-      if #fins >= 3 then
+      if #data.fins >= 3 then
         break
       end
     end
 
     table.insert(reservation_exclusion_ids, character:id())
 
-    for _, fin in ipairs(fins) do
+    for _, fin in ipairs(data.fins) do
       table.insert(reservation_exclusion_ids, fin:id())
     end
   end
@@ -483,17 +515,17 @@ function character_init(character)
 
     action.on_execute_func = function()
       -- prevent real_fin from attacking by queueing an action
-      local fin_action = Action.new(real_fin)
+      local fin_action = Action.new(data.real_fin)
       fin_action:set_lockout(ActionLockout.new_sequence())
       fin_action:create_step()
-      real_fin:queue_action(fin_action)
+      data.real_fin:queue_action(fin_action)
 
       -- submerge
       spawn_splash_particle(character)
       animation:set_state("CHARACTER_SURFACE")
-      real_fin:current_tile():add_entity(character)
+      data.real_fin:current_tile():add_entity(character)
       character:reveal()
-      real_fin:hide()
+      data.real_fin:hide()
     end
 
     local tower_wait_time = 0
@@ -528,8 +560,8 @@ function character_init(character)
     wait_for_fins_step.on_update_func = function()
       local waiting = 0
 
-      for _, fin in ipairs(fins) do
-        if fin ~= real_fin then
+      for _, fin in ipairs(data.fins) do
+        if fin ~= data.real_fin then
           waiting = waiting + 1
 
           -- queue an action to stop the fin
@@ -554,8 +586,8 @@ function character_init(character)
     respawn_step.on_update_func = function()
       if wait_time == 0 then
         -- hide fins
-        for _, fin in ipairs(fins) do
-          if fin ~= real_fin then
+        for _, fin in ipairs(data.fins) do
+          if fin ~= data.real_fin then
             local fin_anim = fin:animation()
             fin_anim:set_state("FIN_SUBMERGE")
             fin_anim:on_complete(function()
@@ -582,7 +614,7 @@ function character_init(character)
       respawn_step:complete_step()
 
       -- respawn + reveal fins
-      for _, fin in ipairs(fins) do
+      for _, fin in ipairs(data.fins) do
         -- find a new position
         local tiles = find_valid_column_tiles(fin:current_tile():x())
 
@@ -609,9 +641,9 @@ function character_init(character)
       hit = false
       surfaced = false
 
-      real_fin = fins[math.random(#fins)]
-      real_fin:enable_hitbox(false)
-      real_fin:current_tile():add_entity(character)
+      data.real_fin = data.fins[math.random(#data.fins)]
+      data.real_fin:enable_hitbox(false)
+      data.real_fin:current_tile():add_entity(character)
       character:hide()
     end
 
@@ -623,18 +655,18 @@ function character_init(character)
       return
     end
 
-    if real_fin:has_actions() then
+    if data.real_fin:has_actions() then
       -- allow the fin to take over for actions
       character:current_tile():remove_entity(character)
-      real_fin:enable_hitbox()
+      data.real_fin:enable_hitbox()
       return
     end
 
     -- sync to movement
-    real_fin:enable_hitbox(false)
-    real_fin:current_tile():add_entity(character)
+    data.real_fin:enable_hitbox(false)
+    data.real_fin:current_tile():add_entity(character)
 
-    local offset = real_fin:movement_offset()
+    local offset = data.real_fin:movement_offset()
     character:set_movement_offset(offset.x, offset.y)
 
     if not hit then
