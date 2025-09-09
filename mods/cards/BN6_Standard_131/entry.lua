@@ -76,10 +76,6 @@ local function create_obstacle(user, hit_props)
   animation:load(OBSTACLE_ANIMATION_PATH)
   animation:set_state("SPAWN")
 
-  obstacle.can_move_to_func = function(tile)
-    return not tile:is_reserved() and tile:is_walkable()
-  end
-
   obstacle.on_spawn_func = function()
     Resources.play_audio(LAUNCH_SFX)
   end
@@ -93,6 +89,10 @@ local function create_obstacle(user, hit_props)
   local sitting = false
   local sitting_time = 0
   local target_lifetime = MIN_LIFETIME
+
+  obstacle.can_move_to_func = function(tile)
+    return not sitting and not tile:is_reserved() and tile:is_walkable()
+  end
 
   obstacle.on_update_func = function()
     obstacle:attack_tile()
