@@ -17,6 +17,7 @@ local AQUA_TOWER_ANIMATION_PATH = "aqua_tower.animation"
 ---@class _BattleNetwork1.Sharkman.Data
 ---@field real_fin Entity
 ---@field fins Entity[]
+---@field hooked boolean
 
 local stats_by_rank = {
   [Rank.V1] = {
@@ -328,33 +329,44 @@ local function create_fin(character, data)
   local fishing_component
 
   fin.on_update_func = function()
-    if fin == data.real_fin and (character:is_inactionable() or character:is_immobile()) then
+    if character:deleted() then
+      fin:delete()
+      return
+    end
+
+    if fishing_component or fin == data.real_fin and (character:is_inactionable() or character:is_immobile()) then
       -- fishing specific, since sharkman is so janky
 
       if fishing_component then
         return
       end
 
+      data.hooked = true
+
       fishing_component = fin:create_component(Lifetime.Scene)
       fishing_component.on_update_func = function()
+        if fin ~= data.real_fin then
+          fishing_component:eject()
+          fishing_component = nil
+          return
+        end
+
         character:current_tile():add_entity(fin)
 
         local offset = character:movement_offset()
         fin:set_movement_offset(offset.x, offset.y)
+
+        if not (character:is_inactionable() or character:is_immobile()) then
+          fishing_component:eject()
+          fishing_component = nil
+        end
       end
 
       return
     end
 
-    if fishing_component then
-      character:current_tile():add_entity(fin)
-      fishing_component:eject()
-      fishing_component = nil
-    end
-
-    if character:deleted() then
-      fin:delete()
-      return
+    if fin == data.real_fin then
+      data.hooked = false
     end
 
     -- forcibly maintain health
@@ -417,7 +429,8 @@ function character_init(character)
   ---@type _BattleNetwork1.Sharkman.Data
   local data = {
     real_fin = character, -- this is just to satisfy the type, we'll switch this soon
-    fins = {}
+    fins = {},
+    hooked = false
   }
 
   local reservation_exclusion_ids = {}
@@ -651,7 +664,7 @@ function character_init(character)
   end
 
   character.on_update_func = function()
-    if character:has_actions() then
+    if character:has_actions() or data.hooked then
       return
     end
 
