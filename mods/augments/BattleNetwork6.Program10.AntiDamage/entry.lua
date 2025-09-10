@@ -81,8 +81,8 @@ end
 
 ---@param user Entity
 ---@param hit_props HitProps
----@param defense_rule DefenseRule
-local function poof_user(user, hit_props, defense_rule)
+---@param callback fun()
+local function poof_user(user, hit_props, callback)
   local action = Action.new(user, "CHARACTER_MOVE")
   action:override_animation_frames({ { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } })
   local executed = false
@@ -103,13 +103,13 @@ local function poof_user(user, hit_props, defense_rule)
       Field.spawn(spell, tile)
     end
 
-    local cooldown = 60
+    local time = 60
     local step1 = action:create_step()
     step1.on_update_func = function(self)
-      if cooldown <= 0 then
+      if time <= 0 then
         self:complete_step()
       else
-        cooldown = cooldown - 1
+        time = time - 1
       end
     end
   end
@@ -130,10 +130,10 @@ local function poof_user(user, hit_props, defense_rule)
     if executed then
       user:reveal()
       user:enable_hitbox(true)
-      user:remove_defense_rule(defense_rule)
+      callback()
     else
       -- requeue
-      user:queue_action(poof_user(user, hit_props, defense_rule))
+      user:queue_action(poof_user(user, hit_props, callback))
     end
   end
 
@@ -161,8 +161,6 @@ function augment_init(augment)
     if cooldown > 0 then
       return action
     end
-
-    cooldown = 100
 
     local time = 0
     local step = action:create_step()
@@ -199,7 +197,12 @@ function augment_init(augment)
         defense:block_damage()
 
         local hit_props = HitProps.new(50, Hit.Flinch, Element.None, owner:context())
-        owner:queue_action(poof_user(owner, hit_props, defense_rule))
+        local callback = function()
+          owner:remove_defense_rule(defense_rule)
+          cooldown = 10
+        end
+
+        owner:queue_action(poof_user(owner, hit_props, callback))
         activated = true
         cooldown = 0
 
@@ -223,6 +226,10 @@ function augment_init(augment)
     action.on_action_end_func = function()
       if executed then
         owner:remove_defense_rule(defense_rule)
+      end
+
+      if not activated then
+        cooldown = 70
       end
     end
 
