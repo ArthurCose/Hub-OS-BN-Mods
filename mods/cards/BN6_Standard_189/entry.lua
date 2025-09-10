@@ -19,18 +19,21 @@ function card_init(user, props)
                 return
             end
 
+            if activated then
+                if hit_props.flags & Hit.Drain == 0 then
+                    -- block all impact damage while we're waiting for the action to complete
+                    defense:block_damage()
+                end
+                return
+            end
+
             --Simulate cursor removing traps
             if hit_props.element == Element.Cursor or hit_props.secondary_element == Element.Cursor then
                 user:remove_defense_rule(antidamage_rule)
                 return
             end
 
-            if activated then
-                if hit_props.flags & Hit.Drain == 0 then
-                    -- block all impact damage while we're waiting for the action to complete
-                    defense:block_damage()
-                end
-            elseif hit_props.damage >= 10 then
+            if hit_props.damage >= 10 and hit_props.flags & Hit.Drain == 0 then
                 defense:block_damage()
                 user:queue_action(poof_user(user, context, props, antidamage_rule))
                 activated = true

@@ -1,0 +1,23 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program10.AntiDamage"
+name = "AntiDmg"
+description = "Special=\nThrow a star!"
+colors = ["green"]
+flat = true
+shape = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0],
+    [0, 0, 1, 1, 0],
+    [0, 1, 1, 0, 0],
+    [0, 1, 0, 0, 0]
+]
+byproducts = ["BattleNetwork6.Bugs.WarpStep"]
+tags = ["UNINSTALL"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+augments = [
+    "HubOS.Augments.IgnoreNegativeTileEffects",
+    "BattleNetwork6.Bugs.WarpStep"
+]
