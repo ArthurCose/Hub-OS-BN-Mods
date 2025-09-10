@@ -136,7 +136,9 @@ return function(player, form, base_animation_path)
 
   form.special_attack_func = function()
     if special_cooldown > 0 then
-      return nil
+      local action = Action.new(player)
+      action:set_lockout(ActionLockout.new_sequence())
+      return action
     end
 
     special_cooldown = 60

@@ -162,7 +162,7 @@ function augment_init(augment)
       return action
     end
 
-    cooldown = 70
+    cooldown = 100
 
     local time = 0
     local step = action:create_step()
@@ -207,6 +207,9 @@ function augment_init(augment)
         local trap_rule = DefenseRule.new(DefensePriority.Trap, DefenseOrder.CollisionOnly)
         owner:add_defense_rule(trap_rule)
         owner:remove_defense_rule(trap_rule)
+
+        -- cancel action
+        action:end_action()
       end
     end
 

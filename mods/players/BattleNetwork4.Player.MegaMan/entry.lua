@@ -1763,7 +1763,11 @@ function player_init(player)
     soul_junk.special_attack_func = function(self) end
 
     soul_blues.special_attack_func = function()
-        if shield_cooldown > 0 then return end
+        if shield_cooldown > 0 then
+            local action = Action.new(player)
+            action:set_lockout(ActionLockout.new_sequence())
+            return action
+        end
 
         shield_cooldown = 40 + shield:duration()
         local hit = false

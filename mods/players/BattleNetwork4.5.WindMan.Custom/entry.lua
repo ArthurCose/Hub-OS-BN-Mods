@@ -70,7 +70,11 @@ function player_init(player)
 
         -- This allows the Operator to mash the button if they wish to do so without interrupting other options like using
         -- a different Battle Chip, moving, or firing their Normal or Charged Attack actions.
-        if special_cooldown > 0 then return nil end
+        if special_cooldown > 0 then
+            local action = Action.new(player)
+            action:set_lockout(ActionLockout.new_sequence())
+            return action
+        end
 
         -- Use a Battle Chip passed to the Navi as a Dependency again.
         local props = CardProperties.from_package(WindRack)

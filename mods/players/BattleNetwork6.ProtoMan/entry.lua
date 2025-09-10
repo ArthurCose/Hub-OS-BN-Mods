@@ -53,7 +53,9 @@ function player_init(player)
 
   player.special_attack_func = function()
     if shield_cooldown > 0 then
-      return
+      local action = Action.new(player)
+      action:set_lockout(ActionLockout.new_sequence())
+      return action
     end
 
     shield_cooldown = 40 + shield:duration()
