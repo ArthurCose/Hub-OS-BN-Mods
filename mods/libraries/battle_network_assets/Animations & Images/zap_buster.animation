@@ -1,9 +1,7 @@
-imagePath="C:/Users/seven/OneDrive/Desktop/Games, Engines, and Assets/0 Games/HubOS Release/client/mods/libraries/BattleNetwork.Assets/Animations & Images/zap_buster.png"
-
 animation state="SPAWN"
-frame duration="0.033" x="2" y="2" w="25" h="11" originx="0" originy="5" flipx="0" flipy="0"
-frame duration="0.05" x="2" y="17" w="25" h="11" originx="0" originy="5" flipx="0" flipy="0"
-frame duration="0.033" x="2" y="32" w="25" h="11" originx="0" originy="5" flipx="0" flipy="0"
+frame x="1" y="1" w="25" h="11" originy="5" duration="0.033"
+frame x="1" y="14" w="25" h="11" originy="5" duration="0.05"
+frame x="28" y="1" w="25" h="11" originy="5" duration="0.033"
 
 animation state="FIRE"
-frame duration="0.133" x="2" y="47" w="25" h="11" originx="0" originy="5" flipx="0" flipy="0"
+frame x="28" y="1" w="25" h="11" originy="5" duration="0.133"

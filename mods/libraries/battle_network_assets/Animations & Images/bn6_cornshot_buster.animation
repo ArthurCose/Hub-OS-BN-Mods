@@ -1,18 +1,14 @@
-# @frame_rate 60
-
-imagePath="C:\Users\seven\OneDrive\Desktop\Games, Engines, and Assets\0 Games\HubOS Release\client\mods\libraries\BattleNetwork.Assets\Animations & Images\bn6_cornshot_buster.png"
-
 animation state="SPAWN"
-frame duration="1f" x="2" y="2" w="26" h="23" originx="14" originy="15" flipx="0" flipy="0"
+frame x="1" y="1" w="26" h="23" originx="14" originy="15" duration="1f"
 
 animation state="SHOOT"
-frame duration="1f" x="32" y="2" w="26" h="23" originx="14" originy="15" flipx="0" flipy="0"
-frame duration="2f" x="32" y="29" w="24" h="22" originx="15" originy="11" flipx="0" flipy="0"
-frame duration="4f" x="2" y="56" w="24" h="22" originx="14" originy="11" flipx="0" flipy="0"
-frame duration="1f" x="2" y="29" w="26" h="23" originx="14" originy="15" flipx="0" flipy="0"
+frame x="1" y="1" w="26" h="23" originx="14" originy="15" duration="1f"
+frame x="29" y="1" w="24" h="22" originx="15" originy="11" duration="2f"
+frame x="29" y="1" w="24" h="22" originx="14" originy="11" duration="4f"
+frame x="1" y="1" w="26" h="23" originx="14" originy="15" duration="1f"
 
 animation state="DEFAULT"
-frame duration="10f" x="2" y="2" w="26" h="23" originx="9" originy="15" flipx="0" flipy="0"
-frame duration="2f" x="32" y="29" w="24" h="22" originx="10" originy="11" flipx="0" flipy="0"
-frame duration="4f" x="2" y="56" w="24" h="22" originx="9" originy="11" flipx="0" flipy="0"
-frame duration="18f" x="2" y="29" w="26" h="23" originx="9" originy="15" flipx="0" flipy="0"
+frame x="1" y="1" w="26" h="23" originx="9" originy="15" duration="10f"
+frame x="29" y="1" w="24" h="22" originx="10" originy="11" duration="2f"
+frame x="29" y="1" w="24" h="22" originx="9" originy="11" duration="4f"
+frame x="1" y="1" w="26" h="23" originx="9" originy="15" duration="18f"
