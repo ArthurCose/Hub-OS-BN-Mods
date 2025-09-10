@@ -1,7 +1,7 @@
 local bn_assets = require("BattleNetwork.Assets")
 local explosion_texture = bn_assets.load_texture("bn6_hit_effects.png")
 local explosion_animation_path = bn_assets.fetch_animation_path("bn6_hit_effects.animation")
-local impact_audio = bn_assets.load_audio("hit_impact.ogg")
+-- local impact_audio = bn_assets.load_audio("hit_impact.ogg")
 local aqua_audio = bn_assets.load_audio("bubbler.ogg")
 local elec_audio = bn_assets.load_audio("elementman_thunder.ogg")
 local fire_audio = bn_assets.load_audio("fireball.ogg")
@@ -50,7 +50,7 @@ function card_init(user, props)
 			sound = aqua_audio
 		else
 			state = "PEASHOT"
-			sound = impact_audio
+			-- sound = impact_audio
 		end
 
 		local spell = Spell.new(user:team())
@@ -146,13 +146,13 @@ function card_init(user, props)
 				local secondary_element = spell_props.secondary_element
 
 				if element == Element.Fire or
-						element == Element.Elec or
-						element == Element.Aqua or
-						element == Element.Wood or
-						secondary_element == Element.Fire or
-						secondary_element == Element.Elec or
-						secondary_element == Element.Aqua or
-						secondary_element == Element.Wood then
+					element == Element.Elec or
+					element == Element.Aqua or
+					element == Element.Wood or
+					secondary_element == Element.Fire or
+					secondary_element == Element.Elec or
+					secondary_element == Element.Aqua or
+					secondary_element == Element.Wood then
 					return true;
 				end
 			end
@@ -160,67 +160,67 @@ function card_init(user, props)
 	end
 
 	local activate =
-			function(found_entity, element, secondary_element)
-				-- create a new action to notify opponents about ElemTrap
-				local wrapped_action = Action.new(user, "CHARACTER_IDLE")
+		function(found_entity, element, secondary_element)
+			-- create a new action to notify opponents about ElemTrap
+			local wrapped_action = Action.new(user, "CHARACTER_IDLE")
 
-				-- never complete, force the generated_action to kick us out
-				wrapped_action:set_lockout(ActionLockout.new_sequence())
+			-- never complete, force the generated_action to kick us out
+			wrapped_action:set_lockout(ActionLockout.new_sequence())
 
-				local wrapped_action_props = CardProperties.new()
-				wrapped_action_props.short_name = "ElemTrap"
-				wrapped_action_props.time_freeze = true
-				wrapped_action_props.prevent_time_freeze_counter = true
-				wrapped_action:set_card_properties(wrapped_action_props)
+			local wrapped_action_props = CardProperties.new()
+			wrapped_action_props.short_name = "ElemTrap"
+			wrapped_action_props.time_freeze = true
+			wrapped_action_props.prevent_time_freeze_counter = true
+			wrapped_action:set_card_properties(wrapped_action_props)
 
-				wrapped_action.on_execute_func = function(self)
-					local step1 = self:create_step()
-					local tile_list = field:find_tiles(function(tile)
-						return not tile:is_edge()
-					end)
+			wrapped_action.on_execute_func = function(self)
+				local step1 = self:create_step()
+				local tile_list = field:find_tiles(function(tile)
+					return not tile:is_edge()
+				end)
 
-					local shuffled = {}
+				local shuffled = {}
 
-					for i, v in ipairs(tile_list) do
-						local pos = math.random(1, #shuffled + 1)
-						table.insert(shuffled, pos, v)
-					end
-
-					local cooldown = 4
-
-					local k = 1
-					step1.on_update_func = function(self)
-						cooldown = cooldown - 1
-
-						if k >= #shuffled then
-							self:complete_step()
-							return
-						end
-
-						if cooldown == 0 then
-							local explosion_tile = shuffled[k]
-
-							field:spawn(create_boom(user, element, secondary_element, k == 1), explosion_tile)
-
-							cooldown = 4
-
-							k = k + 1
-						end
-					end
+				for i, v in ipairs(tile_list) do
+					local pos = math.random(1, #shuffled + 1)
+					table.insert(shuffled, pos, v)
 				end
 
-				user:queue_action(wrapped_action)
+				local cooldown = 4
 
-				local alert_artifact = TrapAlert.new()
-				local alert_sprite = alert_artifact:sprite()
-				alert_sprite:set_never_flip(true)
+				local k = 1
+				step1.on_update_func = function(self)
+					cooldown = cooldown - 1
 
-				alert_artifact:set_elevation(found_entity:height() / 2)
+					if k >= #shuffled then
+						self:complete_step()
+						return
+					end
 
-				alert_sprite:set_layer(-5)
+					if cooldown == 0 then
+						local explosion_tile = shuffled[k]
 
-				field:spawn(alert_artifact, found_entity:current_tile())
+						field:spawn(create_boom(user, element, secondary_element, k == 1), explosion_tile)
+
+						cooldown = 4
+
+						k = k + 1
+					end
+				end
 			end
+
+			user:queue_action(wrapped_action)
+
+			local alert_artifact = TrapAlert.new()
+			local alert_sprite = alert_artifact:sprite()
+			alert_sprite:set_never_flip(true)
+
+			alert_artifact:set_elevation(found_entity:height() / 2)
+
+			alert_sprite:set_layer(-5)
+
+			field:spawn(alert_artifact, found_entity:current_tile())
+		end
 
 	action.on_execute_func = function()
 		local attack_list = find_spells()
