@@ -16,4 +16,5 @@ emotions_animation_path = "emotions.animation"
 
 [dependencies]
 libraries = ["BattleNetwork.Assets", "BattleNetwork.Emotions"]
-augments = ["HubOS.Augments.Hand+", "BattleNetwork6.Bugs.BattleHPBug"]
+augments = ["HubOS.Augments.Hand+"]
+statuses = ["BattleNetwork6.Statuses.BattleHPBug"]

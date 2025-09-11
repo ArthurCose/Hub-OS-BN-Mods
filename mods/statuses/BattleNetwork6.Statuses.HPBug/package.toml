@@ -1,7 +1,0 @@
-[package]
-category = "status"
-id = "BattleNetwork6.Statuses.HPBug"
-name = "Poison Status"
-icon_texture_path = "icon.png"
-flag_name = "BattleHPBug"
-durations = [40, 35, 30, 25, 20, 15, 10]

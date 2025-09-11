@@ -12,4 +12,4 @@ description = "Add an effect: HP Bug"
 can_boost = false
 
 [dependencies]
-statuses = ["BattleNetwork6.Statuses.HPBug"]
+statuses = ["BattleNetwork6.Statuses.BattleHPBug"]

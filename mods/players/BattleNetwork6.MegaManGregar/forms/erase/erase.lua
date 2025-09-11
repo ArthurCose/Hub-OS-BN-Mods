@@ -58,17 +58,10 @@ return function(player, form, base_animation_path)
         return false
       end
 
-      -- not a player, ignore for now
-      -- todo: we should add an hp bug for bosses (not currently possible)
-      -- and just delete if it's a basic enemy (not currently differentiable)
-      if not Player.from(entity) then
-        return false
-      end
-
       -- create a new defense rule
       local defense_rule = DefenseRule.new(DefensePriority.Last, DefenseOrder.CollisionOnly)
 
-      defense_rule.defense_func = function(defense, attacker, defender, hit_props)
+      defense_rule.defense_func = function(defense, _, defender, hit_props)
         if defense:damage_blocked() then
           return
         end
@@ -78,7 +71,7 @@ return function(player, form, base_animation_path)
         end
 
         if defender:health() % 10 == 4 then
-          defender:boost_augment("BattleNetwork6.Bugs.BattleHPBug", 1)
+          defender:apply_status(Hit.BattleHPBug, 1)
         end
       end
 

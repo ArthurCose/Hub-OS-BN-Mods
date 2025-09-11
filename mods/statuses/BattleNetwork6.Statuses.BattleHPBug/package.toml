@@ -1,0 +1,12 @@
+[package]
+category = "status"
+id = "BattleNetwork6.Statuses.BattleHPBug"
+past_ids = ["BattleNetwork6.Statuses.HPBug"]
+name = "BattleHPBug Status"
+description = "Applies a compatible Battle HP Bug to players and characters."
+icon_texture_path = "icon.png"
+flag_name = "BattleHPBug"
+durations = [1, 2, 3, 4, 5]
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.BattleHPBug"]
