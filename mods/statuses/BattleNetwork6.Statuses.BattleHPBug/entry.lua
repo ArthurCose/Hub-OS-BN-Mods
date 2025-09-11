@@ -2,10 +2,12 @@ local HPBugLevels = {}
 
 ---@param status Status
 function status_init(status)
+    local boost = status:remaining_time()
+    status:set_remaining_time(0)
     local entity = status:owner()
 
     if Player.from(entity) then
-        entity:boost_augment("BattleNetwork6.Bugs.BattleHPBug", status:remaining_time())
+        entity:boost_augment("BattleNetwork6.Bugs.BattleHPBug", boost)
         return
     elseif Obstacle.from(entity) then
         return
@@ -16,9 +18,13 @@ function status_init(status)
     local hp_bug_level = HPBugLevels[entity:id()]
 
     if HPBugLevels[entity:id()] then
-        hp_bug_level = hp_bug_level + status:remaining_time()
+        hp_bug_level = hp_bug_level + boost
+        HPBugLevels[entity:id()] = hp_bug_level
+
+        -- don't need to add the component twice
+        return
     else
-        hp_bug_level = status:remaining_time()
+        hp_bug_level = boost
         HPBugLevels[entity:id()] = hp_bug_level
     end
 
