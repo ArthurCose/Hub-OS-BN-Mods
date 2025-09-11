@@ -1,0 +1,13 @@
+[package]
+category = "encounter"
+id = "BattleNetwork4.Bass"
+name = "Bass.EXE (BN4)"
+description = ""
+preview_texture_path = "preview.png"
+
+[[defines.characters]]
+id = "BattleNetwork4.Bass.Enemy"
+path = "character"
+
+[dependencies]
+libraries = ["dev.konstinople.library.ai", "BattleNetwork.Assets"]

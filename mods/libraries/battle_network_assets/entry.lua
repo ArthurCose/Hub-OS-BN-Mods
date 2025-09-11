@@ -144,8 +144,8 @@ end
 Lib.HitParticle = {}
 
 ---@param state_name string
----@param offset_x number
----@param offset_y number
+---@param offset_x? number
+---@param offset_y? number
 function Lib.HitParticle.new(state_name, offset_x, offset_y)
     local artifact = Artifact.new()
     artifact:set_texture(Lib.load_texture("bn6_hit_effects.png"))
@@ -156,7 +156,7 @@ function Lib.HitParticle.new(state_name, offset_x, offset_y)
         artifact:delete()
     end)
 
-    artifact:set_offset(offset_x, offset_y)
+    artifact:set_offset(offset_x or 0, offset_y or 0)
 
     return artifact
 end

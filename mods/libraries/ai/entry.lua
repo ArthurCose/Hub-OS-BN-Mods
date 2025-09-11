@@ -444,9 +444,10 @@ end
 ---@param entity Entity
 function Lib.pick_same_team_tile(entity)
   local current_tile = entity:current_tile()
+  local team = entity:team()
 
   local tiles = Field.find_tiles(function(tile)
-    return entity:can_move_to(tile) and current_tile ~= tile
+    return entity:can_move_to(tile) and current_tile ~= tile and tile:team() == team
   end)
 
   if #tiles == 0 then
