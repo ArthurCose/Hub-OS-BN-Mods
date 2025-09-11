@@ -854,7 +854,7 @@ local function add_target_tiles(entity, relative_direction, tiles, prev_tile)
 
     local tile = entity:get_tile(direction, 1)
 
-    if tile ~= prev_tile and tile and tile:is_walkable() then
+    if tile ~= prev_tile and tile and tile:is_walkable() and not tile:is_reserved() then
       tiles[#tiles + 1] = tile
     end
   end
@@ -983,7 +983,7 @@ local function create_jab_factory(entity)
       for _, target in ipairs(targets) do
         attack_start_tile = target:get_tile(target:facing(), 1)
 
-        if attack_start_tile and attack_start_tile:is_walkable() then
+        if attack_start_tile and attack_start_tile:is_walkable() and not attack_start_tile:is_reserved() then
           target_tile = target:current_tile()
           break
         end
