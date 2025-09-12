@@ -8,7 +8,6 @@ local NAVI_TEXTURE = bn_assets.load_texture("navi_judgeman.png")
 local NAVI_ANIM_PATH = bn_assets.fetch_animation_path("navi_judgeman.animation")
 
 local ATTACK_AUDIO = bn_assets.load_audio("judgeman_whip.ogg")
-local IMPACT_AUDIO = bn_assets.load_audio("thunder2.ogg")
 local APPEAR_AUDIO = bn_assets.load_audio("appear.ogg")
 
 ---@param actor Entity
