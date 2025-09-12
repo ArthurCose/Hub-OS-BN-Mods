@@ -14,7 +14,7 @@ local SCRAP_REBORN_TEXTURE = Resources.load_texture("scrap_reborn.png")
 local SCRAP_REBORN_ANIMATION_PATH = _folder_path .. "scrap_reborn.animation"
 local SCRAP_REBORN_SHADOW_TEXTURE = Resources.load_texture("scrap_reborn_shadow.png")
 local LAUNCH_SFX = bn_assets.load_audio("dust_launch.ogg")
-local PUNCH_SFX = bn_assets.load_audio("golemhit.ogg")
+local PUNCH_SFX = bn_assets.load_audio("golmhit2.ogg")
 
 ---@param player Entity
 ---@param form PlayerForm
