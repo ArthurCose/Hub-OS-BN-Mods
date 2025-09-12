@@ -292,8 +292,12 @@ local function create_buster_shooting_factory(entity)
     action:create_step()
 
     action.on_execute_func = function()
+      entity:set_counterable(true)
+
       animation:set_state("BUSTER_SHOOTING_START")
       animation:on_complete(function()
+        entity:set_counterable(false)
+
         animation:set_state("BUSTER_SHOOTING")
         animation:set_playback(Playback.Loop)
 
@@ -373,6 +377,10 @@ local function create_buster_shooting_factory(entity)
           Field.spawn(spark, entity:current_tile())
         end)
       end)
+    end
+
+    action.on_action_end_func = function()
+      entity:set_counterable(false)
     end
 
     return action
@@ -465,10 +473,13 @@ local function create_helz_rolling_factory(entity)
       attachment_animation:set_state("DARKNESS_ORBS")
       attachment_animation:set_playback(Playback.Loop)
 
+      entity:set_counterable(true)
+
       animation_chain(
         animation,
         "DARKNESS_START",
         function()
+          entity:set_counterable(false)
           Resources.play_audio(DARKNESS_SFX)
         end,
         "DARKNESS_START_LOOP",
@@ -481,6 +492,10 @@ local function create_helz_rolling_factory(entity)
           start_step:complete_step()
         end
       )
+    end
+
+    action.on_action_end_func = function()
+      entity:set_counterable(false)
     end
 
     return action
@@ -602,10 +617,13 @@ local function create_darkness_overload_factory(entity)
       -- wind up step
       local start_step = action:create_step()
 
+      entity:set_counterable(true)
+
       animation_chain(
         animation,
         "DARKNESS_START",
         function()
+          entity:set_counterable(false)
           Resources.play_audio(DARKNESS_SFX)
         end,
         "DARKNESS_START_LOOP",
@@ -711,6 +729,8 @@ local function create_darkness_overload_factory(entity)
       for _, callback in ipairs(cleanup) do
         callback()
       end
+
+      entity:set_counterable(false)
     end
 
     action.can_move_to_func = function(tile)
@@ -787,6 +807,8 @@ local function add_slash_step(action, cleanup, resolve_tile)
         return
       end
 
+      entity:set_counterable(true)
+
       if target_tile:x() < entity:current_tile():x() then
         entity:set_facing(Direction.Left)
       else
@@ -808,6 +830,8 @@ local function add_slash_step(action, cleanup, resolve_tile)
       attack_step:complete_step()
       return
     end
+
+    entity:set_counterable(false)
 
     attack_step.on_update_func = nil
 
@@ -943,6 +967,8 @@ local function create_triple_slash_factory(entity)
       for _, callback in ipairs(cleanup) do
         callback()
       end
+
+      entity:set_counterable(false)
     end
 
     action.can_move_to_func = function(tile)
@@ -1027,6 +1053,8 @@ local function create_jab_factory(entity)
       for _, callback in ipairs(cleanup) do
         callback()
       end
+
+      entity:set_counterable(false)
     end
 
     action.can_move_to_func = function(tile)
@@ -1132,8 +1160,8 @@ function character_init(entity)
 
   local jab_factory = create_jab_factory(entity)
 
-  local darkness_overload_plan = ai:create_plan()
-  darkness_overload_plan:set_action_iter_factory(function()
+  local jab_plan = ai:create_plan()
+  jab_plan:set_action_iter_factory(function()
     return Ai.IteratorLib.chain(
       Ai.IteratorLib.take(math.random(0, 1), random_movement_factory),
       Ai.IteratorLib.take(1, jab_factory)
