@@ -13,7 +13,6 @@ local SLASH_SFX = bn_assets.load_audio("thawk_swing.ogg")
 ---@param player Entity
 function player_init(player)
   player:set_height(43.0)
-  player:set_element(Element.Wood)
   player:load_animation("battle.animation")
   player:set_texture(Resources.load_texture("battle.png"))
   player:set_charge_position(2, -18)

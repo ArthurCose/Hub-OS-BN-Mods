@@ -2,6 +2,7 @@
 category = "player"
 id = "BattleNetwork6.TomahawkMan"
 name = "TomahawkMan"
+element = "Wood"
 description = ":toptier:"
 preview_texture_path = "preview.png"
 overworld_animation_path = "overworld.animation"
