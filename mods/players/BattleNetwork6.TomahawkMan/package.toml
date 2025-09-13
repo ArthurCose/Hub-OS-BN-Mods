@@ -2,7 +2,7 @@
 category = "player"
 id = "BattleNetwork6.TomahawkMan"
 name = "TomahawkMan"
-description = "Awaiting your orders."
+description = ":toptier:"
 preview_texture_path = "preview.png"
 overworld_animation_path = "overworld.animation"
 overworld_texture_path = "overworld.png"
