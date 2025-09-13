@@ -1,6 +1,7 @@
 [package]
 category = "encounter"
-id = "BattleNetwork3.Enemy.Basher"
+id = "BattleNetwork3.Basher"
+past_ids = ["BattleNetwork3.Enemy.Basher"]
 name = "Basher"
 description = """
 TARGET LOCKED.
@@ -9,10 +10,8 @@ AREA ANNIHILATED."""
 preview_texture_path = "preview.png"
 
 [[defines.characters]]
-id = "EXE3.Basher.Enemy"
+id = "BattleNetwork3.Basher.Enemy"
 path = "virus"
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
-cards = [ ]
+libraries = ["BattleNetwork.Assets"]

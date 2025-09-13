@@ -1,5 +1,8 @@
-local spawn_sound = Resources.load_audio("Sounds/scanning_click.ogg")
-local lock_sound = Resources.load_audio("Sounds/scanning_lock.ogg")
+---@type BattleNetwork.Assets
+local bn_assets = require("BattleNetwork.Assets")
+
+local spawn_sound = bn_assets.load_audio("magnum_cursor.ogg")
+local lock_sound = bn_assets.load_audio("cursor_lockon.ogg")
 
 local cursor_texture = Resources.load_texture("Cursor.png")
 local hit_texture = Resources.load_texture("Hit Effect.png")
@@ -26,6 +29,7 @@ end
 local function spawn_hit_effect(tile)
     local effect = Spell.new(Team.Other)
     effect:set_texture(hit_texture)
+
     local anim = effect:animation()
     anim:load("Hit Effect.animation")
     anim:set_state("DEFAULT")
@@ -33,32 +37,36 @@ local function spawn_hit_effect(tile)
     anim:on_complete(function()
         effect:erase()
     end)
+
     Field.spawn(effect, tile)
 end
 
 local function tile_logic(self)
     local tiles = {}
-    local tile = self.Field.tile_at(self:current_tile():x(), 2)
-    local dir = self:facing(self)
-    local count = 1
-    local max = 6
-    local tile_front = nil
-    local tile_up = nil
-    local tile_down = nil
+    local tile = Field.tile_at(self:current_tile():x(), 2)
 
-    local check_front = false
-    local check_up = false
-    local check_down = false
-    for i = count, max, 1 do
-        tile_front = tile:get_tile(dir, i)
-        tile_up = tile_front:get_tile(Direction.Up, 1)
-        tile_down = tile_front:get_tile(Direction.Down, 1)
+    if not tile then
+        return tiles
+    end
 
-        check_front = tile_front and self:team() ~= tile_front:team() and not tile_front:is_edge() and
+    local dir = self:facing()
+
+    for i = 1, Field.width() - 1, 1 do
+        local tile_front = tile:get_tile(dir, i)
+
+        if not tile_front then
+            break
+        end
+
+        local tile_up = tile_front:get_tile(Direction.Up, 1)
+        local tile_down = tile_front:get_tile(Direction.Down, 1)
+
+        local check_front = self:team() ~= tile_front:team() and not tile_front:is_edge() and
             tile_front:team() ~= Team.Other and self:is_team(tile_front:get_tile(Direction.reverse(dir), 1):team())
-        check_up = tile_up and self:team() ~= tile_up:team() and not tile_up:is_edge() and tile_up:team() ~= Team.Other and
+        local check_up = tile_up and self:team() ~= tile_up:team() and not tile_up:is_edge() and
+            tile_up:team() ~= Team.Other and
             self:is_team(tile_up:get_tile(Direction.reverse(dir), 1):team())
-        check_down = tile_down and self:team() ~= tile_down:team() and not tile_down:is_edge() and
+        local check_down = tile_down and self:team() ~= tile_down:team() and not tile_down:is_edge() and
             tile_down:team() ~= Team.Other and self:is_team(tile_down:get_tile(Direction.reverse(dir), 1):team())
 
         if check_front or check_up or check_down then
@@ -68,6 +76,7 @@ local function tile_logic(self)
             break
         end
     end
+
     return tiles
 end
 
@@ -151,30 +160,28 @@ local function spawn_cursors(self)
                 end
             end
             self.is_attack = #self:current_tile():find_characters(self.find_foes) > 0
-            if self.is_attack then
-                if self.audio_once then
-                    self.audio_once = false
-                    self.cooldown = 99999
-                    self.hide_cooldown = 99999
-                    Resources.play_audio(lock_sound, AudioBehavior.NoOverlap)
-                    for i = 1, #self.owner.cursor_table, 1 do
-                        local cursor = self.owner.cursor_table[i]
-                        local c_anim = cursor:animation()
-                        c_anim:set_state("LOCKON")
-                        c_anim:apply(cursor:sprite())
-                        cursor.cooldown = 99999
-                        cursor.hide_cooldown = 99999
-                        c_anim:on_complete(function()
-                            self.owner.is_attack = true
-                            cursor.is_attack = true
-                            cursor:sprite():hide()
-                        end)
-                    end
+            if self.is_attack and self.audio_once then
+                self.audio_once = false
+                self.cooldown = 99999
+                self.hide_cooldown = 99999
+                Resources.play_audio(lock_sound, AudioBehavior.NoOverlap)
+                for i = 1, #self.owner.cursor_table, 1 do
+                    local cursor = self.owner.cursor_table[i]
+                    local c_anim = cursor:animation()
+                    c_anim:set_state("LOCKON")
+                    c_anim:apply(cursor:sprite())
+                    cursor.cooldown = 99999
+                    cursor.hide_cooldown = 99999
+                    c_anim:on_complete(function()
+                        self.owner.is_attack = true
+                        cursor.is_attack = true
+                        cursor:sprite():hide()
+                    end)
                 end
             end
         end
         table.insert(self.cursor_table, spell)
-        self.Field.spawn(spell, tile_array[i])
+        Field.spawn(spell, tile_array[i])
     end
 end
 
@@ -192,14 +199,9 @@ function character_init(basher)
     end
     basher.on_battle_start_func = function(self)
         anim:set_state("IDLE")
-
         anim:set_playback(Playback.Loop)
     end
     basher.target = nil
-    basher.panels = nil
-    basher.find_enemy_query = function(c)
-        return c and c:health() > 0 and (Character.from(c) ~= nil or Player.from(c) ~= nil)
-    end
     basher.cursor_table = {}
     basher:add_aux_prop(StandardEnemyAux.new())
     basher.can_move_to_func = function(tile) return false end
@@ -210,71 +212,80 @@ function character_init(basher)
     basher.on_update_func = function(self)
         if self:deleted() then return end
         if self and not self:hittable() then return end
+
         self.cooldown = self.cooldown - 1
-        if self.cooldown <= 0 then
-            if self.is_attack then
-                if self.anim_once then
-                    self.anim_once = false
-                    anim:set_state("RISE")
 
-                    anim:on_frame(9, function()
-                        self:set_counterable(true)
-                    end)
-                    anim:on_complete(function()
-                        anim:set_state("SHOOT")
+        if self.cooldown > 0 then
+            return
+        end
 
-                        anim:on_frame(1, function()
-                            for a = 1, #self.cursor_table, 1 do
-                                local cursor = self.cursor_table[a]
-                                -- Resources.play_audio(AudioType.Explode)
-                                local props = HitProps.new(
-                                    self.attack,
-                                    Hit.Flinch | Hit.Flash | Hit.PierceGuard,
-                                    Element.None,
-                                    self:context(),
-                                    Drag.None
-                                )
-                                local hitbox = Spell.new(self:team())
-                                hitbox:set_hit_props(props)
-                                local spawn_tile = cursor:current_tile()
-                                local ref = self
-                                hitbox.on_update_func = function(self)
-                                    spawn_hit_effect(spawn_tile)
-                                    spawn_tile:attack_entities(self)
-                                    spawn_tile:set_state(TileState.Cracked)
-                                    spawn_tile:set_state(TileState.Broken)
-                                    self:erase()
-                                end
-                                self.Field.spawn(hitbox, spawn_tile)
-                            end
-                            self.Field.shake(8.0, 36)
-                            for b = 1, #self.cursor_table, 1 do
-                                local cursor = self.cursor_table[b]
-                                cursor:erase()
-                            end
-                            self.cursor_table = {}
-                            self:set_counterable(false)
-                        end)
-                        anim:on_complete(function()
-                            anim:set_state("LOWER")
-
-                            anim:on_complete(function()
-                                anim:set_state("IDLE")
-
-                                anim:set_playback(Playback.Loop)
-                                self.is_attack = false
-                                self.action = nil
-                                self.anim_once = true
-                                self.cooldown = 54
-                            end)
-                        end)
-                    end)
-                end
+        if self.is_attack then
+            if not self.anim_once then
                 return
             end
-            if self.action ~= nil then return end
-            self.target = find_best_target(self)
-            spawn_cursors(self)
+
+            self.anim_once = false
+            anim:set_state("RISE")
+
+            anim:on_frame(9, function()
+                self:set_counterable(true)
+            end)
+
+            anim:on_complete(function()
+                anim:set_state("SHOOT")
+
+                anim:on_frame(1, function()
+                    for a = 1, #self.cursor_table, 1 do
+                        local cursor = self.cursor_table[a]
+                        -- Resources.play_audio(AudioType.Explode)
+                        local props = HitProps.new(
+                            self.attack,
+                            Hit.Flinch | Hit.Flash | Hit.PierceGuard,
+                            Element.None,
+                            self:context(),
+                            Drag.None
+                        )
+                        local hitbox = Spell.new(self:team())
+                        hitbox:set_hit_props(props)
+                        local spawn_tile = cursor:current_tile()
+                        hitbox.on_update_func = function(self)
+                            spawn_hit_effect(spawn_tile)
+                            spawn_tile:attack_entities(self)
+                            spawn_tile:set_state(TileState.Cracked)
+                            spawn_tile:set_state(TileState.Broken)
+                            self:erase()
+                        end
+                        Field.spawn(hitbox, spawn_tile)
+                    end
+                    Field.shake(8.0, 36)
+                    for b = 1, #self.cursor_table, 1 do
+                        local cursor = self.cursor_table[b]
+                        cursor:erase()
+                    end
+                    self.cursor_table = {}
+                    self:set_counterable(false)
+                end)
+
+                anim:on_complete(function()
+                    anim:set_state("LOWER")
+
+                    anim:on_complete(function()
+                        anim:set_state("IDLE")
+
+                        anim:set_playback(Playback.Loop)
+                        self.is_attack = false
+                        self.action = nil
+                        self.anim_once = true
+                        self.cooldown = 54
+                    end)
+                end)
+            end)
+
+            return
         end
+
+        if self.action ~= nil then return end
+        self.target = find_best_target(self)
+        spawn_cursors(self)
     end
 end

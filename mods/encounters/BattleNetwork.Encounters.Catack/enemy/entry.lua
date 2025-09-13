@@ -13,7 +13,7 @@ local on_windup_sound = bn_assets.load_audio("tankcannon_mob_windup.ogg")
 
 local on_spell_sound = bn_assets.load_audio("tankcannon_fire.ogg")
 
-local on_impact_sound = bn_assets.load_audio("tankcannon_explode.ogg")
+local on_impact_sound = bn_assets.load_audio("tankcannon_main.ogg")
 
 local create_boom = function(catack)
   local spell = Spell.new(catack:team())
@@ -40,25 +40,23 @@ local create_boom = function(catack)
       if not own_tile then return end
       if own_tile:get_tile(self:facing(), 1):is_edge() then
         self._can_slide = false
-        if #self:current_tile():find_entities(catack._tile_query) == 0 then
-          self:teleport(Field.tile_at(self:current_tile():x(), 2), function() end)
+        self._can_attack = false
 
-          self:set_texture(explosion_texture)
+        self:teleport(Field.tile_at(self:current_tile():x(), 2))
 
-          self:sprite():set_layer(-2)
+        self:set_texture(explosion_texture)
+        self:sprite():set_layer(-2)
 
-          local anim = self:animation()
+        local anim = self:animation()
+        anim:load(explosion_animation_path)
+        anim:set_state("DEFAULT")
+        anim:apply(self:sprite())
+        anim:on_complete(function() self:delete() end)
 
-          anim:load(explosion_animation_path)
+        self:attack_tiles({ self:get_tile(Direction.Up, 1), self:get_tile(Direction.Down, 1) })
+        Resources.play_audio(on_impact_sound)
 
-          anim:set_state("DEFAULT")
-
-          anim:apply(self:sprite())
-
-          self:attack_tiles({ self:get_tile(Direction.Up, 1), self:get_tile(Direction.Down, 1) })
-
-          anim:on_complete(function() self:delete() end)
-        end
+        Field.shake(10, 30)
       end
 
       if self:current_tile():is_edge() and self._slide_started then self:delete() end
@@ -76,6 +74,12 @@ local create_boom = function(catack)
   end
 
   spell.on_collision_func = function(self, other)
+    if not self._can_attack then
+      return
+    end
+
+    Resources.play_audio(on_impact_sound)
+
     self._can_slide = false
     self._can_attack = false
 
@@ -84,12 +88,9 @@ local create_boom = function(catack)
     self:sprite():set_layer(-2)
 
     local anim = self:animation()
-
     anim:load(impact_animation_path)
     anim:set_state("DEFAULT")
-
     anim:apply(self:sprite())
-
     anim:on_complete(function()
       self:delete()
     end)
@@ -112,8 +113,6 @@ local create_boom = function(catack)
 end
 
 function character_init(catack)
-  catack._cannon_sfx = bn_assets.load_audio("cannon.ogg")
-
   -- private variables
   catack._idle_state = "IDLE"
   catack._move_state = "MOVE"
@@ -279,7 +278,7 @@ function character_init(catack)
             catack._destination_tile = catack:current_tile()
           end
         else
-          catack:slide(catack._destination_tile, (catack._slide_speed), (10), function() end)
+          catack:slide(catack._destination_tile, (catack._slide_speed), (10))
         end
         if not catack._continue_offsetting then
           catack._can_move = false
@@ -287,7 +286,7 @@ function character_init(catack)
           catack._do_once = true
         end
       end
-      if catack._can_attack then
+      if catack._can_attack and not catack:is_moving() then
         if catack:current_tile() == catack._destination_tile then
           if catack._do_once then
             local anim = catack:animation()
