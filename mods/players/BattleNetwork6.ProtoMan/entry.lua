@@ -74,6 +74,8 @@ function player_init(player)
   end
 
   -- 2x sword chips
+  player:add_aux_prop(AuxProp.new():require_charged_card():increase_card_multiplier(1))
+
   player.calculate_card_charge_time_func = function(self, card)
     local can_charge = not card.time_freeze and
         (card.element == Element.Sword or card.secondary_element == Element.Sword) and
@@ -87,7 +89,6 @@ function player_init(player)
   end
 
   player.charged_card_func = function(self, card)
-    card.damage = card.damage * 2
     local action = Action.from_card(self, card)
 
     if action then
