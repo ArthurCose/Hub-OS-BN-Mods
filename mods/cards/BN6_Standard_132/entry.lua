@@ -169,7 +169,7 @@ function card_init(user, props)
       return
     end
 
-    local obstacle = create_obstacle(user, HitProps.from_card(props))
+    local obstacle = create_obstacle(user, HitProps.from_card(props, user:context()))
     Field.spawn(obstacle, tile)
   end)
 end
