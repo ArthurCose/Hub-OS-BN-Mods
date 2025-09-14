@@ -1,0 +1,18 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.130"
+name = "JustcOne"
+long_name = "JusticeOne"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["J"]
+element = "break"
+hit_flags = ["Flinch", "Flash", "PierceGuard"]
+damage = 220
+description = "Fist Atk on center panel"
+card_class = "standard"
+limit = 1
+regular_allowed = false
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

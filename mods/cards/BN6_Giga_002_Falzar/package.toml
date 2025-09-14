@@ -1,0 +1,18 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class03.Giga.002.Falzar"
+name = "MetrKnuk"
+long_name = "MeteorKnuckle"
+description = "Meteors bombard from sky"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+card_class = "giga"
+codes = ["N"]
+damage = 30
+element = "break"
+hit_flags = ["Flinch", "Flash", "PierceGuard"]
+time_freeze = true
+limit = 1
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
