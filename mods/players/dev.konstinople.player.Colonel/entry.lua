@@ -17,7 +17,7 @@ local DIVIDE_TEXTURE = bn_assets.load_texture("colonel_slashes.png")
 local DIVIDE_ANIM_PATH = bn_assets.fetch_animation_path("colonel_slashes.animation")
 local DIVIDE_SFX = bn_assets.load_audio("cross_slash.ogg")
 
-local CAPE_SFX = bn_assets.load_audio("panel_throw.ogg")
+local CAPE_SFX = bn_assets.load_audio("panelthrow.ogg")
 
 local MISSILE_LAUNCH_SFX = bn_assets.load_audio("cannon.ogg") -- incorrect sfx
 local MISSILE_LAND_SFX = bn_assets.load_audio("explosion_defeatedboss.ogg")
