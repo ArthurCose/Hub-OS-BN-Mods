@@ -29,9 +29,13 @@ point label="BUSTER" x="49" y="20"
 
 animation state="BUSTER"
 frame x="354" y="294" w="22" h="16" originx="1" originy="8" duration="0.017"
+point label="ENDPOINT" x="18" y="8"
 frame x="378" y="294" w="22" h="16" originx="1" originy="8" duration="0.033"
+point label="ENDPOINT" x="18" y="8"
 frame x="354" y="294" w="22" h="16" originx="1" originy="8" duration="0.033"
+point label="ENDPOINT" x="18" y="8"
 frame x="354" y="294" w="22" h="16" originx="1" originy="8" duration="0.05"
+point label="ENDPOINT" x="18" y="8"
 
 animation state="CHARACTER_SWING_HILT"
 frame x="53" y="419" w="52" h="61" originx="28" originy="52" duration="0.033"

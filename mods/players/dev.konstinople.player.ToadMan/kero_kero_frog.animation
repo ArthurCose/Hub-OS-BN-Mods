@@ -1,0 +1,24 @@
+animation state="DEFAULT"
+frame x="27" y="38" w="24" h="24" originx="13" originy="18" duration="0.033"
+
+animation state="JUMP"
+frame x="27" y="38" w="24" h="24" originx="13" originy="18" duration="0.017"
+frame x="79" y="1" w="25" h="23" originx="13" originy="17" duration="0.067"
+frame x="1" y="1" w="24" h="35" originx="12" originy="29" duration="0.05"
+
+animation state="2"
+frame x="1" y="1" w="24" h="35" originx="12" originy="29" duration="0.033"
+
+animation state="LAND"
+frame x="1" y="65" w="25" h="22" originx="13" originy="16" duration="0.05"
+frame x="1" y="38" w="24" h="25" originx="13" originy="19" duration="0.05"
+frame x="27" y="38" w="24" h="24" originx="13" originy="18" duration="0.05"
+
+animation state="SPAWN"
+frame x="27" y="1" w="24" h="35" originx="12" originy="29" duration="0.033"
+frame x="53" y="1" w="24" h="35" originx="12" originy="29" duration="0.033"
+frame x="1" y="1" w="24" h="35" originx="12" originy="29" duration="60f"
+
+animation state="DESPAWN"
+frame x="27" y="38" w="24" h="24" originx="13" originy="18" duration="0.05"
+frame x="79" y="26" w="25" h="23" originx="13" originy="17" duration="0.05"

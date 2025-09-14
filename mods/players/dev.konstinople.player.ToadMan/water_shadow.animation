@@ -1,0 +1,8 @@
+animation state="CHARACTER_IDLE"
+frame x="1" y="23" w="28" h="13" originx="14" originy="6" duration="0.017"
+
+animation state="CHARACTER_MOVE"
+frame x="1" y="23" w="28" h="13" originx="14" originy="6" duration="0.017"
+frame x="1" y="23" w="28" h="13" originx="14" originy="6" duration="0.017"
+frame x="31" y="1" w="28" h="16" originx="14" originy="8" duration="0.017"
+frame x="1" y="1" w="28" h="20" originx="14" originy="12" duration="0.017"
