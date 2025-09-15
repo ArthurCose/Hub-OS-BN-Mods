@@ -9,7 +9,7 @@ damage = 140
 element = "break"
 codes = ['I', 'K', 'Y']
 limit = 5
-hit_flags = ["Flinch", "Flash", "PierceGuard"]
+hit_flags = ["Flinch", "Flash", "PierceGuard", "PierceGround"]
 
 [dependencies]
 libraries = ["BattleNetwork.Assets"]

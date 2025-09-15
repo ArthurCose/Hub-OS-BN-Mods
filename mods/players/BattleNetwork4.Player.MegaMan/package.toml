@@ -2,6 +2,7 @@
 category = "player"
 id = "BattleNetwork4.Player.MegaMan"
 name = "MegaMan"
+long_name = "MegaMan (BN4)"
 description = ""
 health = 1000
 icon_texture_path = "icon.png"
@@ -16,7 +17,6 @@ augments = [
     "BattleNetwork4.DarkChipSlots",
     "dev.GladeWoodsgrove.ModularShuffle"
 ]
-
 cards = [
     "BattleNetwork6.Class01.Standard.004",
     "BattleNetwork4.Class01.Standard.130",
@@ -27,7 +27,6 @@ cards = [
     "BattleNetwork4.HiddenAbility.ZapRing",
     "BattleNetwork5.Class02.Mega.007.Poltergeist"
 ]
-
 libraries = [
     "BattleNetwork.Assets",
     "dev.konstinople.library.bomb",
@@ -35,7 +34,6 @@ libraries = [
     "BattleNetwork4.Action.GutsMachGun",
     "dev.konstinople.library.panel_step"
 ]
-
 tile_states = [
     "BattleNetwork5.TileStates.Lava",
     "BattleNetwork6.TileStates.Grass"

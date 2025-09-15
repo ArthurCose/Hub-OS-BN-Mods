@@ -83,7 +83,7 @@ return function(player, form, base_animation_path)
       spell:set_hit_props(
         HitProps.new(
           10 * player:attack_level() + 10,
-          Hit.PierceGuard | Hit.Drag,
+          Hit.PierceGuard | Hit.PierceGround | Hit.Drag,
           Element.Break,
           player:context(),
           Drag.new(player:facing(), 1)

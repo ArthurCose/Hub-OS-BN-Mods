@@ -8,7 +8,7 @@ preview_texture_path = "preview.png"
 codes = ["C", "I", "O"]
 damage = 110
 element = "cursor"
-hit_flags = ["Flinch", "Flash"]
+hit_flags = ["Flinch", "Flash", "PierceGround"]
 description = "Throws a bomb at the enemy"
 limit = 4
 

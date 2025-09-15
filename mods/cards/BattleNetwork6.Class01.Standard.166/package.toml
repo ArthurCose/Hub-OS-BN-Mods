@@ -10,7 +10,7 @@ time_freeze = true
 element = "none"
 description = "20 damage for every stolen sq"
 can_boost = false
-hit_flags = ["Flinch", "PierceInvis", "Drag", "Flash"]
+hit_flags = ["Flinch", "PierceInvis", "PierceGround", "Drag", "Flash"]
 limit = 4
 
 [defines]

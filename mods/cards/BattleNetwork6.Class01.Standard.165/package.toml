@@ -10,7 +10,7 @@ time_freeze = true
 element = "none"
 description = "Steal the edge from enemy!"
 can_boost = false
-hit_flags = ["Flinch"]
+hit_flags = ["Flinch", "PierceGround"]
 
 [defines]
 characters = []

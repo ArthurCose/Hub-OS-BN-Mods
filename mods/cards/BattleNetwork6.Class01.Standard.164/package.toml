@@ -10,7 +10,7 @@ time_freeze = true
 element = "none"
 description = "Steals 1 enemy square!"
 can_boost = false
-hit_flags = ["Flinch"]
+hit_flags = ["Flinch", "PierceGround"]
 
 [dependencies]
 libraries = ["BattleNetwork6.Libraries.PanelGrab"]
