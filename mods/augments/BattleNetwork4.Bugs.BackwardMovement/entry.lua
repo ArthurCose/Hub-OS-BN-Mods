@@ -2,6 +2,12 @@
 function augment_init(augment)
   local owner = augment:owner()
 
+  local foreward_augment = owner:get_augment("BattleNetwork4.Bugs.ForwardMovement")
+
+  if foreward_augment then
+    owner:boost_augment(foreward_augment:id(), -foreward_augment:level())
+  end
+
   local component = owner:create_component(Lifetime.ActiveBattle)
   local frequency = 7
   local time = 0
