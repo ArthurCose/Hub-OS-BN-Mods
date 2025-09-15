@@ -13,7 +13,6 @@ can_boost = false
 limit = 1
 hit_flags = ["Flinch", "Paralyze"]
 card_class = "giga"
-regular_allowed = true
 
 [dependencies]
 augments = ["BattleNetwork6.ArmChange.BugDeathThunder"]
