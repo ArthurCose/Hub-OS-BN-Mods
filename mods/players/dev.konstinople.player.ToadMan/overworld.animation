@@ -4,7 +4,7 @@ frame x="1" y="236" w="22" h="27" originx="11" originy="22" duration="0.1"
 animation state="IDLE_UR"
 frame x="175" y="134" w="22" h="28" originx="8" originy="23" duration="0.1"
 
-animation state="IDLR_R"
+animation state="IDLE_R"
 frame x="276" y="61" w="20" h="29" originx="8" originy="24" duration="0.1"
 
 animation state="IDLE_DR"
