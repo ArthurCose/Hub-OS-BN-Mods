@@ -13,3 +13,6 @@ _*
 # testing
 dev.konstinople.encounter.final_destination_multiman
 dev.konstinople.library.ssb
+
+# scripts
+node_modules
