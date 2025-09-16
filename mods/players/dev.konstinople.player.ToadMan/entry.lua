@@ -344,6 +344,8 @@ local function create_frog_smack_action(player)
   return_step.on_update_func = function()
     if player:current_tile() == original_tile then
       player:set_facing(original_facing)
+      original_tile:remove_reservation_for(player)
+      original_tile = nil
     end
 
     if not player:is_moving() then
@@ -368,6 +370,7 @@ local function create_frog_smack_action(player)
   action.on_action_end_func = function()
     if original_tile then
       original_tile:remove_reservation_for(player)
+      original_tile:add_entity(player)
       player:set_facing(original_facing)
     end
   end
