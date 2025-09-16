@@ -111,7 +111,7 @@ kero_kero_bomb.target_tile_func = function(user)
     for y = 0, Field.height() do
       local tile = Field.tile_at(x, y)
 
-      if tile and tile:team() ~= team then
+      if tile and tile:team() ~= team and not tile:is_edge() then
         has_opponent_tile = true
       end
     end
