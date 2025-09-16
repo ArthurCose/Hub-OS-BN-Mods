@@ -10,7 +10,7 @@ card_class = "giga"
 codes = ["N"]
 damage = 100
 element = "break"
-hit_flags = ["Flinch", "Flash", "PierceGuard", "PierceGround"]
+hit_flags = ["Flinch", "PierceGuard", "PierceGround"]
 time_freeze = true
 limit = 1
 
