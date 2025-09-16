@@ -142,7 +142,7 @@ local function create_obstacle(user, hit_props)
   local defense_rule = DefenseRule.new(DefensePriority.Body, DefenseOrder.CollisionOnly)
 
   defense_rule.defense_func = function(defense, attacker, defender, hit_props)
-    if not sitting then return end
+    if hit_props.flags & Hit.Drain ~= 0 or not sitting then return end
 
     if hit_props.element == Element.Wind or hit_props.secondary_element == Element.Wind then
       target_lifetime = target_lifetime + 10
