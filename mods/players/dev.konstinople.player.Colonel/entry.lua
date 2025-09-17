@@ -286,9 +286,13 @@ local function create_induct_missile_action(player)
   local step = action:create_step()
 
   action.on_execute_func = function()
+    player:set_counterable(true)
+
     local animation = player:animation()
 
     animation:on_complete(function()
+      player:set_counterable(false)
+
       animation:set_state("INDUCT_MISSILE_LOOP")
       animation:set_playback(Playback.Loop)
 
@@ -308,6 +312,10 @@ local function create_induct_missile_action(player)
         spawn_missile(player, directly_targetted)
       end)
     end)
+  end
+
+  action.on_action_end_func = function()
+    player:set_counterable(false)
   end
 
   return action
