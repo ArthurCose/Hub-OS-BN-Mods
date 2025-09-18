@@ -14,5 +14,7 @@ limit = 3
 long_description = "For 6 seconds most attacks will pass through you. Any attack that can pierce Flashing will break it."
 can_boost = false
 
+tags = ["EXE6", "BN6", "APPLY_RUSH"]
+
 [dependencies]
 libraries = ["BattleNetwork.Assets"]
