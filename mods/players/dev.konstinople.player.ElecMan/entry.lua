@@ -351,4 +351,51 @@ function player_init(player)
     card.damage = 40 + player:attack_level() * 20
     button = player:set_fixed_card(card)
   end
+
+  -- intro
+  player.intro_func = function()
+    local action = Action.new(player, "V_THUNDERBOLT_START")
+    action:set_lockout(ActionLockout.new_sequence())
+
+    local animate_step = action:create_step()
+
+    local wait_time = 16
+    local wait_step = action:create_step()
+    wait_step.on_update_func = function()
+      if wait_time > 0 then
+        wait_time = wait_time - 1
+        return
+      end
+
+      wait_step:complete_step()
+    end
+
+    action.on_execute_func = function()
+      Resources.play_audio(THUNDERBOLT_SFX)
+
+      local animation = player:animation()
+      animation:on_complete(function()
+        local i = 0
+
+        animation:set_state("V_THUNDERBOLT_LOOP")
+        animation:set_playback(Playback.Loop)
+
+        animation:on_complete(function()
+          if i < 3 then
+            i = i + 1
+            return
+          end
+
+          animation:set_state("V_THUNDERBOLT_START")
+          animation:set_playback(Playback.Reverse)
+
+          animation:on_complete(function()
+            animate_step:complete_step()
+          end)
+        end)
+      end)
+    end
+
+    return action
+  end
 end
