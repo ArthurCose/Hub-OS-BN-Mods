@@ -4,12 +4,14 @@ id = "dev.konstinople.player.ElecMan"
 name = "ElecMan"
 long_name = "ElecMan"
 description = "Let's make every day a real shocker."
+long_description = "Charged Attack =\nThunderbolt\n\nSpecial =\nThrow ElecRod\n\nElec Chips+50"
+health = 1000
+element = "elec"
 preview_texture_path = "preview.png"
 overworld_animation_path = "overworld.animation"
 overworld_texture_path = "overworld.png"
 mugshot_texture_path = "mug.png"
 mugshot_animation_path = "mug.animation"
-health = 1000
 emotions_texture_path = "emotions.png"
 emotions_animation_path = "emotions.animation"
 

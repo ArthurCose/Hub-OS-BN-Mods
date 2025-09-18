@@ -212,7 +212,7 @@ function player_init(player)
   player:set_height(60.0)
   player:load_animation("battle.animation")
   player:set_texture(Resources.load_texture("battle.png"))
-  player:ignoring_negative_tile_effects()
+  player:ignore_negative_tile_effects()
 
   player:set_charge_position(2, -38)
 
