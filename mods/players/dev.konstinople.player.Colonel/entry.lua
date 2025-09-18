@@ -342,7 +342,7 @@ function player_init(player)
   -- cape
   local cape_cooldown = 0
 
-  player.on_update_func = function()
+  player:create_component(Lifetime.ActiveBattle).on_update_func = function()
     if cape_cooldown > 0 then
       cape_cooldown = cape_cooldown - 1
     end
