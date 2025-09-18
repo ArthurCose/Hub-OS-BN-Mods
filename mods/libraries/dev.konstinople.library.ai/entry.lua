@@ -447,7 +447,7 @@ function Lib.pick_same_team_tile(entity)
   local team = entity:team()
 
   local tiles = Field.find_tiles(function(tile)
-    return entity:can_move_to(tile) and current_tile ~= tile and tile:team() == team
+    return entity:can_move_to(tile) and current_tile ~= tile and (tile:team() == team or tile:team() == Team.Other)
   end)
 
   if #tiles == 0 then

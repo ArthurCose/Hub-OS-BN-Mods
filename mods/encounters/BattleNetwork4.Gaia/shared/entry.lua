@@ -159,7 +159,7 @@ return function(character, gaia_props)
             effects_spell:set_hit_props(
               HitProps.new(
                 0,
-                Hit.PierceGround,
+                Hit.Drain | Hit.PierceGround,
                 Element.None
               )
             )

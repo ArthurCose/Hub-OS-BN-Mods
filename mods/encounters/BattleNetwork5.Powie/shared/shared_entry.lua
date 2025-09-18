@@ -1,9 +1,13 @@
+local bn_assets = require("BattleNetwork.Assets")
 local idle
 
 local JUMP_HEIGHT = 120
 local DROP_ELEVATION = 120
 
-local THUD_SFX = Resources.load_audio("thud_compressed.ogg") -- not the right audio, but close
+local THUD_SFX = Resources.load_audio("golmhit_high.ogg") -- not the right audio, but close
+
+local EXPLOSION_TEXTURE = bn_assets.load_texture("spell_explosion.png")
+local EXPLOSION_ANIM_PATH = bn_assets.fetch_animation_path("spell_explosion.animation")
 
 ---@class _BattleNetwork5.Powie: Entity
 ---@field _damage number
@@ -58,39 +62,45 @@ local function create_hitbody_spell(character)
 end
 
 ---@param character _BattleNetwork5.Powie
-local function create_after_shock(character, x_offset, y_offset)
+local function spawn_after_shock(character, x_offset, y_offset)
   local start_tile = character:current_tile()
 
   local tile = Field.tile_at(start_tile:x() + x_offset, start_tile:y() + y_offset)
 
   if not tile then
-    return
+    return false
   end
-
-  local explosion = Explosion.new()
-  Field.spawn(explosion, tile)
 
   local spell = Spell.new(character:team())
   spell:set_hit_props(create_hitprops(character))
+  spell:set_texture(EXPLOSION_TEXTURE)
 
-  spell.on_update_func = function()
+  local anim = spell:animation()
+  anim:load(EXPLOSION_ANIM_PATH)
+  anim:set_state("DEFAULT")
+  anim:on_complete(function()
+    spell:delete()
+  end)
+
+  spell.on_spawn_func = function()
     spell:attack_tile()
-    spell:erase()
   end
 
   Field.spawn(spell, tile)
+
+  return true
 end
 
 ---@param character _BattleNetwork5.Powie
-local function create_after_shocks(character)
+local function spawn_after_shocks(character)
   if character._shock_shape == "column" then
-    create_after_shock(character, 0, -1)
-    create_after_shock(character, 0, 1)
+    spawn_after_shock(character, 0, -1)
+    spawn_after_shock(character, 0, 1)
   elseif character._shock_shape == "cross" then
-    create_after_shock(character, 0, -1)
-    create_after_shock(character, 0, 1)
-    create_after_shock(character, -1, 0)
-    create_after_shock(character, 1, 0)
+    spawn_after_shock(character, 0, -1)
+    spawn_after_shock(character, 0, 1)
+    spawn_after_shock(character, -1, 0)
+    spawn_after_shock(character, 1, 0)
   end
 end
 
@@ -157,7 +167,7 @@ local function land(character, return_tile, hitbody_spell)
   end
 
   Resources.play_audio(THUD_SFX, AudioBehavior.Default)
-  create_after_shocks(character)
+  spawn_after_shocks(character)
   character:enable_hitbox(true)
   Field.shake(8.0, 1.0 * 60)
 
@@ -395,7 +405,11 @@ local function shared_package_init(character)
       return not has_teammate and character._target_tile:x() == tile:x() and character._target_tile:y() == tile:y()
     end
 
-    if not tile:is_walkable() or tile:team() ~= character:team() or tile:is_reserved({ character:id() }) then
+    if tile:team() ~= character:team() and tile:team() ~= Team.Other then
+      return false
+    end
+
+    if not tile:is_walkable() or tile:is_reserved({ character:id() }) then
       return false
     end
 

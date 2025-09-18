@@ -18,6 +18,4 @@ id = "BattleNetwork5.Powie3.Enemy"
 path = "powie3"
 
 [dependencies]
-characters = []
-libraries = []
-cards = []
+libraries = ["BattleNetwork.Assets"]
