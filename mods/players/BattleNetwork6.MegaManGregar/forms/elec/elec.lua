@@ -4,8 +4,8 @@ local shared = require("../shared")
 
 local FORM_MUG = _folder_path .. "mug.png"
 
-local THUNDERBOLT_TEXTURE = Resources.load_texture("thunderbolt.png")
-local THUNDERBOLT_ANIMATION_PATH = _folder_path .. "thunderbolt.animation"
+local THUNDERBOLT_TEXTURE = bn_assets.load_texture("thunderbolt.png")
+local THUNDERBOLT_ANIMATION_PATH = bn_assets.fetch_animation_path("thunderbolt.animation")
 local THUNDERBOLT_SFX = bn_assets.load_audio("dollthunder.ogg")
 
 ---@param player Entity
@@ -43,6 +43,7 @@ return function(player, form, base_animation_path)
     local frames = { { 1, 10 }, { 1, 3 }, { 2, 2 }, { 1, 3 }, { 2, 2 }, { 1, 3 }, { 2, 2 }, { 1, 6 } }
 
     action:override_animation_frames(frames)
+    local spell_offset
 
     action.on_execute_func = function()
       local buster = action:create_attachment("BUSTER")
@@ -55,61 +56,66 @@ return function(player, form, base_animation_path)
       buster_anim:load(_folder_path .. "battle.animation")
       buster_anim:set_state("BUSTER", frames)
 
+      local buster_offset = player:animation():relative_point("BUSTER")
+      spell_offset = buster_anim:relative_point("ENDPOINT")
+      spell_offset.x = spell_offset.x + buster_offset.x
+      spell_offset.y = spell_offset.y + buster_offset.y
+
       player:set_counterable(true)
     end
 
     action:add_anim_action(2, function()
       Resources.play_audio(THUNDERBOLT_SFX)
 
+      local tile = player:current_tile()
       local facing = player:facing()
-      local tile = player:get_tile(facing, 1)
 
-      if tile then
-        local spell = Spell.new(player:team())
-        spell:set_facing(facing)
-        spell:set_texture(THUNDERBOLT_TEXTURE)
+      local spell = Spell.new(player:team())
+      spell:set_offset(spell_offset.x, spell_offset.y)
+      spell:set_facing(facing)
+      spell:set_layer(1)
+      spell:set_texture(THUNDERBOLT_TEXTURE)
 
-        local spell_anim = spell:animation()
-        spell_anim:load(THUNDERBOLT_ANIMATION_PATH)
-        spell_anim:set_state("DEFAULT")
-        spell_anim:set_playback(Playback.Loop)
+      local spell_anim = spell:animation()
+      spell_anim:load(THUNDERBOLT_ANIMATION_PATH)
+      spell_anim:set_state("DEFAULT")
+      spell_anim:set_playback(Playback.Loop)
 
-        spell:set_hit_props(HitProps.new(
-          20 * player:attack_level() + 40,
-          Hit.Flinch | Hit.Flash,
-          Element.Elec,
-          player:context()
-        ))
+      spell:set_hit_props(HitProps.new(
+        20 * player:attack_level() + 40,
+        Hit.Flinch | Hit.Flash,
+        Element.Elec,
+        player:context()
+      ))
 
-        local attack_list = { tile }
+      local attack_list = { tile }
 
-        for i = 1, 4 do
-          local new_tile = tile:get_tile(facing, i)
-          if new_tile then
-            attack_list[#attack_list + 1] = new_tile
-          end
+      for i = 1, 5 do
+        local new_tile = tile:get_tile(facing, i)
+        if new_tile then
+          attack_list[#attack_list + 1] = new_tile
         end
-
-        local time = 0
-
-        spell.on_update_func = function()
-          for _, tile in ipairs(attack_list) do
-            spell:attack_tile(tile)
-          end
-
-          time = time + 1
-
-          if time >= 14 then
-            spell:delete()
-          end
-        end
-
-        spell.on_collision_func = function(_, other)
-          shared.spawn_hit_artifact(other, "ELEC", math.random(-8, 8), -other:height() // 2 + math.random(-8, 8))
-        end
-
-        Field.spawn(spell, tile)
       end
+
+      local time = 0
+
+      spell.on_update_func = function()
+        for _, tile in ipairs(attack_list) do
+          spell:attack_tile(tile)
+        end
+
+        time = time + 1
+
+        if time >= 14 then
+          spell:delete()
+        end
+      end
+
+      spell.on_attack_func = function(_, other)
+        shared.spawn_hit_artifact(other, "ELEC", math.random(-8, 8), -other:height() // 2 + math.random(-8, 8))
+      end
+
+      Field.spawn(spell, tile)
     end)
 
     action:add_anim_action(4, function()
