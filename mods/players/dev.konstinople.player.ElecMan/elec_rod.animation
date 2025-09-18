@@ -1,0 +1,14 @@
+animation state="DEFAULT"
+frame x="1" y="109" w="16" h="35" originx="8" originy="32" duration="0.033"
+
+animation state="SPAWN"
+frame x="1" y="1" w="16" h="35" originx="8" originy="32" duration="0.05"
+frame x="1" y="37" w="16" h="35" originx="8" originy="32" duration="0.033"
+frame x="1" y="73" w="16" h="35" originx="8" originy="32" duration="0.033"
+frame x="1" y="109" w="16" h="35" originx="8" originy="32" duration="0.033"
+
+animation state="SHOCK"
+frame x="18" y="1" w="28" h="196" originx="14" originy="112" duration="0.033"
+frame x="47" y="1" w="18" h="194" originx="9" originy="111" duration="0.033"
+frame x="85" y="1" w="16" h="198" originx="8" originy="112" duration="0.033"
+frame x="66" y="1" w="18" h="197" originx="9" originy="111" duration="0.033"
