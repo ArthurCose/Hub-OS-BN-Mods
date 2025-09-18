@@ -45,6 +45,7 @@ end
 ---@param user Entity
 function create_spell(spells, user, props, x_offset, y_offset)
 	local h_tile = user:get_tile(user:facing(), x_offset)
+	if not h_tile then return end
 	local tile = h_tile:get_tile(Direction.Down, y_offset)
 
 	if not tile then
@@ -75,7 +76,8 @@ function spawn_artifact(spells, user, state)
 	local tile = user:get_tile(user:facing(), 1)
 	if not tile then return end
 
-	local fx = Artifact.new()
+	-- using spell to avoid weird time freeze quirks
+	local fx = Spell.new()
 	fx:set_facing(user:facing())
 	local anim = fx:animation()
 	fx:set_texture(SLASH_TEXTURE)

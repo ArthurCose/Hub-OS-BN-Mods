@@ -70,7 +70,8 @@ function spawn_artifact(spells, user, state)
 	local tile = user:get_tile(user:facing(), 1)
 	if not tile then return end
 
-	local fx = Artifact.new()
+	-- using spell to avoid weird time freeze quirks
+	local fx = Spell.new()
 	fx:set_facing(user:facing())
 	local anim = fx:animation()
 	fx:set_texture(SLASH_TEXTURE)
