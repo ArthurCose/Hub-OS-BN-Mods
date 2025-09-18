@@ -16,6 +16,10 @@ emotions_texture_path = "emotions.png"
 emotions_animation_path = "emotions.animation"
 
 [dependencies]
-libraries = ["BattleNetwork.Assets", "BattleNetwork.Emotions"]
+libraries = [
+  "BattleNetwork.Assets",
+  "BattleNetwork.Emotions",
+  "dev.konstinople.library.bomb"
+]
 cards = ["BattleNetwork5.Class06.Fixed.006.Colonel"]
 tile_states = ["BattleNetwork5.TileStates.Sea"]
