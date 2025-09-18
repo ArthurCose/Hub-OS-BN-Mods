@@ -108,13 +108,18 @@ local function create_elec_rod()
   rod:set_texture(ROD_TEXTURE)
   rod:set_shadow(ROD_SHADOW)
 
-  rod:set_hit_props(
-    HitProps.new(
-      50,
-      Hit.Paralyze | Hit.Flinch | Hit.Flash,
-      Element.Elec
-    )
+  local null_hit_props = HitProps.new(
+    50,
+    Hit.Flinch,
+    Element.None
   )
+  local elec_hit_props = HitProps.new(
+    50,
+    Hit.Paralyze | Hit.Flinch | Hit.Flash,
+    Element.Elec
+  )
+
+  rod:set_hit_props(null_hit_props)
 
   rod:add_aux_prop(AuxProp.new():declare_immunity(~Hit.None))
 
@@ -146,11 +151,13 @@ local function create_elec_rod()
     end
 
     attacking = true
+    rod:set_hit_props(elec_hit_props)
 
     animation:set_state("SHOCK")
     animation:on_complete(function()
       attacking = false
       animation:set_state("SPAWN")
+      rod:set_hit_props(null_hit_props)
     end)
   end
 
@@ -181,7 +188,9 @@ local function create_elec_rod()
   end
 
   rod.on_attack_func = function(_, other)
-    spawn_hit_artifact(other)
+    if attacking then
+      spawn_hit_artifact(other)
+    end
   end
 
   rod.on_delete_func = function()
