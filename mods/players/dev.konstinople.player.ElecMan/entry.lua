@@ -45,10 +45,15 @@ local function spawn_h_thunderbolt(player)
   local spell_offset = player:animation():relative_point("POINTER")
 
   local spell = Spell.new(player:team())
-  spell:set_offset(spell_offset.x, spell_offset.y)
   spell:set_facing(facing)
   spell:set_layer(1)
   spell:set_texture(THUNDERBOLT_TEXTURE)
+
+  if facing == Direction.Right then
+    spell:set_offset(spell_offset.x, spell_offset.y)
+  else
+    spell:set_offset(-spell_offset.x, spell_offset.y)
+  end
 
   local spell_anim = spell:animation()
   spell_anim:load(THUNDERBOLT_ANIMATION_PATH)
