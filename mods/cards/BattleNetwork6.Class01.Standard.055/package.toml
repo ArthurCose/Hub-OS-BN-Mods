@@ -7,7 +7,7 @@ name = "MachGun1"
 description = "Fire 9sts at row w/ clst enmy"
 codes = ["A", "R", "T", "*"]
 element = "cursor"
-hit_flags = ["Flinch"]
+hit_flags = ["Flinch", "PierceGround"]
 damage = 30
 limit = 5
 
