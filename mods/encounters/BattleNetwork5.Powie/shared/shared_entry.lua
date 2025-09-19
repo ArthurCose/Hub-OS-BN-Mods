@@ -4,7 +4,7 @@ local idle
 local JUMP_HEIGHT = 120
 local DROP_ELEVATION = 120
 
-local THUD_SFX = Resources.load_audio("golmhit_high.ogg") -- not the right audio, but close
+local THUD_SFX = bn_assets.load_audio("golmhit_high.ogg") -- not the right audio, but close
 
 local EXPLOSION_TEXTURE = bn_assets.load_texture("spell_explosion.png")
 local EXPLOSION_ANIM_PATH = bn_assets.fetch_animation_path("spell_explosion.animation")
