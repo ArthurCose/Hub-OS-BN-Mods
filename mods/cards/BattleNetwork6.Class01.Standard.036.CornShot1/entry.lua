@@ -1,158 +1,129 @@
 local bn_helpers = require("BattleNetwork.Assets")
 
-local attachment_animation_path = bn_helpers.fetch_animation_path("bn6_cornshot_buster.animation")
-local explosion_animation_path = bn_helpers.fetch_animation_path("explosion_energy_bomb.animation")
-
 local BUSTER_TEXTURE = bn_helpers.load_texture("bn6_cornshot_buster.png")
-local IMPACT_TEXTURE = bn_helpers.load_texture("explosion_energy_bomb.png")
+local BUSTER_ANIM_PATH = bn_helpers.fetch_animation_path("bn6_cornshot_buster.animation")
+
+local EXPLOSION_TEXTURE = bn_helpers.load_texture("explosion_energy_bomb.png")
+local EXPLOSION_ANIM_PATH = bn_helpers.fetch_animation_path("explosion_energy_bomb.animation")
 
 local AUDIO = bn_helpers.load_audio("circusman_clap.ogg")
 
-local function create_and_spawn_explosion(spell, spawn_tile)
-	if spawn_tile == nil or spawn_tile:is_edge() then return end
-	if #spawn_tile:find_entities(function(ent)
-				if Character.from(ent) == nil then return false end
-				if not ent:hittable() then return false end
-				if ent:team() == spell:team() then return false end
-				return true
-			end) == 0 then
-		return
+---@param hit_props HitProps
+---@param team Team
+---@param facing Direction
+---@param spawn_tile Tile?
+local function spawn_explosion(team, facing, hit_props, spawn_tile)
+	if not spawn_tile then return end
+
+	-- start invisible
+	local explosion = Spell.new(team)
+	explosion:set_facing(facing)
+	explosion:set_hit_props(hit_props)
+
+	-- attack on the first frame
+	explosion.on_spawn_func = function()
+		explosion:attack_tile()
 	end
 
-	local explosion = Spell.new(spell:team())
-
-	explosion:set_facing(spell:facing())
-
-	explosion:sprite():set_texture(IMPACT_TEXTURE)
-
-	explosion:set_hit_props(spell:copy_hit_props())
-
-	local explosion_anim = explosion:animation()
-	explosion_anim:load(explosion_animation_path)
-	explosion_anim:set_state("CORN")
-
-	explosion_anim:on_frame(6, function()
-		explosion._can_attack = true
-	end)
-
-	explosion._has_collided = false
-
-	explosion_anim:on_complete(function()
-		explosion:hide()
-	end)
-
-	explosion._timer = 12
+	local has_collided = false
+	local time = 0
 
 	explosion.on_update_func = function(self)
-		if self._has_collided == true then
-			self._timer = self._timer - 1
-			if self._timer == 0 then
-				self:delete()
-			end
-			return
-		end
+		time = time + 1
 
-		if self._can_attack == true then self:attack_tile() end
+		if time == 2 and not has_collided then
+			-- delete if we didn't hit anything on the first frame
+			explosion:delete()
+		elseif time == 13 then
+			-- spawn new explosions
+			local dir = self:facing()
+			local tile_forward = spawn_tile:get_tile(dir, 1)
+			local tile_up_forward = spawn_tile:get_tile(Direction.join(dir, Direction.Up), 1)
+			local tile_down_forward = spawn_tile:get_tile(Direction.join(dir, Direction.Down), 1)
+
+			spawn_explosion(team, facing, hit_props, tile_forward)
+			spawn_explosion(team, facing, hit_props, tile_up_forward)
+			spawn_explosion(team, facing, hit_props, tile_down_forward)
+
+			explosion:current_tile():set_state(TileState.Grass)
+		end
 	end
 
-	explosion.on_collision_func = function(self, other)
-		self._has_collided = true
+	explosion.on_collision_func = function()
+		if has_collided then return end
+		has_collided = true
 
-		local dir = self:facing()
-		local tile_forward = spawn_tile:get_tile(dir, 1)
-		local tile_up_forward = spawn_tile:get_tile(Direction.join(dir, Direction.Up), 1)
-		local tile_down_forward = spawn_tile:get_tile(Direction.join(dir, Direction.Down), 1)
+		-- display explosion animation
+		explosion:set_texture(EXPLOSION_TEXTURE)
 
-		create_and_spawn_explosion(self, tile_forward)
-		create_and_spawn_explosion(self, tile_up_forward)
-		create_and_spawn_explosion(self, tile_down_forward)
+		local explosion_anim = explosion:animation()
+		explosion_anim:load(EXPLOSION_ANIM_PATH)
+		explosion_anim:set_state("CORN")
 
-		other:current_tile():set_state(TileState.Grass)
+		explosion_anim:on_complete(function()
+			explosion:delete()
+		end)
 	end
 
 	-- spawn the explosion
 	Field.spawn(explosion, spawn_tile)
 end
 
-local function create_attack(user, props, context, facing, is_recipe)
+---@param user Entity
+---@param props CardProperties
+---@param context AttackContext
+local function create_projectile(user, props, context)
 	local spell = Spell.new(user:team())
-
-	spell._facing = facing
-
-	spell:set_facing(facing)
-	spell:set_hit_props(
-		HitProps.from_card(
-			props,
-			context,
-			Drag.None
-		)
-	)
-	-- store starting tile as the user's own tile
-	spell._tile = user:current_tile();
-	spell._has_collided = false
-	spell._timer = 13
-	spell._collision_tile = nil
+	spell:set_facing(user:facing())
+	spell:set_hit_props(HitProps.new(0, Hit.Drain, Element.None))
 
 	-- Spell cycles this every frame.
-	spell.on_update_func = function(self)
+	spell.on_update_func = function()
 		-- If the current tile is an edge tile, immediately remove the spell and do nothing else.
-		if self._tile:is_edge() then
-			self:erase()
-			return
-		end
-
-		if self._has_collided == true then
-			self._timer = self._timer - 1
-
-			if self._timer == 0 then
-				self:delete()
-			end
-
+		if spell:current_tile():is_edge() then
+			spell:delete()
 			return
 		end
 
 		-- Remember your ABCs: Always Be Casting.
 		-- Most attacks try to land a hit every frame!
-		self._tile:attack_entities(self)
+		spell:attack_tile()
 
 		-- Obtain a destination tile
-		local dest = self:get_tile(self._facing, 1);
+		local dest = spell:get_tile(spell:facing(), 1)
 
 		-- Move every frame
-		self:teleport(dest, function()
-			spell._tile = dest;
-		end)
+		spell:teleport(dest)
 	end
 
 	-- Upon hitting anything, delete self after exploding
-	spell.on_collision_func = function(self, other)
-		self._has_collided = true
+	local collided = false
+	spell.on_collision_func = function()
+		if collided then
+			return
+		end
 
-		create_and_spawn_explosion(self, other:current_tile())
+		collided = true
 
-		other:current_tile():set_state(TileState.Grass)
-	end
+		local hit_props = HitProps.from_card(
+			props,
+			context,
+			Drag.None
+		)
 
-	-- On delete, simply remove the spell.
-	spell.on_delete_func = function(self)
-		self:erase()
-	end
+		spawn_explosion(spell:team(), spell:facing(), hit_props, spell:current_tile())
 
-	-- As an invisible projectile no tile blocks its passage
-	-- Returning true without checking tiles means the spell can always proceed
-	spell.can_move_to_func = function(tile)
-		return not spell._has_collided
+		spell:current_tile():set_state(TileState.Grass)
 	end
 
 	-- return the attack we created for spawning.
 	return spell
 end
 
-function card_init(actor, props)
-	local context = actor:context();
-
-	-- Decide animation state based on which cannon is being used.
-	local action = Action.new(actor, "CHARACTER_SHOOT");
+---@param user Entity
+---@param props CardProperties
+function card_init(user, props)
+	local action = Action.new(user, "CHARACTER_SHOOT")
 	action:set_lockout(ActionLockout.new_async(24))
 
 	local frame_override_list = {
@@ -162,38 +133,22 @@ function card_init(actor, props)
 		{ 4, 18 }
 	}
 
-	action:override_animation_frames(
-		frame_override_list
-	)
+	action:override_animation_frames(frame_override_list)
 
 	action.on_execute_func = function(self, user)
-		-- obtain direction user is facing to not call this more than once
-		local facing = user:facing();
+		user:set_counterable(true)
 
-		-- add action on animation index 1
-		self:add_anim_action(1, function()
-			-- action starts, enable countering
-			user:set_counterable(true);
-		end)
+		-- create attachment
+		local buster = self:create_attachment("BUSTER")
+		local buster_sprite = buster:sprite()
 
-		self:add_anim_action(1, function()
-			-- create cannon arm attachment
-			local buster = self:create_attachment("BUSTER")
+		buster_sprite:set_texture(BUSTER_TEXTURE)
+		buster_sprite:set_layer(-1)
+		buster_sprite:use_root_shader()
 
-			-- obtain the sprite so we don't have to call it more than once
-			local buster_sprite = buster:sprite()
-
-			-- Set the texture
-			buster_sprite:set_texture(BUSTER_TEXTURE)
-			buster_sprite:set_layer(-1)
-			buster_sprite:use_root_shader()
-
-			-- Create cannon arm attachment animation
-			local buster_anim = buster:animation()
-			buster_anim:load(attachment_animation_path)
-
-			buster_anim:set_state("DEFAULT")
-		end)
+		local buster_anim = buster:animation()
+		buster_anim:load(BUSTER_ANIM_PATH)
+		buster_anim:set_state("DEFAULT")
 
 		self:add_anim_action(2, function()
 			-- play a sound to indicate the attack.
@@ -203,13 +158,17 @@ function card_init(actor, props)
 			user:set_counterable(false)
 
 			-- create the attack itself
-			local cannonshot = create_attack(user, props, context, facing, props.short_name == "CornFst")
+			local spell = create_projectile(user, props, user:context())
 
 			-- obtain tile to spawn the attack on and spawn it using the field
 			local tile = user:current_tile()
-			Field.spawn(cannonshot, tile)
+			Field.spawn(spell, tile)
 		end)
 	end
 
-	return action;
+	action.on_action_end_func = function()
+		user:set_counterable(false)
+	end
+
+	return action
 end
