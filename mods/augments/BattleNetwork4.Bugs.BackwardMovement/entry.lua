@@ -18,19 +18,12 @@ function augment_init(augment)
     if time % frequency ~= 0 then return end
     if owner:is_moving() or owner:has_actions() then return end
 
-    -- whether this player is facing the default facing direction
-    local facing_flipped = owner:facing() ~= Direction.Right
-
-    if owner:team() == Team.Blue then
-      facing_flipped = not facing_flipped
-    end
-
     -- avoid moving the player if they are fighting the movement
-    if facing_flipped then
-      if owner:input_has(Input.Held.Left) then
-        return
-      end
-    elseif owner:input_has(Input.Held.Right) then
+    if owner:input_has(Input.Held.Left) or
+        owner:input_has(Input.Held.Right) or
+        owner:input_has(Input.Held.Up) or
+        owner:input_has(Input.Held.Down)
+    then
       return
     end
 
