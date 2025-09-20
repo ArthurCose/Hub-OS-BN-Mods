@@ -58,24 +58,31 @@ function Synchro:implement(player)
   ring_sprite:set_layer(-1)
   ring_sprite:set_texture(SYNCHRO_TEXTURE)
 
-  if self.ring_offset then
-    ring_sprite:set_offset(self.ring_offset[1], self.ring_offset[2])
-  else
-    ring_sprite:set_offset(0, -math.floor(player:height() / 2))
-  end
-
   local animation = Animation.new(SYNCHRO_ANIMATION_PATH)
   animation:set_state(self.ring_animation_state or "DEFAULT")
   animation:set_playback(Playback.Loop)
   animation:apply(ring_sprite)
 
-  local component = player:create_component(Lifetime.ActiveBattle)
+  local animate_func = function()
+    local visible = player:emotion() == EMOTION_NAME
+    ring_sprite:set_visible(visible)
 
-  component.on_update_func = function()
-    ring_sprite:set_visible(player:emotion() == EMOTION_NAME)
+    if not visible then return end
+
+    if self.ring_offset then
+      ring_sprite:set_offset(self.ring_offset[1], self.ring_offset[2])
+    else
+      local offset = player:charge_position()
+      ring_sprite:set_offset(offset.x, offset.y)
+    end
+
     animation:apply(ring_sprite)
     animation:update()
   end
+
+  local component = player:create_component(Lifetime.ActiveBattle)
+  component.on_update_func = animate_func
+  animate_func()
 
   -- colors
   local color_component = player:create_component(Lifetime.Scene)
@@ -86,7 +93,7 @@ function Synchro:implement(player)
 
   local counterable_tracking = {}
 
-  color_component.on_update_func = function()
+  local color_func = function()
     if player:emotion() ~= EMOTION_NAME then
       return
     end
@@ -132,6 +139,9 @@ function Synchro:implement(player)
       end
     end
   end
+
+  color_component.on_update_func = color_func
+  color_func()
 end
 
 ---@class BattleNetwork.Emotions
