@@ -10,10 +10,10 @@ local NAVI_ANIM_PATH = bn_assets.fetch_animation_path("navi_judgeman.animation")
 local ATTACK_AUDIO = bn_assets.load_audio("judgeman_whip.ogg")
 local APPEAR_AUDIO = bn_assets.load_audio("appear.ogg")
 
----@param actor Entity
+---@param user Entity
 ---@param props CardProperties
-function card_init(actor, props)
-	local action = Action.new(actor, "CHARACTER_MOVE")
+function card_init(user, props)
+	local action = Action.new(user, "CHARACTER_MOVE")
 
 	local book_damage = 20
 	for _, tag in ipairs(props.tags) do
@@ -36,7 +36,7 @@ function card_init(actor, props)
 	local end_timer_started = false
 	local end_timer = 50
 
-	local previously_visible;
+	local previously_visible = user:sprite():visible()
 
 	action.on_execute_func = function(self, user)
 		previously_visible = user:sprite():visible()

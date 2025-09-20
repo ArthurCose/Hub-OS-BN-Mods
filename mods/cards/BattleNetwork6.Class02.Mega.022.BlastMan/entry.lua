@@ -16,7 +16,7 @@ function card_init(user, props)
 
 	local end_timer = 6 * (Field.width() + 2)
 	local end_timer_started = false
-	local previously_visible
+	local previously_visible = user:sprite():visible()
 
 	local function attempt_fireball(tile)
 		if not tile then

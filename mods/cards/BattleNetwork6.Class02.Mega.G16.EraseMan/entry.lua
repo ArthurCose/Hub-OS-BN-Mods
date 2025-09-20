@@ -46,7 +46,7 @@ function card_init(user, props)
 		direction_change_timer = 20
 	end
 
-	local previously_visible
+	local previously_visible = user:sprite():visible()
 
 	---@type Entity
 	local navi
