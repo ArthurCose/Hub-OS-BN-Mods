@@ -1,0 +1,18 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program07.FirstBarrier"
+name = "FstBarr"
+flat = true
+description = "Start with Barrier"
+colors = [ "blue" ]
+shape = [
+  [ 0, 0, 0, 0, 0 ],
+  [ 0, 0, 1, 0, 0 ],
+  [ 0, 0, 1, 1, 0 ],
+  [ 0, 0, 0, 0, 0 ],
+  [ 0, 0, 0, 0, 0 ]
+]
+byproducts = ["BattleNetwork6.Bugs.WarpStep"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

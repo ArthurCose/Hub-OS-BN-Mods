@@ -25,7 +25,7 @@ function create_barrier(user)
 	local HP = 10
 
 	local fading = false
-	local isWind = false
+	local blown_away = false
 	local remove_barrier = false
 
 	local barrier = user:create_node()
@@ -39,13 +39,14 @@ function create_barrier(user)
 	barrier_animation:set_playback(Playback.Loop)
 
 	local barrier_defense_rule = DefenseRule.new(DefensePriority.Barrier, DefenseOrder.Always)
-	barrier_defense_rule.defense_func = function(defense, attacker, defender)
-		local attacker_hit_props = attacker:copy_hit_props()
-		HP = HP - attacker_hit_props.damage
+	barrier_defense_rule.defense_func = function(defense, attacker, defender, hit_props)
+		if hit_props.element == Element.Wind then blown_away = true end
+
+		if hit_props.flags & Hit.Drain ~= 0 then return end
+
+		HP = HP - hit_props.damage
 
 		defense:block_damage()
-
-		if attacker_hit_props.element == Element.Wind then isWind = true end
 	end
 
 	local aura_animate_component = user:create_component(Lifetime.ActiveBattle)
@@ -66,7 +67,7 @@ function create_barrier(user)
 	end
 
 	aura_destroy_component.on_update_func = function(self)
-		if (isWind or HP <= 0 or destroy_aura) then
+		if (blown_away or HP <= 0 or destroy_aura) then
 			remove_barrier = true
 		end
 
@@ -80,7 +81,7 @@ function create_barrier(user)
 				aura_destroy_component:eject()
 			end)
 
-			if isWind then
+			if blown_away then
 				local initialX = barrier:offset().x
 				local initialY = barrier:offset().y
 				local facing_check = 1
