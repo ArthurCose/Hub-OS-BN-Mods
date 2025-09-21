@@ -1,44 +1,55 @@
-local AUDIO = Resources.load_audio("break.ogg")
+local bn_assets = require("BattleNetwork.Assets")
+local AUDIO = bn_assets.load_audio("paneldamage.ogg")
 
 function card_init(actor, props)
-	local bn_helpers = require("BattleNetwork.Assets")
 	local action = Action.new(actor, "CHARACTER_IDLE")
+
 	action:set_lockout(ActionLockout.new_sequence())
-	local tile_array = {}
-	local cooldown = 0
+
+	local tile_list = {}
+
 	action.on_execute_func = function(self, user)
-		for i = 0, 6, 1 do
-			for j = 0, 6, 1 do
-				local tile = Field.tile_at(i, j)
-				if tile and not tile:is_edge() and tile:state() ~= TileState.Broken then
-					table.insert(tile_array, tile)
+		for x = 0, Field.width(), 1 do
+			for y = 0, Field.height(), 1 do
+				local tile = Field.tile_at(x, y)
+				if tile and tile:can_set_state(TileState.Poison) then
+					table.insert(tile_list, tile)
 				end
 			end
 		end
+
+		local shuffled = {}
+
+		for i, v in ipairs(tile_list) do
+			local pos = math.random(1, #shuffled + 1)
+			table.insert(shuffled, pos, v)
+		end
+
 		local step1 = self:create_step()
+
+		local cooldown = 0
+
+		local change_index = 1
+
 		step1.on_update_func = function(self)
-			for k = 0, #tile_array, 1 do
-				if cooldown <= 0 then
-					if #tile_array > 0 then
-						local index = math.random(1, #tile_array)
-						local tile2 = tile_array[index]
-						if tile2:state() ~= TileState.Poison then
-							local fx = bn_helpers.ParticlePoof.new()
-							Field.spawn(fx, tile2)
-							tile2:set_state(TileState.Normal)
-							tile2:set_state(TileState.Poison)
-							Resources.play_audio(AUDIO)
-						else
-							k = k - 1
-						end
-						table.remove(tile_array, index)
-						cooldown = 45
-					else
-						self:complete_step()
-					end
-				else
-					cooldown = cooldown - 1
-				end
+			if change_index > #shuffled then
+				self:complete_step()
+				return
+			end
+
+			if cooldown <= 0 then
+				Resources.play_audio(AUDIO)
+
+				-- Order is entity, tile
+				Field.spawn(bn_assets.ParticlePoof.new(), shuffled[change_index])
+
+				shuffled[change_index]:set_state(TileState.Poison)
+
+				cooldown = 4
+
+				change_index = change_index + 1
+			else
+				cooldown = cooldown - 1
 			end
 		end
 	end

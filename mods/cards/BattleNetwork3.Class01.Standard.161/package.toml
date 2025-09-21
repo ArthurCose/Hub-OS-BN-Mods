@@ -10,17 +10,8 @@ time_freeze = true
 element = "none"
 description = "Turns all panels to swamp!"
 card_class = "standard"
-limit = 2
-
-[defines]
-characters = [ ]
+limit = 1
 
 [dependencies]
-characters = [ ]
-libraries = [
-    "BattleNetwork.Assets"
-]
-cards = [ ]
-tile_states = [
-    "BattleNetwork6.TileStates.Poison"
-]
+libraries = [ "BattleNetwork.Assets" ]
+tile_states = [ "BattleNetwork6.TileStates.Poison" ]

@@ -1,3 +1,5 @@
+local bn_assets = require("BattleNetwork.Assets")
+
 function card_mutate(player, index)
     local left_card = player:field_card(index - 1)
 
@@ -15,11 +17,10 @@ function card_mutate(player, index)
 end
 
 function card_init(actor, props)
-    local ParticlePoof = require("BattleNetwork.SmokePoof")
     local action = Action.new(actor, "CHARACTER_IDLE")
     action.on_execute_func = function(self, user)
-        local fx = ParticlePoof.new()
-        fx:set_height(user:height() * 2)
+        local fx = bn_assets.ParticlePoof.new()
+        fx:set_elevation(user:height() + 20)
         Field.spawn(fx, actor:current_tile())
     end
     return action

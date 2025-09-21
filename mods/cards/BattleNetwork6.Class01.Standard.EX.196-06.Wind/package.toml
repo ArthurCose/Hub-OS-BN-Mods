@@ -18,5 +18,5 @@ characters = [ ]
 
 [dependencies]
 characters = [ ]
-libraries = [ "BattleNetwork.SmokePoof" ]
+libraries = [ "BattleNetwork.Assets" ]
 cards = [ ]

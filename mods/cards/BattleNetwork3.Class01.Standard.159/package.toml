@@ -4,18 +4,13 @@ id = "BattleNetwork3.Class01.Standard.159"
 name = "Geddon1"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "D", "J", "M", "O", "S", "*" ]
+codes = [ "*" ]
 damage = 0
 time_freeze = true
 element = "none"
 description = "Cracks all panels!"
 card_class = "standard"
-limit = 5
-
-[defines]
-characters = [ ]
+limit = 2
 
 [dependencies]
-characters = [ ]
-libraries = [ "BattleNetwork.SmokePoof" ]
-cards = [ ]
+libraries = [ "BattleNetwork.Assets" ]
