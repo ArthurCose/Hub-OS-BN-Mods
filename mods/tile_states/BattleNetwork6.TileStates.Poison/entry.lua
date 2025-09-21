@@ -9,14 +9,6 @@ function tile_state_init(custom_state)
       return
     end
 
-    if not entity:ignoring_negative_tile_effects() then
-      -- drain one hp immediately
-      local aux_prop = AuxProp.new()
-          :drain_health(1)
-          :immediate()
-      entity:add_aux_prop(aux_prop);
-    end
-
     if tracked_auxprops[entity:id()] then
       -- already applied
       return
