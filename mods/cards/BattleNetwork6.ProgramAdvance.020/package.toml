@@ -1,13 +1,14 @@
 [package]
 category = "card"
 id = "BattleNetwork6.ProgramAdvance.020"
-name = "Life Sword"
+name = "LifeSrd"
+long_name = "Life Sword"
 icon_texture_path = "icon.png"
 codes = ["*"]
 damage = 400
 time_freeze = false
 element = "none"
-description = ""
+description = "Slices\n2sq wide\n3sq vrtcl"
 hit_flags = ["Flash", "Flinch"]
 limit = 0
 card_class = "recipe"

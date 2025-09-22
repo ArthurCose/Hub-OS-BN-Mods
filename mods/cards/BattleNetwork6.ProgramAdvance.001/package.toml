@@ -1,7 +1,8 @@
 [package]
 category = "card"
 id = "BattleNetwork6.ProgramAdvance.001"
-name = "Giga Cannon 1"
+name = "GigaCan1"
+long_name = "Giga Cannon 1"
 icon_texture_path = "icon.png"
 codes = ["*"]
 damage = 300
