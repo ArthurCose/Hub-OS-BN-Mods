@@ -12,7 +12,7 @@ element = "break"
 description = "Template for Air Hockey!"
 limit = 0
 hidden = true
-hit_flags = ["Flinch", "PierceGuard", "Shake"]
+hit_flags = ["Flinch", "PierceGuard"]
 
 [defines]
 characters = []
