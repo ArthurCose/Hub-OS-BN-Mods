@@ -1,9 +1,8 @@
 local DEFAULT_FRAME_DATA = { { 1, 5 }, { 2, 4 }, { 3, 3 }, { 4, 5 }, { 5, 4 } }
-local TILE_WIDTH = Tile:width()
-local HALF_TILE_WIDTH = TILE_WIDTH / 2
 
 ---@class Bomb
 ---@field target_tile_func fun(user: Entity): Tile?
+---@field swap_bomb_func fun(action: Action): Entity Called when the bomb is released from the owner's hand, this entity will be passed to the callback in bomb:create_action()
 local Bomb = {}
 Bomb.__index = Bomb
 
@@ -108,10 +107,11 @@ end
 
 ---@param user Entity
 ---@param bomb Entity
+---@param bomb_swapped boolean
 ---@param release_x number
 ---@param release_y number
----@param spell_callback fun(tile?: Tile)
-local function play_standard_animation(user, bomb, release_x, release_y, spell_callback)
+---@param spell_callback fun(tile?: Tile, bomb: Entity)
+local function play_standard_animation(user, bomb, bomb_swapped, release_x, release_y, spell_callback)
   local i = 0
   local x = 0
   local y = release_y - math.abs(release_x) * 0.5
@@ -129,6 +129,8 @@ local function play_standard_animation(user, bomb, release_x, release_y, spell_c
   end
 
   local component
+  local TILE_WIDTH = Tile:width()
+  local HALF_TILE_WIDTH = TILE_WIDTH / 2
 
   local update_tile = function()
     -- necessary for proper sprite layering
@@ -164,10 +166,23 @@ local function play_standard_animation(user, bomb, release_x, release_y, spell_c
     bomb:set_offset(x, 0)
     bomb:set_elevation(-y)
 
-    if progress == 1 then
-      bomb:erase()
-      spell_callback(target_tile)
+    if progress ~= 1 then
+      return
     end
+
+    if bomb_swapped then
+      component:eject()
+      bomb:set_elevation(0)
+
+      if target_tile then
+        bomb:set_offset(0, 0)
+        target_tile:add_entity(bomb)
+      end
+    else
+      bomb:erase()
+    end
+
+    spell_callback(target_tile, bomb)
   end
 
   local rise_func = function()
@@ -198,10 +213,11 @@ end
 
 ---@param bomb Entity
 ---@param target_tile Tile
+---@param bomb_swapped boolean
 ---@param release_x number
 ---@param release_y number
----@param spell_callback fun(tile?: Tile)
-local function play_seeking_animation(bomb, target_tile, release_x, release_y, spell_callback)
+---@param spell_callback fun(tile?: Tile, bomb_entity: Entity)
+local function play_seeking_animation(bomb, bomb_swapped, target_tile, release_x, release_y, spell_callback)
   local y = release_y - math.abs(release_x) * 0.5
 
   local i = 0
@@ -220,8 +236,19 @@ local function play_seeking_animation(bomb, target_tile, release_x, release_y, s
       return
     end
 
-    bomb:erase()
-    spell_callback(target_tile)
+    if bomb_swapped then
+      component:eject()
+      bomb:set_elevation(0)
+
+      if target_tile then
+        bomb:set_offset(0, 0)
+        target_tile:add_entity(bomb)
+      end
+    else
+      bomb:erase()
+    end
+
+    spell_callback(target_tile, bomb)
   end
 
   bomb:jump(target_tile, 60, 40)
@@ -229,7 +256,7 @@ local function play_seeking_animation(bomb, target_tile, release_x, release_y, s
 end
 
 ---@param user Entity
----@param spell_callback fun(tile?: Tile)
+---@param spell_callback fun(tile?: Tile, bomb: Entity)
 function Bomb:create_action(user, spell_callback)
   local action = Action.new(user, "CHARACTER_THROW")
   action:set_lockout(ActionLockout.new_animation())
@@ -278,16 +305,30 @@ function Bomb:create_action(user, spell_callback)
           bomb:set_shadow(self._shadow_texture)
         end
 
-        -- eject component and play the animation
-        component:eject()
-        bomb:set_offset(0, 0)
+        -- release the bomb and play the animation
+        if self.swap_bomb_func then
+          -- swap the bomb
+          local new_bomb = self.swap_bomb_func(action)
+          Field.spawn(new_bomb, bomb:current_tile())
+          bomb:erase()
+          bomb = new_bomb
+
+          bomb.on_spawn_func = function()
+            bomb:current_tile():remove_reservation_for(bomb)
+          end
+        else
+          -- reset the bomb
+          component:eject()
+          bomb:set_offset(0, 0)
+        end
 
         local target_tile = self.target_tile_func and self.target_tile_func(user)
+        local bomb_swapped = self.swap_bomb_func ~= nil
 
         if target_tile then
-          play_seeking_animation(bomb, target_tile, held_x, held_y, spell_callback)
+          play_seeking_animation(bomb, bomb_swapped, target_tile, held_x, held_y, spell_callback)
         else
-          play_standard_animation(user, bomb, held_x, held_y, spell_callback)
+          play_standard_animation(user, bomb, bomb_swapped, held_x, held_y, spell_callback)
         end
 
         -- update animation
