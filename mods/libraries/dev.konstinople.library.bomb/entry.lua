@@ -156,6 +156,7 @@ local function play_standard_animation(user, bomb, bomb_swapped, air_duration, r
         x = x - TILE_WIDTH
 
         next_tile:add_entity(bomb)
+        next_tile:remove_reservation_for(bomb)
       end
     elseif x < -HALF_TILE_WIDTH then
       local next_tile = bomb:get_tile(Direction.Left, 1)
@@ -163,6 +164,7 @@ local function play_standard_animation(user, bomb, bomb_swapped, air_duration, r
       if next_tile then
         x = x + TILE_WIDTH
         next_tile:add_entity(bomb)
+        next_tile:remove_reservation_for(bomb)
       end
     end
   end
@@ -248,6 +250,7 @@ local function play_seeking_animation(bomb, bomb_swapped, target_tile, air_durat
     update_offset()
 
     if bomb:is_moving() then
+      bomb:current_tile():remove_reservation_for(bomb)
       return
     end
 
@@ -257,7 +260,7 @@ local function play_seeking_animation(bomb, bomb_swapped, target_tile, air_durat
 
       if target_tile then
         bomb:set_offset(0, 0)
-        target_tile:add_entity(bomb)
+        target_tile:reserve_for(bomb)
       end
     else
       bomb:erase()
@@ -324,10 +327,6 @@ function Bomb:create_action(user, spell_callback)
           Field.spawn(new_bomb, bomb:current_tile())
           bomb:erase()
           bomb = new_bomb
-
-          bomb.on_spawn_func = function()
-            bomb:current_tile():remove_reservation_for(bomb)
-          end
         else
           -- reset the bomb
           component:eject()
