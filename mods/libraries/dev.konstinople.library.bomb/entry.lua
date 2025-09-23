@@ -193,6 +193,10 @@ local function play_standard_animation(user, bomb, bomb_swapped, air_duration, r
       if target_tile then
         bomb:set_offset(0, 0)
         target_tile:add_entity(bomb)
+
+        if Living.from(bomb) then
+          target_tile:reserve_for(bomb)
+        end
       end
     else
       bomb:erase()
@@ -260,7 +264,10 @@ local function play_seeking_animation(bomb, bomb_swapped, target_tile, air_durat
 
       if target_tile then
         bomb:set_offset(0, 0)
-        target_tile:reserve_for(bomb)
+
+        if Living.from(bomb) then
+          target_tile:reserve_for(bomb)
+        end
       end
     else
       bomb:erase()
