@@ -1,4 +1,5 @@
 local DEFAULT_FRAME_DATA = { { 1, 5 }, { 2, 4 }, { 3, 3 }, { 4, 5 }, { 5, 4 } }
+local DEFAULT_AIR_DURATION = 40
 
 ---@class Bomb
 ---@field target_tile_func fun(user: Entity): Tile?
@@ -20,18 +21,27 @@ function Bomb:set_bomb_shadow(texture)
 end
 
 --- Specifies a bomb animation that must be used.
+---@param animation_path string
 function Bomb:set_bomb_animation_path(animation_path)
   self._bomb_animation_path = animation_path
 end
 
 --- Specifies a bomb animation that must be used.
+---@param animation_state string
 function Bomb:set_bomb_animation_state(animation_state)
   self._bomb_animation_state = animation_state
 end
 
 --- Specifies a bomb animation that must be used.
+---@param animation_state string
 function Bomb:set_bomb_held_animation_state(animation_state)
   self._bomb_held_animation_state = animation_state
+end
+
+--- How long should this bomb be in the air after being released from hand
+---@param duration number
+function Bomb:set_air_duration(duration)
+  self._bomb_air_duration = duration
 end
 
 ---@return [number, number][]
@@ -108,16 +118,22 @@ end
 ---@param user Entity
 ---@param bomb Entity
 ---@param bomb_swapped boolean
+---@param air_duration number
 ---@param release_x number
 ---@param release_y number
 ---@param spell_callback fun(tile?: Tile, bomb: Entity)
-local function play_standard_animation(user, bomb, bomb_swapped, release_x, release_y, spell_callback)
+local function play_standard_animation(user, bomb, bomb_swapped, air_duration, release_x, release_y, spell_callback)
+  local TILE_WIDTH = Tile:width()
+  local HALF_TILE_WIDTH = TILE_WIDTH / 2
+
   local i = 0
   local x = 0
   local y = release_y - math.abs(release_x) * 0.5
-  local vel_x = 3
+  local vel_x = (TILE_WIDTH * 3) / air_duration
 
   local PEAK = -60
+  local rise_duration = 12 / 40 * air_duration
+  local fall_duration = 28 / 40 * air_duration
 
   -- resolve target tile
   local facing_direction = user:facing()
@@ -129,8 +145,6 @@ local function play_standard_animation(user, bomb, bomb_swapped, release_x, rele
   end
 
   local component
-  local TILE_WIDTH = Tile:width()
-  local HALF_TILE_WIDTH = TILE_WIDTH / 2
 
   local update_tile = function()
     -- necessary for proper sprite layering
@@ -156,17 +170,17 @@ local function play_standard_animation(user, bomb, bomb_swapped, release_x, rele
   local fall_func = function()
     i = i + 1
 
-    local progress = i / 28
+    local progress = i / fall_duration
 
     x = x + vel_x
     y = PEAK - PEAK * ease_in(progress)
 
     update_tile()
 
-    bomb:set_offset(x, 0)
+    bomb:set_offset(math.floor(x), 0)
     bomb:set_elevation(-y)
 
-    if progress ~= 1 then
+    if progress < 1 then
       return
     end
 
@@ -188,17 +202,17 @@ local function play_standard_animation(user, bomb, bomb_swapped, release_x, rele
   local rise_func = function()
     i = i + 1
 
-    local progress = i / 12
+    local progress = i / rise_duration
 
     x = x + vel_x
     y = ease_out(progress) * (PEAK - release_y) + release_y
 
     update_tile()
 
-    bomb:set_offset(x, 0)
+    bomb:set_offset(math.floor(x), 0)
     bomb:set_elevation(-y)
 
-    if progress == 1 then
+    if progress >= 1 then
       -- swap update func
       component.on_update_func = fall_func
       -- reset i
@@ -214,16 +228,17 @@ end
 ---@param bomb Entity
 ---@param target_tile Tile
 ---@param bomb_swapped boolean
+---@param air_duration number
 ---@param release_x number
 ---@param release_y number
 ---@param spell_callback fun(tile?: Tile, bomb_entity: Entity)
-local function play_seeking_animation(bomb, bomb_swapped, target_tile, release_x, release_y, spell_callback)
+local function play_seeking_animation(bomb, bomb_swapped, target_tile, air_duration, release_x, release_y, spell_callback)
   local y = release_y - math.abs(release_x) * 0.5
 
   local i = 0
 
   local function update_offset()
-    local progress = i / 40
+    local progress = i / air_duration
     bomb:set_elevation(y * progress - y)
   end
 
@@ -251,7 +266,7 @@ local function play_seeking_animation(bomb, bomb_swapped, target_tile, release_x
     spell_callback(target_tile, bomb)
   end
 
-  bomb:jump(target_tile, 60, 40)
+  bomb:jump(target_tile, 60, air_duration)
   update_offset()
 end
 
@@ -270,6 +285,8 @@ function Bomb:create_action(user, spell_callback)
     local value = self._user_frame_data[i]
     synced_frames = synced_frames + value[2]
   end
+
+  synced_frames = synced_frames - 1
 
   action.on_execute_func = function()
     if self._execute_sfx then
@@ -300,11 +317,6 @@ function Bomb:create_action(user, spell_callback)
       end
 
       if i == synced_frames then
-        -- create shadow
-        if self._shadow_texture then
-          bomb:set_shadow(self._shadow_texture)
-        end
-
         -- release the bomb and play the animation
         if self.swap_bomb_func then
           -- swap the bomb
@@ -320,15 +332,21 @@ function Bomb:create_action(user, spell_callback)
           -- reset the bomb
           component:eject()
           bomb:set_offset(0, 0)
+
+          -- create shadow
+          if self._shadow_texture then
+            bomb:set_shadow(self._shadow_texture)
+          end
         end
 
         local target_tile = self.target_tile_func and self.target_tile_func(user)
         local bomb_swapped = self.swap_bomb_func ~= nil
+        local air_duration = self._bomb_air_duration or DEFAULT_AIR_DURATION
 
         if target_tile then
-          play_seeking_animation(bomb, bomb_swapped, target_tile, held_x, held_y, spell_callback)
+          play_seeking_animation(bomb, bomb_swapped, target_tile, air_duration, held_x, held_y, spell_callback)
         else
-          play_standard_animation(user, bomb, bomb_swapped, held_x, held_y, spell_callback)
+          play_standard_animation(user, bomb, bomb_swapped, air_duration, held_x, held_y, spell_callback)
         end
 
         -- update animation
