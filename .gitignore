@@ -13,6 +13,7 @@ _*
 # testing
 dev.konstinople.encounter.final_destination_multiman
 dev.konstinople.library.ssb
+dev.GladeWoodsgrove.SwitchDrives.DEBUG_GAUGE
 
 # scripts
 node_modules
