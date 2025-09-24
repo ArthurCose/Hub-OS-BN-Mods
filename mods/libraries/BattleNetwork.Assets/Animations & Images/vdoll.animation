@@ -1,0 +1,9 @@
+imagePath="C:/Users/seven/OneDrive/Documents/My Games/Hub OS/mods/libraries/BattleNetwork.Assets/Animations & Images/vdoll.png"
+
+animation state="SPAWN"
+frame duration="0.033" x="2" y="2" w="25" h="39" originx="14" originy="34" flipx="0" flipy="0"
+frame duration="0.033" x="31" y="2" w="25" h="39" originx="14" originy="34" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="45" w="25" h="39" originx="14" originy="34" flipx="0" flipy="0"
+
+animation state="IDLE"
+frame duration="0.033" x="31" y="45" w="25" h="39" originx="14" originy="34" flipx="0" flipy="0"

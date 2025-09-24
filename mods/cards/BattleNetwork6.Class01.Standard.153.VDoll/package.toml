@@ -1,0 +1,18 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.153.VDoll"
+name = "VDoll"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["F", "N", "S", "*"]
+damage = 0
+time_freeze = false
+element = "summon"
+description = "Throws VDoll 3sq ahead"
+card_class = "standard"
+limit = 3
+can_boost = false
+
+[dependencies]
+libraries = [ "BattleNetwork.Assets", "dev.konstinople.library.bomb" ]
+tile_states = [ "BattleNetwork6.TileStates.Poison" ]
