@@ -22,6 +22,7 @@ function card_init(user, props)
     local time = 0
 
     local mine = Spell.new(Team.Other)
+    mine:set_owner(user:team())
 
     mine:set_hit_props(HitProps.from_card(props, user:context()))
 
