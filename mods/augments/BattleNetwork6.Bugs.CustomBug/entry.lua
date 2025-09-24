@@ -20,9 +20,14 @@ function augment_init(augment)
   component.on_update_func = function()
     turn = turn + 1
 
-    if turn >= min_turn(augment) then
+    if turn >= min_turn(augment) and player:hand_size() > 2 then
       player:boost_augment("BattleNetwork6.Bugs.Custom-", 1)
       boosts = boosts + 1
+    else
+      while player:hand_size() < 2 and boosts > 0 do
+        player:boost_augment("BattleNetwork6.Bugs.Custom-", -1)
+        boosts = boosts - 1
+      end
     end
   end
 
