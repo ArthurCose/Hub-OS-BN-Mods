@@ -122,73 +122,20 @@ local function create_steam_burst(team, hit_props)
   return steam
 end
 
-bomb.swap_bomb_func = function(action)
-  local owner = action:owner()
-  local props = action:copy_card_properties()
+---@param parent_entity Entity
+local function spawn_temperature_artifact(parent_entity)
+  local artifact = Artifact.new()
+  artifact:set_never_flip(true)
 
-  local team = owner:team()
-  local steam_hit_props = HitProps.from_card(props, owner:context())
-  steam_hit_props.element = Element.Aqua
-  local direct_hit_props = HitProps.from_card(props, owner:context())
-  direct_hit_props.element = Element.None
-  direct_hit_props.damage = direct_hit_props.damage // 2
-
-  local obstacle = Obstacle.new(Team.Other)
-  obstacle:set_owner(owner)
-  obstacle:set_facing(owner:facing())
-  obstacle:set_texture(TEXTURE)
-  obstacle:set_palette(PALETTE)
-  obstacle:set_shadow(SHADOW)
-  obstacle:set_hit_props(direct_hit_props)
-  obstacle:set_health(999 - steam_hit_props.damage)
-
-  local animation = obstacle:animation()
-  animation:load(ANIM_PATH)
-  animation:set_state("LITTLE_BOILER")
-  animation:set_playback(Playback.Loop)
-
-  -- immune to anything that isn't drag
-  obstacle:add_aux_prop(AuxProp.new():declare_immunity(~Hit.Drag))
-
-  -- track hits, avoid taking damage after 3 hits
-  local hits = 0
-  local defense_rule = DefenseRule.new(DefensePriority.Body, DefenseOrder.CollisionOnly)
-  defense_rule.defense_func = function(defense, _, _, hit_props)
-    if hit_props.flags & Hit.PierceGuard ~= 0 then
-      hits = 0
-      obstacle:delete()
-      return
-    end
-
-    if hits >= 3 then
-      defense:block_damage()
-      return
-    end
-
-    if hit_props.damage <= 0 then
-      return
-    end
-
-    hits = hits + 1
-
-    if hits == 3 then
-      obstacle:delete()
-    end
-  end
-  obstacle:add_defense_rule(defense_rule)
-
-  -- display temp
-  local displayed_temp = steam_hit_props.damage
-  local temp_root_node = obstacle:sprite():create_node()
-  temp_root_node:set_never_flip(true)
+  local displayed_temp = 999 - parent_entity:health()
 
   local temp_node
   local function build_temp_node(text_style)
     if temp_node then
-      temp_root_node:remove_node(temp_node)
+      artifact:remove_node(temp_node)
     end
 
-    temp_node = temp_root_node:create_text_node(text_style, " " .. displayed_temp)
+    temp_node = artifact:sprite():create_text_node(text_style, " " .. displayed_temp)
 
     local children = temp_node:children()
     local last_child = children[#children]
@@ -198,17 +145,34 @@ bomb.swap_bomb_func = function(action)
   end
   build_temp_node(TEMP_STYLE)
 
-  local temp_component = obstacle:create_component(Lifetime.Scene)
-  temp_component.on_update_func = function()
-    if obstacle:deleted() then
-      temp_component:eject()
-      temp_root_node:remove_node(temp_node)
+  local component = artifact:create_component(Lifetime.Scene)
+  component.on_update_func = function()
+    if parent_entity:deleted() then
+      artifact:delete()
       return
     end
 
-    local target_temp = 999 - obstacle:health()
+    -- update position
+    local TILE_W = Tile:width()
+    local TILE_H = Tile:height()
+    local tile = parent_entity:current_tile()
+    local offset = parent_entity:offset()
+    local movement_offset = parent_entity:movement_offset()
+    local elevation = parent_entity:elevation()
+
+    local tile_offset_x = tile:x() * TILE_W
+    local tile_offset_y = tile:y() * TILE_H - (Field.height() - 1) * TILE_H
+
+    artifact:set_offset(
+      tile_offset_x + offset.x + movement_offset.x,
+      tile_offset_y + offset.y + movement_offset.y - elevation
+    )
+
+    -- updating health
+    local target_temp = 999 - parent_entity:health()
 
     if target_temp == displayed_temp then
+      -- no need to update
       return
     end
 
@@ -241,6 +205,67 @@ bomb.swap_bomb_func = function(action)
       build_temp_node(TEMP_STYLE)
     end
   end
+
+  Field.spawn(artifact, 0, Field.height() - 1)
+end
+
+bomb.swap_bomb_func = function(action)
+  local owner = action:owner()
+  local props = action:copy_card_properties()
+
+  local team = owner:team()
+  local steam_hit_props = HitProps.from_card(props, owner:context())
+  steam_hit_props.element = Element.Aqua
+  local direct_hit_props = HitProps.from_card(props, owner:context())
+  direct_hit_props.element = Element.None
+  direct_hit_props.damage = direct_hit_props.damage // 2
+
+  local obstacle = Obstacle.new(Team.Other)
+  obstacle:set_owner(owner)
+  obstacle:set_facing(owner:facing())
+  obstacle:set_texture(TEXTURE)
+  obstacle:set_palette(PALETTE)
+  obstacle:set_shadow(SHADOW)
+  obstacle:set_hit_props(direct_hit_props)
+  obstacle:set_health(999 - steam_hit_props.damage)
+
+  local animation = obstacle:animation()
+  animation:load(ANIM_PATH)
+  animation:set_state("LITTLE_BOILER")
+  animation:set_playback(Playback.Loop)
+
+  -- display temp
+  spawn_temperature_artifact(obstacle)
+
+  -- immune to anything that isn't drag
+  obstacle:add_aux_prop(AuxProp.new():declare_immunity(~Hit.Drag))
+
+  -- track hits, avoid taking damage after 3 hits
+  local hits = 0
+  local defense_rule = DefenseRule.new(DefensePriority.Body, DefenseOrder.CollisionOnly)
+  defense_rule.defense_func = function(defense, _, _, hit_props)
+    if hit_props.flags & Hit.PierceGuard ~= 0 then
+      hits = 0
+      obstacle:delete()
+      return
+    end
+
+    if hits >= 3 then
+      defense:block_damage()
+      return
+    end
+
+    if hit_props.damage <= 0 then
+      return
+    end
+
+    hits = hits + 1
+
+    if hits == 3 then
+      obstacle:delete()
+    end
+  end
+  obstacle:add_defense_rule(defense_rule)
 
   -- update
   local time = 0
