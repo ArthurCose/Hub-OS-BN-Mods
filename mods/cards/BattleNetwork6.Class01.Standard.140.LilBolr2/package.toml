@@ -1,0 +1,15 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.140.LilBolr2"
+name = "LilBolr2"
+description = "3pnl fwd Kttl attk Attack+"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+element = "summon"
+damage = 140
+codes = ["E", "M", "V"]
+limit = 4
+can_boost = true
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.bomb"]
