@@ -179,13 +179,16 @@ bomb.swap_bomb_func = function(action)
 
   -- display temp
   local displayed_temp = steam_hit_props.damage
+  local temp_root_node = obstacle:sprite():create_node()
+  temp_root_node:set_never_flip(true)
+
   local temp_node
   local function build_temp_node(text_style)
     if temp_node then
-      obstacle:remove_node(temp_node)
+      temp_root_node:remove_node(temp_node)
     end
 
-    temp_node = obstacle:sprite():create_text_node(text_style, " " .. displayed_temp)
+    temp_node = temp_root_node:create_text_node(text_style, " " .. displayed_temp)
 
     local children = temp_node:children()
     local last_child = children[#children]
@@ -199,7 +202,7 @@ bomb.swap_bomb_func = function(action)
   temp_component.on_update_func = function()
     if obstacle:deleted() then
       temp_component:eject()
-      obstacle:remove_node(temp_node)
+      temp_root_node:remove_node(temp_node)
       return
     end
 
