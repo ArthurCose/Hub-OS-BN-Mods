@@ -44,10 +44,17 @@ function player_init(player)
 
   -- shield
   local shield_cooldown = 0
+  local shield_hit = false
 
-  player.on_update_func = function()
+  local component = player:create_component(Lifetime.ActiveBattle)
+  component.on_update_func = function()
     if shield_cooldown > 0 then
       shield_cooldown = shield_cooldown - 1
+    end
+
+    if shield_hit then
+      shield_reflect:spawn_spell(player, 50)
+      shield_hit = false
     end
   end
 
@@ -59,17 +66,15 @@ function player_init(player)
     end
 
     shield_cooldown = 40 + shield:duration()
-    local hit = false
 
     return shield:create_action(player, function()
       Resources.play_audio(shield_impact_sfx)
 
-      if hit then
+      if shield_hit then
         return
       end
 
-      shield_reflect:spawn_spell(player, 50)
-      hit = true
+      shield_hit = true
     end)
   end
 

@@ -23,10 +23,16 @@ function augment_init(augment)
 
   local shield_cooldown = 0
   local component = entity:create_component(Lifetime.ActiveBattle)
+  local hit = false
 
   component.on_update_func = function()
     if shield_cooldown > 0 then
       shield_cooldown = shield_cooldown - 1
+    end
+
+    if hit then
+      shield_reflect:spawn_spell(entity, 50)
+      hit = false
     end
   end
 
@@ -38,7 +44,6 @@ function augment_init(augment)
     end
 
     shield_cooldown = 40 + shield:duration()
-    local hit = false
 
     return shield:create_action(entity, function()
       Resources.play_audio(shield_impact_sfx)
@@ -47,7 +52,6 @@ function augment_init(augment)
         return
       end
 
-      shield_reflect:spawn_spell(entity, 50)
       hit = true
     end)
   end
