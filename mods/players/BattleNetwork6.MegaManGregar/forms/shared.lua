@@ -65,6 +65,7 @@ function Shared.implement_form(player, form, config)
     -- handle decross
     decross_auxprop = AuxProp.new()
         :require_hit_element_is_weakness()
+        :require_hit_damage(Compare.GT, 0)
         :with_callback(function()
           form:deactivate()
         end)
