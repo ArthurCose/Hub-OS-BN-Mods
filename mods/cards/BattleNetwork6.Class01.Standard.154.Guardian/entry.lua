@@ -39,7 +39,7 @@ local function punish(user, team)
             spell:set_hit_props(
                 HitProps.new(
                     200,
-                    Hit.PierceInvis | Hit.Flash,
+                    Hit.Flinch | Hit.Flash | Hit.PierceInvis | Hit.PierceGround | Hit.PierceGuard,
                     Element.None,
                     user:context(),
                     Drag.None
