@@ -14,6 +14,7 @@ long_description = "Deals damage equal to Max HP minus Current HP. Strikes two t
 card_class = "standard"
 limit = 1
 tags = ["DAMAGE_EQUALS_POWER", "BN6", "EXE6"]
+regular_allowed = false
 
 [dependencies]
 libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
