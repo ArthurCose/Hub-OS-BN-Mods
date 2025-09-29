@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.031.DollThunder2"
+name = "DolThdr2"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["C", "L", "P"]
+damage = 150
+time_freeze = false
+element = "elec"
+description = "A piercng thunder attack!"
+can_boost = true
+limit = 3
+hit_flags = ["Flinch", "Flash"]
+
+[dependencies]
+cards = ["BattleNetwork6.Class01.Standard.030.DollThunder1"]

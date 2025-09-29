@@ -1,5 +1,7 @@
+imagePath="C:/Users/seven/OneDrive/Documents/My Games/Hub OS/mods/libraries/BattleNetwork.Assets/Animations & Images/thunderbolt.png"
+
 animation state="DEFAULT"
-frame x="1" y="38" w="182" h="29" originx="1" originy="17" duration="0.05"
-frame x="1" y="69" w="183" h="19" originx="4" originy="11" duration="0.05"
-frame x="1" y="1" w="183" h="35" originx="1" originy="21" duration="0.05"
-frame x="1" y="90" w="183" h="16" originx="4" originy="7" duration="0.05"
+frame duration="0.05" x="1" y="38" w="182" h="29" originx="1" originy="17" flipx="0" flipy="0"
+frame duration="0.05" x="1" y="69" w="183" h="19" originx="4" originy="11" flipx="0" flipy="0"
+frame duration="0.05" x="1" y="1" w="183" h="35" originx="1" originy="21" flipx="0" flipy="0"
+frame duration="0.05" x="1" y="90" w="183" h="16" originx="4" originy="7" flipx="0" flipy="0"

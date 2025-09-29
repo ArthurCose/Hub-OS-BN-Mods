@@ -1,0 +1,8 @@
+imagePath="C:/Users/seven/OneDrive/Documents/My Games/Hub OS/mods/libraries/BattleNetwork.Assets/Animations & Images/doll_thunder.png"
+
+animation state="DEFAULT"
+frame duration="0.017" x="2" y="50" w="19" h="39" originx="11" originy="21" flipx="0" flipy="0"
+
+animation state="ACTIVE"
+frame duration="0.05" x="2" y="2" w="28" h="44" originx="17" originy="25" flipx="0" flipy="0"
+frame duration="0.033" x="34" y="2" w="28" h="44" originx="19" originy="25" flipx="0" flipy="0"

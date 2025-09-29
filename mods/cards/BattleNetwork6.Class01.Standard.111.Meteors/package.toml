@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.111.Meteors"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "Meteors"
+description = "Drop many meteor on enmy area"
+long_description = "Distribute 30 meteors\nover all enemy tiles\n,back to front."
+codes = ["R"]
+damage = 40
+element = "fire"
+hit_flags = ["Flinch", "Flash"]
+time_freeze = true
+can_boost = true
+limit = 1
+regular_allowed = false
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

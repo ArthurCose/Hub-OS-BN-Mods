@@ -1,5 +1,5 @@
 function player_init(player)
-	player:set_name("Iceman")
+	player:set_name("IceMan")
 
 	player:set_height(33.0)
 
@@ -49,7 +49,7 @@ function player_init(player)
 
 					snowman:set_hit_props(
 						HitProps.new(
-							50,
+							100,
 							Hit.Flinch | Hit.Flash | Hit.Drag,
 							Element.Aqua,
 							user:context(),
@@ -57,12 +57,32 @@ function player_init(player)
 						)
 					)
 
+					local enemy_aux = StandardEnemyAux.new()
+
+					snowman:add_aux_prop(enemy_aux)
+
+					local snow_defense = DefenseRule.new(DefensePriority.Body, DefenseOrder.Always)
+
+					snow_defense.filter_func = function(hit_props)
+						hit_props.flags = hit_props.flags & ~Hit.Flinch
+						hit_props.flags = hit_props.flags & ~Hit.Flash
+						hit_props.flags = hit_props.flags & ~Hit.Freeze
+						hit_props.flags = hit_props.flags & ~Hit.Paralyze
+						hit_props.flags = hit_props.flags & ~Hit.Root
+						hit_props.flags = hit_props.flags & ~Hit.Blind
+						hit_props.flags = hit_props.flags & ~Hit.Confuse
+
+						return hit_props
+					end
+
+					snowman:add_defense_rule(snow_defense)
+
 					local animation = snowman:animation()
 					animation:load(base_animation_path)
 					animation:set_state("SNOWMAN_APPEAR")
 
 					snowman:set_health(50)
-					snowman:set_name("Snowman Summon")
+					snowman:set_name("Snowman")
 
 					animation:on_complete(function()
 						animation:set_state("SNOWMAN_IDLE")
