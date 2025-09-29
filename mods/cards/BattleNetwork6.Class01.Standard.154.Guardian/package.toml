@@ -15,4 +15,4 @@ can_boost = false
 regular_allowed = false
 
 [dependencies]
-libraries = [ "BattleNetwork.Assets" ]
+libraries = ["BattleNetwork.Assets"]
