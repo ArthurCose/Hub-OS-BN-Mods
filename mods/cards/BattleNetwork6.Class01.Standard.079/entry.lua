@@ -54,6 +54,9 @@ function card_init(user, props)
 			return
 		end
 
+		Resources.play_audio(AUDIO)
+
+		-- spawn slash
 		local hit_props = HitProps.from_card(
 			props,
 			user:context(),
@@ -62,14 +65,22 @@ function card_init(user, props)
 
 		Field.spawn(create_slash(user, hit_props), forward_tile)
 
+		-- spawning gusts with a delay
 		local team = user:team()
-		local x = forward_tile:x()
+		local facing = user:facing()
 
-		for y = 0, Field.height() - 1 do
-			local gust = wind_gust_builder:create_spell(team, user:facing())
-			Field.spawn(gust, x, y)
+		local delayed_spawner = Spell.new()
+		delayed_spawner.on_spawn_func = function()
+			local x = forward_tile:x()
+
+			for y = 0, Field.height() - 1 do
+				local gust = wind_gust_builder:create_spell(team, facing)
+				Field.spawn(gust, x, y)
+			end
+
+			delayed_spawner:delete()
 		end
 
-		Resources.play_audio(AUDIO)
+		Field.spawn(delayed_spawner, 0, 0)
 	end)
 end
