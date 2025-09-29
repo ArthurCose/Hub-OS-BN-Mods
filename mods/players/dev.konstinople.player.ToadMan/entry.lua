@@ -486,30 +486,7 @@ function player_init(player)
 
   -- fixed card
   local card = CardProperties.from_package(FIXED_CARD_ID, "T")
-  card.damage = 30 + player:attack_level() * 10
-  local button = player:set_fixed_card(card)
-
-  local component = player:create_component(Lifetime.CardSelectOpen)
-
-  local prev_attack_level = player:attack_level()
-  component.on_update_func = function()
-    if button:deleted() then
-      component:eject()
-      return
-    end
-
-    local attack_level = player:attack_level()
-
-    if attack_level == prev_attack_level then
-      return
-    end
-
-    button:delete()
-
-    prev_attack_level = attack_level
-    card.damage = 30 + player:attack_level() * 10
-    button = player:set_fixed_card(card)
-  end
+  player:set_fixed_card(card)
 
   -- intro
   player.intro_func = function()

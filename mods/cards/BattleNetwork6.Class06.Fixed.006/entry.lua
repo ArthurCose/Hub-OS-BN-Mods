@@ -20,6 +20,11 @@ local panel_step = PanelStepLib.new_panel_step()
 panel_step:set_return_frame(26)
 
 ---@param user Entity
+function card_dynamic_damage(user)
+	return 30 + user:attack_level() * 10
+end
+
+---@param user Entity
 function card_init(user, props)
 	return panel_step:create_action(user, function(action)
 		sword:create_action_step(action, function()

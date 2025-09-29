@@ -10,6 +10,11 @@ local ARTIFACT_ANIMATION_PATH = bn_assets.fetch_animation_path("golmhit_artifact
 -- not the correct sound
 local SFX = bn_assets.load_audio("thawk_swing.ogg")
 
+---@param user Entity
+function card_dynamic_damage(user)
+  return 100 + user:attack_level() * 30
+end
+
 local function create_spell(team, direction, hit_props)
   local spell = Spell.new(team)
   spell:set_hit_props(hit_props)

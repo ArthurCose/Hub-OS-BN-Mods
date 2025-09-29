@@ -11,49 +11,13 @@ local SLASH_TEXTURE = bn_assets.load_texture("sword_slashes.png")
 local SLASH_ANIM_PATH = bn_assets.fetch_animation_path("sword_slashes.animation")
 local AUDIO = bn_assets.load_audio("sword.ogg")
 
-local track_health = nil;
-
-function card_mutate(user, card_index)
-	if track_health == nil then
-		track_health = user:create_component(Lifetime.ActiveBattle)
-		track_health._stored_value = 0
-		track_health._is_update_value = true
-		track_health.on_update_func = function(self)
-			local owner = self:owner()
-			local card = owner:field_card(1)
-
-			if card ~= nil and self._is_update_value == true then
-				for index, value in ipairs(card.tags) do
-					if value == "DAMAGE_EQUALS_POWER" then
-						self._stored_value = owner:health()
-						card.damage = math.min(500, owner:max_health() - owner:health())
-						user:set_field_card(1, card)
-						self._is_update_value = false
-					end
-				end
-			end
-
-			self._is_update_value = self._stored_value ~= owner:health()
-		end
-	end
+---@param user Entity
+function card_dynamic_damage(user)
+	return math.min(500, user:max_health() - user:health())
 end
 
 ---@param user Entity
-function card_init(user, props)
-	return sword:create_action(user, function()
-		if track_health ~= nil then track_health:eject() end
-
-		local spells = {}
-		spawn_artifact(spells, user, "MURAMASA")
-		create_spell(spells, user, props, 1, 0)
-		create_spell(spells, user, props, 2, 0)
-
-		Resources.play_audio(AUDIO)
-	end)
-end
-
----@param user Entity
-function create_spell(spells, user, props, x_offset, y_offset)
+local function create_spell(spells, user, props, x_offset, y_offset)
 	local h_tile = user:get_tile(user:facing(), x_offset)
 	if not h_tile then return end
 	local tile = h_tile:get_tile(Direction.Down, y_offset)
@@ -82,7 +46,7 @@ function create_spell(spells, user, props, x_offset, y_offset)
 end
 
 ---@param user Entity
-function spawn_artifact(spells, user, state)
+local function spawn_artifact(spells, user, state)
 	local tile = user:get_tile(user:facing(), 1)
 	if not tile then return end
 
@@ -102,4 +66,17 @@ function spawn_artifact(spells, user, state)
 	end)
 
 	Field.spawn(fx, tile)
+end
+
+---@param user Entity
+---@param props CardProperties
+function card_init(user, props)
+	return sword:create_action(user, function()
+		local spells = {}
+		spawn_artifact(spells, user, "MURAMASA")
+		create_spell(spells, user, props, 1, 0)
+		create_spell(spells, user, props, 2, 0)
+
+		Resources.play_audio(AUDIO)
+	end)
 end

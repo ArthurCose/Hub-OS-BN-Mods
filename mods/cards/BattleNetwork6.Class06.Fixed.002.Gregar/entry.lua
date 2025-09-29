@@ -14,6 +14,11 @@ local SLASH_ANIM_PATH = bn_assets.fetch_animation_path("sword_slashes.animation"
 local AUDIO = bn_assets.load_audio("sword.ogg")
 
 ---@param user Entity
+function card_dynamic_damage(user)
+  return 40 + user:attack_level() * 20
+end
+
+---@param user Entity
 local function create_spell(spells, user, props, x_offset, y_offset)
   local h_tile = user:get_tile(user:facing(), x_offset)
   if not h_tile then return end

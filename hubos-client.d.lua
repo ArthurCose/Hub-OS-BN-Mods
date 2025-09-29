@@ -813,6 +813,10 @@ DeckCard = {}
 ---@field code string
 --- Number, used by other mods for conditional behavior.
 ---@field recover number
+--- Boolean or nil, decides whether `function card_dynamic_damage(entity): number` should be called to resolve damage on frames where this card is unused and visible.
+---
+--- [CardProperties.resolve_damage()](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardpropertiesresolve_damagecard_properties-entity) can be used to calculate the latest damage value.
+---@field dynamic_damage boolean
 --- Number, represents the increase in damage from boosts. You should also modify `damage` when adjusting this value, as `damage` represents the final damage value.
 --- Subtract this value from `damage` to get the original damage value.
 ---@field boosted_damage number
@@ -969,6 +973,8 @@ function Entity:owner() end
 --- Marks a team or entity as the owner of this entity. If `team_or_entity` is unset the entity will be reverted to having no owner.
 ---
 --- If a team or entity has too many entities claimed, the oldest claimed entity will be deleted.
+---
+--- By default, entities can own one other entity, teams can own two entities.
 ---@param team_or_entity? Team|Entity
 function Entity:set_owner(team_or_entity) end
 
@@ -1547,6 +1553,12 @@ function Entity:emotions_texture() end
 --- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
 ---@return string
 function Entity:emotions_animation_path() end
+
+--- Returns a [Sprite](https://docs.hubos.dev/client/lua-api/resource-api/sprite)
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@return Sprite
+function Entity:emotion_node() end
 
 --- - `path`: file path relative to script file, use values returned from `Resources.load_texture()` for better performance.
 ---
@@ -2856,6 +2868,7 @@ function Color.mix(color_a, color_b, progress) end
 ---     - `"THIN"`
 ---     - `"THIN_SMALL"`
 ---     - `"MENU_TITLE"`
+---     - `"NAVIGATION"`
 ---     - `"MICRO"`
 ---     - `"CONTEXT"`
 ---     - `"CODE"`
@@ -2866,6 +2879,8 @@ function Color.mix(color_a, color_b, progress) end
 ---     - `"RESULT"`
 ---     - `"BATTLE"`
 ---     - `"ENTITY_HP"`
+---     - `"ENTITY_HP_RED"`
+---     - `"ENTITY_HP_GREEN"`
 ---   - `texture_path`: Required for custom fonts.
 ---   - `animation_path`: Required for custom fonts.
 ---
@@ -3647,6 +3662,12 @@ function CardProperties.from_package(package_id, code) end
 ---@param card_properties CardProperties
 ---@return string
 function CardProperties.icon_texture(card_properties) end
+
+--- Returns a number, representing the resolved damage.
+---@param card_properties CardProperties
+---@param entity Entity
+---@return number
+function CardProperties.resolve_damage(card_properties, entity) end
 
 --- Returns an [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity), represents the entity affected by the status.
 ---@return Entity

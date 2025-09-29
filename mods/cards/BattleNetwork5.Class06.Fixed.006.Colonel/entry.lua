@@ -6,6 +6,11 @@ local SPELL_ANIMATION_PATH = bn_assets.fetch_animation_path("melody.animation")
 
 local SING_SFX = bn_assets.load_audio("toad_recital.ogg")
 
+---@param user Entity
+function card_dynamic_damage(user)
+  return 60 + user:attack_level() * 20
+end
+
 local function create_spell(team, direction, hit_props)
   local spell = Spell.new(team)
   spell:set_never_flip()
