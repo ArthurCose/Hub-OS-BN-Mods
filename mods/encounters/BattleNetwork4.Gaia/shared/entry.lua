@@ -140,9 +140,10 @@ return function(character, gaia_props)
         local action = Action.new(character, "ATTACK")
         action:add_anim_action(5, function()
           local tile = character:get_tile(character:facing(), 1)
-          local hit_tile = tile and tile:is_walkable()
 
-          if hit_tile then
+          if not tile then return end
+
+          if tile:is_walkable() then
             Resources.play_audio(HAMMER_SFX)
 
             -- shake the screen for 40f
@@ -172,7 +173,7 @@ return function(character, gaia_props)
               -- apply root
               if gaia_props.root then
                 Field.find_characters(function(other)
-                  if other:team() ~= character:team() then
+                  if other:team() ~= effects_spell:team() then
                     other:apply_status(Hit.Root, 2)
                   end
                   return false
@@ -237,7 +238,9 @@ return function(character, gaia_props)
       IteratorLib.take(1, function()
         local action = Action.new(character, "RELEASE")
         action.on_execute_func = function()
-          attack_spell:erase()
+          if attack_spell then
+            attack_spell:erase()
+          end
         end
         action.on_action_end_func = function()
           invincible = true
