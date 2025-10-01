@@ -47,7 +47,7 @@ end
 function create_attack(user, props)
 	local spell = Spell.new(user:team())
 
-	spell.hits = 8
+	spell.hits = 4
 	spell:set_facing(user:facing())
 	spell:set_tile_highlight(Highlight.Solid)
 	spell:set_texture(TEXTURE)
