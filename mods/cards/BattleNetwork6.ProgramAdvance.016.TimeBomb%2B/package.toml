@@ -1,0 +1,27 @@
+[package]
+category = "card"
+id = "BattleNetwork6.ProgramAdvance.016.TimeBomb+"
+name = "TimeBom+"
+icon_texture_path = "icon.png"
+codes = ["*"]
+damage = 700
+time_freeze = true
+hit_flags = ["Flash", "Flinch"]
+element = "summon"
+description = "Set TmBm+ in enemy area!"
+can_boost = true
+tags = ["PROGRAM_ADVANCE", "BN6", "EXE6"]
+limit = 1
+card_class = "recipe"
+recipes = [
+  { id = "BattleNetwork6.Class01.Standard.145.TimeBomb1", codes = ["F", "G", "H"] },
+  { id = "BattleNetwork6.Class01.Standard.146.TimeBomb2", codes = ["C", "D", "E"] },
+  { id = "BattleNetwork6.Class01.Standard.147.TimeBomb3", codes = ["L", "M", "N"] }
+]
+
+[dependencies]
+cards = [
+    "BattleNetwork6.Class01.Standard.145.TimeBomb1",
+    "BattleNetwork6.Class01.Standard.146.TimeBomb2",
+    "BattleNetwork6.Class01.Standard.147.TimeBomb3"
+]

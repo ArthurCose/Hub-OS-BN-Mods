@@ -91,6 +91,9 @@ cards = [
   "BattleNetwork6.Class01.Standard.139.LilBolr1",
   "BattleNetwork6.Class01.Standard.140.LilBolr2",
   "BattleNetwork6.Class01.Standard.141.LilBolr3",
+  "BattleNetwork6.Class01.Standard.145.TimeBomb1",
+  "BattleNetwork6.Class01.Standard.146.TimeBomb2",
+  "BattleNetwork6.Class01.Standard.147.TimeBomb3",
   "BattleNetwork6.Class01.Standard.148.Mine",
   "BattleNetwork6.Class01.Standard.149",
   "BattleNetwork6.Class01.Standard.150",
@@ -152,6 +155,7 @@ cards = [
   "BattleNetwork6.ProgramAdvance.002",
   "BattleNetwork6.ProgramAdvance.003",
   "BattleNetwork6.ProgramAdvance.015",
+  "BattleNetwork6.ProgramAdvance.016.TimeBomb+",
   "BattleNetwork6.ProgramAdvance.019",
   "BattleNetwork6.ProgramAdvance.020",
   "BattleNetwork6.ProgramAdvance.024"

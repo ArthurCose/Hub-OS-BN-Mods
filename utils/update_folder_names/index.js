@@ -26,7 +26,10 @@ for (const categoryFolder of fs.readdirSync(modsFolder)) {
         continue;
       }
 
-      fs.renameSync(modPath, path.join(categoryPath, packageId));
+      fs.renameSync(
+        modPath,
+        path.join(categoryPath, encodeURIComponent(packageId))
+      );
     } catch (err) {
       console.err(`Failed to read package.toml in ${modPath}: \n`, err);
     }

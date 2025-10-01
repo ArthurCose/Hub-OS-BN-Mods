@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.145.TimeBomb1"
+name = "TimeBom1"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["F", "G", "H"]
+damage = 150
+time_freeze = true
+hit_flags = ["Flash", "Flinch"]
+element = "summon"
+description = "Explodes 3 seconds later"
+can_boost = true
+limit = 4
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
