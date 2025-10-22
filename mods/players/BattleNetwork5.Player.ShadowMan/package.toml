@@ -1,0 +1,19 @@
+[package]
+category = "player"
+id = "dev.konstinople.player.ShadowMan"
+name = "ShadowMan"
+description = "It shall be my pleasure to serve you..."
+long_description = "Charged Attack = Ninja Star\n\nSpecial = AntiDamage"
+health = 1000
+# icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+overworld_animation_path = "overworld.animation"
+overworld_texture_path = "overworld.png"
+mugshot_texture_path = "mug.png"
+mugshot_animation_path = "mug.animation"
+emotions_texture_path = "emotions.png"
+emotions_animation_path = "emotions.animation"
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "BattleNetwork.Emotions"]
+cards = ["BattleNetwork5.Class06.Fixed.002.Colonel"]
