@@ -60,13 +60,13 @@ function create_blizzard_ball(user, props)
 	spell:set_hit_props(HitProps.from_card(props, user:context(), Drag.None))
 
 	spell.on_update_func = function(self)
-		local tile = self:current_tile()
-
 		if self._delete_counter ~= nil then
 			if self._delete_counter == 0 then self:delete() end
 			self._delete_counter = self._delete_counter - 1
 			return
 		end
+
+		local tile = self:current_tile()
 
 		if not tile then
 			self:delete()
@@ -77,6 +77,32 @@ function create_blizzard_ball(user, props)
 		if not tile:is_walkable() then
 			self:delete()
 			return
+		end
+
+		local list = tile:find_obstacles(function(obs)
+			if obs:owner() == nil then return false end
+			return obs:hittable()
+		end)
+
+		if #list > 0 then
+			if anim:state() ~= "BIG" then
+				anim:set_state("BIG")
+				anim:set_playback(Playback.Loop)
+			end
+
+			for index = 1, #list, 1 do
+				local slurp_victim = list[index]
+
+				slurp_victim:erase()
+
+				multiplier = multiplier + 1
+
+				props.damage = base_damage * multiplier
+
+				self:set_hit_props(HitProps.from_card(props, user:context(), Drag.None))
+
+				Resources.play_audio(ABSORB_AUDIO, AudioBehavior.NoOverlap)
+			end
 		end
 
 		tile:attack_entities(self)
@@ -100,25 +126,9 @@ function create_blizzard_ball(user, props)
 	end
 
 	spell.on_collision_func = function(self, other)
-		if Obstacle.from(other) ~= nil then
-			if anim:state() ~= "BIG" then
-				anim:set_state("BIG")
-				anim:set_playback(Playback.Loop)
-			end
+		local fx = bn_assets.HitParticle.new("AQUA")
 
-			other:erase()
-			multiplier = multiplier + 1
-
-			props.damage = base_damage * multiplier
-
-			self:set_hit_props(HitProps.from_card(props, user:context(), Drag.None))
-
-			Resources.play_audio(ABSORB_AUDIO)
-		else
-			local fx = bn_assets.HitParticle.new("AQUA")
-
-			Field.spawn(fx, spell:current_tile())
-		end
+		Field.spawn(fx, spell:current_tile())
 	end
 
 	spell.on_delete_func = function(self)
