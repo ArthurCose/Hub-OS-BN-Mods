@@ -1,4 +1,4 @@
-imagePath="C:/Users/seven/OneDrive/Desktop/HubOS/client/mods/libraries/battle_network_helpers/Animations & Images/PanelSteal.png"
+imagePath="C:/Users/seven/OneDrive/Documents/My Games/Hub OS/mods/libraries/BattleNetwork.Assets/Animations & Images/panelgrab.png"
 
 animation state="FALL"
 frame duration="0.033" x="2" y="37" w="28" h="28" originx="14" originy="14" flipx="0" flipy="0"
@@ -12,3 +12,9 @@ frame duration="0.067" x="34" y="69" w="46" h="28" originx="23" originy="16" fli
 frame duration="0.05" x="58" y="2" w="48" h="29" originx="24" originy="17" flipx="0" flipy="0"
 frame duration="0.05" x="2" y="2" w="52" h="31" originx="26" originy="19" flipx="0" flipy="0"
 frame duration="0.05" x="2" y="101" w="40" h="24" originx="20" originy="12" flipx="0" flipy="0"
+
+animation state="FALL_ORANGE"
+frame duration="0.033" x="109" y="69" w="28" h="28" originx="14" originy="14" flipx="0" flipy="0"
+frame duration="0.033" x="109" y="38" w="28" h="28" originx="14" originy="14" flipx="0" flipy="0"
+frame duration="0.033" x="109" y="2" w="28" h="28" originx="14" originy="14" flipx="0" flipy="0"
+frame duration="0.033" x="81" y="98" w="28" h="28" originx="14" originy="14" flipx="0" flipy="0"

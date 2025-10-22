@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.085.MchnSwrd"
+name = "MechSwrd"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["H", "L", "Q"]
+damage = 200
+hit_flags = ["Flinch", "Flash"]
+element = "none"
+secondary_element = "sword"
+description = "Search & hit stund enemies."
+long_description = "Cut the closest Paralyzed enemy with a WideSword."
+limit = 3
+
+tags = ["BN6"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]

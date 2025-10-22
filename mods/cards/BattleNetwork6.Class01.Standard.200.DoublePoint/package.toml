@@ -1,0 +1,16 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.200.DoublePoint"
+name = "DblPoint"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["*"]
+damage = 0
+time_freeze = true
+element = "plus"
+description = "ChipAtk +20 per panl!"
+can_boost = false
+limit = 1
+
+[dependencies]
+libraries = ["BattleNetwork6.Class01.Standard.199.ColorPoint"]

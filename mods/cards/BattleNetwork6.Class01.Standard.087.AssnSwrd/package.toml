@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.087.AssnSwrd"
+name = "AssnSwrd"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["N", "R", "Y"]
+damage = 240
+hit_flags = ["Flinch", "Flash"]
+element = "none"
+secondary_element = "sword"
+description = "When plyz cut enemy spec panl"
+long_description = "Cut the closest enemy on Grass, Ice, Sea and Volcano panels or Paralyzed with a WideSword."
+limit = 1
+
+tags = ["BN6"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
+tile_states = ["BattleNetwork5.TileStates.Sea", "BattleNetwork6.TileStates.Ice", "BattleNetwork6.TileStates.Grass", "BattleNetwork6.TileStates.Volcano"]

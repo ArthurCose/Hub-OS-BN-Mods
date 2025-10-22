@@ -1,0 +1,10 @@
+imagePath="C:\Users\seven\OneDrive\Desktop\Games, Engines, and Assets\0 Games\HubOS Release\client\mods\tile_states\Volcano BN6\texture.png"
+
+animation state="1"
+frame duration="0.005" x="0" y="1" w="40" h="25" originx="0" originy="0" flipx="0" flipy="0"
+
+animation state="2"
+frame duration="0.005" x="0" y="30" w="40" h="25" originx="0" originy="0" flipx="0" flipy="0"
+
+animation state="3"
+frame duration="0.005" x="0" y="59" w="40" h="25" originx="0" originy="0" flipx="0" flipy="0"
