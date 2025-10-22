@@ -1,6 +1,7 @@
 [package]
 category = "player"
-id = "dev.konstinople.player.ShadowMan"
+past_ids = ["dev.konstinople.player.ShadowMan"]
+id = "BattleNetwork5.Player.ShadowMan"
 name = "ShadowMan"
 description = "It shall be my pleasure to serve you..."
 long_description = "Charged Attack = Ninja Star\n\nSpecial = AntiDamage"
