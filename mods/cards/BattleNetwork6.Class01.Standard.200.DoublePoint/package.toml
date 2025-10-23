@@ -13,4 +13,4 @@ can_boost = false
 limit = 1
 
 [dependencies]
-libraries = ["BattleNetwork6.Class01.Standard.199.ColorPoint"]
+cards = ["BattleNetwork6.Class01.Standard.199.ColorPoint"]
