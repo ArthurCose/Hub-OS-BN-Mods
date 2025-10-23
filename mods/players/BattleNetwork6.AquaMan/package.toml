@@ -1,0 +1,20 @@
+[package]
+category = "player"
+id = "BattleNetwork6.Player.AquaMan"
+name = "AquaMan"
+description = "If you're not nice to me, I might cry, drip!"
+long_description = "Charged Attack = AquaHose\n\nNo-dim Aqua Chip x2"
+health = 1000
+element = "Aqua"
+# icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+overworld_animation_path = "overworld.animation"
+overworld_texture_path = "overworld.png"
+mugshot_texture_path = "mug.png"
+mugshot_animation_path = "mug.animation"
+emotions_texture_path = "emotions.png"
+emotions_animation_path = "emotions.animation"
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "BattleNetwork.Emotions"]
+cards = ["BattleNetwork6.Class06.Fixed.001.Falzar"]
