@@ -4,7 +4,7 @@ SlidingObstacle.__index = SlidingObstacle
 
 -- big poof for main
 -- little poof for particles
--- collision texture + animation required "BREAKING"
+-- collision texture + animation required "BREAK"
 
 function SlidingObstacle:set_texture(texture)
   self.texture = texture

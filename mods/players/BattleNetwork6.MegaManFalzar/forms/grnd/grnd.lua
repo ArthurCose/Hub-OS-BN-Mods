@@ -106,7 +106,7 @@ return function(player, form, base_animation_path)
 
         shared.spawn_hit_artifact(
           other,
-          "BREAKING",
+          "BREAK",
           math.random(-Tile:width() / 2, Tile:width() / 2),
           math.random(-other:height(), 0)
         )

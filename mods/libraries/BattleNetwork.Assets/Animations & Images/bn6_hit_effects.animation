@@ -4,7 +4,7 @@ frame x="119" y="270" w="28" h="22" originx="14" originy="11" duration="0.017"
 frame x="181" y="147" w="30" h="24" originx="15" originy="12" duration="0.017"
 frame x="59" y="270" w="30" h="24" originx="15" originy="12" duration="0.017"
 
-animation state="BREAKING"
+animation state="BREAK"
 frame x="281" y="35" w="30" h="32" originx="15" originy="16" duration="0.033"
 frame x="233" y="97" w="42" h="44" originx="21" originy="22" duration="0.033"
 frame x="181" y="49" w="46" h="48" originx="23" originy="24" duration="0.033"

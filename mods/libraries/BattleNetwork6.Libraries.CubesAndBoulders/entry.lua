@@ -107,7 +107,7 @@ function Lib.new_rock_cube()
   RockCube:set_animation_state("ROCK")
   RockCube:set_collision_texture(HIT_TEXTURE)
   RockCube:set_collision_animation_path(HIT_ANIMATION_PATH)
-  RockCube:set_collision_animation_state("BREAKING")
+  RockCube:set_collision_animation_state("BREAK")
   RockCube:set_duration(6000)
   RockCube:set_delete_func(shatter_rock)
 
@@ -120,7 +120,7 @@ function Lib.new_boulder()
   Boulder:set_animation_path(bn_assets.fetch_animation_path("boulder_bn6.animation"))
   Boulder:set_collision_texture(HIT_TEXTURE)
   Boulder:set_collision_animation_path(HIT_ANIMATION_PATH)
-  Boulder:set_collision_animation_state("BREAKING")
+  Boulder:set_collision_animation_state("BREAK")
   Boulder:set_delete_func(shatter_rock)
 
   return Boulder

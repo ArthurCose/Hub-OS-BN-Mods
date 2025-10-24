@@ -92,7 +92,7 @@ return function(player, form, base_animation_path)
       spell.on_collision_func = function(_, other)
         shared.spawn_hit_artifact(
           other,
-          "BREAKING",
+          "BREAK",
           math.random(-Tile:width() // 2, Tile:width() // 2),
           0
         )
@@ -201,7 +201,7 @@ return function(player, form, base_animation_path)
       spell.on_collision_func = function(_, other)
         shared.spawn_hit_artifact(
           other,
-          "BREAKING",
+          "BREAK",
           math.random(-Tile:width() // 2, Tile:width() // 2),
           0
         )
