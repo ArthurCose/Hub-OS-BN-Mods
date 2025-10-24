@@ -50,7 +50,7 @@ function create_blizzard_ball(user, props)
 
 	local anim = spell:animation()
 	anim:load(TEXTURE_ANIM)
-	anim:set_state("DEFAULT")
+	anim:set_state("0")
 
 	local sprite = spell:sprite()
 	sprite:set_texture(TEXTURE)
@@ -85,8 +85,8 @@ function create_blizzard_ball(user, props)
 		end)
 
 		if #list > 0 then
-			if anim:state() ~= "BIG" then
-				anim:set_state("BIG")
+			if anim:state() ~= "1" then
+				anim:set_state("1")
 				anim:set_playback(Playback.Loop)
 			end
 
