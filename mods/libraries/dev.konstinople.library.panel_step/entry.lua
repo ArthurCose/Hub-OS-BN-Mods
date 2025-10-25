@@ -267,6 +267,7 @@ function PanelStep:create_action(user, create_action_steps)
 
     if not dest_tile or test_dest_tile(dest_tile) then
       dest_tile = nil
+      returned = true
       action:end_action()
       return
     end
