@@ -123,7 +123,9 @@ function card_init(user, props)
       -- stop even if we're mid movement
       local movement_offset = user:movement_offset()
       user:set_offset(movement_offset.x, movement_offset.y)
+      local tile = user:current_tile()
       user:cancel_movement()
+      tile:add_entity(user)
       user:set_movement_offset(0, 0)
 
       user:set_counterable(true)

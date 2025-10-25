@@ -2,12 +2,13 @@
 category = "card"
 id = "BattleNetwork6.Class06.Fixed.002.Gregar"
 name = "DElecSwd"
+description = "Dash fwd and slash w/ElecSwd"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
 hit_flags = ["Flinch", "Flash", "Paralyze"]
 dynamic_damage = true
-secondary_element = "elec"
-description = "Dash fwd and slash w/ElecSwd"
+element = "elec"
+secondary_element = "sword"
 hidden = true
 
 [dependencies]
