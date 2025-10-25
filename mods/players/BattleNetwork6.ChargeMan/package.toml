@@ -1,0 +1,21 @@
+[package]
+category = "player"
+id = "BattleNetwork6.Player.ChargeMan"
+name = "ChargeMan"
+description = "Choo-choo!"
+long_description = "Charged Attack = CrazyLocomotive\n\nFire Chip up to +100"
+health = 1000
+element = "Fire"
+# icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+overworld_animation_path = "overworld.animation"
+overworld_texture_path = "overworld.png"
+mugshot_texture_path = "mug.png"
+mugshot_animation_path = "mug.animation"
+emotions_texture_path = "emotions.png"
+emotions_animation_path = "emotions.animation"
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "BattleNetwork.Emotions"]
+cards = ["BattleNetwork6.Class06.Fixed.005.Gregar"]
+statuses = ["BattleNetwork6.Statuses.Invincible"]
