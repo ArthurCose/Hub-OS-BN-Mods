@@ -1,7 +1,0 @@
-[package]
-id = "BattleNetwork4.TileStates.Metal"
-category = "tile_state"
-name = "BN4 Metal Tile"
-state_name = "Metal"
-texture_path = "texture.png"
-animation_path = "animation.animation"
