@@ -18,6 +18,10 @@ function player_init(player)
   player:load_animation("battle.animation")
   player:set_charge_position(2, -18)
 
+  player.on_counter_func = function()
+    player:set_emotion("SYNCHRO")
+  end
+
   local synchro = EmotionsLib.new_synchro()
   synchro:set_ring_animation_state("BIG")
   synchro:implement(player)

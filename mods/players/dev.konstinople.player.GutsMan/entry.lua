@@ -404,7 +404,7 @@ function player_init(player)
 
   player.charged_attack_func = function()
     cooldown = MAX_COOLDOWN * 2 // 3
-    return create_guts_punch_action(player, player:attack_level(), 60 + player:attack_level() * 20)
+    return create_guts_punch_action(player, player:attack_level(), player:attack_level() * 20)
   end
 
   player.calculate_card_charge_time_func = function(self, card)
@@ -418,7 +418,7 @@ function player_init(player)
   end
 
   player.charged_card_func = function()
-    return guts_quake(player, player:attack_level() // 2 + 1, 60 + player:attack_level() * 20)
+    return guts_quake(player, player:attack_level() // 2 + 1, player:attack_level() * 20)
   end
 
   -- intro

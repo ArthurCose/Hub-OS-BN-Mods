@@ -230,6 +230,10 @@ function player_init(player)
 
   player:set_charge_position(2, -38)
 
+  player.on_counter_func = function()
+    player:set_emotion("SYNCHRO")
+  end
+
   local synchro = EmotionsLib.new_synchro()
   synchro:implement(player)
 
