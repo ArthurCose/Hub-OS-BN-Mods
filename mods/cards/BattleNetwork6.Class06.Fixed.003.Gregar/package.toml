@@ -1,0 +1,15 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class06.Fixed.003.Gregar"
+name = "RSlash"
+description = "Slash an enmy whl revolving"
+long_description = "Slash an enemy while revolving"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+hit_flags = ["Flinch", "Flash"]
+dynamic_damage = true
+element = "sword"
+hidden = true
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

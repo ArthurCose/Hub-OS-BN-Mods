@@ -1,0 +1,19 @@
+[package]
+category = "player"
+id = "BattleNetwork6.SlashMan"
+name = "SlashMan"
+element = "sword"
+description = "There is nothing in the world my claws can't slice!"
+long_description = "Charged Attack = TripleEdge\n\nNo-dim Swrd Chips+50"
+preview_texture_path = "preview.png"
+overworld_animation_path = "overworld.animation"
+overworld_texture_path = "overworld.png"
+mugshot_texture_path = "mug.png"
+mugshot_animation_path = "mug.animation"
+health = 1000
+emotions_texture_path = "emotions.png"
+emotions_animation_path = "emotions.animation"
+
+[dependencies]
+cards = ["BattleNetwork6.Class06.Fixed.003.Gregar"]
+libraries = ["BattleNetwork.Emotions", "BattleNetwork.Assets"]
