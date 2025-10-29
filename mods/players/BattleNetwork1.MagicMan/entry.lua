@@ -13,6 +13,10 @@ local FIRE_ANIM = "magic_fire.animation"
 local MAGIC_FIRE_START_SFX = Resources.load_audio("attack_start.ogg")
 local MAGIC_FIRE_SFX = bn_assets.load_audio("magic_fire.ogg")
 
+local RECOVER_TEXTURE = bn_assets.load_texture("recover.png")
+local RECOVER_ANIMATION_PATH = bn_assets.fetch_animation_path("recover.animation")
+local RECOVER_SFX = bn_assets.load_audio("recover.ogg")
+
 local function create_magic_fire(team, direction, hit_props)
   local spell = Spell.new(team)
   spell:set_facing(direction)
@@ -61,6 +65,36 @@ function player_init(player)
   local super_armor = AuxProp.new():declare_immunity(Hit.Flinch)
   player:add_aux_prop(super_armor)
 
+  local fire_boost_aux_prop = AuxProp.new()
+      :require_card_element(Element.Fire)
+      :require_card_time_freeze(false)
+      :increase_card_damage(30)
+  player:add_aux_prop(fire_boost_aux_prop)
+
+  local aqua_heal_aux_prop = AuxProp.new()
+      :require_card_element(Element.Aqua)
+      :require_card_time_freeze(false)
+      :increase_card_multiplier(0)
+      :with_callback(function()
+        player:set_health(player:health() + 30)
+
+        Resources.play_audio(RECOVER_SFX)
+
+        local artifact = Artifact.new()
+        artifact:set_texture(RECOVER_TEXTURE)
+        artifact:sprite():set_layer(-2)
+
+        local artifact_anim = artifact:animation()
+        artifact_anim:load(RECOVER_ANIMATION_PATH)
+        artifact_anim:set_state("DEFAULT")
+        artifact_anim:on_complete(function()
+          artifact:delete()
+        end)
+
+        Field.spawn(artifact, player:current_tile())
+      end)
+  player:add_aux_prop(aqua_heal_aux_prop)
+
   player.normal_attack_func = function()
     return Buster.new(player, false, player:attack_level())
   end
@@ -94,9 +128,7 @@ function player_init(player)
 
         animation:on_complete(function()
           animation:set_state("ATTACK_END")
-          print("a")
           animation:on_complete(function()
-            print("b")
             action:end_action()
           end)
 
