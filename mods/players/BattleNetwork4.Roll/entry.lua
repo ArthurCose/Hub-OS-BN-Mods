@@ -6,6 +6,8 @@ function player_init(player)
     player:set_fully_charged_color(Color.new(255, 200, 200, 255))
     player:set_charge_position(4, -34)
 
+    player:ignore_negative_tile_effects()
+
     player.normal_attack_func = function(self)
         return Buster.new(self, false, player:attack_level())
     end

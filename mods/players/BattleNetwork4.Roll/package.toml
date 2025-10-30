@@ -3,6 +3,7 @@ category = "player"
 id = "BattleNetwork4.Roll"
 name = "Roll"
 description = "Not just a liability!"
+long_description = "Charged Attack =\nRoll Arrow\n\nFloatShoes"
 icon_texture_path = "roll_face.png"
 preview_texture_path = "preview.png"
 overworld_animation_path = "overworld.animation"
@@ -12,9 +13,9 @@ mugshot_animation_path = "mug.animation"
 health = 1000
 
 [defines]
-characters = [ ]
+characters = []
 
 [dependencies]
-characters = [ ]
-libraries = [ ]
+characters = []
+libraries = []
 cards = ["BattleNetwork4.Class05.Secret.001"]

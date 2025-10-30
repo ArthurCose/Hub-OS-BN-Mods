@@ -42,6 +42,8 @@ function player_init(player)
     -- Position charge effect.
     player:set_charge_position(-3, -35)
 
+    player:ignore_negative_tile_effects()
+
     -- Return the action for the Navi's default attack.
     -- Determines what happens when you press B.
     player.normal_attack_func = function(self)

@@ -4,7 +4,7 @@ id = "dev.konstinople.player.ElecMan"
 name = "ElecMan"
 long_name = "ElecMan"
 description = "Let's make every day a real shocker."
-long_description = "Charged Attack =\nThunderbolt\n\nSpecial =\nThrow ElecRod\n\nElec Chips+50"
+long_description = "Charged Attack =\nThunderbolt\n\nSpecial =\nThrow ElecRod\nElec Chips+50\nFloatShoes"
 health = 1000
 element = "elec"
 preview_texture_path = "preview.png"

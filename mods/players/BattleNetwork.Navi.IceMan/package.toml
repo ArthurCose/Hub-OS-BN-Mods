@@ -5,6 +5,7 @@ name = "IceMan"
 health = 1000
 element = "Aqua"
 description = "Stay frosty!"
+long_description = "Charged Attack =\nFreeze Bomb\n\nSpecial Attack =\nKick Snowman"
 preview_texture_path = "preview.png"
 overworld_animation_path = "iceman_OW.animation"
 overworld_texture_path = "iceman_OW.png"

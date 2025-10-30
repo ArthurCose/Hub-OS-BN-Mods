@@ -2,7 +2,7 @@
 category = "player"
 id = "BattleNetwork5.Player.Meddy"
 name = "Meddy"
-description = "Dass what I'm talking about!"
+description = "Honestly, boys are silly sometimes!"
 health = 1000
 icon_texture_path = ""
 preview_texture_path = "preview.png"
