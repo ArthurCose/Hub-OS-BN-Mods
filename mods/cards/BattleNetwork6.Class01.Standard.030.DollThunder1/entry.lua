@@ -1,5 +1,4 @@
 local bn_assets = require("BattleNetwork.Assets")
-local battle_helpers = require("Battle.Helpers")
 
 local SPELL_TEXTURE = bn_assets.load_texture("thunderbolt.png")
 local SPELL_ANIM_PATH = bn_assets.fetch_animation_path("thunderbolt.animation")
@@ -30,10 +29,14 @@ local function create_thunderbolt(user, props)
 
 	local buster_point = user:animation():get_point("BUSTER")
 	local origin = user:sprite():origin()
-	local offset_x = buster_point.x - origin.x
+	local offset_x = buster_point.x - origin.x + 10
 	local offset_y = buster_point.y - origin.y
 
-	spell:set_offset(offset_x + 10, offset_y)
+	if facing == Direction.Left then
+		offset_x = -offset_x
+	end
+
+	spell:set_offset(offset_x, offset_y)
 
 	local tile_list = {
 		user:get_tile(facing, 1),

@@ -15,4 +15,4 @@ hit_flags = ["Flinch", "Flash"]
 
 # this section is optional
 [dependencies]
-libraries = ["BattleNetwork.Assets", "Battle.Helpers"]
+libraries = ["BattleNetwork.Assets"]
