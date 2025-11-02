@@ -86,13 +86,15 @@ function player_init(player)
         spell.on_update_func = function()
           time = time + 1
 
+          if loops == 2 then
+            spell:attack_tile()
+          end
+
           if time < 35 then
             return
           elseif time == 35 then
             Resources.play_audio(THROW_KUNAI_SFX, AudioBehavior.NoOverlap)
           end
-
-          spell:attack_tile()
 
           if spell:is_moving() then
             return
@@ -109,7 +111,7 @@ function player_init(player)
         end
 
         spell.on_collision_func = function()
-          if time >= 35 then
+          if loops == 2 then
             spell:delete()
           end
         end
