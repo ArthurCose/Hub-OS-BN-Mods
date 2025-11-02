@@ -99,7 +99,7 @@ bomb.swap_bomb_func = function(action)
     -- VDoll faces same way
     doll:set_facing(user:facing())
 
-    -- VDoll does not flip based on tile but bsaed on user
+    -- VDoll does not flip based on tile but based on user
     -- Ignore auto-flipping and defer to the set facing above
     doll:set_never_flip(true)
     doll:set_shadow(Shadow.Small)
@@ -115,6 +115,11 @@ bomb.swap_bomb_func = function(action)
         end
 
         if elevation > 0 then
+            return
+        end
+
+        if not self:current_tile():is_walkable() then
+            self:delete()
             return
         end
 
