@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class02.Mega.002.Roll2"
+name = "Roll2"
+description = "Attacks enmy,then heals you"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+card_class = "mega"
+codes = ["R"]
+damage = 40
+recover = 120
+hit_flags = ["Flinch"]
+time_freeze = true
+can_boost = true
+regular_allowed = true
+tags = ["BN6", "EXE6", "NAVI"]
+limit = 2
+
+[dependencies]
+cards = ["BattleNetwork6.Class02.Mega.001.Roll"]
