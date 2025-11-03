@@ -19,7 +19,6 @@ function player_init(player)
   -- emotions
   local synchro = EmotionsLib.new_synchro()
   synchro:set_ring_animation_state("BIG")
-  synchro:set_ring_offset(0, -13)
   synchro:implement(player)
 
   player.on_counter_func = function()
