@@ -38,9 +38,7 @@ local function create_meteor(player, props)
   local meteor = Spell.new(player:team())
 
   meteor:set_tile_highlight(Highlight.Flash)
-
-  meteor:set_facing(Direction.Left)
-  meteor:set_never_flip(true)
+  meteor:set_facing(player:facing())
 
   meteor:set_hit_props(props)
 
@@ -51,12 +49,19 @@ local function create_meteor(player, props)
   anim:set_state("DEFAULT")
   meteor:sprite():set_layer(-2)
 
-  meteor:set_offset(-112, -112)
+  local vel_x = 14
+  local vel_y = 14
+
+  if player:facing() == Direction.Left then
+    vel_x = -vel_x
+  end
+
+  meteor:set_offset(-vel_x * 8, -vel_y * 8)
 
   meteor.on_update_func = function(self)
     local offset = self:offset()
     if offset.y < 0 then
-      self:set_offset(offset.x + 14, offset.y + 14)
+      self:set_offset(offset.x + vel_x, offset.y + vel_y)
       return
     end
 
