@@ -1,0 +1,75 @@
+animation state="CHARACTER_IDLE"
+frame x="1" y="1" w="54" h="48" originx="43" originy="33" duration="0.017"
+
+animation state="CHARACTER_HIT"
+frame x="1" y="1" w="54" h="48" originx="43" originy="33" duration="0.017"
+
+animation state="CHARACTER_MOVE"
+frame x="1" y="1" w="54" h="48" originx="43" originy="33" duration="0.017"
+frame x="1" y="1" w="54" h="48" originx="44" originy="35" duration="0.017"
+frame x="1" y="1" w="54" h="48" originx="45" originy="36" duration="0.05"
+frame duration="0.017"
+
+animation state="CHARACTER_MOVE_END"
+frame duration="0.017"
+frame duration="0.017"
+frame duration="0.033"
+frame x="1" y="1" w="54" h="48" originx="43" originy="31" duration="0.017"
+frame x="1" y="1" w="54" h="48" originx="43" originy="34" duration="0.017"
+frame x="1" y="1" w="54" h="48" originx="43" originy="33" duration="0.017"
+
+animation state="CHARACTER_SWING_HAND"
+frame
+
+animation state="CHARACTER_SWING_HILT"
+frame
+
+animation state="CHARACTER_THROW"
+frame duration="0.05"
+frame duration="0.05"
+frame duration="0.05"
+frame duration="0.067"
+frame duration="0.067"
+frame x="1" y="1" w="54" h="48" originx="45" originy="36" duration="0.033"
+frame x="1" y="1" w="54" h="48" originx="44" originy="35" duration="0.033"
+frame x="1" y="1" w="54" h="48" originx="43" originy="33" duration="0.017"
+
+animation state="CHARACTER_SHOOT"
+frame
+
+animation state="BROKEN_WALL"
+frame x="57" y="1" w="54" h="48" originx="2" originy="98" duration="0.017"
+frame x="57" y="1" w="54" h="48" originy="100" duration="0.083"
+frame x="57" y="1" w="54" h="48" originx="4" originy="96" duration="1.899"
+frame x="1" y="1" w="54" h="48" originx="8" originy="41" duration="0.017"
+frame x="1" y="1" w="54" h="48" originx="39" originy="34" duration="0.033"
+frame x="1" y="1" w="54" h="48" originx="71" originy="39" duration="0.1"
+
+animation state="ROYAL_WRECKING_BALL"
+frame
+
+# animation state="ROYAL_WRECKING_BALL?"
+# frame x="1" y="1" w="54" h="48" originx="43" originy="33" duration="0.017"
+# frame x="1" y="1" w="54" h="48" originx="63" originy="40" duration="0.167"
+# frame x="1" y="1" w="54" h="48" originx="28" originy="39" duration="0.05"
+# frame x="1" y="1" w="54" h="48" originx="-16" originy="41" duration="0.033"
+# frame x="1" y="1" w="54" h="48" originx="-29" originy="67" duration="0.033"
+# frame x="57" y="1" w="54" h="48" originx="-3" originy="101" duration="0.033"
+# frame x="57" y="1" w="54" h="48" originx="25" originy="118" duration="0.083"
+# frame x="57" y="1" w="54" h="48" originx="25" originy="116" duration="0.417"
+# frame x="1" y="1" w="54" h="48" originx="8" originy="41" duration="0.017"
+# frame x="1" y="1" w="54" h="48" originx="39" originy="34" duration="0.033"
+# frame x="1" y="1" w="54" h="48" originx="71" originy="39" duration="0.1"
+
+animation state="KINGDOM_CRUSHER"
+frame
+
+# animation state="KINGDOM_CRUSHER?"
+# frame x="1" y="1" w="54" h="48" originx="-8" originy="68" duration="0.017"
+# frame x="1" y="1" w="54" h="48" originx="-11" originy="68" duration="0.083"
+# frame x="1" y="1" w="54" h="48" originx="-9" originy="68" duration="1.233"
+
+animation state="KINGDOM_CRUSHER_END"
+frame x="1" y="1" w="54" h="48" originx="8" originy="41" duration="0.017"
+frame x="1" y="1" w="54" h="48" originx="39" originy="34" duration="0.033"
+frame x="1" y="1" w="54" h="48" originx="71" originy="39" duration="0.1"

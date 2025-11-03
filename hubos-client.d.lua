@@ -766,6 +766,8 @@ HitProps = {}
 
 --- A card sitting in a [Player's](https://docs.hubos.dev/client/lua-api/entity-api/player) deck.
 ---@class DeckCard
+--- Undefined type, used to resolve to an [Action](https://docs.hubos.dev/client/lua-api/attack-api/action).
+---@field namespace Namespace?
 --- String, passed to [CardProperties.from_package()](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardpropertiesfrom_packagepackage_id-code).
 ---@field code string
 --- String, passed to [CardProperties.from_package()](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardpropertiesfrom_packagepackage_id-code).
@@ -827,7 +829,7 @@ DeckCard = {}
 --- String, displayed during time freeze.
 ---@field short_name string
 --- Undefined type, used for resolving to an [Action](https://docs.hubos.dev/client/lua-api/attack-api/action).
----@field namespace Namespace
+---@field namespace Namespace?
 --- String, used for resolving to an [Action](https://docs.hubos.dev/client/lua-api/attack-api/action).
 ---@field package_id string
 
@@ -1429,6 +1431,19 @@ function Entity:add_defense_rule(defense_rule) end
 ---@param defense_rule DefenseRule
 function Entity:remove_defense_rule(defense_rule) end
 
+--- Removes the first defense with the matching priority and calls its [replace callback](https://docs.hubos.dev/client/lua-api/defense-api/defense-rule#defense_ruleon_replace_func--function).
+---
+--- Throws if the Entity doesn't pass [Living.from()](https://docs.hubos.dev/client/lua-api/entity-api/living)
+---@param defense_priority DefensePriority
+function Entity:remove_defense(defense_priority) end
+
+--- Returns true if the entity has a defense rule with a matching priority.
+---
+--- Throws if the Entity doesn't pass [Living.from()](https://docs.hubos.dev/client/lua-api/entity-api/living)
+---@param defense_priority DefensePriority
+---@return boolean
+function Entity:has_defense(defense_priority) end
+
 --- - `aux_prop`: [AuxProp](https://docs.hubos.dev/client/lua-api/defense-api/aux-prop)
 ---
 --- Throws if the Entity doesn't pass [Living.from()](https://docs.hubos.dev/client/lua-api/entity-api/living)
@@ -1607,6 +1622,26 @@ function Entity:input_has(input_query) end
 --- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
 ---@return number
 function Entity:input_delay() end
+
+--- Stores a value that can be read in future battles.
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param key string
+---@param number_or_string number|string
+function Entity:remember(key, number_or_string) end
+
+--- Returns a number, string, or nil, store values with to [player:remember()](https://docs.hubos.dev/client/lua-api/entity-api/player#playerrememberkey-number_or_string)
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param key string
+---@return number|string|nil
+function Entity:recall(key) end
+
+--- Clears a value stored through [player:remember()](https://docs.hubos.dev/client/lua-api/entity-api/player#playerrememberkey-number_or_string)
+---
+--- Throws if the Entity doesn't pass [Player.from()](https://docs.hubos.dev/client/lua-api/entity-api/player)
+---@param key string
+function Entity:forget(key) end
 
 --- - `path`: file path relative to script file, use values returned from `Resources.load_audio()` for better performance.
 --- - `audio_behavior`: [AudioBehavior](https://docs.hubos.dev/client/lua-api/resource-api/resources#audiobehavior)
@@ -3017,17 +3052,6 @@ function Field.find_tiles(callback) end
 ---@param duration number
 function Field.shake(strength, duration) end
 
---- Deprecated. Use [entity:on_delete()](https://docs.hubos.dev/client/lua-api/entity-api/entity#entityon_deletefunctionentity) instead.
----@param target_id EntityId
----@param observer_id EntityId
----@param callback fun(entity: Entity)
-function Field.notify_on_delete(target_id, observer_id, callback) end
-
---- Deprecated. Use [entity:on_delete()](https://docs.hubos.dev/client/lua-api/entity-api/entity#entityon_deletefunctionentity) instead.
----@param id EntityId
----@param callback fun(entity: Entity)
-function Field.callback_on_delete(id, callback) end
-
 --- Causes tiles in the column to return to the matching team as soon as possible, starting at the next frame. The transfer will be delayed by tile reservations in the column.
 ---@param x number
 ---@param team Team
@@ -3237,6 +3261,18 @@ function Direction.flip_y(direction) end
 ---@param direction Direction
 ---@return Direction
 function Direction.reverse(direction) end
+
+--- Returns two directions, a horizontal direction and vertical direction.
+---
+--- ```lua
+--- local x_dir, y_dir = Direction.split(Direction.UpLeft)
+---
+--- assert(x_dir == Direction.Left)
+--- assert(y_dir == Direction.Up)
+--- ```
+---@param direction Direction
+---@return Direction, Direction
+function Direction.split(direction) end
 
 --- Joins two directions into a single direction.
 ---
