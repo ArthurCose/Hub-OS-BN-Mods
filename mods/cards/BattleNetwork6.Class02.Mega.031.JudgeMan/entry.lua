@@ -42,6 +42,10 @@ function card_init(user, props)
 		previously_visible = user:sprite():visible()
 
 		local stolen_tiles = Field.find_tiles(function(tile)
+			if not tile:is_walkable() then
+				return false
+			end
+
 			if tile:original_team() ~= user:team() or tile:team() == tile:original_team() then return false end
 
 			if #tile:find_obstacles(function()
@@ -144,8 +148,6 @@ function card_init(user, props)
 		end
 
 		local function spawn_book(tile)
-			if not tile or not tile:is_walkable() then return end
-
 			local book = Spell.new(user:team())
 
 			book:set_hit_props(
@@ -294,7 +296,7 @@ function card_init(user, props)
 							navi_animation:on_frame(1, function()
 								Resources.play_audio(APPEAR_AUDIO)
 
-								for i = 1, #stolen_tiles, 1 do
+								for i = 1, #stolen_tiles do
 									spawn_book(stolen_tiles[i])
 								end
 							end, true)
