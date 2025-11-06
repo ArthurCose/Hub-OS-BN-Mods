@@ -117,7 +117,7 @@ return function(player, form, base_animation_path)
     spell:set_hit_props(HitProps.new(
       20 * player:attack_level() + 30,
       Hit.Flinch | Hit.Flash | Hit.PierceGuard,
-      Element.Fire,
+      Element.None,
       player:context()
     ))
 

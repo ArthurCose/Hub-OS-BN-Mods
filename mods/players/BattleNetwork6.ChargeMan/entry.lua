@@ -110,7 +110,7 @@ function player_init(player)
     local hit_props = HitProps.new(
       20 * player:attack_level() + 10,
       Hit.Flinch | Hit.PierceGuard,
-      Element.Fire,
+      Element.None,
       player:context()
     )
 
