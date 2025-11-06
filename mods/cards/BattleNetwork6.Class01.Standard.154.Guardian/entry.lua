@@ -117,6 +117,7 @@ function card_init(user)
             if not tile:is_walkable() then return end
 
             local guardian = Obstacle.new(Team.Other)
+            guardian:set_facing(user:facing())
             guardian:set_health(2048)
             guardian:set_height(GUARDIAN_HEIGHT)
             guardian:set_owner(user:team())

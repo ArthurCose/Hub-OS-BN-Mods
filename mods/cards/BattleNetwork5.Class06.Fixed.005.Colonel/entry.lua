@@ -33,6 +33,7 @@ function card_init(user, props)
 
     if tile then
       local spell = Spell.new(user:team())
+      spell:set_facing(user:facing())
       spell:set_elevation(41)
       spell:set_hit_props(
         HitProps.from_card(props, user:context())
