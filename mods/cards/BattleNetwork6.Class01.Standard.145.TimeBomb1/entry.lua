@@ -18,8 +18,7 @@ function card_init(user, props)
 	action:set_lockout(ActionLockout.new_sequence())
 
 	local time = 0
-	local spawn_tile;
-	local is_preferred = false;
+	local spawn_tile
 
 	local spawn_tile_options = Field.find_tiles(function(tile)
 		if tile:is_reserved({}) then return false end
@@ -36,16 +35,22 @@ function card_init(user, props)
 	action.on_execute_func = function()
 		local bomb = Obstacle.new(Team.Other)
 
+		bomb:add_aux_prop(AuxProp.new():declare_immunity(~Hit.Drag))
+		bomb.can_move_to_func = function(tile)
+			return tile:is_walkable()
+		end
+
 		local user_tile = user:current_tile()
 		local user_y = user_tile:y()
 
-		local index = 1
-		while index < #spawn_tile_options and is_preferred == false do
+		for index = 1, #spawn_tile_options do
 			spawn_tile = spawn_tile_options[index]
 
-			is_preferred = spawn_tile:y() == user_y
+			local is_preferred = spawn_tile:y() == user_y
 
-			index = index + 1
+			if is_preferred then
+				break
+			end
 		end
 
 		local main_goal = false
@@ -73,10 +78,10 @@ function card_init(user, props)
 
 		bomb_animation:set_state(state_prefix .. "SPAWN")
 
-		bomb._countdown_animator = Animation.new()
-		bomb._countdown_animator:load(bomb_anim_path)
-		bomb._countdown_animator:set_state("COUNTDOWN")
-		bomb._countdown_animator:apply(countdown)
+		local countdown_animator = Animation.new()
+		countdown_animator:load(bomb_anim_path)
+		countdown_animator:set_state("COUNTDOWN")
+		countdown_animator:apply(countdown)
 
 		local relative_offset = bomb_animation:relative_point("countdown")
 
@@ -103,37 +108,21 @@ function card_init(user, props)
 			end
 		end
 
-		bomb._countdown_animator:on_frame(2, function()
+		countdown_animator:on_frame(2, function()
 			play_timebomb_sound(false)
 		end, true)
 
-		bomb._countdown_animator:on_frame(3, function()
+		countdown_animator:on_frame(3, function()
 			play_timebomb_sound(false)
 		end, true)
 
-		bomb._countdown_animator:on_frame(4, function()
+		countdown_animator:on_frame(4, function()
 			play_timebomb_sound(true)
 		end, true)
 
-		bomb._countdown_animator:on_complete(function()
+		countdown_animator:on_complete(function()
 			main_goal = true
 		end)
-
-		local shuffled = {}
-
-		local tile_list = Field.find_tiles(function(t)
-			if t:team() == user:team() then return false end
-			if t:is_edge() then return false end
-			if t == spawn_tile then return false end
-			return true
-		end)
-
-		for i, v in ipairs(tile_list) do
-			local pos = math.random(1, #shuffled + 1)
-			table.insert(shuffled, pos, v)
-		end
-
-		table.insert(shuffled, 1, spawn_tile)
 
 		bomb.on_spawn_func = function()
 			Resources.play_audio(spawn_audio)
@@ -142,7 +131,7 @@ function card_init(user, props)
 		local hit_props = HitProps.from_card(props)
 
 		local function create_explosion_and_visual(tile)
-			local spell = Spell.new(user:team())
+			local spell = Spell.new(Team.Other)
 
 			-- Use TimeBomb's hit props
 			spell:set_hit_props(hit_props)
@@ -160,26 +149,58 @@ function card_init(user, props)
 		end
 
 		local function create_explosion_visual_handler()
-			local handler = user:create_component(Lifetime.ActiveBattle)
+			-- find tiles using flood fill
+			---@type (Tile?)[]
+			local pending_visit = { bomb:current_tile() }
+			local tile_list = {}
+			local visited = {}
+			local match_team = bomb:current_tile():team()
 
-			handler._index = 1
+			while #pending_visit > 0 do
+				local popped = pending_visit[#pending_visit]
+				pending_visit[#pending_visit] = nil
+
+				if popped and not visited[popped] and not popped:is_edge() and popped:team() == match_team then
+					visited[popped] = true
+
+					-- accept tile
+					tile_list[#tile_list + 1] = popped
+
+					-- visit neighbors
+					pending_visit[#pending_visit + 1] = popped:get_tile(Direction.Up, 1)
+					pending_visit[#pending_visit + 1] = popped:get_tile(Direction.Down, 1)
+					pending_visit[#pending_visit + 1] = popped:get_tile(Direction.Left, 1)
+					pending_visit[#pending_visit + 1] = popped:get_tile(Direction.Right, 1)
+				end
+			end
+
+			-- shuffle tiles, aside from the first tile
+			for i = 2, #tile_list - 1 do
+				local j = math.random(i, #tile_list)
+				tile_list[i], tile_list[j] = tile_list[j], tile_list[i]
+			end
+
+			local spell = Spell.new()
+			local handler = spell:create_component(Lifetime.ActiveBattle)
+
+			local index = 1
 
 			handler.on_update_func = function(self)
-				if self._index > #shuffled then
+				if index > #tile_list then
 					self:eject()
 					return
 				end
 
-				create_explosion_and_visual(shuffled[self._index])
+				create_explosion_and_visual(tile_list[index])
 
-				self._index = self._index + 1
+				index = index + 1
 			end
 		end
 
 		bomb.on_update_func = function()
 			if countdown:visible() then
-				bomb._countdown_animator:apply(countdown)
-				bomb._countdown_animator:update()
+				countdown_animator:apply(countdown)
+				countdown_animator:update()
 			end
 
 			if TurnGauge.frozen() == true then return end
