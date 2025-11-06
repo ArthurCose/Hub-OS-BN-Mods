@@ -12,6 +12,8 @@ local MACE_SFX = bn_assets.load_audio("dust_chute2.ogg")
 
 local FIXED_CARD_ID = "BattleNetwork5.Class06.Fixed.005.Colonel"
 
+local CHARGE_TIMING = { 120, 110, 100, 95, 90 }
+
 ---@param player Entity
 function player_init(player)
   player:set_height(64.0)
@@ -40,6 +42,10 @@ function player_init(player)
   -- attacks
   player.normal_attack_func = function()
     return Buster.new(player, false, player:attack_level())
+  end
+
+  player.calculate_charge_time_func = function()
+    return CHARGE_TIMING[player:charge_level()] or CHARGE_TIMING[#CHARGE_TIMING]
   end
 
   player.charged_attack_func = function()
