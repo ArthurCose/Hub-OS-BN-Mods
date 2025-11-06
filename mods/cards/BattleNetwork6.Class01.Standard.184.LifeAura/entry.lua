@@ -143,6 +143,7 @@ function create_barrier(user)
 		aura_animate_component:eject()
 		aura_destroy_component:eject()
 		user:remove_node(barrier)
+		user:remove_node(number_root)
 	end
 
 	user:add_defense_rule(barrier_defense_rule)
