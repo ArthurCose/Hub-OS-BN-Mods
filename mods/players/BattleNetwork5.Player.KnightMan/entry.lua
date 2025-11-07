@@ -20,6 +20,7 @@ function player_init(player)
   player:set_texture(Resources.load_texture("battle.png"))
   player:load_animation("battle.animation")
   player:set_charge_position(2, -34)
+  player:set_shadow(Resources.load_texture("shadow.png"), "shadow.animation")
 
   local super_armor = AuxProp.new():declare_immunity(Hit.Flinch)
   player:add_aux_prop(super_armor)
@@ -145,6 +146,12 @@ function player_init(player)
     local movement = Movement.new_teleport(tile)
     movement.delay = 4
     movement.endlag = 15
+
+    tile:reserve_for(player)
+    movement.on_end_func = function()
+      tile:remove_reservation_for(player)
+    end
+
     player:queue_movement(movement)
 
     animation:set_state("CHARACTER_MOVE", { { 1, 1 }, { 2, 1 }, { 3, 1 } })
