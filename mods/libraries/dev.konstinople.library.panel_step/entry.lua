@@ -199,6 +199,11 @@ function PanelStep:wrap_action(wrapped_action)
     local i = 1
 
     component.on_update_func = function()
+      if lagging_ghost:deleted() then
+        component:eject()
+        return
+      end
+
       i = i + 1
 
       debug_print(i)
