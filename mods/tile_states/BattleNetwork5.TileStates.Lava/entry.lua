@@ -1,8 +1,6 @@
 local bn_assets = require("BattleNetwork.Assets")
 
-local HIT_TEXTURE = bn_assets.load_texture("bn6_hit_effects.png")
-local HIT_ANIMATION_PATH = bn_assets.fetch_animation_path("bn6_hit_effects.animation")
-
+---@param entity Entity
 local function try_hit(entity)
   if not entity:hittable() then return end
   if entity:intangible() then return end
@@ -10,26 +8,14 @@ local function try_hit(entity)
   if entity:element() == Element.Fire then return end
 
   local props = HitProps.new(50, Hit.Flinch, Element.Fire)
+  entity:hit(props)
 
   local tile = entity:current_tile()
 
-  local spell = Spell.new(Team.Other)
+  local hit_fx = bn_assets.HitParticle.new("FIRE", math.random(-10, 10), math.random(-10, 10))
+  Field.spawn(hit_fx, tile)
 
-  spell:set_hit_props(props)
-
-  spell.on_update_func = function(self)
-    self:attack_tile()
-  end
-
-  spell.on_collision_func = function(self, other)
-    local hit_fx = bn_assets.HitParticle.new("FIRE", math.random(-10, 10), math.random(-10, 10))
-
-    Field.spawn(hit_fx, tile)
-
-    tile:set_state(TileState.Normal)
-  end
-
-  Field.spawn(spell, tile)
+  tile:set_state(TileState.Normal)
 end
 
 ---@param custom_state CustomTileState
