@@ -61,7 +61,7 @@ local function heal_and_create_barrier(user)
 
     local barrier_defense_rule = DefenseRule.new(DefensePriority.Barrier, DefenseOrder.Always)
     barrier_defense_rule.defense_func = function(defense, attacker, defender, hit_props)
-        if hit_props.element == Element.Wind then blown_away = true end
+        if hit_props.element == Element.Wind or hit_props.secondary_element == Element.Wind then blown_away = true end
 
         if hit_props.flags & Hit.Drain ~= 0 then return end
 
