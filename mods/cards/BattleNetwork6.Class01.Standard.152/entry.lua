@@ -3,7 +3,7 @@ local bn_assets = require("BattleNetwork.Assets")
 
 local TEXTURE = Resources.load_texture("trumpy.png")
 local APPEAR_SFX = bn_assets.load_audio("appear.ogg")
-local MUSIC_SFX = bn_assets.load_audio("timpani.ogg")
+local MUSIC_SFX = bn_assets.load_audio("silence.ogg")
 local MUSIC_INTERVAL = 64
 local IDLE_DURATION = 140 -- acts as 170f cooldown, warn animation is 30f
 local PLAY_DURATION = 120
