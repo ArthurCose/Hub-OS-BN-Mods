@@ -124,7 +124,17 @@ function status_init(status)
     end
   end
 
-  -- defense rule to pop on hit and add Elec weakness
+  -- elec weakness
+  local aux_prop = AuxProp.new()
+      :require_hit_flags_absent(Hit.Drain)
+      :require_hit_element(Element.Elec)
+      :increase_hit_damage("DAMAGE")
+      :with_callback(function()
+        spawn_alert(entity)
+      end)
+  entity:add_aux_prop(aux_prop)
+
+  -- defense rule to pop on hit
   local defense_rule = DefenseRule.new(DefensePriority.Last, DefenseOrder.CollisionOnly)
 
   defense_rule.filter_func = function(hit_props)
@@ -134,12 +144,6 @@ function status_init(status)
 
     if hit_props.damage > 0 then
       status:set_remaining_time(0)
-    end
-
-    if hit_props.element == Element.Elec or hit_props.secondary_element == Element.Elec then
-      hit_props.damage = hit_props.damage * 2
-
-      spawn_alert(entity)
     end
 
     -- remove bubble from flags, we ignore getting bubbled again so we can pop out
@@ -154,6 +158,8 @@ function status_init(status)
   status.on_delete_func = function()
     entity:remove_defense_rule(defense_rule)
     entity:set_elevation(entity:elevation() - last_added_elevation)
+
+    entity:remove_aux_prop(aux_prop)
 
     -- pop
     local artifact = spawn_pop(entity)
