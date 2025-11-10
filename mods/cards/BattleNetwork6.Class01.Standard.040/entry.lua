@@ -107,7 +107,7 @@ local function spawn_bees(user, props)
 
           i = i + 1
 
-          if i % 5 ~= 0 then
+          if i % 5 > 1 then
             bees:attack_tile()
           end
         end
