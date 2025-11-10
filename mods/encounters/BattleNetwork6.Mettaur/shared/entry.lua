@@ -183,9 +183,8 @@ function begin_guard(character)
     anim:on_complete(function()
         character.guard_transition = false
         character.guarding_defense_rule = DefenseRule.new(DefensePriority.Last, DefenseOrder.Always)
-        character.guarding_defense_rule.defense_func = function(defense, attacker, defender)
-            local attacker_hit_props = attacker:copy_hit_props()
-            if attacker_hit_props.flags & Hit.PierceGuard == Hit.PierceGuard then
+        character.guarding_defense_rule.defense_func = function(defense, attacker, defender, attacker_hit_props)
+            if attacker_hit_props.flags & Hit.Drain ~= 0 or attacker_hit_props.flags & Hit.PierceGuard ~= 0 then
                 --cant block breaking hits with guard
                 return
             end

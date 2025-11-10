@@ -135,7 +135,7 @@ function card_init(user)
                 if hit_props.flags & Hit.Drain ~= 0 then return end
                 if hit_props.damage == 0 then return end
 
-                if activated then
+                if activated or not attacker then
                     return
                 end
 
