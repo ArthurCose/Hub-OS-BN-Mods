@@ -16,7 +16,7 @@ function tile_state_init(custom_state)
 
     local double_damage_prop = AuxProp.new()
         :require_hit_element(Element.Elec)
-        :increase_hit_damage("DAMAGE")
+        :increase_pre_hit_damage("DAMAGE")
     entity:add_aux_prop(double_damage_prop)
 
     local card_aux_prop = AuxProp.new()
