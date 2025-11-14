@@ -73,6 +73,8 @@ function card_init(user)
 
         local intercept_auxprop = AuxProp.new()
             :require_card_tag("NAVI")
+            :require_card_not_class(CardClass.Giga)
+            :require_card_not_class(CardClass.Recipe)
             :intercept_action(function(opponent_action)
                 activate(opponent, opponent_action)
                 return nil
@@ -80,6 +82,8 @@ function card_init(user)
 
         local interrupt_auxprop = AuxProp.new()
             :require_card_tag("NAVI")
+            :require_card_not_class(CardClass.Giga)
+            :require_card_not_class(CardClass.Recipe)
             :interrupt_action(function(opponent_action)
                 activate(opponent, opponent_action)
             end)
