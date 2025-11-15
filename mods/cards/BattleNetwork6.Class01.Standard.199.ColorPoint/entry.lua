@@ -107,7 +107,11 @@ function card_init(user, props)
 
 			-- Must be at the edge of our area.
 			local check_tile = tile:get_tile(direction, 1)
-			if check_tile:team() == team then return false end
+			if check_tile and check_tile:team() == team then return false end
+
+			-- Can't give up our last column
+			check_tile = tile:get_tile(Direction.reverse(tile:facing()), 1)
+			if check_tile and check_tile:is_edge() then return false end
 
 			-- If facing left, must be a lesser X value (moving towards left edge of field)
 			if direction == Direction.Left and tile:x() > x then return false end
