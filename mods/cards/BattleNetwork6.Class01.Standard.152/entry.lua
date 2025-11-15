@@ -37,6 +37,8 @@ local function create_trumpy(user)
   trumpy:set_texture(TEXTURE)
   trumpy:set_health(60)
 
+  trumpy:add_aux_prop(StandardEnemyAux.new())
+
   local animation = trumpy:animation()
   animation:load("trumpy.animation")
   animation:set_state("IDLE")

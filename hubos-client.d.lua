@@ -434,7 +434,7 @@ Action = {}
 --- - `attacker`: [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity)
 --- - `defender`: [Entity](https://docs.hubos.dev/client/lua-api/entity-api/entity)
 --- - `hit_props`: [HitProps](https://docs.hubos.dev/client/lua-api/attack-api/hit-props)
----@field defense_func fun(defense: Defense, attacker: Entity, defender: Entity, hit_props: HitProps)
+---@field defense_func fun(defense: Defense, attacker?: Entity, defender: Entity, hit_props: HitProps)
 --- Called when a DefenseRule with the same priority replaced this rule.
 ---@field on_replace_func fun()
 DefenseRule = {}
@@ -3110,6 +3110,11 @@ function Tile:is_edge() end
 ---@return boolean
 function Tile:is_walkable() end
 
+--- Returns true as long as there are no reservations by entities where [entity:sharing_tile()](https://docs.hubos.dev/client/lua-api/entity-api/entity#entitysharing_tile) is false, excluding [entities with ids](https://docs.hubos.dev/client/lua-api/entity-api/entity#entityid) matching the `exclude_list`.
+---@param exclude_list? EntityId[]
+---@return boolean
+function Tile:is_shareable(exclude_list) end
+
 --- Returns true if there's any reservations for this tile, excluding [entities with ids](https://docs.hubos.dev/client/lua-api/entity-api/entity#entityid) matching the `exclude_list`.
 ---@param exclude_list? EntityId[]
 ---@return boolean
@@ -4155,6 +4160,26 @@ function AuxProp:intercept_action(callback) end
 ---@param callback fun(action: Action)
 ---@return AuxProp
 function AuxProp:interrupt_action(callback) end
+
+--- - Increase Pre Hit Damage priority
+--- - `expr`: [Math Expression String](https://docs.hubos.dev/client/lua-api/defense-api/aux-prop#math-expression-strings), `"DAMAGE"` will represent the damage value for the current hit before any modifications.
+---
+--- The result of `expr` will be added to the total incoming damage.
+---
+--- If the result is negative, it will be clamped to 0.
+---@param expr string
+---@return AuxProp
+function AuxProp:increase_pre_hit_damage(expr) end
+
+--- - Decrease Pre Hit Damage priority
+--- - `expr`: [Math Expression String](https://docs.hubos.dev/client/lua-api/defense-api/aux-prop#math-expression-strings), `"DAMAGE"` will represent the damage value for the current hit before any modifications.
+---
+--- The result of `expr` will be added to the total incoming damage.
+---
+--- If the result is negative, it will be clamped to 0.
+---@param expr string
+---@return AuxProp
+function AuxProp:decrease_pre_hit_damage(expr) end
 
 --- - Status Immunity priority
 --- - `hit_flags`: [Hit](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#hit_propsflags)
