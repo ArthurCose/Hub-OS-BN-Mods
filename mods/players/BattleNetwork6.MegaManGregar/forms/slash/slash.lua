@@ -65,7 +65,7 @@ return function(player, form, base_animation_path)
         spell:set_hit_props(HitProps.new(
           20 * player:attack_level() + 60,
           Hit.Flinch | Hit.Flash,
-          Element.None,
+          Element.Sword,
           player:context()
         ))
 
