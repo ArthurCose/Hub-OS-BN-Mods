@@ -198,9 +198,17 @@ function PanelStep:wrap_action(wrapped_action)
     local component = user:create_component(Lifetime.Local)
     local i = 1
 
+    local function eject_component()
+      component:eject()
+
+      if not static_ghost:deleted() then
+        static_ghost:erase()
+      end
+    end
+
     component.on_update_func = function()
       if lagging_ghost:deleted() then
-        component:eject()
+        eject_component()
         return
       end
 
@@ -219,13 +227,13 @@ function PanelStep:wrap_action(wrapped_action)
       elseif i == 20 then
         static_ghost:erase()
       elseif not self._return_frame and i > 21 then
-        component:eject()
+        eject_component()
       elseif i == self._return_frame then
+        eject_component()
         user:current_tile():remove_entity(user)
         original_tile:add_entity(user)
         original_tile:remove_reservation_for(user)
         debug_print("returned")
-        component:eject()
         returned = true
       end
     end
@@ -290,6 +298,14 @@ function PanelStep:create_action(user, create_action_steps)
     local component = user:create_component(Lifetime.Local)
     local i = 1
 
+    local function eject_component()
+      component:eject()
+
+      if not static_ghost:deleted() then
+        static_ghost:erase()
+      end
+    end
+
     component.on_update_func = function()
       i = i + 1
 
@@ -306,13 +322,13 @@ function PanelStep:create_action(user, create_action_steps)
       elseif i == 20 then
         static_ghost:erase()
       elseif not self._return_frame and i > 21 then
-        component:eject()
+        eject_component()
       elseif i == self._return_frame then
+        eject_component()
         user:current_tile():remove_entity(user)
         original_tile:add_entity(user)
         original_tile:remove_reservation_for(user)
         debug_print("returned")
-        component:eject()
         returned = true
       end
     end
