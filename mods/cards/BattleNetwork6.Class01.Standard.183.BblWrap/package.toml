@@ -1,0 +1,21 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.183.BblWrap"
+name = "BblWrap"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "I", "Q", "Z" ]
+damage = 0
+time_freeze = true
+element = "aqua"
+description = "Weak against elec attk"
+long_description = "Grants a regenerating Aqua-element barrier which has 1hp. Receiving an Elec attack will stop it from regenerating and deal effective damage."
+limit = 1
+card_class = "standard"
+regular_allowed = false
+
+[dependencies]
+libraries = [
+    "BattleNetwork.Assets",
+    "dev.GladeWoodsgrove.library.BarriersAndAuras"
+]

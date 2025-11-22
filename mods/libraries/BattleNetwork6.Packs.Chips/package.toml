@@ -131,6 +131,7 @@ cards = [
   "BattleNetwork6.Class01.Standard.180.Barrier",
   "BattleNetwork6.Class01.Standard.181.Barrier100",
   "BattleNetwork6.Class01.Standard.182.Barrier200",
+  "BattleNetwork6.Class01.Standard.183.BblWrap",
   "BattleNetwork6.Class01.Standard.184.LifeAura",
   "BattleNetwork6.Class01.Standard.185",
   "BattleNetwork6.Class01.Standard.187",

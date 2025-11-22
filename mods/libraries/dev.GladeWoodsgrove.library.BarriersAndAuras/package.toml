@@ -1,0 +1,85 @@
+[package]
+category = "library"
+id = "dev.GladeWoodsgrove.library.BarriersAndAuras"
+name = "Barrier & Aura Library"
+description = "Simplifes the creation of Barrier and Aura-type defenses."
+long_description = """Simplifes the creation of Barrier and Aura-type defenses.
+Must be required as a Dependency under the 'libraries' section in a mod's package.toml
+
+=== Documentation ===
+    A list of commands that this library offers you as a mod creator.
+
+== Creation ==
+    ∙ new_barrier(owner, health)
+        ∙ Creates a new Barrier-type defense.
+        ∙ Health is depleted on every hit.
+    ∙ new_aura(owner, health)
+        ∙ Creates a new Aura-type defense.
+        ∙ Health is fully removed only if damage meets or exceeds health value.
+ 
+== Mechanics & Data ==
+    ∙ set_is_aura(is_aura)
+        ∙ Determines how health should be handled. Not used externally by default.
+        ∙ Allows the user to conditionally switch between Aura and Barrier defense types.
+    ∙ is_aura()
+        ∙ Returns true if the defense is currently an Aura-type. Otherwise, returns false.
+    ∙ set_removal_timer(time)
+        ∙ Sets a timer in frames. When the timer expires, so does the defense.
+        ∙ Auras commonly use this.
+    ∙ set_regeneration_timer(time)
+        ∙ Sets a timer, in frames, where the defense will regenerate and become active again after being destroyed by damage.
+        ∙ Will automatically enable the timer.
+    ∙ set_regeneration_audio(audio)
+        ∙ Sets a sound to play when the defense regenerates.
+        ∙ If unset, no sound will play.
+    ∙ enable_regeneration_timer(is_enabled)
+        ∙ Set to true to enable the timer. Set to false to disable and reset the current timer.
+    ∙ set_max_health(health_value)
+        ∙ Changes the maximum health of the defense. Not used by default.
+        ∙ Allows the user to buff or nerf the defense conditionally.
+    ∙ get_max_health()
+        ∙ Returns the maximum health value of the defense.
+    ∙ set_health(health_value)
+        ∙ Changes the current health of the defense. Not used by default.
+        ∙ Allows the user to conditionally alter the current health of the defense.
+    ∙ get_health()
+        ∙ Returns the current health value of the defense.
+    ∙ set_display_health(boolean)
+        ∙ Toggles health display.
+        ∙ Auras usually display health. Set to 'true' for this behavior.
+    ∙ set_weakness_element(element_list)
+        ∙ Sets a {list} of elements that removes the defense when received from an attack.
+    ∙ get_weakness_element()
+        ∙ Returns the Element that the Defense is weak to, if any.
+    ∙ set_hit_flag_weakness(flags)
+        ∙ Sets a list of Hit Flags that will automatically remove the defense if present on an attack.
+        ∙ Passed as a list: {Hit.Freeze, Hit.Root, Hit.Paralyze} would create a defense that is removed by movement-stopping hit flags.
+    ∙ get_hit_flag_weakness()
+        ∙ Returns the list set above. Please note that the format is NOT the same as is used in HitProps! Commas, not | pipes.
+    ∙ get_defense_rule()
+        ∙ Returns the defense rule that is currently in use.
+        ∙ Shouldn't be needed for regular usage. Only use if you know what you're doing.
+    ∙ get_owner()
+        ∙ Returns the entity that the defense is registered to.
+
+== Texture & Animation ==
+    ∙ set_texture(path)
+        ∙ Sets the sprite to display while active.
+        ∙ Use textures returned from Resources.load_texture(path) for better performance
+    ∙ get_texture()
+        ∙ Returns the texture of the defense's sprite node.
+    ∙ get_animation_path()
+        ∙ Returns the animation path of the defense's animation
+    ∙ set_animation_path(path)
+        ∙ Sets the animation file for the sprite.
+        ∙ Affix _folder_path for textures loaded into the source mod's folder.
+    ∙ set_active_state(state_name)
+        ∙ Sets the animation state used while the defense is active.
+        ∙ Will be set to use Playback.Loop internally.
+    ∙ get_active_state()
+        ∙ Returns a string. If the active state is unset, returns nil.
+    ∙ set_fade_state(state_name)
+        ∙ Sets a custom state that is used if the defense times out.
+    ∙ get_fade_state()
+        ∙ Returns a string. If the fade state is unset, returns nil.
+"""

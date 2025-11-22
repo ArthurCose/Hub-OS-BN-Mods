@@ -1,0 +1,13 @@
+imagePath="C:/Users/seven/OneDrive/Documents/My Games/Hub OS/mods/libraries/BattleNetwork.Assets/Animations & Images/flashbomb_bn6.png"
+
+animation state="AIR"
+frame duration="0.05" x="2" y="2" w="19" h="22" originx="10" originy="19" flipx="0" flipy="0"
+
+animation state="FLASH"
+frame duration="0.05" x="25" y="2" w="19" h="22" originx="10" originy="19" flipx="0" flipy="0"
+frame duration="0.05" x="2" y="28" w="19" h="22" originx="10" originy="19" flipx="0" flipy="0"
+frame duration="0.05" x="25" y="28" w="19" h="22" originx="10" originy="19" flipx="0" flipy="0"
+
+animation state="TOSS"
+frame duration="0.083" x="2" y="54" w="19" h="19" originx="32" originy="29" flipx="0" flipy="0"
+frame duration="0.067" x="25" y="54" w="19" h="19" originx="18" originy="53" flipx="0" flipy="0"
