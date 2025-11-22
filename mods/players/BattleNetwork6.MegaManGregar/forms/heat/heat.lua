@@ -39,18 +39,6 @@ local function create_flame_spell(user, props)
 
   spell:set_facing(user:facing())
 
-  spell.on_spawn_func = function(self)
-    tile = self:current_tile()
-
-    if tile:is_walkable() then
-      if tile:state() == TileState.Cracked then
-        tile:set_state(TileState.Broken)
-      else
-        tile:set_state(TileState.Cracked)
-      end
-    end
-  end
-
   spell.on_collision_func = function(self, other)
     shared.spawn_hit_artifact(other, "FIRE", math.random(-8, 8), -other:height() // 2 + math.random(-8, 8))
   end
