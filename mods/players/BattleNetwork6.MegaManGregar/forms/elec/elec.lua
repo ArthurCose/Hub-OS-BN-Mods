@@ -70,6 +70,10 @@ return function(player, form, base_animation_path)
       local tile = player:current_tile()
       local facing = player:facing()
 
+      if facing == Direction.Left then
+        spell_offset.x = -spell_offset.x
+      end
+
       local spell = Spell.new(player:team())
       spell:set_offset(spell_offset.x, spell_offset.y)
       spell:set_facing(facing)
