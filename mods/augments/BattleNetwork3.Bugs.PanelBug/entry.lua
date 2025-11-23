@@ -9,7 +9,7 @@ function augment_init(augment)
   for x = 1, width, 1 do
     for y = 1, height, 1 do
       tile = Field.tile_at(x, y)
-      if tile and tile:state() == TileState.Normal and tile:is_team(player:team()) then
+      if tile and tile:state() == TileState.Normal and player:is_team(tile:team()) then
         tile:set_state(state)
       end
     end

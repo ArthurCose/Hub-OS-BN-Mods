@@ -953,9 +953,11 @@ function player_init(player)
         handle_form_activation(self, Element.Aqua, { mult_up })
     end
 
+    local original_hand_size
     soul_number.on_activate_func = function(self)
+        original_hand_size = player:hand_size()
         handle_form_activation(self, Element.None, { damage_plus_ten })
-        player:boost_hand_size(10)
+        player:boost_hand_size(10 - original_hand_size)
 
         overlay = player:create_node()
         overlay_texture = Resources.load_texture("forms/BM_02_NUMBER/idle_overlay.png")
@@ -1126,6 +1128,8 @@ function player_init(player)
     soul_aqua.on_deactivate_func = function(self) end
 
     soul_number.on_deactivate_func = function(self)
+        local reset_hand_size = original_hand_size - 10
+        player:boost_hand_size(reset_hand_size)
         handle_overlay_erasure()
     end
 
@@ -1158,6 +1162,7 @@ function player_init(player)
             if value == "HOLES" then player:ignore_hole_tiles(false) end
             if value == "NEGATIVE_EFFECTS" then player:ignore_negative_tile_effects(false) end
         end
+        wind_shoes = {}
     end
     soul_thunder.on_deactivate_func = function(self) end
 
@@ -1413,6 +1418,7 @@ function player_init(player)
 
                     Resources.play_audio(defeated_mob)
                     spawn_explosions = false
+                    tiles = {}
                 end
 
                 self:erase()
@@ -1866,7 +1872,7 @@ function player_init(player)
     end
 
     soul_guts.on_update_func = function(self)
-        if player:input_has(Input.Pulsed.Shoot) or player:input_has(Input.Pressed.Shoot) then
+        if player:input_has(Input.Pressed.Shoot) then
             mash_count = mash_count + 1
             guts_timer = 0
         end

@@ -7,7 +7,7 @@ function status_init(status)
 
     stone_defense_rule.defense_func = function(defense, attacker, defender, hit_props)
         -- Only block if the damage isn't guard piercing.
-        if hit_props.flags & Hit.PierceGuard ~= Hit.PierceGuard then
+        if hit_props.flags & Hit.PierceGuard ~= 0 then
             local stone_bod_aux_prop = AuxProp.new()
                 :decrease_hit_damage("DAMAGE - 1")
 
@@ -16,6 +16,23 @@ function status_init(status)
 
             -- Add the property to the player.
             defender:add_aux_prop(stone_bod_aux_prop)
+        else
+            local weakness_prop = AuxProp.new()
+                :increase_hit_damage("DAMAGE")
+                :immediate()
+                :with_callback(function()
+                    local alert_artifact = Alert.new()
+                    alert_artifact:sprite():set_never_flip(true)
+
+                    local movement_offset = owner:movement_offset()
+                    alert_artifact:set_offset(movement_offset.x, movement_offset.y - owner:height())
+
+                    Field.spawn(alert_artifact, owner:current_tile())
+
+                    owner:remove_status(Hit.StoneBody)
+                end)
+
+            owner:add_aux_prop(weakness_prop)
         end
     end
 

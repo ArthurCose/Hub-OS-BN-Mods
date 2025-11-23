@@ -10,7 +10,7 @@ local wood_audio = bn_assets.load_audio("grass.ogg")
 function card_init(user, props)
 	local action = Action.new(user)
 
-	local field = user:field()
+	local field = user
 	local component
 	local defense_rule = DefenseRule.new(DefensePriority.Trap, DefenseOrder.CollisionOnly)
 	local uninstalled = false
@@ -81,7 +81,7 @@ function card_init(user, props)
 
 		spell.on_update_func = function(self)
 			if is_first == true then
-				local targets_list = field:find_entities(function(target)
+				local targets_list = Field.find_entities(function(target)
 					-- Must meet these criteria:
 					-- is "Living" type
 					-- Hitbox is enabled
@@ -134,7 +134,7 @@ function card_init(user, props)
 	end
 
 	local find_spells = function()
-		return field:find_spells(
+		return Field.find_spells(
 			function(entity)
 				if entity:team() == user:team() then return false end
 
@@ -175,7 +175,7 @@ function card_init(user, props)
 
 			wrapped_action.on_execute_func = function(self)
 				local step1 = self:create_step()
-				local tile_list = field:find_tiles(function(tile)
+				local tile_list = Field.find_tiles(function(tile)
 					return not tile:is_edge()
 				end)
 
@@ -200,7 +200,7 @@ function card_init(user, props)
 					if cooldown == 0 then
 						local explosion_tile = shuffled[k]
 
-						field:spawn(create_boom(user, element, secondary_element, k == 1), explosion_tile)
+						Field.spawn(create_boom(user, element, secondary_element, k == 1), explosion_tile)
 
 						cooldown = 4
 
@@ -219,7 +219,7 @@ function card_init(user, props)
 
 			alert_sprite:set_layer(-5)
 
-			field:spawn(alert_artifact, found_entity:current_tile())
+			Field.spawn(alert_artifact, found_entity:current_tile())
 		end
 
 	action.on_execute_func = function()
