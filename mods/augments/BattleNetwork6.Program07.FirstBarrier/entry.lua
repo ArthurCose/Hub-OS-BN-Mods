@@ -34,7 +34,7 @@ local function create_barrier(user)
         defense:block_damage()
     end
 
-    local aura_animate_component = user:create_component(Lifetime.ActiveBattle)
+    local aura_animate_component = user:create_component(Lifetime.Scene)
 
     aura_animate_component.on_update_func = function(self)
         barrier_animation:apply(barrier)
