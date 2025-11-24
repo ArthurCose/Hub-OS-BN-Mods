@@ -82,11 +82,13 @@ end
 
 ---@param user Entity
 ---@param hit_props HitProps
+---@param defense_rule DefenseRule
 ---@param callback fun()
-local function poof_user(user, hit_props, callback)
+local function poof_user(user, hit_props, defense_rule, callback)
   local action = Action.new(user, "CHARACTER_MOVE")
   action:override_animation_frames({ { 1, 1 }, { 2, 1 }, { 3, 1 }, { 4, 1 } })
   local executed = false
+  local removed_defense = false
 
   action:set_lockout(ActionLockout.new_sequence()) --Sequence lockout required to use steps & avoid issues with idle
   action.on_execute_func = function()
@@ -104,14 +106,21 @@ local function poof_user(user, hit_props, callback)
       Field.spawn(spell, tile)
     end
 
-    local time = 60
+    local cooldown = 40
     local step1 = action:create_step()
     step1.on_update_func = function(self)
-      if time <= 0 then
+      if cooldown == 5 then
+        user:reveal()
+        user:enable_hitbox(true)
+        user:remove_defense_rule(defense_rule)
+        removed_defense = true
+
+        user:animation():set_state("CHARACTER_IDLE")
+      elseif cooldown <= 0 then
         self:complete_step()
-      else
-        time = time - 1
       end
+
+      cooldown = cooldown - 1
     end
   end
 
@@ -128,14 +137,20 @@ local function poof_user(user, hit_props, callback)
   end
 
   action.on_action_end_func = function()
-    if executed then
-      user:reveal()
-      user:enable_hitbox(true)
-      callback()
-    else
+    if not executed then
       -- requeue
-      user:queue_action(poof_user(user, hit_props, callback))
+      user:queue_action(poof_user(user, hit_props, defense_rule, callback))
+      return
     end
+
+    user:reveal()
+    user:enable_hitbox(true)
+
+    if not removed_defense then
+      user:remove_defense_rule(defense_rule)
+    end
+
+    callback()
   end
 
   return action
@@ -191,11 +206,10 @@ local function create_generator(owner)
         defense:block_damage()
 
         local callback = function()
-          owner:remove_defense_rule(defense_rule)
           cooldown = 10
         end
 
-        owner:queue_action(poof_user(owner, hit_props, callback))
+        owner:queue_action(poof_user(owner, hit_props, defense_rule, callback))
         activated = true
         cooldown = 0
 
