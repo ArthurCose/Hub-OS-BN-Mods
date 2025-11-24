@@ -12,4 +12,4 @@ limit = 2
 hit_flags = ["Flinch", "Flash"]
 
 [dependencies]
-libraries = ["dev.konstinople.library.sword"]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
