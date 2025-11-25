@@ -23,7 +23,7 @@ return function(player, form, base_animation_path)
     charge_timing = { 110, 100, 90, 85, 80 },
     activate_callback = function()
       cursor_boost_aux_prop = AuxProp.new()
-          :require_card_element(Element.Cursor)
+          :require_card_primary_element(Element.Cursor)
           :increase_card_damage(30)
       player:add_aux_prop(cursor_boost_aux_prop)
 

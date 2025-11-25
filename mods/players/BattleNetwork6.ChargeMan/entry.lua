@@ -71,7 +71,7 @@ function player_init(player)
     end
 
     charge_boost_aux_prop = AuxProp.new()
-        :require_card_element(Element.Fire)
+        :require_card_primary_element(Element.Fire)
         :require_card_time_freeze(false)
         :increase_card_damage(math.min(chip_charge_time // 5, 100))
 

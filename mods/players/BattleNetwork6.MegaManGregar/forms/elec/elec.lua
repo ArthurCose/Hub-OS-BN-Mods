@@ -21,7 +21,7 @@ return function(player, form, base_animation_path)
     charge_timing = { 90, 80, 70, 65, 60 },
     activate_callback = function()
       elec_boost_aux_prop = AuxProp.new()
-          :require_card_element(Element.Elec)
+          :require_card_primary_element(Element.Elec)
           :require_card_time_freeze(false)
           :increase_card_damage(50)
       player:add_aux_prop(elec_boost_aux_prop)

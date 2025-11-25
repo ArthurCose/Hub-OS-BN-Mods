@@ -21,7 +21,7 @@ return function(player, form, base_animation_path)
     charge_timing = { 120, 110, 100, 95, 90 },
     activate_callback = function()
       wood_boost_aux_prop = AuxProp.new()
-          :require_card_element(Element.Wood)
+          :require_card_primary_element(Element.Wood)
           :require_card_time_freeze(false)
           :require_charged_card()
           :increase_card_multiplier(1)

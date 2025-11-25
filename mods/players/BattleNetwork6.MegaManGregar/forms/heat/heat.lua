@@ -174,7 +174,7 @@ return function(player, form, base_animation_path)
     charge_timing = { 70, 60, 50, 45, 40 },
     activate_callback = function()
       fire_boost_aux_prop = AuxProp.new()
-          :require_card_element(Element.Fire)
+          :require_card_primary_element(Element.Fire)
           :require_card_time_freeze(false)
           :increase_card_damage(50)
       player:add_aux_prop(fire_boost_aux_prop)

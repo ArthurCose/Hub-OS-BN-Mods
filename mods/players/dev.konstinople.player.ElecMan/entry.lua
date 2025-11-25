@@ -241,7 +241,7 @@ function player_init(player)
   player:add_aux_prop(
     AuxProp.new()
     :require_card_time_freeze(false)
-    :require_card_element(Element.Elec)
+    :require_card_primary_element(Element.Elec)
     :increase_card_damage(50)
   )
 

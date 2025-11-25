@@ -29,7 +29,7 @@ function player_init(player)
 
   player:add_aux_prop(
     AuxProp.new()
-    :require_card_element(Element.Aqua)
+    :require_card_primary_element(Element.Aqua)
     :require_card_time_freeze(false)
     :increase_card_multiplier(1)
   )
