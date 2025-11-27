@@ -8,6 +8,7 @@ codes = ["G", "L", "R"]
 description = "Attach to NoDim Chp NavCusOff"
 limit = 1
 can_boost = false
+regular_allowed = false
 
 [dependencies]
 statuses = ["BattleNetwork6.Statuses.Uninstall"]

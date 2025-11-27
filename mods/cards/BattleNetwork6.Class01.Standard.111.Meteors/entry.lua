@@ -40,7 +40,7 @@ local function create_meteor(player, props)
   meteor:set_tile_highlight(Highlight.Flash)
   meteor:set_facing(player:facing())
 
-  meteor:set_hit_props(props)
+  meteor:set_hit_props(HitProps.from_card(props, player:context(), Drag.None))
 
   meteor:set_texture(TEXTURE)
 

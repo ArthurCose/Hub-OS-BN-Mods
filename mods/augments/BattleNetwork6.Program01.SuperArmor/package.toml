@@ -13,11 +13,7 @@ shape = [
   [0, 0, 0, 0, 0]
 ]
 tags = ["UNINSTALL"]
-
-[defines]
-characters = []
+byproducts = ["BattleNetwork6.Bugs.WarpStep"]
 
 [dependencies]
-characters = []
-libraries = []
-cards = []
+augments = ["BattleNetwork6.Bugs.WarpStep"]

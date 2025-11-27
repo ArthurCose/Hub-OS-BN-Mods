@@ -134,9 +134,10 @@ function BarrierLib:get_hit_flag_weakness()
 end
 
 function BarrierLib:shared_weakness_check(defense, hit_props)
+  if self._health == 0 then return false end
+
   if self:check_weakness_hit(hit_props) == true then
     self._is_weakness_hit = true
-    self:do_destruction_removal()
     return true
   end
 
@@ -147,16 +148,15 @@ end
 
 function BarrierLib:set_default_defense_barrier()
   self._defense_rule.defense_func = function(defense, attacker, defender, hit_props)
-    if self:shared_weakness_check(defense, hit_props) == true then return end
+    if self:shared_weakness_check(defense, hit_props) == true then
+      defense:block_damage()
+      return
+    end
 
     self._health = math.max(0, self._health - hit_props.damage)
 
     if self._health == 0 then
-      if self._regenerate_after_wait == true then
-        self:do_destruction_removal()
-      else
-        self:do_shared_removal()
-      end
+      self:do_destruction_removal()
     end
 
     defense:block_damage()
@@ -169,7 +169,7 @@ function BarrierLib:set_default_defense_aura()
 
     if hit_props.damage >= self._health then
       self._health = 0
-      self:do_shared_removal()
+      self:do_destruction_removal()
     end
 
     defense:block_damage()
@@ -182,7 +182,7 @@ function BarrierLib:check_weakness_hit(hit_props)
     local i = 1
     local found = false
 
-    while i < #self._hit_flag_weakness and found == false do
+    while i <= #self._hit_flag_weakness and found == false do
       local flag = self._hit_flag_weakness[i]
       if hit_props.flags & flag ~= 0 then
         found = true
@@ -197,9 +197,12 @@ function BarrierLib:check_weakness_hit(hit_props)
     local ii = 1
     local found = false
 
-    while ii < #self._elemental_weakness and found == false do
+    while ii <= #self._elemental_weakness and found == false do
       local elem = self._elemental_weakness[ii]
-      if hit_props.element == elem or hit_props.secondary_element == elem then found = true end
+
+      if hit_props.element == elem or hit_props.secondary_element == elem then
+        found = true
+      end
       ii = ii + 1
     end
 
@@ -217,6 +220,7 @@ function BarrierLib:setup(owner)
 
   self._is_fade = false
   self._is_weakness_hit = false
+  self._block_damage_despite_weakness = false
   if self._regenerate_after_wait == nil then self._regenerate_after_wait = false end
 end
 
@@ -278,7 +282,7 @@ function BarrierLib:setup_animation()
   self._barrier_animation:set_playback(Playback.Loop)
   self._barrier_animation:apply(self._barrier_node)
 
-  self._animation_component = self._owner:create_component(Lifetime.ActiveBattle)
+  self._animation_component = self._owner:create_component(Lifetime.Battle)
 
   if self._is_draw_health == true then
     self._number_root = self._owner:create_node()
@@ -294,7 +298,10 @@ function BarrierLib:setup_animation()
   end
 
   self._animation_component.on_update_func = function()
-    if self:check_needs_removal() == true then return end
+    if self:check_needs_removal() == true then
+      self:remove_barrier()
+      return
+    end
 
     if type(self._removal_timer) == "number" then
       self._removal_timer = self._removal_timer - 1
@@ -305,8 +312,6 @@ function BarrierLib:setup_animation()
       end
     end
 
-    self:check_needs_removal()
-
     self._barrier_animation:update()
     self._barrier_animation:apply(self._barrier_node)
   end
@@ -314,8 +319,14 @@ function BarrierLib:setup_animation()
   self._destruction_handler_component = self._owner:create_component(Lifetime.Battle)
 
   self._defense_rule.on_replace_func = function()
-    self:do_shared_removal()
+    self:default_replace_behavior()
   end
+end
+
+function BarrierLib:default_replace_behavior()
+  self._is_fade = false
+  self._is_weakness_hit = false
+  self:remove_barrier()
 end
 
 function BarrierLib:do_shared_removal()
@@ -338,15 +349,16 @@ function BarrierLib:do_destruction_removal()
 
   if self._destroyed_state ~= nil then
     self._barrier_animation:set_state(self._destroyed_state)
-    self._barrier_animation:on_complete(function()
-      self._barrier_node:hide()
-      self._barrier_animation:set_state(self._active_state)
-      self._barrier_animation:set_playback(Playback.Loop)
-      self._barrier_animation:apply(self._barrier_node)
-    end)
   end
 
-  if self._regenerate_after_wait == true then return end
+  self._barrier_animation:on_complete(function()
+    self._barrier_node:hide()
+    self._barrier_animation:set_state(self._active_state)
+    self._barrier_animation:set_playback(Playback.Loop)
+    self._barrier_animation:apply(self._barrier_node)
+  end)
+
+  if self._regenerate_after_wait == true and self._is_weakness_hit ~= true then return end
 
   self:do_shared_removal()
 end
@@ -363,7 +375,7 @@ function BarrierLib:do_fade_removal()
     self._fade_component._timer = 0
 
     self._fade_component.on_update_func = function(compself)
-      if compself._timer >= 40 then
+      if compself._timer == 40 then
         self:do_shared_removal()
         compself:eject()
         return
@@ -383,11 +395,13 @@ function BarrierLib:check_needs_removal()
   if self._is_weakness_hit == true then return true end
   if self._health == 0 and self._regenerate_after_wait == false then return true end
 
-  return self._defense_rule:replaced()
+  return false
 end
 
-function BarrierLib:remove_barrier()
-  if self._is_fade == true then
+function BarrierLib:remove_barrier(is_force)
+  if self._is_weakness_hit == true then
+    self:do_destruction_removal()
+  elseif self._is_fade == true then
     self:do_fade_removal()
   else
     self:do_shared_removal()

@@ -73,7 +73,7 @@ function card_init(user, props)
         end)
 
         for i = 1, hits, 1 do
-            self:add_anim_action(i * 4, function()
+            self:add_anim_action(i * 3, function()
                 Resources.play_audio(gun_sfx)
                 local target = battle_helpers.get_first_target_ahead(user)
                 if not target then

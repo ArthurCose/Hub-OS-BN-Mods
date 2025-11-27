@@ -16,3 +16,4 @@ byproducts = ["BattleNetwork6.Bugs.WarpStep"]
 
 [dependencies]
 libraries = ["BattleNetwork.Assets"]
+augments = ["BattleNetwork6.Bugs.WarpStep"]
