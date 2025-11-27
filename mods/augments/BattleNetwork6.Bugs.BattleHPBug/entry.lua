@@ -14,7 +14,12 @@ function augment_init(augment)
       return
     end
 
-    player:add_aux_prop(AuxProp.new():drain_health(1):once())
+    player:add_aux_prop(
+      AuxProp.new()
+      :require_health(Compare.GT, 1)
+      :drain_health(1)
+      :once()
+    )
   end
 
   augment.on_delete_func = function()

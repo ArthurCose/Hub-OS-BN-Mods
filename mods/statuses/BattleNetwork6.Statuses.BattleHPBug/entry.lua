@@ -41,7 +41,12 @@ function status_init(status)
             return
         end
 
-        entity:add_aux_prop(AuxProp.new():drain_health(1):once())
+        entity:add_aux_prop(
+            AuxProp.new()
+            :require_health(Compare.GT, 1)
+            :drain_health(1)
+            :once()
+        )
     end
 
     entity:on_delete(function()
