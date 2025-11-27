@@ -319,8 +319,9 @@ bomb.swap_bomb_func = function(action)
     end)
   end
 
+  local ignored_reservations = { obstacle:id() }
   obstacle.can_move_to_func = function(tile)
-    return tile:is_walkable()
+    return tile:is_walkable() and not tile:is_reserved(ignored_reservations)
   end
 
   obstacle:enable_hitbox(false)
