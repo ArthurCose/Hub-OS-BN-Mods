@@ -11,4 +11,4 @@ hit_flags = ["Flinch", "Flash", "PierceGuard"]
 hidden = true
 
 [dependencies]
-cards = ["BattleNetwork.Assets"]
+libraries = ["BattleNetwork.Assets"]
