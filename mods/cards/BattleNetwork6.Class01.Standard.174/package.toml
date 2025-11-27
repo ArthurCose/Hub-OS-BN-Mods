@@ -10,3 +10,6 @@ time_freeze = true
 description = "CustGauge slow-down"
 can_boost = false
 limit = 2
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

@@ -12,4 +12,4 @@ can_boost = false
 limit = 1
 
 [dependencies]
-librarys = ["BattleNetwork.Assets"]
+libraries = ["BattleNetwork.Assets"]
