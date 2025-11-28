@@ -12,5 +12,5 @@ damage = 100
 limit = 2
 
 [dependencies]
-libraries = ["BattleNetwork.Assets"]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
 statuses = ["BattleNetwork6.Statuses.Bubble"]

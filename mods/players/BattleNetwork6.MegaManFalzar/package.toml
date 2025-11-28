@@ -18,6 +18,7 @@ libraries = [
   "BattleNetwork.Assets",
   "BattleNetwork.Emotions",
   "BattleNetwork.FallingRock",
-  "BattleNetwork.WindGust"
+  "BattleNetwork.WindGust",
+  "dev.konstinople.library.sword"
 ]
 augments = ["HubOS.Augments.IgnoreHoles", "BattleNetwork6.Program01.SuperArmor"]
