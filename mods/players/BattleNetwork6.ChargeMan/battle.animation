@@ -47,7 +47,7 @@ frame x="311" y="1" w="70" h="55" originx="36" originy="47" duration="0.033"
 
 animation state="CHARACTER_SHOOT"
 frame x="77" y="298" w="70" h="52" originx="35" originy="47" duration="0.017"
-point label="BUSTER" x="60" y="29"
+point label="BUSTER" x="57" y="29"
 frame x="149" y="298" w="70" h="52" originx="36" originy="47" duration="0.05"
 point label="BUSTER" x="56" y="29"
 frame x="221" y="298" w="70" h="52" originx="36" originy="47" duration="0.05"

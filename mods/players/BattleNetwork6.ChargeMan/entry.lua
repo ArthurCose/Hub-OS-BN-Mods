@@ -149,8 +149,8 @@ function player_init(player)
       return (tile:is_walkable() or player:ignore_hole_tiles()) and not tile:is_edge()
     end
 
-    action.can_move_to_func = function()
-      return true
+    action.can_move_to_func = function(tile)
+      return player:get_tile(player:facing(), 1) == tile
     end
 
     local cars_spawned = 0
