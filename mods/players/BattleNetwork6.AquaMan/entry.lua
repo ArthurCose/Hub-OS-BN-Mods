@@ -30,6 +30,7 @@ function player_init(player)
   player:add_aux_prop(
     AuxProp.new()
     :require_card_primary_element(Element.Aqua)
+    :require_charged_card()
     :require_card_time_freeze(false)
     :increase_card_multiplier(1)
   )
@@ -198,6 +199,16 @@ function player_init(player)
     end
 
     return action
+  end
+
+  player.calculate_card_charge_time_func = function(_, props)
+    if not props.time_freeze and props.element == Element.Aqua then
+      return 30
+    end
+  end
+
+  player.charged_card_func = function(_, props)
+    return Action.from_card(player, props)
   end
 
   -- fixed card
