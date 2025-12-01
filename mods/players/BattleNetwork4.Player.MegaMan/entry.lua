@@ -89,6 +89,7 @@ function player_init(player)
     local junked_chip_list = {}
     local junk_manager_list = {}
     local wind_components = {}
+    local can_use_guts_buster = true
 
     local function create_junk_managers(entity)
         local on_close_manager = entity:create_component(Lifetime.CardSelectClose)
@@ -1864,7 +1865,7 @@ function player_init(player)
 
         -- Lava Panel healing
         local player_tile = player:current_tile()
-        if player_tile and player_tile:state() == TileState.Lava then
+        if player_tile:state() == TileState.Lava then
             player_tile:set_state(TileState.Normal)
             player:set_health(player:health() + 50)
             create_recov()
@@ -1872,7 +1873,7 @@ function player_init(player)
     end
 
     soul_guts.on_update_func = function(self)
-        if player:input_has(Input.Pressed.Shoot) then
+        if player:input_has(Input.Pressed.Shoot) and can_use_guts_buster == true then
             mash_count = mash_count + 1
             guts_timer = 0
         end
@@ -1880,8 +1881,13 @@ function player_init(player)
         if mash_count == 6 then
             guts_timer = 0
             mash_count = 0
+            can_use_guts_buster = false
 
             local action = GutsBuster.new(player, 10)
+
+            action.on_action_end_func = function()
+                can_use_guts_buster = true
+            end
 
             player:queue_action(action)
         end
@@ -1892,7 +1898,6 @@ function player_init(player)
             guts_timer = 0
             mash_count = 0
         end
-
 
         if player:animation():state() ~= "CHARACTER_SPECIAL" then
             overlay:hide()

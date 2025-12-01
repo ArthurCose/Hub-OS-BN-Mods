@@ -44,10 +44,18 @@ function card_mutate(user, card_index)
 			for _, tag in ipairs(card.tags) do
 				if tag == "HALF_FOE_HEALTH_EQUALS_POWER" then
 					for i = 1, #self._field_list, 1 do
-						local value = math.max(1, math.floor(self._field_list[i]:health() / 2))
+						local target = self._field_list[i]
+
+						-- Sanity check, targets can be deleted by other actions esp. in multibattles
+						-- Be willing to skip deleted targets or 0-hp targets that should be dying.
+						if not target or target:deleted() or target:will_erase_eof() or target:health() == 0 then goto continue end
+
+						local value = math.max(1, math.floor(target:health() / 2))
 						if value > self._stored_value then
 							self._stored_value = value
 						end
+
+						::continue::
 					end
 
 					card.damage = math.min(999, self._stored_value)
