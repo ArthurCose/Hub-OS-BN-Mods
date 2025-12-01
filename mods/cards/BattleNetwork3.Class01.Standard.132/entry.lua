@@ -8,15 +8,14 @@ function card_init(actor, props)
 	action:set_lockout(ActionLockout.new_async(300))
 
 	local SNAKE_FINISHED = false
+	local tile_array = {}
 
 	action.on_execute_func = function(self, user)
-		self.tile_array = {}
-
 		for i = 0, 6, 1 do
 			for j = 0, 4, 1 do
 				local tile = Field.tile_at(i, j)
 				if tile and user:is_team(tile:team()) and not tile:is_edge() and not tile:is_reserved({}) and not tile:is_walkable() then
-					table.insert(self.tile_array, tile)
+					table.insert(tile_array, tile)
 				end
 			end
 		end
@@ -33,9 +32,9 @@ function card_init(actor, props)
 			Resources.play_audio(APPEAR, AudioBehavior.NoOverlap)
 			print(start)
 			for i = start, start + 2, 1 do
-				if i < #self.tile_array + 1 then
+				if i < #tile_array + 1 then
 					local snake = spawn_snake(actor, props)
-					Field.spawn(snake, self.tile_array[i])
+					Field.spawn(snake, tile_array[i])
 				else
 					SNAKE_FINISHED = true
 					break;
@@ -52,13 +51,13 @@ end
 function spawn_snake(user, props)
 	local spell = Spell.new(user:team())
 
-	spell:set_texture(TEXTURE, true)
+	spell:set_texture(TEXTURE)
 	spell:set_facing(user:facing())
 	spell:set_offset(0.0 * 0.5, -24.0 * 0.5)
 
 	local direction = user:facing()
 
-	spell.slide_started = false
+	local slide_started = false
 
 	spell:set_hit_props(
 		HitProps.from_card(
@@ -69,9 +68,7 @@ function spawn_snake(user, props)
 	)
 
 	local target = Field.find_nearest_characters(user, function(found)
-		if not user:is_team(found:team()) and found:hittable() then
-			return true
-		end
+		return not user:is_team(found:team()) and found:hittable()
 	end)
 	local cooldown = 8
 	local DO_ONCE = false
@@ -89,13 +86,11 @@ function spawn_snake(user, props)
 						dest = target[1]:current_tile()
 					end
 
-					if self:current_tile():is_edge() and self.slide_started or self:current_tile() == dest then
+					if self:current_tile():is_edge() and slide_started or self:current_tile() == dest then
 						self:delete()
 					end
 
-					local ref = self
-
-					self:slide(dest, 6, function() ref.slide_started = true end)
+					self:slide(dest, 6, function() slide_started = true end)
 				end
 			else
 				cooldown = cooldown - 1
@@ -113,8 +108,6 @@ function spawn_snake(user, props)
 	spell.on_collision_func = function(self, other)
 		self:erase()
 	end
-	spell.can_move_to_func = function(self, other)
-		return true
-	end
+
 	return spell
 end
