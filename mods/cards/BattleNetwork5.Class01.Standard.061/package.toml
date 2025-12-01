@@ -1,0 +1,15 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class01.Standard.061"
+name = "MoonBld2"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["G", "O", "V"]
+damage = 110
+time_freeze = false
+element = "sword"
+description = "Slices enemies around"
+limit = 3
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]

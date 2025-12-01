@@ -1,0 +1,20 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program30.FolderPack2"
+name = "FldrPak2"
+description = "A 2-pack\nCust+2 &\nM-Fldr+2"
+colors = ["pink"]
+flat = true
+shape = [
+    [0, 0, 1, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 1, 1, 1, 0],
+    [1, 1, 1, 1, 0],
+    [0, 0, 0, 1, 0]
+]
+mega_boost = 2 # optional
+hand_size_boost = 2 # optional
+byproducts = ["BattleNetwork6.Bugs.CustomBug"]
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.CustomBug"]

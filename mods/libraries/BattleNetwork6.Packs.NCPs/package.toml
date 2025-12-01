@@ -23,6 +23,8 @@ augments = [
   "BattleNetwork6.Program15.NumberOpen",
   "BattleNetwork6.Program27.BusterPack",
   "BattleNetwork6.Program28.BodyPack",
+  "BattleNetwork6.Program29.FolderPack1",
+  "BattleNetwork6.Program30.FolderPack2",
   "BattleNetwork6.Program31.BugStop",
   "BattleNetwork6.Program34.Tango",
   "BattleNetwork6.Program35.Attack1",
