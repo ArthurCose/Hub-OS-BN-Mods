@@ -17,6 +17,6 @@ status_durations = [{ flag_name = "Paralyze", duration = 90 }]
 augments = [
   "BattleNetwork6.Bugs.BattleHPBug",
   "BattleNetwork6.Bugs.DamageHPBug",
-  "BattleNetwork6.Bugs.CustomBug"
+  "BattleNetwork6.Bugs.CustomHPBug"
 ]
 libraries = ["BattleNetwork.Assets", "Battle.Helpers"]

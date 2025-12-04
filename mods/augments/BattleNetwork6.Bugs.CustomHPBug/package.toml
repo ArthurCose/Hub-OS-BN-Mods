@@ -1,0 +1,6 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Bugs.CustomHPBug"
+name = "CustomHPBug"
+description = "Takes 1 HP during cust with faster rates at higher levels."
+tags = ["BUG"]

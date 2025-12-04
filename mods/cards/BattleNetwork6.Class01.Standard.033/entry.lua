@@ -149,7 +149,7 @@ function create_pulse(user, props)
 					:apply_status(Hit.Paralyze, 150)
 
 			entity:boost_augment("BattleNetwork6.Bugs.DamageHPBug", 2)
-			entity:boost_augment("BattleNetwork6.Bugs.CustomBug", 2)
+			entity:boost_augment("BattleNetwork6.Bugs.CustomHPBug", 2)
 
 			entity:add_aux_prop(blind_aux)
 			entity:add_aux_prop(paralyze_aux)
