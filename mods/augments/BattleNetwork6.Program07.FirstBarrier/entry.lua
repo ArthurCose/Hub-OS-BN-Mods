@@ -34,24 +34,42 @@ local function create_barrier(user)
         defense:block_damage()
     end
 
-    local aura_animate_component = user:create_component(Lifetime.ActiveBattle)
-
-    aura_animate_component.on_update_func = function(self)
+    local animate = function()
         barrier_animation:apply(barrier)
         barrier_animation:update()
     end
 
-    local aura_destroy_component = user:create_component(Lifetime.Battle)
+    -- animate during intro
+    local scene_animate_component = user:create_component(Lifetime.Scene)
+    scene_animate_component.on_update_func = animate
+    
+    local select_open = user:create_component(Lifetime.CardSelectOpen)
+    select_open.on_update_func = function()
+        scene_animate_component.on_update_func = nil
+        select_open.on_update_func = nil
+    end
+
+    -- regular components
+    local animate_component = user:create_component(Lifetime.ActiveBattle)
+    animate_component.on_update_func = animate
+
+    local destroy_component = user:create_component(Lifetime.Battle)
 
     local destroy_aura = false
 
-    barrier_defense_rule.on_replace_func = function()
-        aura_animate_component:eject()
-        aura_destroy_component:eject()
-        user:sprite():remove_node(barrier)
+    local eject_components = function()
+        animate_component:eject()
+        destroy_component:eject()
+        scene_animate_component:eject()
+        select_open:eject()
     end
 
-    aura_destroy_component.on_update_func = function(self)
+    barrier_defense_rule.on_replace_func = function()
+        user:sprite():remove_node(barrier)
+        eject_components()
+    end
+
+    destroy_component.on_update_func = function(self)
         if (blown_away or HP <= 0 or destroy_aura) then
             remove_barrier = true
         end
@@ -62,8 +80,7 @@ local function create_barrier(user)
 
             barrier_animation:on_complete(function()
                 user:sprite():remove_node(barrier)
-                aura_animate_component:eject()
-                aura_destroy_component:eject()
+                eject_components()
             end)
 
             if blown_away then
