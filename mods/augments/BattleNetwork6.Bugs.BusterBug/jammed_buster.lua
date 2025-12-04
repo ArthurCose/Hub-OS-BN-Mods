@@ -3,7 +3,10 @@ local JammedBuster = {}
 
 ---@param user Entity
 JammedBuster.new = function(user)
-  local card_action = Action.new(user, "CHARACTER_SHOOT")
+  local action = Action.new(user, "CHARACTER_SHOOT")
+  action:set_lockout(ActionLockout.new_sequence())
+  action:create_step()
+
   local context = user:context()
   local rapid_level = user:rapid_level()
 
@@ -11,10 +14,10 @@ JammedBuster.new = function(user)
 
   local frame_data = { { 1, 1 }, { 2, 2 }, { 3, 2 }, { 1, 1 } }
 
-  card_action:override_animation_frames(frame_data)
+  action:override_animation_frames(frame_data)
 
   -- setup buster attachment
-  local buster_attachment = card_action:create_attachment("BUSTER")
+  local buster_attachment = action:create_attachment("BUSTER")
 
   local buster_sprite = buster_attachment:sprite()
   buster_sprite:set_texture(user:texture())
@@ -46,7 +49,7 @@ JammedBuster.new = function(user)
 
   spell:set_facing(user:facing())
 
-  card_action.on_update_func = function()
+  action.on_update_func = function()
     if spell_erased_frame == 0 and spell:will_erase_eof() then
       spell_erased_frame = elapsed_frames
     end
@@ -54,7 +57,7 @@ JammedBuster.new = function(user)
     elapsed_frames = elapsed_frames + 1
 
     if spell_erased_frame > 0 and elapsed_frames - spell_erased_frame >= cooldown then
-      user:animation():resume()
+      action:end_action()
     end
 
     if can_move then
@@ -79,14 +82,14 @@ JammedBuster.new = function(user)
 
       if (motion_x ~= 0 and user:can_move_to(user:get_tile(Direction.Right, motion_x))) or
           (motion_y ~= 0 and user:can_move_to(user:get_tile(Direction.Down, motion_y))) then
-        card_action:end_action()
+        action:end_action()
       end
     end
   end
 
   local sfx = Resources.load_audio("jammed_buster.ogg");
 
-  card_action:add_anim_action(2, function()
+  action:add_anim_action(2, function()
     Resources.play_audio(sfx);
 
     spell:set_hit_props(HitProps.new(
@@ -140,7 +143,7 @@ JammedBuster.new = function(user)
   end)
 
   -- flare attachment
-  card_action:add_anim_action(3, function()
+  action:add_anim_action(3, function()
     local flare_attachment = buster_attachment:create_attachment("ENDPOINT")
 
     -- no sprite, we only really care about the animation timing
@@ -152,21 +155,13 @@ JammedBuster.new = function(user)
     end)
   end)
 
-  card_action:add_anim_action(4, function()
-    local animation = user:animation()
-
-    animation:on_interrupt(function()
-      animation:resume()
-    end)
-
-    animation:pause()
-  end)
-
-  card_action.on_animation_end_func = function()
-    card_action:end_action()
+  action.on_action_end_func = function()
+    if not spell:deleted() and not spell:spawned() then
+        spell:delete()
+    end
   end
 
-  return card_action
+  return action
 end
 
 return JammedBuster
