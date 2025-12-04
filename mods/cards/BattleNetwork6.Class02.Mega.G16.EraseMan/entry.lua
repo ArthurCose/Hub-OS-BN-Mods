@@ -36,14 +36,16 @@ function card_init(user, props)
 	-- Separate from timer for comparison's sake
 	local change_time_counter = 0
 
-	-- Timer between direction shifts, depends on navi chip version
-	local direction_change_timer
-	if props.short_name == "ErasMnEX" then
-		direction_change_timer = 16
-	elseif props.short_name == "ErasMnSP" then
-		direction_change_timer = 12
+	-- Interval between direction shifts, depends on navi chip version
+	local direction_change_interval
+	if props.short_name == "EraseMn\u{e000}" then
+		-- EX
+		direction_change_interval = 16
+	elseif props.short_name == "EraseMn\u{e001}" then
+		-- SP
+		direction_change_interval = 12
 	else
-		direction_change_timer = 20
+		direction_change_interval = 20
 	end
 
 	local previously_visible = user:sprite():visible()
@@ -103,7 +105,7 @@ function card_init(user, props)
 
 			dot_animation:set_state("DEFAULT")
 
-			local despawn_timer = direction_change_timer
+			local despawn_timer = direction_change_interval
 			dot.on_update_func = function(self)
 				despawn_timer = despawn_timer - 1
 
@@ -297,7 +299,7 @@ function card_init(user, props)
 
 		change_time_counter = change_time_counter + 1
 
-		if change_time_counter == direction_change_timer then
+		if change_time_counter == direction_change_interval then
 			check_direction()
 
 			-- Reset the counter
