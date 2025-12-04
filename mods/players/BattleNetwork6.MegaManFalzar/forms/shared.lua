@@ -68,6 +68,12 @@ function Shared.implement_form(player, form, config)
         :require_hit_damage(Compare.GT, 0)
         :with_callback(function()
           form:deactivate()
+
+          player:apply_status(Hit.Flinch, 1)
+
+          -- cancel movement and actions even if super armor is active
+          player:cancel_movement()
+          player:cancel_actions()
         end)
         :once()
 
