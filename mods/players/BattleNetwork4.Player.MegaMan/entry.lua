@@ -346,6 +346,7 @@ function player_init(player)
 
     local function match_element(card_properties, elements, is_secondary_allowed)
         local result = false
+
         -- Obey element restrictions.
         -- Secondary element restriction can be toggled by passing in false as the third argument..
         for _, element in ipairs(elements) do
@@ -711,6 +712,9 @@ function player_init(player)
     end
 
     local function handle_form_deactivation(form)
+        player:forget("PAUSE_KARMA_GAIN")
+        player:forget("PAUSE_KARMA_LOSS")
+
         change_visuals(base_texture, base_animation_path, true)
 
         player:set_emotions_texture(base_emotion_texture)
@@ -740,6 +744,8 @@ function player_init(player)
         is_soul_staged = false
     end
 
+    local soul_cancel_aux;
+
     local function create_or_update_soul_turn_tracker()
         -- Delete the tracker if it exists. We may have changed forms while another was still active.
         if soul_turn_tracker ~= nil then soul_turn_tracker:eject() end
@@ -766,6 +772,7 @@ function player_init(player)
 
         unison_end_component.on_update_func = function(self)
             if should_end_form ~= true then return end
+            if soul_cancel_aux ~= nil then player:remove_aux_prop(soul_cancel_aux) end
             should_end_form = false
             handle_form_deactivation(active_form)
         end
@@ -798,6 +805,23 @@ function player_init(player)
             end
         end
 
+        if soul_cancel_aux ~= nil then player:remove_aux_prop(soul_cancel_aux) end
+
+        player:remember("PAUSE_KARMA_GAIN", 0)
+        player:remember("PAUSE_KARMA_LOSS", 0)
+        player:remember("KARMA_VALUE", 128)
+
+        soul_cancel_aux = AuxProp.new()
+            :require_action(ActionType.Card)
+            :require_card_class(CardClass.Dark)
+            :intercept_action(function(action)
+                handle_form_deactivation(active_form)
+                return action
+            end)
+            :once()
+
+        player:add_aux_prop(soul_cancel_aux)
+
         create_or_update_soul_turn_tracker()
     end
 
@@ -823,11 +847,18 @@ function player_init(player)
         end)
     end
 
+    local fear_state;
+    local evil_state;
+    for _, emotion in ipairs(player:emotions()) do
+        if string.find(emotion, "ANXIOUS") or string.find(emotion, "WORRIED") then fear_state = emotion end
+        if string.find(emotion, "EVIL") or string.find(emotion, "DARK") then evil_state = emotion end
+    end
+
     local function match_emotion()
         local emotion = player:emotion()
-        if emotion == "WORRIED" then return false end
+        if emotion == fear_state then return false end
         if string.find(emotion, "SOUL_") then return false end
-        if emotion == "EVIL" then return false end
+        if emotion == evil_state then return false end
         return true
     end
 
@@ -1991,6 +2022,13 @@ function player_init(player)
             -- Obey element matching rules for all Souls
             local element_match = match_element(card_properties, { value.element }, false)
             if element_match == false then goto continue end
+
+            -- Obey chaos unison rules. Not useful for this Megaman, but serves as a basis for future mods or edits.
+            -- Non-dark chip, chaos unison; skip.
+            if card_properties.card_class ~= CardClass.Dark and value.is_chaos == true then goto continue end
+
+            -- Dark Chip, non-chaos unison; skip.
+            if card_properties.card_class == CardClass.Dark and value.is_chaos ~= true then goto continue end
 
             -- Obey Recovery rules for Roll Soul
             if value.recover == true and card_properties.recover <= 0 then goto continue end
