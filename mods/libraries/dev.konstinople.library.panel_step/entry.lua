@@ -6,8 +6,14 @@ local function can_move_to_func()
   return false
 end
 
-local function test_dest_tile(tile)
-  return not tile or tile:is_edge() or tile:is_reserved({})
+---@param user Entity
+---@param tile Tile
+local function test_dest_tile(user, tile)
+  if user:current_tile() == tile then
+    return true
+  end
+
+  return tile and not tile:is_edge() and not tile:is_reserved()
 end
 
 ---@class PanelStep
@@ -134,7 +140,7 @@ function PanelStep:wrap_action(wrapped_action)
       dest_tile = user:get_tile(user:facing(), 2)
     end
 
-    if not dest_tile or test_dest_tile(dest_tile) then
+    if not dest_tile or not test_dest_tile(user, dest_tile) then
       -- invalid dest, return early
       dest_tile = nil
       start_action:end_action()
@@ -278,7 +284,7 @@ function PanelStep:create_action(user, create_action_steps)
       dest_tile = user:get_tile(user:facing(), 2)
     end
 
-    if not dest_tile or test_dest_tile(dest_tile) then
+    if not dest_tile or not test_dest_tile(user, dest_tile) then
       dest_tile = nil
       returned = true
       action:end_action()
