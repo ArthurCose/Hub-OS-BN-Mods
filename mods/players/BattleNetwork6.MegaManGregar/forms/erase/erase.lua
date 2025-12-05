@@ -99,7 +99,7 @@ return function(player, form, base_animation_path)
 
     local action_ended = false
 
-    action:add_anim_action(2, function()
+    action:on_anim_frame(2, function()
       Resources.play_audio(BEAM_SFX)
 
       local facing = player:facing()
@@ -167,7 +167,7 @@ return function(player, form, base_animation_path)
       end
     end)
 
-    action:add_anim_action(3, function()
+    action:on_anim_frame(3, function()
       player:set_counterable(false)
     end)
 

@@ -124,7 +124,7 @@ local function poof_user(user, hit_props, defense_rule, callback)
     end
   end
 
-  action:add_anim_action(3, function()
+  action:on_anim_frame(3, function()
     local poof = bn_assets.ParticlePoof.new()
     local poof_position = user:movement_offset()
     poof_position.y = poof_position.y - user:height() / 2

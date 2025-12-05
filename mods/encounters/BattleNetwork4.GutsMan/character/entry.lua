@@ -187,7 +187,7 @@ local function create_guts_quake_factory(entity, damage)
 
     local hammer_hitbox
 
-    action:add_anim_action(5, function()
+    action:on_anim_frame(5, function()
       entity:set_counterable(false)
 
       -- create hitbox for hammer
@@ -419,7 +419,7 @@ local function create_guts_punch_factory(entity, guts_punch_range, damage)
 
     local spell
 
-    action:add_anim_action(4, function()
+    action:on_anim_frame(4, function()
       entity:set_counterable(false)
 
       local tile = entity:get_tile(entity:facing(), 1)

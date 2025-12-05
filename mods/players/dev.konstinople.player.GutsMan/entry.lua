@@ -178,7 +178,7 @@ local function create_guts_punch_action(entity, guts_punch_range, damage)
 
   local spell
 
-  action:add_anim_action(4, function()
+  action:on_anim_frame(4, function()
     entity:set_counterable(false)
 
     local tile = entity:get_tile(entity:facing(), 1)
@@ -217,7 +217,7 @@ local function guts_quake(entity, cracks, damage)
 
   local hammer_hitbox
 
-  action:add_anim_action(5, function()
+  action:on_anim_frame(5, function()
     entity:set_counterable(false)
 
     -- create hitbox for hammer
@@ -383,7 +383,7 @@ function player_init(player)
     end
 
     if success then
-      action:add_anim_action(2, function()
+      action:on_anim_frame(2, function()
         player:set_counterable(false)
 
         local tile = player:get_tile(player:facing(), 1)

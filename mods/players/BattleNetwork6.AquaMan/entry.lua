@@ -63,7 +63,7 @@ function player_init(player)
       buster_anim:set_state("BUSTER", AQUA_HOSE_FRAMES)
     end
 
-    action:add_anim_action(2, function()
+    action:on_anim_frame(2, function()
       Resources.play_audio(SHOOT_SFX)
       player:set_counterable(false)
 

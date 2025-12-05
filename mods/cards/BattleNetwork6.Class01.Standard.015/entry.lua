@@ -46,7 +46,7 @@ function card_init(actor, props)
             buster_anim:set_playback(Playback.Loop)
         end)
 
-        action:add_anim_action(2, function()
+        action:on_anim_frame(2, function()
             self.ray_of_sun = summon_sun(user, props, frame_wait)
             local tile = user:get_tile(user:facing(), 2)
             Field.spawn(self.ray_of_sun, tile)

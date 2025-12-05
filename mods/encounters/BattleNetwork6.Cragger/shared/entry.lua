@@ -172,7 +172,7 @@ local function create_attack_factory(character, props)
       Field.spawn(warning_spell, target_tile)
     end
 
-    action:add_anim_action(6, function()
+    action:on_anim_frame(6, function()
       local spell = create_fist(character, warning_spell, props)
       Field.spawn(spell, target_tile)
 

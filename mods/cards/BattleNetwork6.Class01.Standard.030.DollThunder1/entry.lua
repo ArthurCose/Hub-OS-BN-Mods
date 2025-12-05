@@ -80,7 +80,7 @@ function card_init(user, props)
 	local buster_sprite = buster_attachment:sprite()
 	local buster_animation = buster_attachment:animation()
 
-	action:add_anim_action(1, function()
+	action:on_anim_frame(1, function()
 		buster_sprite:set_texture(BUSTER_TEXTURE)
 
 		buster_sprite:set_layer(-2)
@@ -92,7 +92,7 @@ function card_init(user, props)
 		user:set_counterable(true)
 	end)
 
-	action:add_anim_action(2, function()
+	action:on_anim_frame(2, function()
 		user:set_counterable(false)
 
 		buster_animation:set_state("ACTIVE")

@@ -56,11 +56,11 @@ return function(player, form, base_animation_path)
       player:set_counterable(true)
     end
 
-    action:add_anim_action(2, function()
+    action:on_anim_frame(2, function()
       player:set_counterable(false)
     end)
 
-    action:add_anim_action(5, function()
+    action:on_anim_frame(5, function()
       Resources.play_audio(SLASH_SFX)
 
       local facing = player:facing()

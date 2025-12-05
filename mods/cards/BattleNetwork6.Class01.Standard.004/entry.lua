@@ -36,7 +36,7 @@ function card_init(actor, props)
         -- set animation state
         buster_anim:set_state("DEFAULT")
 
-        self:add_anim_action(2, function()
+        self:on_anim_frame(2, function()
             -- attack starts, can no longer counter
             user:set_counterable(false)
 

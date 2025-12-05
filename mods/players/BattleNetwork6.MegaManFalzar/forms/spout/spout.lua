@@ -165,7 +165,7 @@ return function(player, form, base_animation_path)
       Field.spawn(spell, last_tile)
     end
 
-    action:add_anim_action(5, function()
+    action:on_anim_frame(5, function()
       player:set_counterable(false)
     end)
 

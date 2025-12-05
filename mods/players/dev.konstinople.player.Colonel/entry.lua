@@ -91,7 +91,7 @@ local function create_throw_cape_action(player)
 
   local step = action:create_step()
 
-  action:add_anim_action(2, function()
+  action:on_anim_frame(2, function()
     Resources.play_audio(CAPE_SFX)
 
     local spell = Spell.new(player:team())

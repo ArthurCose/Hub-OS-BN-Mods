@@ -37,7 +37,7 @@ function card_init(actor, props)
 			buster_anim:set_playback(Playback.Loop)
 		end)
 
-		self:add_anim_action(2, function()
+		self:on_anim_frame(2, function()
 			start_cancel_timer = props.short_name == "ElcPuls2"
 
 			local pulse = create_pulse(actor, props)

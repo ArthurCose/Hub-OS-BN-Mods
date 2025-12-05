@@ -28,7 +28,7 @@ local function punish(user, team)
 
     local time = 0
 
-    action:add_anim_action(4, function()
+    action:on_anim_frame(4, function()
         local enemy_list = Field.find_characters(function(ch)
             if ch:team() == team then return true end
             return false

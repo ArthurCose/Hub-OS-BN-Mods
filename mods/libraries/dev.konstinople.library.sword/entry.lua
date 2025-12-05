@@ -176,8 +176,8 @@ function Sword:create_action(user, spell_callback)
   action:override_animation_frames(self._user_frame_data)
 
   action.on_execute_func = function()
-    action:add_anim_action(self._spell_frame_index, spell_callback)
-    action:add_anim_action(2, function()
+    action:on_anim_frame(self._spell_frame_index, spell_callback)
+    action:on_anim_frame(2, function()
       build_attachments(self, action, state, user)
     end)
   end

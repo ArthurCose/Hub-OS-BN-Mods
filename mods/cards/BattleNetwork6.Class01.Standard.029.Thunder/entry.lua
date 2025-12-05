@@ -42,7 +42,7 @@ function card_init(user, props)
 		buster_animation:copy_from(user:animation())
 		buster_animation:set_state("BUSTER", frame_data)
 
-		card_action:add_anim_action(2, function()
+		card_action:on_anim_frame(2, function()
 			user:set_counterable(false)
 
 			local shot = create_spell(user, props)

@@ -64,7 +64,7 @@ return function(player, form, base_animation_path)
       buster_anim:set_state("BUSTER")
     end
 
-    action:add_anim_action(2, function()
+    action:on_anim_frame(2, function()
       Resources.play_audio(LAUNCH_SFX)
       Resources.play_audio(BUSTER_PEA_SHOT_SFX)
 
@@ -239,7 +239,7 @@ return function(player, form, base_animation_path)
       Field.spawn(spell, spawn_tile)
     end
 
-    action:add_anim_action(5, function()
+    action:on_anim_frame(5, function()
       player:set_counterable(false)
     end)
 
@@ -278,7 +278,7 @@ return function(player, form, base_animation_path)
     ---@type Entity[]
     local inhaling = {}
 
-    action:add_anim_action(4, function()
+    action:on_anim_frame(4, function()
       Resources.play_audio(VACUUM_SFX)
 
       Field.find_obstacles(function(e)
@@ -371,7 +371,7 @@ return function(player, form, base_animation_path)
       end)
     end)
 
-    action:add_anim_action(8, function()
+    action:on_anim_frame(8, function()
       for _, entity in ipairs(inhaling) do
         if not entity:deleted() then
           inhaled[#inhaled + 1] = entity

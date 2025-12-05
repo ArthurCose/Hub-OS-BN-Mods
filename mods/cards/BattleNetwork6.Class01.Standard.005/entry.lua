@@ -67,13 +67,13 @@ function card_init(user, props)
 
         user:set_counterable(true)
 
-        self:add_anim_action(2, function()
+        self:on_anim_frame(2, function()
             attachment_animation:set_state("ATTACK_" .. props.short_name)
             attachment_animation:set_playback(Playback.Loop)
         end)
 
         for i = 1, hits, 1 do
-            self:add_anim_action(i * 3, function()
+            self:on_anim_frame(i * 3, function()
                 Resources.play_audio(gun_sfx)
                 local target = battle_helpers.get_first_target_ahead(user)
                 if not target then
@@ -95,11 +95,11 @@ function card_init(user, props)
             end)
         end
 
-        self:add_anim_action(5, function()
+        self:on_anim_frame(5, function()
             user:set_counterable(false)
         end)
 
-        self:add_anim_action(#frames - 5, function()
+        self:on_anim_frame(#frames - 5, function()
             --show lag animation for last 5 overriden frames
             attachment_animation:set_state("END_" .. props.short_name)
         end)

@@ -141,7 +141,7 @@ return function(player, form, base_animation_path)
       end
     end
 
-    action:add_anim_action(2, function()
+    action:on_anim_frame(2, function()
       hole = Artifact.new()
       hole:set_texture(player:texture())
       local hole_anim = hole:animation()
@@ -153,7 +153,7 @@ return function(player, form, base_animation_path)
       tile:remove_entity(player)
     end)
 
-    action:add_anim_action(3, function()
+    action:on_anim_frame(3, function()
       if hole then
         hole:delete()
       end
@@ -210,7 +210,7 @@ return function(player, form, base_animation_path)
 
     ---@type Attachment | nil
     local drill
-    action:add_anim_action(5, function()
+    action:on_anim_frame(5, function()
       Resources.play_audio(DRILL_SFX)
       drill = action:create_attachment("BUSTER")
       local drill_sprite = drill:sprite()
@@ -222,7 +222,7 @@ return function(player, form, base_animation_path)
     end)
 
     -- spawn poof
-    action:add_anim_action(6, function()
+    action:on_anim_frame(6, function()
       if drill then
         drill:sprite():hide()
       end
@@ -241,7 +241,7 @@ return function(player, form, base_animation_path)
     end)
 
     -- disappear
-    action:add_anim_action(7, function()
+    action:on_anim_frame(7, function()
       if not temp_tile then
         return
       end
@@ -255,7 +255,7 @@ return function(player, form, base_animation_path)
     end)
 
     -- return
-    action:add_anim_action(8, function()
+    action:on_anim_frame(8, function()
       if not original_tile then
         return
       end

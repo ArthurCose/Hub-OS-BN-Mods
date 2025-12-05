@@ -54,8 +54,8 @@ function card_init(player, props)
 
             Field.spawn(spell, user:get_tile(facing, 1))
         end
-        self:add_anim_action(2, do_attack)
-        self:add_anim_action(1, function()
+        self:on_anim_frame(2, do_attack)
+        self:on_anim_frame(1, function()
             local buster = self:create_attachment("BUSTER")
             local buster_sprite = buster:sprite()
             buster_sprite:set_texture(bow_texture)

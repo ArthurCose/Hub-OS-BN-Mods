@@ -65,7 +65,7 @@ function card_init(user, props)
     end
   end
 
-  action:add_anim_action(2, function()
+  action:on_anim_frame(2, function()
     local poof = bn_assets.ParticlePoof.new()
     local offset_x = 39
     local offset_y = -41

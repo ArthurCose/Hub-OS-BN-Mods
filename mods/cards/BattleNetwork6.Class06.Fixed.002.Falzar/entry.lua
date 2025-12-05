@@ -65,11 +65,11 @@ function card_init(user, props)
     sync_node:animation():load(TOMAHAWK_ANIM_PATH)
   end
 
-  action:add_anim_action(4, function()
+  action:on_anim_frame(4, function()
     user:set_counterable(false)
   end)
 
-  action:add_anim_action(9, function()
+  action:on_anim_frame(9, function()
     Field.shake(3, 30)
 
     local tile = user:get_tile(user:facing(), 1)

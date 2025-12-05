@@ -16,7 +16,7 @@ function card_init(user, props)
 	action:set_lockout(ActionLockout.new_animation())
 	action:override_animation_frames(FRAMES)
 
-	action:add_anim_action(2, function()
+	action:on_anim_frame(2, function()
 		Resources.play_audio(BARRIER_UP_SOUND)
 		create_barrier(user)
 	end)

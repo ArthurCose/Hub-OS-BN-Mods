@@ -138,7 +138,7 @@ return function(character, gaia_props)
       -- attack
       IteratorLib.take(1, function()
         local action = Action.new(character, "ATTACK")
-        action:add_anim_action(5, function()
+        action:on_anim_frame(5, function()
           local tile = character:get_tile(character:facing(), 1)
 
           if not tile then return end

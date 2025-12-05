@@ -459,7 +459,7 @@ local function create_blizzard_breath_factory(blizzardman, damage)
       blizzardman:set_counterable(true)
     end
 
-    action:add_anim_action(2, function()
+    action:on_anim_frame(2, function()
       Resources.play_audio(BREATH_SFX, AudioBehavior.Default)
       blizzardman:set_counterable(false)
 
@@ -489,7 +489,7 @@ local function create_blizzard_breath_factory(blizzardman, damage)
       end
     end)
 
-    action:add_anim_action(15, function()
+    action:on_anim_frame(15, function()
       hitboxA:erase()
       hitboxB:erase()
     end)

@@ -26,11 +26,11 @@ function card_init(user, props)
         buster_animation:load(buster_animation_path)
         buster_animation:set_state("DEFAULT")
 
-        self:add_anim_action(1, function()
+        self:on_anim_frame(1, function()
             user:set_counterable(true)
         end)
 
-        self:add_anim_action(2, function()
+        self:on_anim_frame(2, function()
             local attack = create_attack(user, props)
             Resources.play_audio(yoyo_sfx, AudioBehavior.Default)
             local tile = user:get_tile(user:facing(), 1)
@@ -40,7 +40,7 @@ function card_init(user, props)
             end
         end)
 
-        self:add_anim_action(5, function()
+        self:on_anim_frame(5, function()
             user:set_counterable(false)
         end)
     end

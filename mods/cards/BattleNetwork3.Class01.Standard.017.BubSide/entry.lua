@@ -46,7 +46,7 @@ function card_init(actor, props)
 
 		flare_anim:set_state("FLARE")
 
-		self:add_anim_action(2, function()
+		self:on_anim_frame(2, function()
 			local tile = user:get_tile(user:facing(), 1)
 
 			if tile then

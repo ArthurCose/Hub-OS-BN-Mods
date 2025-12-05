@@ -614,7 +614,7 @@ local function create_fire_bomb_factory(entity, damage)
 
     for i = 0, bomb_count - 1 do
       local frame = 3 + i * 3
-      action:add_anim_action(frame, spawn_fire_bomb_callback)
+      action:on_anim_frame(frame, spawn_fire_bomb_callback)
     end
 
     return action

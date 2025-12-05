@@ -1345,7 +1345,7 @@ function player_init(player)
                 Drag.None
             )
 
-            self:add_anim_action(5, function()
+            self:on_anim_frame(5, function()
                 local cannonshot = create_aqua_soul_charge_shot(user, hit_props)
                 local tile = user:current_tile()
                 Field.spawn(cannonshot, tile)
@@ -1505,7 +1505,7 @@ function player_init(player)
                 if can_spell_attack == true then self:attack_tile() end
             end
 
-            action:add_anim_action(4, function()
+            action:on_anim_frame(4, function()
                 can_spell_attack = true
                 Field.shake(4, 8)
 
@@ -1578,7 +1578,7 @@ function player_init(player)
                 if can_spell_attack == true then self:attack_tile() end
             end
 
-            action:add_anim_action(3, function()
+            action:on_anim_frame(3, function()
                 can_spell_attack = true
 
                 spell:set_tile_highlight(Highlight.Solid)
@@ -1693,7 +1693,7 @@ function player_init(player)
                 Field.spawn(spell, spawn_tile)
             end
 
-            self:add_anim_action(2, do_attack)
+            self:on_anim_frame(2, do_attack)
         end
         return action
     end
@@ -1766,7 +1766,7 @@ function player_init(player)
                 )
 
                 for i = 2, 10, 2 do
-                    self:add_anim_action(i, function()
+                    self:on_anim_frame(i, function()
                         -- Play the gun sound.
                         Resources.play_audio(search_rifle_audio)
 

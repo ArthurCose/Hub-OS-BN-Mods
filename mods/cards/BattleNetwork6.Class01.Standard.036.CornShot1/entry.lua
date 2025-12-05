@@ -150,7 +150,7 @@ function card_init(user, props)
 		buster_anim:load(BUSTER_ANIM_PATH)
 		buster_anim:set_state("DEFAULT")
 
-		self:add_anim_action(2, function()
+		self:on_anim_frame(2, function()
 			-- play a sound to indicate the attack.
 			Resources.play_audio(AUDIO)
 

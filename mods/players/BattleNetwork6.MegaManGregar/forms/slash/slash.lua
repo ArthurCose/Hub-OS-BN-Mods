@@ -44,7 +44,7 @@ return function(player, form, base_animation_path)
     -- the split frames at the end are for setting anim actions at specific times
     action:override_animation_frames({ { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 1 }, { 4, 15 }, { 4, 5 } })
 
-    action:add_anim_action(5, function()
+    action:on_anim_frame(5, function()
       Resources.play_audio(SLASH_SFX)
 
       player:set_counterable(true)
@@ -101,7 +101,7 @@ return function(player, form, base_animation_path)
       end
     end)
 
-    action:add_anim_action(6, function()
+    action:on_anim_frame(6, function()
       player:set_counterable(false)
     end)
 

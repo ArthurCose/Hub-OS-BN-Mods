@@ -48,7 +48,7 @@ bomb.card_init = function(user, props)
         attachment_animation:set_playback(Playback.Loop)
 
         user:set_counterable(true)
-        self:add_anim_action(3, function()
+        self:on_anim_frame(3, function()
             attachment_sprite:hide()
             --self.remove_attachment(attachment)
             local tiles_ahead = 3
@@ -67,7 +67,7 @@ bomb.card_init = function(user, props)
             toss_spell(user, toss_height, attachment_texture, attachment_animation_path, target_tile, frames_in_air,
                 action.on_landing)
         end)
-        self:add_anim_action(4, function()
+        self:on_anim_frame(4, function()
             user:set_counterable(false)
         end)
         self.on_action_end_func = function()

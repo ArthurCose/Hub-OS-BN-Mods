@@ -89,7 +89,7 @@ JammedBuster.new = function(user)
 
   local sfx = Resources.load_audio("jammed_buster.ogg");
 
-  action:add_anim_action(2, function()
+  action:on_anim_frame(2, function()
     Resources.play_audio(sfx);
 
     spell:set_hit_props(HitProps.new(
@@ -143,7 +143,7 @@ JammedBuster.new = function(user)
   end)
 
   -- flare attachment
-  action:add_anim_action(3, function()
+  action:on_anim_frame(3, function()
     local flare_attachment = buster_attachment:create_attachment("ENDPOINT")
 
     -- no sprite, we only really care about the animation timing
@@ -157,7 +157,7 @@ JammedBuster.new = function(user)
 
   action.on_action_end_func = function()
     if not spell:deleted() and not spell:spawned() then
-        spell:delete()
+      spell:delete()
     end
   end
 

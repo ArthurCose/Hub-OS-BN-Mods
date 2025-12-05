@@ -25,7 +25,7 @@ function card_init(player, props)
 	action.on_execute_func = function(self, user)
 		local facing = user:facing()
 
-		self:add_anim_action(1, function()
+		self:on_anim_frame(1, function()
 			local buster = self:create_attachment("BUSTER")
 			local buster_sprite = buster:sprite()
 			buster_sprite:set_texture(buster_texture)
@@ -37,7 +37,7 @@ function card_init(player, props)
 			buster_anim:set_state("SPAWN")
 		end)
 
-		self:add_anim_action(3, function()
+		self:on_anim_frame(3, function()
 			local spell = Spell.new(user:team())
 
 			spell:set_facing(facing)

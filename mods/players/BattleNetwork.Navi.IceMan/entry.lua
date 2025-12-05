@@ -123,7 +123,7 @@ function player_init(player)
 		else
 			local action = Action.new(player, "CHARACTER_KICK")
 			action.on_execute_func = function(self, user)
-				self:add_anim_action(3, function()
+				self:on_anim_frame(3, function()
 					local hit_props = HitProps.new(
 						10,
 						Hit.Drag,

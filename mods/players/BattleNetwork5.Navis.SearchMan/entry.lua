@@ -52,7 +52,7 @@ function player_init(player)
                 --Which means every even frame (2, 4, 6, 8, 10) I need to spawn a bullet.
                 --Thus, I can loop over starting at frame 2 and spawn the shot instead of repeating code.
                 for i = 2, 10, 2 do
-                    self:add_anim_action(i, function()
+                    self:on_anim_frame(i, function()
                         --Play the gun sound. Always, so Highest priority.
                         Resources.play_audio(gun)
                         --If the target exists, spawn the hitbox. We don't want to spawn it otherwise.

@@ -25,7 +25,7 @@ function card_init(user, props)
     user:set_counterable(true)
   end
 
-  action:add_anim_action(2, function()
+  action:on_anim_frame(2, function()
     user:set_counterable(false)
   end)
 

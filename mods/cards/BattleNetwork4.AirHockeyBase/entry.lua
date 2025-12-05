@@ -24,11 +24,11 @@ function card_init(user, props)
 
 	action:set_lockout(ActionLockout.new_async(32))
 
-	action:add_anim_action(2, function()
+	action:on_anim_frame(2, function()
 		user:set_counterable(true)
 	end)
 
-	action:add_anim_action(4, function()
+	action:on_anim_frame(4, function()
 		user:set_counterable(false)
 	end)
 
