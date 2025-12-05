@@ -185,9 +185,7 @@ function player_init(player)
             Drag.None
         )
 
-        gust:set_hit_props(
-            hit_props
-        )
+        gust:set_hit_props(hit_props)
 
         local facing = tile:facing()
         gust:set_facing(facing)
@@ -217,12 +215,12 @@ function player_init(player)
         end
 
         gust.on_collision_func = function(self, other)
-            print("collision")
-            if wind_components[other:id()] ~= nil then return end
+            if wind_components[other:id()] == true then return end
 
             local slide_component = other:create_component(Lifetime.ActiveBattle)
 
             slide_component._direction = self:facing()
+            slide_component._id = other:id()
 
             slide_component.on_update_func = function(self)
                 local owner = self:owner()
@@ -230,7 +228,7 @@ function player_init(player)
                 local slide_tile = owner:get_tile(self._direction, 1)
 
                 if not owner:can_move_to(slide_tile) then
-                    wind_components[other:id()] = nil
+                    wind_components[other:id()] = false
                     self:eject()
                     return
                 end
@@ -240,7 +238,7 @@ function player_init(player)
                 owner:slide(slide_tile, 6)
             end
 
-            wind_components[other:id()] = slide_component
+            wind_components[other:id()] = true
         end
 
         Field.spawn(gust, tile)
@@ -1118,9 +1116,21 @@ function player_init(player)
 
         player:queue_action(Action.from_card(player, card_properties))
 
-        local wind_x = Field.width() - 1
-        for y = 1, 3, 1 do
-            table.insert(wind_list, Field.tile_at(wind_x, y))
+        local wind_x = Field.width()
+        local wind_tile = Field.tile_at(wind_x, 1)
+        while wind_tile == nil do
+            wind_x = wind_x - 1
+            wind_tile = Field.tile_at(wind_x, 1)
+        end
+        for y = 1, Field.height() - 1, 1 do
+            local tile = Field.tile_at(wind_x, y)
+
+            if tile == nil then goto continue end
+            if tile:get_tile(Direction.Down, 1) == nil then goto continue end
+
+            table.insert(wind_list, tile)
+
+            ::continue::
         end
 
         if player:ignoring_negative_tile_effects() == false then
@@ -1956,7 +1966,7 @@ function player_init(player)
 
         wind_timer = wind_timer + 1
         if wind_timer % 2 and not wind_spawned then
-            if wind_list_index > 3 then
+            if wind_list_index > #wind_list then
                 local shuffled = {}
 
                 for i = 1, #wind_list, 1 do
@@ -1974,9 +1984,7 @@ function player_init(player)
             end
 
             create_wind_gust(wind_list[wind_list_index])
-
             wind_list_index = wind_list_index + 1
-
             wind_spawned = true
         end
     end

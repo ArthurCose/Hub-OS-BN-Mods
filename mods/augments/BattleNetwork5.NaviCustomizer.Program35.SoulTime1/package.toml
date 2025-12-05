@@ -13,3 +13,6 @@ shape = [
 ]
 
 byproducts = ["BattleNetwork6.Bugs.EmotionBug"]
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.EmotionBug"]
