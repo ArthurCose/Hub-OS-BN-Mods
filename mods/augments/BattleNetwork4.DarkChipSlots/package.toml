@@ -1,12 +1,13 @@
 [package]
 category = "augment"
 id = "BattleNetwork4.DarkChipSlots"
-name = "Dark Karma"
+name = "KarmaPrg"
+long_name = "Karma Program"
 flat = true
 description = "GIVE IN AND USE DARKPOWR"
 long_description = """Attempts to recreate the Karma system from BN4. Taking damage will alter a hidden Emotion value.
 If your Navi has a Worried state in their emotions animation file, they will display it; otherwise their emotion will still be set to Worried, and they will be tempted with Dark Chips.
-This will create two Card Buttons if possible, each containing a Dark Chip from BN4. Which ones you get IS random, but there are individual weights based on your current health.
+This will create two Card Buttons if possible, each containing a Dark Chip from BN4. What you receive IS random, but there are individual weights based on your current health.
 Efforts have been made to reduce the chances if a chip was drawn last turn."""
 
 colors = [ "blue", "green", "pink", "red", "yellow", "white" ]

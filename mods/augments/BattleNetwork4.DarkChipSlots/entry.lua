@@ -84,7 +84,9 @@ function augment_init(augment)
 		:with_callback(function()
 			if player:emotion() == evil_state then return end
 			if player:recall("PAUSE_KARMA_LOSS") == true then return end
-			player:remember("KARMA_VALUE", math.max(0, player:recall("KARMA_VALUE") - 20))
+			local karma = player:recall("KARMA_VALUE")
+			local new_karma = math.max(1, karma - 20)
+			player:remember("KARMA_VALUE", math.max(0, new_karma))
 		end)
 
 	local synchro_karma_reset = AuxProp.new()
