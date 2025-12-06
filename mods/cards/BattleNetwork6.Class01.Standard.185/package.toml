@@ -8,3 +8,6 @@ codes = ["*"]
 description = "Draw in enmy with mag force"
 limit = 5
 hit_flags = ["Drain", "Drag"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
