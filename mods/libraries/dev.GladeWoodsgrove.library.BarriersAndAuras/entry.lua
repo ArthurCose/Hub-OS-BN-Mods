@@ -2,13 +2,15 @@
 local BarrierLib = {}
 BarrierLib.__index = BarrierLib
 
+---@alias dev.GladeWoodsgrove.library.BarriersAndAuras BarrierLib
+
 local function debug_print(args)
   print("[BARRIER LIBRARY]" .. args)
 end
 
 function BarrierLib:check_anim_exists(is_print_warning)
   if self._anim_path == nil then
-    if is_print_warning == true then debug_print("Attempted to set animation behavior,\nbut no animation file was set!") end
+    if is_print_warning then debug_print("Attempted to set animation behavior,\nbut no animation file was set!") end
     return false
   end
   return true
@@ -105,7 +107,7 @@ end
 -- Aura-types must be enabled, and only take damage if the hit is greater than their health. However, they are destroyed immediately.
 function BarrierLib:set_is_aura(is_aura)
   self._is_aura = is_aura
-  if is_aura == true then
+  if is_aura then
     self:set_default_defense_aura()
   else
     self:set_default_defense_barrier()
@@ -133,10 +135,12 @@ function BarrierLib:get_hit_flag_weakness()
   return self._hit_flag_weakness
 end
 
-function BarrierLib:shared_weakness_check(defense, hit_props)
-  if self._health == 0 then return false end
+---@param self BarrierLib
+---@param hit_props HitProps
+local function shared_weakness_check(self, hit_props)
+  if self._health == 0 then return true end
 
-  if self:check_weakness_hit(hit_props) == true then
+  if self:check_weakness_hit(hit_props) then
     self._is_weakness_hit = true
     return true
   end
@@ -148,8 +152,7 @@ end
 
 function BarrierLib:set_default_defense_barrier()
   self._defense_rule.defense_func = function(defense, attacker, defender, hit_props)
-    if self:shared_weakness_check(defense, hit_props) == true then
-      defense:block_damage()
+    if shared_weakness_check(self, hit_props) then
       return
     end
 
@@ -165,7 +168,9 @@ end
 
 function BarrierLib:set_default_defense_aura()
   self._defense_rule.defense_func = function(defense, attacker, defender, hit_props)
-    if self:shared_weakness_check(defense, hit_props) == true then return end
+    if shared_weakness_check(self, hit_props) then
+      return
+    end
 
     if hit_props.damage >= self._health then
       self._health = 0
@@ -176,37 +181,26 @@ function BarrierLib:set_default_defense_aura()
   end
 end
 
----@param hit_props HitProperties
+---@param hit_props HitProps
 function BarrierLib:check_weakness_hit(hit_props)
   if self._hit_flag_weakness ~= nil then
-    local i = 1
-    local found = false
-
-    while i <= #self._hit_flag_weakness and found == false do
+    for i = 1, #self._hit_flag_weakness do
       local flag = self._hit_flag_weakness[i]
-      if hit_props.flags & flag ~= 0 then
-        found = true
-      end
-      i = i + 1
-    end
 
-    if found == true then return true end
+      if hit_props.flags & flag ~= 0 then
+        return true
+      end
+    end
   end
 
   if self._elemental_weakness ~= nil then
-    local ii = 1
-    local found = false
-
-    while ii <= #self._elemental_weakness and found == false do
-      local elem = self._elemental_weakness[ii]
+    for i = 1, #self._elemental_weakness do
+      local elem = self._elemental_weakness[i]
 
       if hit_props.element == elem or hit_props.secondary_element == elem then
-        found = true
+        return true
       end
-      ii = ii + 1
     end
-
-    if found == true then return true end
   end
 
   return false
@@ -234,14 +228,14 @@ function BarrierLib:enable_regeneration_timer(is_enabled)
     if self._health > 0 then return end
     if self._regenerate_after_wait == false then return end
 
-    if self._is_draw_health == true then
+    if self._is_draw_health then
       self._number_root:hide()
     end
 
     if self._barrier_regeneration_timer >= self._regenerate_barrier_after then
       self._barrier_node:reveal()
 
-      if self._is_draw_health == true then
+      if self._is_draw_health then
         self._number_root:reveal()
       end
 
@@ -284,7 +278,7 @@ function BarrierLib:setup_animation()
 
   self._animation_component = self._owner:create_component(Lifetime.Battle)
 
-  if self._is_draw_health == true then
+  if self._is_draw_health then
     self._number_root = self._owner:create_node()
     self._number_root:set_never_flip(true)
 
@@ -298,7 +292,7 @@ function BarrierLib:setup_animation()
   end
 
   self._animation_component.on_update_func = function()
-    if self:check_needs_removal() == true then
+    if self:check_needs_removal() then
       self:remove_barrier()
       return
     end
@@ -332,7 +326,7 @@ end
 function BarrierLib:do_shared_removal()
   if self._regeneration_timer_component ~= nil then self._regeneration_timer_component:eject() end
 
-  if self._is_draw_health == true then
+  if self._is_draw_health then
     self._owner:sprite():remove_node(self._number_root)
   end
 
@@ -358,7 +352,7 @@ function BarrierLib:do_destruction_removal()
     self._barrier_animation:apply(self._barrier_node)
   end)
 
-  if self._regenerate_after_wait == true and self._is_weakness_hit ~= true then return end
+  if self._regenerate_after_wait and not self._is_weakness_hit then return end
 
   self:do_shared_removal()
 end
@@ -381,7 +375,7 @@ function BarrierLib:do_fade_removal()
         return
       end
 
-      if compself._timer % 5 == true then
+      if compself._timer % 5 == 0 then
         self._barrier_node:set_visible(not self._barrier_node:visible())
       end
 
@@ -391,17 +385,17 @@ function BarrierLib:do_fade_removal()
 end
 
 function BarrierLib:check_needs_removal()
-  if self._is_fade == true then return true end
-  if self._is_weakness_hit == true then return true end
+  if self._is_fade then return true end
+  if self._is_weakness_hit then return true end
   if self._health == 0 and self._regenerate_after_wait == false then return true end
 
   return false
 end
 
 function BarrierLib:remove_barrier(is_force)
-  if self._is_weakness_hit == true then
+  if self._is_weakness_hit then
     self:do_destruction_removal()
-  elseif self._is_fade == true then
+  elseif self._is_fade then
     self:do_fade_removal()
   else
     self:do_shared_removal()
@@ -414,7 +408,7 @@ function BarrierLib:add_to_owner(offset)
 
   if not self._barrier_node:visible() then self._barrier_node:reveal() end
 
-  if self._is_draw_health == true then
+  if self._is_draw_health then
     self._health_text:reveal()
     self._health_text._shadow:reveal()
   end
