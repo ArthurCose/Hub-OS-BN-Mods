@@ -31,12 +31,16 @@ function PanelStep:set_dest_func(callback)
   self._dest_func = callback
 end
 
+---@param color Color
+function PanelStep:set_ghost_color(color)
+  self._ghost_color = color
+end
+
 ---@param user Entity
-local function create_ghost(user)
+---@param color Color
+local function create_ghost(user, color)
   local ghost = Artifact.new()
   ghost:set_facing(user:facing())
-
-  local color = Color.new(255, 0, 0)
 
   local queue = { { user:sprite(), ghost:sprite() } }
   while #queue > 0 do
@@ -71,7 +75,8 @@ local function create_ghost(user)
 end
 
 ---@param user Entity
-local function create_lagging_ghost(user)
+---@param color Color
+local function create_lagging_ghost(user, color)
   local spawner = Artifact.new()
 
   local i = 0
@@ -86,7 +91,7 @@ local function create_lagging_ghost(user)
       spawner:erase()
     end
 
-    local ghost = create_ghost(user)
+    local ghost = create_ghost(user, color)
 
     local ghost_i = 0
     ghost.on_update_func = function()
@@ -105,8 +110,9 @@ local function create_lagging_ghost(user)
 end
 
 ---@param user Entity
-local function create_static_blinking_ghost(user)
-  local ghost = create_ghost(user)
+---@param color Color
+local function create_static_blinking_ghost(user, color)
+  local ghost = create_ghost(user, color)
   local ghost_sprite = ghost:sprite()
 
   local i = 0
@@ -198,8 +204,8 @@ function PanelStep:wrap_action(wrapped_action)
     user:queue_action(queue_action)
 
     -- create ghosts
-    lagging_ghost = create_lagging_ghost(user)
-    static_ghost = create_static_blinking_ghost(user)
+    lagging_ghost = create_lagging_ghost(user, self._ghost_color)
+    static_ghost = create_static_blinking_ghost(user, self._ghost_color)
 
     -- handles return + ghosts in the middle of the following steps
     local component = user:create_component(Lifetime.Local)
@@ -299,8 +305,8 @@ function PanelStep:create_action(user, create_action_steps)
     original_tile:reserve_for(user)
 
     -- create ghosts
-    lagging_ghost = create_lagging_ghost(user)
-    static_ghost = create_static_blinking_ghost(user)
+    lagging_ghost = create_lagging_ghost(user, self._ghost_color)
+    static_ghost = create_static_blinking_ghost(user, self._ghost_color)
 
     -- handles return in the middle of the following steps
     local component = user:create_component(Lifetime.Local)
@@ -389,7 +395,9 @@ local PanelStepLib = {}
 
 ---@return PanelStep
 function PanelStepLib.new_panel_step()
-  local panel_step = {}
+  local panel_step = {
+    _ghost_color = Color.new(255, 0, 0)
+  }
   setmetatable(panel_step, PanelStep)
 
   return panel_step
