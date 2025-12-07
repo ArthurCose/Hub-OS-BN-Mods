@@ -127,6 +127,7 @@ function PanelStep:wrap_action(wrapped_action)
   start_action:set_lockout(ActionLockout.new_sequence())
 
   local original_tile, dest_tile, lagging_ghost, static_ghost
+  local return_frame = self._return_frame
 
   start_action.can_move_to_func = can_move_to_func
 
@@ -232,9 +233,9 @@ function PanelStep:wrap_action(wrapped_action)
         Field.spawn(lagging_ghost, dest_tile)
       elseif i == 20 then
         static_ghost:erase()
-      elseif not self._return_frame and i > 21 then
+      elseif not return_frame and i > 21 then
         eject_component()
-      elseif i == self._return_frame then
+      elseif i == return_frame then
         eject_component()
         user:current_tile():remove_entity(user)
         original_tile:add_entity(user)
@@ -271,6 +272,7 @@ function PanelStep:create_action(user, create_action_steps)
   action:set_lockout(ActionLockout.new_sequence())
 
   local original_tile, dest_tile, lagging_ghost, static_ghost
+  local return_frame = self._return_frame
   local returned = false
 
   action.can_move_to_func = can_move_to_func
@@ -327,9 +329,9 @@ function PanelStep:create_action(user, create_action_steps)
         Field.spawn(lagging_ghost, dest_tile)
       elseif i == 20 then
         static_ghost:erase()
-      elseif not self._return_frame and i > 21 then
+      elseif not return_frame and i > 21 then
         eject_component()
-      elseif i == self._return_frame then
+      elseif i == return_frame then
         eject_component()
         user:current_tile():remove_entity(user)
         original_tile:add_entity(user)
