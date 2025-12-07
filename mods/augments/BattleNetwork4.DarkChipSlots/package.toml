@@ -20,7 +20,6 @@ shape = [
 ]
 
 [dependencies]
-libraries = ["BattleNetwork.Emotions"]
 cards = [
   "BattleNetwork4.Class05.Dark.001.Cannon",
   "BattleNetwork4.Class05.Dark.002.Sword",

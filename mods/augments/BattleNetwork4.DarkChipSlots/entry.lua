@@ -1,6 +1,3 @@
----@type BattleNetwork.Emotions
-local EmotionsLib = require("BattleNetwork.Emotions")
-
 function augment_init(augment)
 	local player = augment:owner()
 
@@ -52,11 +49,6 @@ function augment_init(augment)
 		:intercept_action(function(action)
 			return nil
 		end)
-
-	-- Synchro Rings
-	local synchro = EmotionsLib.new_synchro()
-	synchro:set_ring_offset(0, -math.floor(player:height() / 2))
-	synchro:implement(player)
 
 	local synchro_state;
 	local fear_state;
@@ -125,7 +117,7 @@ function augment_init(augment)
 				gain = 20
 			end
 
-			player:remember("KARMA_VALUE", math.min(254, karma + gain))
+			player:remember("KARMA_VALUE", math.min(255, karma + gain))
 			return action
 		end)
 
@@ -150,6 +142,8 @@ function augment_init(augment)
 			-- Set fear state
 			player:set_emotion(fear_state)
 		elseif mood == 0 and evil_state ~= nil then
+			-- Permanent for rest of the fight.
+			player:remember("PAUSE_KARMA_GAIN", 0)
 			-- Set evil state
 			player:set_emotion(evil_state)
 		end
