@@ -1,0 +1,5 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Bugs.TangoDisabled"
+name = "Tango Disabled"
+description = "Disables Tango if bugged at battle start."

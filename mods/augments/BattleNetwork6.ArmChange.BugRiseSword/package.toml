@@ -1,0 +1,14 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.ArmChange.BugRiseSword"
+name = "BugRiseSword"
+description = ""
+priority = true
+preview_texture_path = "preview.png"
+colors = ["white"]
+
+[dependencies]
+cards = [
+    "BattleNetwork4.Class05.Dark.002.Sword",
+    "BattleNetwork6.Class03.Giga.005.Gregar.BugRiseSword"
+]
