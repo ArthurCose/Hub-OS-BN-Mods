@@ -20,13 +20,7 @@ function player_init(player)
     cape_sprite:use_root_shader(true)
 
     -- emotions
-    local synchro = EmotionsLib.new_synchro()
-    synchro:set_ring_offset(3, -35)
-    synchro:implement(player)
-
-    player.on_counter_func = function()
-        player:set_emotion("SYNCHRO")
-    end
+    EmotionsLib.implement_supported_full(player)
 
     -- attacks
     player.normal_attack_func = function()

@@ -116,11 +116,5 @@ function player_init(player)
   player:set_fixed_card(card)
 
   -- emotions
-  player.on_counter_func = function()
-    player:set_emotion("SYNCHRO")
-  end
-
-  local synchro = EmotionsLib.new_synchro()
-  synchro:set_ring_offset(2, -18)
-  synchro:implement(player)
+  EmotionsLib.implement_supported_full(player)
 end

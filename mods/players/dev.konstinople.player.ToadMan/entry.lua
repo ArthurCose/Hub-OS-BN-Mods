@@ -388,13 +388,7 @@ function player_init(player)
   player:set_shadow(SHADOW_TEXTURE, SHADOW_ANIM_PATH)
 
   -- emotions
-  player.on_counter_func = function()
-    player:set_emotion("SYNCHRO")
-  end
-
-  local synchro = EmotionsLib.new_synchro()
-  synchro:set_ring_offset(2, -14)
-  synchro:implement(player)
+  EmotionsLib.implement_supported_full(player)
 
   -- water logic
   local under_water = false

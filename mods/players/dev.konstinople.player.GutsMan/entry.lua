@@ -276,14 +276,8 @@ function player_init(player)
   player:set_charge_position(3, -23)
 
   -- emotions
-  local synchro = EmotionsLib.new_synchro()
-  synchro:set_ring_animation_state("BIG")
-  synchro:set_ring_offset(0, -13)
-  synchro:implement(player)
-
-  player.on_counter_func = function()
-    player:set_emotion("SYNCHRO")
-  end
+  local emotions = EmotionsLib.implement_supported_full(player)
+  emotions.synchro:set_ring_animation_state("BIG")
 
   -- attacks
   local heat = 0

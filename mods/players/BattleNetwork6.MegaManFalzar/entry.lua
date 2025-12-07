@@ -25,13 +25,7 @@ function player_init(player)
   end
 
   -- emotions
-  player.on_counter_func = function()
-    player:set_emotion("SYNCHRO")
-  end
-
-  local synchro = EmotionsLib.new_synchro()
-  synchro:set_ring_offset(0, -math.floor(player:height() / 2))
-  synchro:implement(player)
+  EmotionsLib.implement_supported_full(player)
 
   -- forms
   local spout_form = player:create_form()
