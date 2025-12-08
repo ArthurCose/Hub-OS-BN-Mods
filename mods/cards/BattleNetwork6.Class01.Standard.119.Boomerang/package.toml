@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.119.Boomerang"
+name = "Boomer"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["J", "K", "T"]
+damage = 100
+time_freeze = false
+element = "wood"
+description = "Boomerang that circ btl field"
+limit = 5
+hit_flags = ["Flinch"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+tile_states = ["BattleNetwork6.TileStates.Grass"]

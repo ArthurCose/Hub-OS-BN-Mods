@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.121.MegaBoomerang"
+name = "M-Boomer"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["I", "M", "W"]
+damage = 170
+time_freeze = false
+element = "wood"
+description = "Boomerang that circ btl field"
+limit = 3
+hit_flags = ["Flinch"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+tile_states = ["BattleNetwork6.TileStates.Grass"]
