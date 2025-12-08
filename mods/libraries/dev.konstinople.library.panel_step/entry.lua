@@ -26,7 +26,7 @@ function PanelStep:set_return_frame(return_frame)
 end
 
 ---Called when an action executes to resolve a destination
----@param callback fun(user: Entity): Tile?
+---@param callback fun(user: Entity): Tile?, Direction?
 function PanelStep:set_dest_func(callback)
   self._dest_func = callback
 end
@@ -132,20 +132,23 @@ function PanelStep:wrap_action(wrapped_action)
   local start_action = Action.new(user)
   start_action:set_lockout(ActionLockout.new_sequence())
 
-  local original_tile, dest_tile, lagging_ghost, static_ghost
+  local dest_tile, dest_facing, lagging_ghost, static_ghost
   local return_frame = self._return_frame
 
   start_action.can_move_to_func = can_move_to_func
 
   start_action.on_execute_func = function()
     -- resolve tiles on execute, in case the user moved before the action exited queue
-    original_tile = user:current_tile()
+    local original_tile = user:current_tile()
+    local original_facing = user:facing()
 
     if self._dest_func then
-      dest_tile = self._dest_func(user)
+      dest_tile, dest_facing = self._dest_func(user)
     else
       dest_tile = user:get_tile(user:facing(), 2)
     end
+
+    dest_facing = dest_facing or original_facing
 
     if not dest_tile or not test_dest_tile(user, dest_tile) then
       -- invalid dest, return early
@@ -182,6 +185,7 @@ function PanelStep:wrap_action(wrapped_action)
         user:current_tile():remove_entity(user)
         original_tile:add_entity(user)
         original_tile:remove_reservation_for(user)
+        user:set_facing(original_facing)
         debug_print("default returned")
       end
     end
@@ -246,6 +250,7 @@ function PanelStep:wrap_action(wrapped_action)
         user:current_tile():remove_entity(user)
         original_tile:add_entity(user)
         original_tile:remove_reservation_for(user)
+        user:set_facing(original_facing)
         debug_print("returned")
         returned = true
       end
@@ -261,6 +266,7 @@ function PanelStep:wrap_action(wrapped_action)
     -- step forward
     user:current_tile():remove_entity(user)
     dest_tile:add_entity(user)
+    user:set_facing(dest_facing)
 
     -- wait one frame after stepping forward to complete step
     jump_forward_step.on_update_func = function()
@@ -277,7 +283,7 @@ function PanelStep:create_action(user, create_action_steps)
   local action = Action.new(user)
   action:set_lockout(ActionLockout.new_sequence())
 
-  local original_tile, dest_tile, lagging_ghost, static_ghost
+  local original_tile, original_facing, dest_tile, dest_facing, lagging_ghost, static_ghost
   local return_frame = self._return_frame
   local returned = false
 
@@ -285,12 +291,15 @@ function PanelStep:create_action(user, create_action_steps)
 
   action.on_execute_func = function()
     original_tile = user:current_tile()
+    original_facing = user:facing()
 
     if self._dest_func then
-      dest_tile = self._dest_func(user)
+      dest_tile, dest_facing = self._dest_func(user)
     else
       dest_tile = user:get_tile(user:facing(), 2)
     end
+
+    dest_facing = dest_facing or original_facing
 
     if not dest_tile or not test_dest_tile(user, dest_tile) then
       dest_tile = nil
@@ -342,6 +351,7 @@ function PanelStep:create_action(user, create_action_steps)
         user:current_tile():remove_entity(user)
         original_tile:add_entity(user)
         original_tile:remove_reservation_for(user)
+        user:set_facing(original_facing)
         debug_print("returned")
         returned = true
       end
@@ -357,6 +367,7 @@ function PanelStep:create_action(user, create_action_steps)
     -- step forward
     user:current_tile():remove_entity(user)
     dest_tile:add_entity(user)
+    user:set_facing(dest_facing)
 
     -- wait one frame after stepping forward to complete step
     jump_forward_step.on_update_func = function()
@@ -381,6 +392,7 @@ function PanelStep:create_action(user, create_action_steps)
       user:current_tile():remove_entity(user)
       original_tile:add_entity(user)
       original_tile:remove_reservation_for(user)
+      user:set_facing(original_facing)
       debug_print("default returned")
     end
   end
