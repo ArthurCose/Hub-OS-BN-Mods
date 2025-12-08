@@ -171,6 +171,7 @@ function card_init(user, props)
 
     local sprite = attachment:sprite()
     sprite:set_texture(BUSTER_TEXTURE)
+    sprite:use_root_shader()
 
     local animation = attachment:animation()
     animation:load(BUSTER_ANIMATION)
