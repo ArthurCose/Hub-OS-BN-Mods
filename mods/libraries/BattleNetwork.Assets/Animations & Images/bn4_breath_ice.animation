@@ -1,0 +1,13 @@
+imagePath="C:/Users/seven/OneDrive/Documents/My Games/Hub OS/mods/libraries/BattleNetwork.Assets/Animations & Images/battle_fx19_animations.png"
+
+animation state="SPAWN"
+frame duration="0.05" x="46" y="95" w="29" h="16" originx="15" originy="12" flipx="0" flipy="0"
+frame duration="0.05" x="46" y="54" w="31" h="30" originx="16" originy="25" flipx="0" flipy="0"
+
+animation state="LOOP"
+frame duration="0.05" x="2" y="2" w="32" h="48" originx="16" originy="43" flipx="0" flipy="0"
+
+animation state="DESPAWN"
+frame duration="0.05" x="38" y="2" w="37" h="46" originx="16" originy="41" flipx="0" flipy="0"
+frame duration="0.05" x="2" y="54" w="40" h="37" originx="16" originy="32" flipx="0" flipy="0"
+frame duration="0.05" x="2" y="95" w="40" h="24" originx="16" originy="20" flipx="0" flipy="0"

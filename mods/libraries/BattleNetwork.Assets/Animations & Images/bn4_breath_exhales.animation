@@ -1,0 +1,38 @@
+imagePath="C:/Users/seven/OneDrive/Documents/My Games/Hub OS/mods/libraries/BattleNetwork.Assets/Animations & Images/battle_fx1B_animations.png"
+
+animation state="SHINE"
+frame duration="0.05" x="90" y="32" w="9" h="8" originx="-4" originy="34" flipx="0" flipy="0"
+frame duration="0.05" x="71" y="45" w="9" h="8" originx="-4" originy="34" flipx="0" flipy="0"
+frame duration="0.05" x="84" y="45" w="9" h="8" originx="-4" originy="34" flipx="0" flipy="0"
+
+animation state="FIRE"
+frame duration="0.05" x="73" y="13" w="12" h="6" originx="-14" originy="25" flipx="0" flipy="0"
+frame duration="0.05" x="67" y="89" w="23" h="15" originx="-15" originy="30" flipx="0" flipy="0"
+
+animation state="FIRE_LOOP"
+frame duration="0.05" x="36" y="32" w="31" h="24" originx="-16" originy="34" flipx="0" flipy="0"
+frame duration="0.05" x="37" y="2" w="32" h="25" originx="-16" originy="35" flipx="0" flipy="0"
+
+animation state="AQUA"
+frame duration="0.05" x="89" y="13" w="12" h="6" originx="-14" originy="25" flipx="0" flipy="0"
+frame duration="0.05" x="73" y="61" w="22" h="14" originx="-15" originy="30" flipx="0" flipy="0"
+
+animation state="AQUA_LOOP"
+frame duration="0.05" x="2" y="89" w="31" h="20" originx="-16" originy="30" flipx="0" flipy="0"
+frame duration="0.05" x="2" y="61" w="32" h="24" originx="-16" originy="32" flipx="0" flipy="0"
+
+animation state="ELEC"
+frame duration="0.05" x="2" y="113" w="12" h="5" originx="-14" originy="25" flipx="0" flipy="0"
+frame duration="0.05" x="71" y="32" w="15" h="9" originx="-15" originy="24" flipx="0" flipy="0"
+
+animation state="ELEC_LOOP"
+frame duration="0.05" x="2" y="2" w="31" h="26" originx="-16" originy="30" flipx="0" flipy="0"
+frame duration="0.05" x="2" y="32" w="30" h="25" originx="-20" originy="31" flipx="0" flipy="0"
+
+animation state="WOOD"
+frame duration="0.05" x="18" y="113" w="12" h="5" originx="-14" originy="25" flipx="0" flipy="0"
+frame duration="0.05" x="73" y="2" w="14" h="7" originx="-15" originy="24" flipx="0" flipy="0"
+
+animation state="WOOD_LOOP"
+frame duration="0.05" x="37" y="89" w="26" h="18" originx="-17" originy="26" flipx="0" flipy="0"
+frame duration="0.05" x="38" y="61" w="31" h="21" originx="-16" originy="29" flipx="0" flipy="0"
