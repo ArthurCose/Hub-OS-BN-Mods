@@ -12,69 +12,60 @@ local explosion_audio = bn_assets.load_audio("timebomb3.ogg")
 local spawn_audio = bn_assets.load_audio("obstacle_spawn.ogg")
 
 ---@param user Entity
----@param tile Tile?
-local function is_dest_value(user, tile)
-	return tile and
-			not tile:is_reserved() and
+---@param tile Tile
+local function is_dest_valid(user, tile)
+	return not tile:is_reserved() and
 			tile:is_walkable() and
 			tile:team() ~= user:team()
 end
 
 ---@param user Entity
----@param ranges [number, number, number][]
-local function find_dest_in_ranges(user, ranges)
-	local player_y = user:current_tile():y()
+local function find_dest(user)
+	local ahead = user:get_tile(user:facing(), 1)
 
-	for _, range in ipairs(ranges) do
-		for x = range[1], range[2], range[3] do
-			-- try same row
-			local tile = Field.tile_at(x, player_y)
+	if ahead and is_dest_valid(user, ahead) then
+		return ahead
+	end
 
-			if is_dest_value(user, tile) then
+	-- initial test
+	local start_x, end_x, inc_x = 0, Field.width(), 1
+	local end_y = Field.height() - 1
+
+	local function flip_range()
+		start_x, end_x = end_x, start_x
+		inc_x = -inc_x
+	end
+
+	if user:facing() == Direction.Left then
+		-- flip the range to make sure we test the frontmost tiles first
+		flip_range()
+	end
+
+	for x = start_x, end_x, inc_x do
+		for y = 0, end_y do
+			local tile = Field.tile_at(x, y)
+
+			-- tile must be facing away to avoid placing behind when surrounded
+			if tile and is_dest_valid(user, tile) and tile:facing() == user:facing_away() then
 				return tile
-			end
-
-			-- try any
-			for y = 0, Field.height() - 1 do
-				tile = Field.tile_at(x, y)
-
-				if is_dest_value(user, tile) then
-					return tile
-				end
 			end
 		end
 	end
-end
 
----@param user Entity
-local function find_dest(user)
-	local x = user:current_tile():x()
-	local x_end = Field.width() - 1
+	-- test in the other direction in case we're surrounded or in multi-man
+	-- we flip the range to target the frontmost tile
+	flip_range()
 
-	---@type [number, number, number][]
-	local ranges
+	for x = start_x, end_x, inc_x do
+		for y = 0, end_y do
+			local tile = Field.tile_at(x, y)
 
-	if user:facing() == Direction.Right then
-		ranges = {
-			-- ahead / right
-			{ x + 1, x_end, 1 },
-			-- same col
-			{ x,     x,     1 },
-			-- behind / left
-			{ 0,     x - 1, 1 }
-		}
-	else
-		ranges = {
-			-- ahead / left
-			{ x - 1, 0,     -1 },
-			-- same col
-			{ x,     x,     -1 },
-			-- behind / right
-			{ x_end, x + 1, -1 },
-		}
+			-- ignoring tile facing direction this time
+			if tile and is_dest_valid(user, tile) then
+				return tile
+			end
+		end
 	end
-
-	return find_dest_in_ranges(user, ranges)
 end
 
 function card_init(user, props)
