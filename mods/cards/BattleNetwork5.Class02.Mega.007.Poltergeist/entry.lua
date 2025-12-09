@@ -27,21 +27,22 @@ function card_init(user, props)
 
 	action.on_execute_func = function(self, user)
 		obstacle_list = Field.find_obstacles(function(obstacle)
-			return obstacle:hittable()
+			return obstacle:hittable() and obstacle:owner() ~= nil
 		end)
 	end
 
+	---@param entity Entity
 	local function create_elevation_component(entity)
 		local component = entity:create_component(Lifetime.Battle)
-		component._slide_started = false
-		component._shake_wait = 40
+		local slide_started = false
+		local shake_wait = 40
 
 		component.on_update_func = function(self)
 			if entity:elevation() < entity:height() then
 				entity:set_elevation(entity:elevation() + 4)
 			else
-				while self._shake_wait > 0 do
-					self._shake_wait = self._shake_wait - 1
+				while shake_wait > 0 do
+					shake_wait = shake_wait - 1
 					entity:hit(HitProps.new(0, Hit.Drain | Hit.Shake, Element.None))
 				end
 
@@ -70,20 +71,20 @@ function card_init(user, props)
 				replacement_spell:set_facing(entity:facing())
 				replacement_spell:set_elevation(entity:elevation())
 
-				replacement_spell._target_tile = target_tile
-				replacement_spell._elevation_change = math.min(1, math.ceil(entity:height() / 6))
+				local target_tile = target_tile
+				local elevation_change = math.min(1, math.ceil(entity:height() / 6))
 
 				replacement_spell.on_spawn_func = function(self)
 					entity:erase()
-					self:slide(self._target_tile, 6, function()
-						self._slide_started = true
+					self:slide(target_tile, 6, function()
+						slide_started = true
 					end)
 				end
 
 				replacement_spell.on_update_func = function(self)
 					if self:is_sliding() == true then
-						self:set_elevation(self:elevation() - self._elevation_change)
-					elseif self:is_sliding() == false and self._slide_started == true then
+						self:set_elevation(self:elevation() - elevation_change)
+					elseif self:is_sliding() == false and slide_started == true then
 						self:attack_tile()
 						self:erase()
 					end
