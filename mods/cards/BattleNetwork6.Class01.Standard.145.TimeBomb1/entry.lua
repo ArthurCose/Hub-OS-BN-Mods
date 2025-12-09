@@ -11,6 +11,72 @@ local explosion_audio = bn_assets.load_audio("timebomb3.ogg")
 
 local spawn_audio = bn_assets.load_audio("obstacle_spawn.ogg")
 
+---@param user Entity
+---@param tile Tile?
+local function is_dest_value(user, tile)
+	return tile and
+			not tile:is_reserved() and
+			tile:is_walkable() and
+			tile:team() ~= user:team()
+end
+
+---@param user Entity
+---@param ranges [number, number, number][]
+local function find_dest_in_ranges(user, ranges)
+	local player_y = user:current_tile():y()
+
+	for _, range in ipairs(ranges) do
+		for x = range[1], range[2], range[3] do
+			-- try same row
+			local tile = Field.tile_at(x, player_y)
+
+			if is_dest_value(user, tile) then
+				return tile
+			end
+
+			-- try any
+			for y = 0, Field.height() - 1 do
+				tile = Field.tile_at(x, y)
+
+				if is_dest_value(user, tile) then
+					return tile
+				end
+			end
+		end
+	end
+end
+
+---@param user Entity
+local function find_dest(user)
+	local x = user:current_tile():x()
+	local x_end = Field.width() - 1
+
+	---@type [number, number, number][]
+	local ranges
+
+	if user:facing() == Direction.Right then
+		ranges = {
+			-- ahead / right
+			{ x + 1, x_end, 1 },
+			-- same col
+			{ x,     x,     1 },
+			-- behind / left
+			{ 0,     x - 1, 1 }
+		}
+	else
+		ranges = {
+			-- ahead / left
+			{ x - 1, 0,     -1 },
+			-- same col
+			{ x,     x,     -1 },
+			-- behind / right
+			{ x_end, x + 1, -1 },
+		}
+	end
+
+	return find_dest_in_ranges(user, ranges)
+end
+
 function card_init(user, props)
 	local action = Action.new(user)
 	local step = action:create_step()
@@ -18,39 +84,24 @@ function card_init(user, props)
 	action:set_lockout(ActionLockout.new_sequence())
 
 	local time = 0
-	local spawn_tile
-
-	local spawn_tile_options = Field.find_tiles(function(tile)
-		if tile:is_reserved({}) then return false end
-		if not tile:is_walkable() then return false end
-		if tile:team() == user:team() then return false end
-
-		return true
-	end)
 
 	step.on_update_func = function()
 		time = time + 1
 	end
 
 	action.on_execute_func = function()
+		local spawn_tile = find_dest(user)
+
+		if not spawn_tile then
+			action:end_action()
+			return
+		end
+
 		local bomb = Obstacle.new(Team.Other)
 
 		bomb:add_aux_prop(AuxProp.new():declare_immunity(~Hit.Drag))
 		bomb.can_move_to_func = function(tile)
 			return tile:is_walkable()
-		end
-
-		local user_tile = user:current_tile()
-		local user_y = user_tile:y()
-
-		for index = 1, #spawn_tile_options do
-			spawn_tile = spawn_tile_options[index]
-
-			local is_preferred = spawn_tile:y() == user_y
-
-			if is_preferred then
-				break
-			end
 		end
 
 		local main_goal = false
