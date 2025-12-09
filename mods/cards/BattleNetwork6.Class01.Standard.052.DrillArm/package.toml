@@ -1,0 +1,15 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.052.DrillArm"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "DrillArm"
+description = "Knocks enmy 2sq away"
+codes = ["G", "M", "W"]
+element = "break"
+hit_flags = ["PierceGuard", "Drag"]
+damage = 70
+limit = 3
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
