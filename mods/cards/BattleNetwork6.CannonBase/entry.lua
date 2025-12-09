@@ -14,7 +14,7 @@ local function explode(spell, target, tile)
 		if target ~= nil then tile = target:current_tile() else tile = spell:current_tile() end
 	end
 
-	local facing = spell._facing
+	local facing = spell:facing()
 
 	local offset_x = math.floor(math.random(-10, 10))
 	local offset_y = math.floor(math.random(-10, -25))
@@ -46,8 +46,6 @@ end
 
 local function create_attack(user, props, context, facing, is_recipe)
 	local spell = Spell.new(user:team())
-
-	spell._facing = facing
 
 	spell:set_facing(facing)
 	spell:set_hit_props(
@@ -88,7 +86,7 @@ local function create_attack(user, props, context, facing, is_recipe)
 
 		-- Perform first movement
 		if self._first_move == false then
-			local dest = self:get_tile(self._facing, 1)
+			local dest = self:get_tile(self:facing(), 1)
 			self:teleport(dest, function()
 				spell._tile = dest
 				spell._first_move = true
@@ -100,7 +98,7 @@ local function create_attack(user, props, context, facing, is_recipe)
 			-- When it hits 2, teleport it.
 			if self._wait == 2 then
 				-- Obtain a destination tile
-				local dest = self:get_tile(self._facing, 1)
+				local dest = self:get_tile(self:facing(), 1)
 
 				if is_recipe and dest:is_edge() then
 					explode(self, nil, self._tile)
@@ -126,7 +124,7 @@ local function create_attack(user, props, context, facing, is_recipe)
 			self._count_to = 6
 			self._wait = 0
 
-			explode(self, other, nil, nil)
+			explode(self, other, nil)
 			if is_recipe then splash_explosion(self, other) end
 			self._has_collided = true
 		end
@@ -168,11 +166,11 @@ function card_init(actor, props)
 	-- If it's a Program Advance, set according to the cannons used.
 	if is_recipe then
 		lagging_ghost = battle_helpers.create_lagging_ghost(actor, Color.new(0, 0, 255, 255))
-		if props.short_name == "Giga Cannon 1" then
+		if props.short_name == "GigaCan1" then
 			buster_state = "Cannon"
-		elseif props.short_name == "Giga Cannon 2" then
+		elseif props.short_name == "GigaCan2" then
 			buster_state = "HiCannon"
-		elseif props.short_name == "Giga Cannon 3" then
+		elseif props.short_name == "GigaCan3" then
 			buster_state = "M-Cannon"
 		end
 	end

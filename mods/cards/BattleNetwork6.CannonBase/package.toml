@@ -15,14 +15,5 @@ limit = 0
 hit_flags = ["Flinch", "Flash"]
 hidden = true
 
-# this section is optional
-[defines]
-characters = []
-
-# this section is optional
 [dependencies]
-augments = [] # optional, list of package ids
-encounters = [] # optional, list of package ids
-cards = [] # optional, list of package ids, must also depend on defining package
-characters = [] # optional, list of package ids
 libraries = ["BattleNetwork.Assets", "Battle.Helpers"]
