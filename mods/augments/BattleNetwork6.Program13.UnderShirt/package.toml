@@ -7,7 +7,6 @@ past_ids = [
 ]
 name = "UnderSht"
 description = "Keep 1HP even on hard hit"
-attack_boost = 1
 flat = true
 colors = ["white"]
 shape = [
