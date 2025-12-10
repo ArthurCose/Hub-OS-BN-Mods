@@ -258,6 +258,16 @@ function card_init(user, props)
 		whip_animation:copy_from(navi_animation)
 
 		ChipNaviLib.swap_in(navi, user, function()
+			if not navi:current_tile():is_walkable() then
+				-- fail if judgeman is on a hole tile
+				ChipNaviLib.swap_in(user, navi, function()
+					action:end_action()
+				end)
+
+				return
+			end
+
+
 			navi_animation:set_state("CHARACTER_IDLE")
 
 			navi_animation:on_complete(function()
