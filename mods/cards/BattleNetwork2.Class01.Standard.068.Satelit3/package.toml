@@ -1,0 +1,16 @@
+[package]
+category = "card"
+id = "BattleNetwork2.Class01.Standard.068.Satelit3"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "Satelit3"
+description = "A floating & spinning satellite"
+long_description = "Throws a waving Sparknoid. Currently works exactly like an elec BubbleStar3."
+codes = ["L", "S", "T", "Y", "Z"]
+element = "elec"
+hit_flags = ["Flinch", "Flash"]
+damage = 120
+limit = 5
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
