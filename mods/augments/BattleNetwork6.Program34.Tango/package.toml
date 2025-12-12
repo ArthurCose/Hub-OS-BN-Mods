@@ -17,6 +17,7 @@ byproducts = ["BattleNetwork6.Bugs.TangoDisabled"]
 
 [dependencies]
 libraries = ["BattleNetwork.Assets"]
+augments = ["BattleNetwork6.Bugs.TangoDisabled"]
 cards = [
   "BattleNetwork6.Class01.Standard.181.Barrier100",
   "BattleNetwork6.Class01.Standard.163"
