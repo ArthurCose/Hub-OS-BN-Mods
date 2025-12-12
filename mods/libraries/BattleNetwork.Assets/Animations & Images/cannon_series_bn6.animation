@@ -1,6 +1,6 @@
 # @frame_rate 60
 
-imagePath="C:/Users/seven/OneDrive/Desktop/Games, Engines, and Assets/BN Rework/Rust Project/1 Githubs/Hub-OS/client/mods/libraries/battle_network_helpers/Animations & Images/cannon_series_bn6.png"
+imagePath="C:/Users/seven/OneDrive/Documents/My Games/Hub OS/mods/libraries/BattleNetwork.Assets/Animations & Images/cannon_series_bn6.png"
 
 animation state="Cannon"
 frame duration="3f" x="2" y="23" w="25" h="19" originx="2" originy="10" flipx="0" flipy="0"

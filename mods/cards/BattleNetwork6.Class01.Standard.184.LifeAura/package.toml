@@ -16,6 +16,4 @@ card_class = "standard"
 regular_allowed = false
 
 [dependencies]
-libraries = [
-    "BattleNetwork.Assets"
-]
+libraries = ["BattleNetwork.Assets", "dev.GladeWoodsgrove.library.BarriersAndAuras"]

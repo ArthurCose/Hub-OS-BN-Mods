@@ -1,3 +1,5 @@
+local snowman_texture = Resources.load_texture("snowman.png")
+
 function player_init(player)
 	player:set_name("IceMan")
 
@@ -44,7 +46,7 @@ function player_init(player)
 				if tile and tile:is_walkable() and #tile:find_entities(query) <= 0 then
 					local snowman = Obstacle.new(Team.Other)
 
-					snowman:set_texture(base_texture)
+					snowman:set_texture(snowman_texture)
 					snowman:set_facing(user:facing())
 
 					snowman:set_hit_props(
@@ -78,7 +80,7 @@ function player_init(player)
 					snowman:add_defense_rule(snow_defense)
 
 					local animation = snowman:animation()
-					animation:load(base_animation_path)
+					animation:load("snowman.animation")
 					animation:set_state("SNOWMAN_APPEAR")
 
 					snowman:set_health(50)
@@ -109,7 +111,7 @@ function player_init(player)
 
 					snowman.on_delete_func = function(self)
 						snowman_spawned = false
-						self:default_character_delete()
+						self:erase()
 					end
 
 					snowman.can_move_to_func = function()

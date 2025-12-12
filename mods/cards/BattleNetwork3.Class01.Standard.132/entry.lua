@@ -1,6 +1,8 @@
-local APPEAR = Resources.load_audio("appear.ogg")
-local FWISH = Resources.load_audio("attack.ogg")
-local TEXTURE = Resources.load_texture("snake.png")
+local bn_assets = require("BattleNetwork.Assets")
+local APPEAR = bn_assets.load_audio("appear.ogg")
+local FWISH = bn_assets.load_audio("snake.ogg")
+local TEXTURE = bn_assets.load_texture("snake.png")
+local ANIM_PATH = bn_assets.fetch_animation_path("snake.animation")
 
 function card_init(actor, props)
 	local action = Action.new(actor, "CHARACTER_IDLE")
@@ -99,7 +101,7 @@ function spawn_snake(user, props)
 	end
 
 	local anim = spell:animation()
-	anim:load("snake.animation")
+	anim:load(ANIM_PATH)
 	anim:set_state("APPEAR")
 	spell:animation():on_complete(function()
 		anim:set_state("ATTACK")

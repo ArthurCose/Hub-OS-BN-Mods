@@ -1,23 +1,19 @@
 [package]
 category = "card"
-id = "BattleNetwork3.Class01.Standard.132"
+id = "BattleNetwork6.Class01.Standard.103.Snake"
+past_ids = ["BattleNetwork3.Class01.Standard.132"]
 name = "Snake"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = ["D", "E", "I", "R", "Y"]
-damage = 40
+codes = ["H", "M", "L"]
+damage = 30
 time_freeze = true
-element = "wood"
+element = "none"
 description = "Call out snakes from hole"
 long_description = "Summon a Snake from every unoccupied empty or broken tile on your side of the field."
 card_class = "standard"
-limit = 4
-hit_flags = ["Flinch"]
-
-[defines]
-characters = []
+limit = 3
+hit_flags = ["Flinch", "Flash"]
 
 [dependencies]
-characters = []
-libraries = []
-cards = []
+libraries = ["BattleNetwork.Assets"]

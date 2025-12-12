@@ -1,0 +1,16 @@
+imagePath="snowman_compressed.png"
+
+animation state="SNOWMAN_APPEAR"
+frame duration="0.1" x="22" y="40" w="16" h="10" originx="8" originy="11" flipx="0" flipy="0"
+frame duration="0.1" x="0" y="40" w="22" h="19" originx="11" originy="20" flipx="0" flipy="0"
+frame duration="0.1" x="49" y="38" w="23" h="24" originx="12" originy="24" flipx="0" flipy="0"
+frame duration="0.1" x="74" y="36" w="24" h="24" originx="12" originy="24" flipx="0" flipy="0"
+frame duration="0.1" x="98" y="34" w="24" h="29" originx="12" originy="29" flipx="0" flipy="0"
+frame duration="0.1" x="98" y="0" w="24" h="34" originx="12" originy="34" flipx="0" flipy="0"
+frame duration="0.1" x="74" y="0" w="24" h="36" originx="12" originy="36" flipx="0" flipy="0"
+frame duration="0.1" x="49" y="0" w="25" h="38" originx="12" originy="38" flipx="0" flipy="0"
+frame duration="0.1" x="25" y="0" w="24" h="40" originx="12" originy="40" flipx="0" flipy="0"
+
+animation state="SNOWMAN_IDLE"
+frame duration="4" x="25" y="0" w="24" h="40" originx="12" originy="40" flipx="0" flipy="0"
+frame duration="0.1" x="0" y="0" w="25" h="40" originx="12" originy="40" flipx="0" flipy="0"

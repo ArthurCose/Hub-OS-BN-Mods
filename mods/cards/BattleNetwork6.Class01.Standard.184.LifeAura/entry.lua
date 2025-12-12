@@ -2,149 +2,53 @@ local bn_assets = require("BattleNetwork.Assets")
 
 local BARRIER_TEXTURE = bn_assets.load_texture("bn6_lifeaura.png")
 local BARRIER_ANIMATION_PATH = bn_assets.fetch_animation_path("bn6_lifeaura.animation")
-local BARRIER_UP_SOUND = bn_assets.load_audio("barrier.ogg")
+local BARRIER_UP_SOUND = bn_assets.load_audio("lifeaura.ogg")
+
+local BarrierLib = require("dev.GladeWoodsgrove.library.BarriersAndAuras")
 
 function card_init(user, props)
-	local PRESTEP = { 1, 3 }
-	local END = { 1, 30 }
-	local FRAMES = { PRESTEP, END }
+	local action = Action.new(user)
+	local step = action:create_step()
+	action:set_lockout(ActionLockout.new_sequence())
 
-	local state = "CHARACTER_IDLE"
-	if not user:animation():has_state(state) then state = user:animation():state() end
+	-- Inputs are (owner, health)
+	local aura = BarrierLib.new_aura(user, 200)
 
-	local action = Action.new(user, state)
-	action:set_lockout(ActionLockout.new_animation())
-	action:override_animation_frames(FRAMES)
+	-- Barrier/Aura data
+	-- Texture & Animiation Path
+	aura:set_texture(BARRIER_TEXTURE)
+	aura:set_animation_path(BARRIER_ANIMATION_PATH)
 
-	action:on_anim_frame(2, function()
+	-- Animation State that loops while active
+	aura:set_active_state("BARRIER_IDLE")
+
+	-- Automatically remove after this many frames
+	aura:set_removal_timer(1500)
+
+	-- Animation State that is used if the barrier removes on a timer
+	aura:set_fade_state("BARRIER_FADE")
+
+	-- Whether or not to draw health on the barrier
+	aura:set_display_health(true)
+
+	-- Mechnical data
+	-- Set element that destroys the defense on hit.
+	aura:set_weakness_element({ Element.Wind })
+
+	local timer = 0
+	step.on_update_func = function(self)
+		timer = timer + 1
+		if timer < 60 then return end
+		self:complete_step()
+	end
+
+	action.on_execute_func = function(self)
+		-- Adds the aura to the user, completing the process.
+		aura:add_to_owner()
+
+		-- Play the audio
 		Resources.play_audio(BARRIER_UP_SOUND)
-		create_barrier(user)
-	end)
+	end
 
 	return action
-end
-
-function create_barrier(user)
-	local HP = 200
-
-	local fading = false
-	local blown_away = false
-	local remove_barrier = false
-
-	local barrier = user:create_node()
-
-	barrier:set_layer(3)
-	barrier:set_texture(BARRIER_TEXTURE)
-
-	barrier:set_never_flip(true)
-
-	local barrier_animation = Animation.new(BARRIER_ANIMATION_PATH)
-	barrier_animation:set_state("BARRIER_IDLE")
-	barrier_animation:apply(barrier)
-
-	barrier_animation:set_playback(Playback.Loop)
-
-	local number_root = user:sprite():create_node()
-	number_root:set_never_flip(true)
-
-	local number = number_root:create_text_node(TextStyle.new("THICK"), "200")
-	number:set_color(Color.new(0, 0, 0, 255))
-	number:set_offset(-10, 10)
-	number:set_layer(-3)
-
-	local number_shadow = number:create_text_node(TextStyle.new("THICK"), "200")
-	number_shadow:set_offset(-1, -1)
-
-	local barrier_defense_rule = DefenseRule.new(DefensePriority.Barrier, DefenseOrder.Always)
-	barrier_defense_rule.defense_func = function(defense, attacker, defender, hit_props)
-		if hit_props.element == Element.Wind or hit_props.secondary_element == Element.Wind then blown_away = true end
-
-		if hit_props.flags & Hit.Drain ~= 0 then return end
-
-		if hit_props.damage >= HP then
-			HP = 0
-		end
-
-		defense:block_damage()
-	end
-
-	local aura_animate_component = user:create_component(Lifetime.ActiveBattle)
-
-	aura_animate_component.on_update_func = function(self)
-		barrier_animation:apply(barrier)
-		barrier_animation:update()
-	end
-
-
-	local aura_fade_countdown = 3000
-	local aura_fade_component = user:create_component(Lifetime.ActiveBattle)
-	aura_fade_component.on_update_func = function(self)
-		if aura_fade_countdown <= 0 then
-			remove_barrier = true
-		else
-			aura_fade_countdown = aura_fade_countdown - 1
-		end
-	end
-
-	local aura_destroy_component = user:create_component(Lifetime.Battle)
-	aura_destroy_component.on_update_func = function(self)
-		if blown_away and not fading then
-			remove_barrier = true
-		end
-
-		if remove_barrier and not fading then
-			remove_barrier = true
-		end
-
-		if HP <= 0 and not fading then
-			remove_barrier = true
-		end
-
-		if barrier_defense_rule:replaced() then
-			remove_barrier = true
-		end
-
-		if remove_barrier and not fading then
-			fading = true
-			user:remove_defense_rule(barrier_defense_rule)
-
-			barrier_animation:set_state("BARRIER_FADE")
-			barrier_animation:set_playback(Playback.Once)
-
-			barrier_animation:on_complete(function()
-				user:sprite():remove_node(barrier)
-				user:sprite():remove_node(number_root)
-				aura_fade_component:eject()
-				aura_animate_component:eject()
-				aura_destroy_component:eject()
-			end)
-
-			if blown_away then
-				local initialX = barrier:offset().x
-				local initialY = barrier:offset().y
-
-				barrier_animation:on_frame(1, function()
-					barrier:set_offset((-25 - initialX) * 0.5, -20 + initialY * 0.5)
-				end)
-
-				barrier_animation:on_frame(2, function()
-					barrier:set_offset((-50 - initialX) * 0.5, -40 + initialY * 0.5)
-				end)
-
-				barrier_animation:on_frame(3, function()
-					barrier:set_offset((-75 - initialX) * 0.5, -60 + initialY * 0.5)
-				end)
-			end
-		end
-	end
-
-	barrier_defense_rule.on_replace_func = function()
-		aura_fade_component:eject()
-		aura_animate_component:eject()
-		aura_destroy_component:eject()
-		user:remove_node(barrier)
-		user:remove_node(number_root)
-	end
-
-	user:add_defense_rule(barrier_defense_rule)
 end
