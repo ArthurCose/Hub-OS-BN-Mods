@@ -32,12 +32,8 @@ function augment_init(augment)
       return
     end
 
-    player:add_aux_prop(
-      AuxProp.new()
-      :require_health(Compare.GT, 1)
-      :drain_health(1)
-      :once()
-    )
+    -- setting health directly, as auxprops would wait for ActiveBattle
+    player:set_health(player:health() - 1)
   end
 
   augment.on_delete_func = function()
