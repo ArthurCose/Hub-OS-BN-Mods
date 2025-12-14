@@ -1,0 +1,25 @@
+animation state="CHARACTER_IDLE"
+frame x="186" y="25" w="48" h="78" originx="27" originy="73" duration="0.05"
+
+animation state="CHARACTER_MOVE"
+frame x="186" y="25" w="48" h="78" originx="27" originy="73" duration="0.05"
+frame x="132" y="25" w="48" h="78" originx="27" originy="73" duration="0.05"
+frame x="76" y="24" w="48" h="78" originx="27" originy="73" duration="0.05"
+frame x="18" y="25" w="48" h="78" originx="27" originy="73" duration="0.05"
+frame x="18" y="25" w="48" h="78" originx="27" originy="73" duration="0.05"
+frame x="76" y="24" w="48" h="78" originx="27" originy="73" duration="0.05"
+frame x="132" y="25" w="48" h="78" originx="27" originy="73" duration="0.05"
+frame x="186" y="25" w="48" h="78" originx="27" originy="73" duration="0.05"
+
+animation state="LASER_BEAM"
+frame x="392" y="22" w="51" h="78" originx="27" originy="73" duration="0.075"
+frame x="321" y="23" w="48" h="79" originx="27" originy="74" duration="0.092"
+
+animation state="LASER_BEAM_REVERSE"
+frame x="321" y="23" w="48" h="79" originx="27" originy="74" duration="0.092"
+frame x="392" y="22" w="51" h="78" originx="27" originy="73" duration="0.075"
+
+animation state="LASER_BEAM_FIRE"
+frame x="249" y="27" w="64" h="75" originx="22" originy="70" duration="0.05"
+
+

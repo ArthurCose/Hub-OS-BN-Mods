@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork2.Chip.252.FreezBom"
+name = "FreezBom"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["A", "I", "J", "Q", "U"]
+damage = 180
+element = "aqua"
+hit_flags = ["PierceGround", "Freeze"]
+description = "Aqua chip Tosses ice bomb!"
+long_description = "Tosses a bomb 3 panels ahead that hits in a plus-shape and Freezes."
+limit = 1
+card_class = "mega"
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.bomb"]

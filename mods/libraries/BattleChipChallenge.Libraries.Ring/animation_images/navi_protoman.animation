@@ -1,0 +1,16 @@
+animation state="CHARACTER_IDLE"
+frame x="0" y="0" w="48" h="61" originx="17" originy="56"
+
+animation state="CHARACTER_MOVE"
+frame x="0" y="0" w="48" h="61" originx="17" originy="56" duration="1f"
+frame x="54" y="0" w="42" h="61" originx="17" originy="56" duration="1f"
+frame x="105" y="0" w="36" h="61" originx="17" originy="56" duration="1f"
+frame x="146" y="0" w="47" h="61" originx="17" originy="56" duration="1f"
+
+animation state="CHARACTER_SWING_HILT"
+frame x="0" y="81" w="38" h="49" originx="18" originy="43" duration="1f"
+frame x="39" y="81" w="73" h="49" originx="20" originy="43" duration="1f"
+frame x="121" y="81" w="63" h="49" originx="17" originy="43" duration="1f"
+frame x="189" y="66" w="59" h="64" originx="24" originy="58" duration="1f"
+frame x="255" y="66" w="49" h="64" originx="24" originy="58" duration="1f"
+frame x="312" y="66" w="49" h="64" originx="24" originy="58" duration="1f"

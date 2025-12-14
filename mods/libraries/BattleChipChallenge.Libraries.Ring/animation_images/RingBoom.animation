@@ -1,0 +1,8 @@
+imagePath="C:\Users\seven\OneDrive\Desktop\HubOS\client\mods\libraries\BattleChipChallenge.Libraries.Ring\animetion_images\RingBoom.png"
+
+
+animation state="DEFAULT"
+frame duration="0.033" x="8" y="13" w="55" h="16" originx="31" originy="36" flipx="0" flipy="0"
+frame duration="0.033" x="69" y="13" w="53" h="16" originx="30" originy="36" flipx="0" flipy="0"
+frame duration="0.033" x="127" y="13" w="55" h="16" originx="31" originy="36" flipx="0" flipy="0"
+frame duration="0.033" x="187" y="13" w="54" h="16" originx="30" originy="36" flipx="0" flipy="0"

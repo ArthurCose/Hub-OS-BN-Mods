@@ -1,0 +1,26 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class02.Mega.005.ProtoEX"
+name = "ProtoMn\ue000"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["B"]
+time_freeze = true
+element = "sword"
+secondary_element = "none"
+limit = 1
+damage = 170
+card_class = "mega"
+can_boost = true
+description = "Move in and slice the enemy"
+long_description = "Move in and slice the enemy."
+hit_flags = [
+    "Flinch",
+    "Flash"
+]
+tags = ["BN6", "EXE6", "NAVI"]
+
+[dependencies]
+characters = []
+libraries = ["BattleNetwork.Assets", "BattleChipChallenge.Libraries.Ring", "BattleNetwork6.Libraries.ChipNavi"]
+cards = ["BattleNetwork6.Class01.Standard.071"]

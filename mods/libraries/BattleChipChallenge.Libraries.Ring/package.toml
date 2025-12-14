@@ -1,0 +1,6 @@
+[package]
+category = "library"
+id = "BattleChipChallenge.Libraries.Ring"
+name = "Ring libraries"
+preview_texture_path = "preview.png"
+description = "BattleChipChallenge.Libraries.Ring"

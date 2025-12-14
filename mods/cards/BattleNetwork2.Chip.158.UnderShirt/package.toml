@@ -1,0 +1,16 @@
+[package]
+category = "card"
+id = "BattleNetwork2.Chip.158.UnderShirt"
+name = "UndrShrt"
+damage = 0
+time_freeze = true
+element = "none"
+description = "Lethal hit reduces to 1HP!"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "H", "J", "N", "R", "W" ]
+limit = 1
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+augments = ["BattleNetwork6.Program13.UnderShirt"]

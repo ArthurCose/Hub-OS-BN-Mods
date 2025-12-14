@@ -1,0 +1,11 @@
+animation state="STONE_BIG"
+frame x="35" y="3" w="32" h="21" originx="16" originy="21" duration="0.05"
+
+animation state="STONE_SMALL"
+frame x="5" y="4" w="19" h="18" originx="10" originy="15" duration="0.05"
+
+animation state="SHADOW_BIG"
+frame x="35" y="29" w="32" h="13" originx="16" originy="6" duration="0.05"
+
+animation state="SHADOW_SMALL"
+frame x="4" y="32" w="20" h="8" originx="10" originy="4" duration="0.05"
