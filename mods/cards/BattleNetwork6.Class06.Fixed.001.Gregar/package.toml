@@ -1,0 +1,14 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class06.Fixed.001.Gregar"
+name = "HeatPres"
+description = "Sprd fire attk with Dpad.3pnl"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+hit_flags = ["Flinch", "Flash"]
+dynamic_damage = true
+element = "fire"
+hidden = true
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
