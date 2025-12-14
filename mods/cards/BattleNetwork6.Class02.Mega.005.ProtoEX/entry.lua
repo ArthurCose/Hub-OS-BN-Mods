@@ -6,7 +6,6 @@ local NAVI_TEXTURE = Resources.load_texture("proto.png")
 local NAVI_ANIM_PATH = (_folder_path .. "proto.animation")
 
 local APPEAR_SFX = bn_assets.load_audio("appear.ogg")
-local ATTACK_SFX = bn_assets.load_audio("sword.ogg")
 
 ---@param user Entity
 function card_mutate(user, index)
@@ -25,28 +24,28 @@ function card_init(user, props)
   local action = Action.new(user)
   action:set_lockout(ActionLockout.new_sequence())
 
-  local roll
+  local navi
   local previously_visible
 
   action.on_execute_func = function()
     previously_visible = user:sprite():visible()
 
-    roll = Spell.new(user:team())
-    roll:set_facing(user:facing())
-    roll:set_hit_props(HitProps.from_card(props, user:context()))
-    roll:hide()
-    roll:set_texture(NAVI_TEXTURE)
+    navi = Spell.new(user:team())
+    navi:set_facing(user:facing())
+    navi:set_hit_props(HitProps.from_card(props, user:context()))
+    navi:hide()
+    navi:set_texture(NAVI_TEXTURE)
 
-    local roll_animation = roll:animation()
-    roll_animation:load(NAVI_ANIM_PATH)
-    roll_animation:set_state("CHARACTER_IDLE")
-    roll_animation:set_playback(Playback.Loop)
+    local navi_animation = navi:animation()
+    navi_animation:load(NAVI_ANIM_PATH)
+    navi_animation:set_state("CHARACTER_IDLE")
+    navi_animation:set_playback(Playback.Loop)
 
-    roll:set_height(roll:sprite():origin().y)
+    navi:set_height(navi:sprite():origin().y)
 
-    Field.spawn(roll, user:current_tile())
+    Field.spawn(navi, user:current_tile())
 
-    -- must create steps in execute func, so they have access to roll
+    -- must create steps in execute func, so they have access to the navi
 
     local swap_in_step = action:create_step()
     swap_in_step.on_update_func = function()
@@ -64,24 +63,24 @@ function card_init(user, props)
     local max_flicker_time = 16
     local flicker_time = 0
     local color = Color.new(0, 0, 0)
-    local flicker_roll_step = action:create_step()
-    flicker_roll_step.on_update_func = function()
+    local flicker_step = action:create_step()
+    flicker_step.on_update_func = function()
       if flicker_time % 2 == 0 then
         local v = (1 - flicker_time / max_flicker_time) * 255
         color.r = v
         color.g = v
         color.b = v
-        roll:set_color(color)
-        roll:reveal()
+        navi:set_color(color)
+        navi:reveal()
       else
-        roll:hide()
+        navi:hide()
       end
 
       flicker_time = flicker_time + 1
 
       if flicker_time >= max_flicker_time then
-        roll:reveal()
-        flicker_roll_step:complete_step()
+        navi:reveal()
+        flicker_step:complete_step()
       end
     end
 
@@ -128,7 +127,7 @@ function card_init(user, props)
         return
       end
 
-      ChipNaviLib.exit(roll, function()
+      ChipNaviLib.exit(navi, function()
         exit_to_enemy_step:complete_step()
       end)
     end
@@ -138,66 +137,66 @@ function card_init(user, props)
       appear_at_enemy_step:complete_step()
 
       if target_tile then
-        target_tile:get_tile(user:facing_away(), 1):add_entity(roll)
+        target_tile:get_tile(user:facing_away(), 1):add_entity(navi)
       end
     end
 
-    ChipNaviLib.create_enter_step(action, roll)
+    ChipNaviLib.create_enter_step(action, navi)
 
     -- WideSwordアクションを直接実装
     local wide_sword_step = action:create_step()
     wide_sword_step.on_update_func = function()
       wide_sword_step.on_update_func = nil
-      
+
       if not target_tile then
         wide_sword_step:complete_step()
         return
       end
-      
+
       -- WideSwordのアニメーションとロジックを直接実装
       local SLASH_TEXTURE = bn_assets.load_texture("sword_slashes.png")
       local SLASH_ANIM_PATH = bn_assets.fetch_animation_path("sword_slashes.animation")
       local SWORD_AUDIO = bn_assets.load_audio("sword.ogg")
-      
+
       -- 剣を振るアニメーション
-      local roll_anim = roll:animation()
-      roll_anim:set_state("CHARACTER_SWING_HILT")
-      roll_anim:set_playback(Playback.Once)
-      
+      local navi_anim = navi:animation()
+      navi_anim:set_state("CHARACTER_SWING_HILT")
+      navi_anim:set_playback(Playback.Once)
+
       -- スラッシュエフェクトと攻撃判定を作成
       local spells = {}
-      
+
       -- 攻撃判定用のスペルを3つ作成（中央、上、下）
       local offsets = {
-        {x = 1, y = 0},   -- 中央
-        {x = 1, y = -1},  -- 上
-        {x = 1, y = 1}    -- 下
+        { x = 1, y = 0 },  -- 中央
+        { x = 1, y = -1 }, -- 上
+        { x = 1, y = 1 }   -- 下
       }
-      
+
       for _, offset in ipairs(offsets) do
-        local h_tile = roll:get_tile(roll:facing(), offset.x)
+        local h_tile = navi:get_tile(navi:facing(), offset.x)
         if h_tile then
           local tile = h_tile:get_tile(Direction.Down, offset.y)
           if tile then
-            local spell = Spell.new(roll:team())
-            spell:set_facing(roll:facing())
-            spell:set_hit_props(HitProps.from_card(props, roll:context(), Drag.None))
-            
+            local spell = Spell.new(navi:team())
+            spell:set_facing(navi:facing())
+            spell:set_hit_props(HitProps.from_card(props, user:context(), Drag.None))
+
             spell.on_update_func = function(self)
               self:current_tile():attack_entities(self)
             end
-            
+
             Field.spawn(spell, tile)
             table.insert(spells, spell)
           end
         end
       end
-      
+
       -- スラッシュエフェクト
-      local slash_tile = roll:get_tile(roll:facing(), 1)
+      local slash_tile = navi:get_tile(navi:facing(), 1)
       if slash_tile then
         local fx = Spell.new()
-        fx:set_facing(roll:facing())
+        fx:set_facing(navi:facing())
         fx:set_texture(SLASH_TEXTURE)
         local fx_anim = fx:animation()
         fx_anim:load(SLASH_ANIM_PATH)
@@ -209,15 +208,15 @@ function card_init(user, props)
             spell:delete()
           end
         end)
-        
+
         Field.spawn(fx, slash_tile)
       end
-      
+
       -- 効果音を再生
       Resources.play_audio(SWORD_AUDIO)
-      
+
       -- アニメーション完了を待つ
-      roll_anim:on_complete(function()
+      navi_anim:on_complete(function()
         wide_sword_step:complete_step()
       end)
     end
@@ -230,7 +229,7 @@ function card_init(user, props)
     ring_exit_step.on_update_func = function()
       ring_exit_step.on_update_func = nil
 
-      ChipNaviLib.exit(roll, function()
+      ChipNaviLib.exit(navi, function()
         ring_exit_step:complete_step()
       end)
     end
@@ -243,7 +242,6 @@ function card_init(user, props)
 
     -- 再出現後40フレーム待機してから終了
     ChipNaviLib.create_delay_step(action, 40)
-
   end
 
   action.on_action_end_func = function()
@@ -255,8 +253,8 @@ function card_init(user, props)
       end
     end
 
-    if roll then
-      roll:delete()
+    if navi then
+      navi:delete()
     end
   end
 

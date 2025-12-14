@@ -18,7 +18,7 @@ function card_init(user, props)
 		interrupt_animation:load(ANIM_PATH)
 		interrupt_animation:set_state("DEFAULT")
 		interrupt_animation:on_complete(function()
-			for i = 1, #entity:field_cards(), 1 do
+			for i = #entity:field_cards(), 1, -1 do
 				entity:remove_field_card(i)
 			end
 

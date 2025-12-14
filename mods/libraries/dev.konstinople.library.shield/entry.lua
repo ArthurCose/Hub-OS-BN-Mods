@@ -116,9 +116,15 @@ local function spawn_shield_artifact(self, user)
     shield:erase()
   end)
 
-  Field.spawn(shield, user:current_tile())
+  shield.on_update_func = function()
+    if TurnGauge.frozen() then
+      shield_anim:pause()
+    else
+      shield_anim:resume()
+    end
+  end
 
-  return shield
+  Field.spawn(shield, user:current_tile())
 end
 
 ---@param self Shield
@@ -148,7 +154,6 @@ function Shield:create_action(user, response_callback)
   action:set_lockout(ActionLockout.new_animation())
   action:override_animation_frames({ { 1, self._duration } })
 
-  local shield
   local defense_rule
 
   action.on_execute_func = function()
@@ -185,14 +190,10 @@ function Shield:create_action(user, response_callback)
 
     user:add_defense_rule(defense_rule)
 
-    shield = spawn_shield_artifact(self, user)
+    spawn_shield_artifact(self, user)
   end
 
   action.on_action_end_func = function()
-    if shield then
-      shield:animation():resume()
-    end
-
     if defense_rule then
       user:remove_defense_rule(defense_rule)
     end

@@ -4,13 +4,14 @@ id = "BattleNetwork3.Class01.Standard.160"
 name = "Geddon2"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "A", "L", "R", "*" ]
+codes = ["A", "L", "R", "*"]
 damage = 0
 time_freeze = true
 element = "none"
 description = "Breaks all panels!"
 card_class = "standard"
 limit = 2
+can_boost = false
 
 [dependencies]
-libraries = [ "BattleNetwork.Assets" ]
+libraries = ["BattleNetwork.Assets"]

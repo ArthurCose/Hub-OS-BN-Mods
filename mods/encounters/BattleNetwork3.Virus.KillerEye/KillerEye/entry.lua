@@ -6,7 +6,7 @@ function character_init(character)
         hp = 100,
         damage = 50,
         palette = Resources.load_texture("V1.png"),
-        height = 80,
+        height = 40,
     }
     if character:rank() == Rank.SP then
         character_info.damage = 200

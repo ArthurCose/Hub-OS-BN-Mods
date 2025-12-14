@@ -1,5 +1,3 @@
-local noop = function() end
-
 local bn_assets = require("BattleNetwork.Assets")
 
 local bomb_texture = bn_assets.load_texture("bn6_timebomb.png")
@@ -23,11 +21,15 @@ end
 local function find_dest(user)
 	local ahead = user:get_tile(user:facing(), 1)
 
-	if ahead and is_dest_valid(user, ahead) then
-		return ahead
+	while ahead do
+		if is_dest_valid(user, ahead) then
+			return ahead
+		end
+
+		ahead = ahead:get_tile(user:facing(), 1)
 	end
 
-	-- initial test
+	-- trying every row
 	local start_x, end_x, inc_x = 0, Field.width(), 1
 	local end_y = Field.height() - 1
 
@@ -184,8 +186,6 @@ function card_init(user, props)
 			end
 
 			local explosion = Explosion.new()
-			explosion.on_spawn_func = noop
-
 			Field.spawn(spell, tile)
 			Field.spawn(explosion, tile)
 		end
@@ -240,12 +240,12 @@ function card_init(user, props)
 		end
 
 		bomb.on_update_func = function()
+			if TurnGauge.frozen() == true then return end
+
 			if countdown:visible() then
 				countdown_animator:apply(countdown)
 				countdown_animator:update()
 			end
-
-			if TurnGauge.frozen() == true then return end
 
 			if main_goal == true then
 				Resources.play_audio(explosion_audio, AudioBehavior.NoOverlap)
@@ -255,12 +255,12 @@ function card_init(user, props)
 				countdown:hide()
 
 				create_explosion_visual_handler()
-
-				bomb:delete()
+				bomb:erase()
 			end
 		end
 
 		bomb.on_delete_func = function()
+			Field.spawn(Explosion.new(), bomb:current_tile())
 			bomb:erase()
 		end
 

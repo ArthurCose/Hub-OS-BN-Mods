@@ -4,14 +4,15 @@ id = "BattleNetwork3.Class01.Standard.161"
 name = "Geddon3"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "C", "M", "U", "W", "Y" ]
+codes = ["C", "M", "U", "W", "Y"]
 damage = 0
 time_freeze = true
 element = "none"
 description = "Turns all panels to swamp!"
 card_class = "standard"
 limit = 1
+can_boost = false
 
 [dependencies]
-libraries = [ "BattleNetwork.Assets" ]
-tile_states = [ "BattleNetwork6.TileStates.Poison" ]
+libraries = ["BattleNetwork.Assets"]
+tile_states = ["BattleNetwork6.TileStates.Poison"]
