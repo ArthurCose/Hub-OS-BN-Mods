@@ -4,7 +4,8 @@ local SFX = bn_assets.load_audio("invis.ogg")
 
 ---@param user Entity
 function card_init(user)
-    local action = Action.new(user, "CHARACTER_IDLE")
+    local action = Action.new(user)
+    action:set_lockout(ActionLockout.new_sequence())
 
     action.on_execute_func = function()
         local intangible_rule = IntangibleRule.new()
