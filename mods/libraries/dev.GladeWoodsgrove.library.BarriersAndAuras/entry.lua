@@ -297,7 +297,7 @@ function BarrierLib:setup_animation()
       return
     end
 
-    if type(self._removal_timer) == "number" then
+    if type(self._removal_timer) == "number" and TurnGauge.frozen() == false then
       self._removal_timer = self._removal_timer - 1
       if self._removal_timer == 0 then
         self._is_fade = true
@@ -360,28 +360,11 @@ end
 function BarrierLib:do_fade_removal()
   if self._fade_state ~= nil then
     self._barrier_animation:set_state(self._fade_state)
-    self._barrier_animation:on_complete(function()
-      self:do_shared_removal()
-    end)
-  else
-    self._fade_component = self._owner:create_component(Lifetime.Battle)
-
-    self._fade_component._timer = 0
-
-    self._fade_component.on_update_func = function(compself)
-      if compself._timer == 40 then
-        self:do_shared_removal()
-        compself:eject()
-        return
-      end
-
-      if compself._timer % 5 == 0 then
-        self._barrier_node:set_visible(not self._barrier_node:visible())
-      end
-
-      compself._timer = compself._timer + 1
-    end
   end
+
+  self:do_shared_removal()
+
+  self._is_removing = true
 end
 
 function BarrierLib:check_needs_removal()
@@ -393,6 +376,15 @@ function BarrierLib:check_needs_removal()
 end
 
 function BarrierLib:remove_barrier(is_force)
+  -- Forced removal.
+  if is_force == true then
+    self:do_shared_removal()
+    return
+  end
+
+  -- Already trying to remove, stop trying.
+  if self._is_removing == true then return end
+
   if self._is_weakness_hit then
     self:do_destruction_removal()
   elseif self._is_fade then
