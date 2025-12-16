@@ -8,6 +8,22 @@ local function debug_print(args)
   print("[BARRIER LIBRARY]" .. args)
 end
 
+local BarrierLibraryDefenseList = {}
+
+function BarrierLib:entity_has_defense(entity, is_aura)
+  if #BarrierLibraryDefenseList == 0 then return false end
+
+  local entry = BarrierLibraryDefenseList[entity:id()]
+
+  -- No defense found in the list, return false
+  if entry == nil then return false end
+
+  -- Doesn't matter if it's a barrier or aura, a defense is registered in the list so return true
+  if is_aura == nil then return true end
+
+  return entry[1] == true and entry[2] == is_aura
+end
+
 function BarrierLib:check_anim_exists(is_print_warning)
   if self._anim_path == nil then
     if is_print_warning then debug_print("Attempted to set animation behavior,\nbut no animation file was set!") end
@@ -107,6 +123,7 @@ end
 -- Aura-types must be enabled, and only take damage if the hit is greater than their health. However, they are destroyed immediately.
 function BarrierLib:set_is_aura(is_aura)
   self._is_aura = is_aura
+
   if is_aura then
     self:set_default_defense_aura()
   else
@@ -135,6 +152,23 @@ function BarrierLib:get_hit_flag_weakness()
   return self._hit_flag_weakness
 end
 
+function BarrierLib:set_blocks_damage_on_destruction(should_block)
+  if type(should_block) ~= "boolean" then return end
+  self._blocks_damage_on_destruction = should_block
+end
+
+function BarrierLib:blocks_damage_on_destruction()
+  return self._blocks_damage_on_destruction
+end
+
+function BarrierLib:set_blocks_damage_on_weakness_hit(should_block)
+  self._block_damage_despite_weakness = should_block
+end
+
+function BarrierLib:blocks_damage_on_weakness_hit()
+  return self._block_damage_despite_weakness
+end
+
 ---@param self BarrierLib
 ---@param hit_props HitProps
 local function shared_weakness_check(self, hit_props)
@@ -153,6 +187,7 @@ end
 function BarrierLib:set_default_defense_barrier()
   self._defense_rule.defense_func = function(defense, attacker, defender, hit_props)
     if shared_weakness_check(self, hit_props) then
+      if self:blocks_damage_on_weakness_hit() == true then defense:block_damage() end
       return
     end
 
@@ -160,6 +195,8 @@ function BarrierLib:set_default_defense_barrier()
 
     if self._health == 0 then
       self:do_destruction_removal()
+      if self:blocks_damage_on_destruction() == true then defense:block_damage() end
+      return
     end
 
     defense:block_damage()
@@ -169,12 +206,15 @@ end
 function BarrierLib:set_default_defense_aura()
   self._defense_rule.defense_func = function(defense, attacker, defender, hit_props)
     if shared_weakness_check(self, hit_props) then
+      if self:blocks_damage_on_weakness_hit() == true then defense:block_damage() end
       return
     end
 
     if hit_props.damage >= self._health then
       self._health = 0
       self:do_destruction_removal()
+      if self:blocks_damage_on_destruction() == true then defense:block_damage() end
+      return
     end
 
     defense:block_damage()
@@ -209,6 +249,9 @@ end
 ---@param self BarrierLib
 function BarrierLib:setup(owner)
   self:set_entity_as_owner(owner)
+
+  self:set_blocks_damage_on_destruction(true)
+  self:set_blocks_damage_on_weakness_hit(true)
 
   self._defense_rule = DefenseRule.new(DefensePriority.Barrier, DefenseOrder.Always)
 
@@ -334,6 +377,8 @@ function BarrierLib:do_shared_removal()
   self._destruction_handler_component:eject()
   self._owner:sprite():remove_node(self._barrier_node)
   self._owner:remove_defense_rule(self._defense_rule)
+
+  BarrierLibraryDefenseList[self._owner:id()] = nil
 end
 
 function BarrierLib:do_destruction_removal()
@@ -441,6 +486,8 @@ function BarrierLib.new_barrier(owner, health)
   barrier:setup(owner)
   barrier:set_is_aura(false)
 
+  BarrierLibraryDefenseList[owner:id()] = { true, false }
+
   return barrier
 end
 
@@ -453,6 +500,8 @@ function BarrierLib.new_aura(owner, health)
   aura:set_max_health(health)
   aura:setup(owner)
   aura:set_is_aura(true)
+
+  BarrierLibraryDefenseList[owner:id()] = { true, true }
 
   return aura
 end

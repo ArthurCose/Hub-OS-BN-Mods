@@ -54,6 +54,9 @@ function card_init(user, props)
 			:require_hit_element(Element.Elec)
 			:increase_hit_damage("DAMAGE")
 			:with_callback(function()
+				-- BubbleWrap shouldn't block damage on a wekaness hit (Elec)
+				barrier:set_blocks_damage_on_weakness_hit(false)
+
 				local alert_artifact = Alert.new()
 				alert_artifact:sprite():set_never_flip(true)
 

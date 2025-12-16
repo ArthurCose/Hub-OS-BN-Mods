@@ -1,0 +1,8 @@
+imagePath="C:\Users\seven\OneDrive\Desktop\HubOS\client\mods\libraries\BattleChipChallenge.Libraries.Ring\animetion_images\TurboWheel.png"
+
+
+animation state="DEFAULT"
+frame duration="0.033" x="3" y="6" w="45" h="34" originx="23" originy="28"
+frame duration="0.033" x="53" y="6" w="44" h="34" originx="22" originy="28"
+frame duration="0.033" x="101" y="6" w="45" h="34" originx="23" originy="28"
+frame duration="0.033" x="150" y="6" w="46" h="34" originx="24" originy="28"

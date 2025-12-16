@@ -18,6 +18,11 @@ Must be required as a Dependency under the 'libraries' section in a mod's packag
         ∙ Health is fully removed only if damage meets or exceeds health value.
  
 == Mechanics & Data ==
+    ∙ entity_has_defense(entity, is_aura)
+        ∙ Pass an Entity to be checked for a Barrier/Aura that is managed by this library.
+        ∙ is_aura should be a boolean value, true for only checking auras, false for only checking barriers; leave unset or pass nil to check for either.
+        ∙ Will return true if the entity has a registered defense that is not destroyed, and is of the matching type (if relevant)
+        ∙ Will return false if the entity has no defense, or if the defense was not of the matching type (if relevant)
     ∙ set_is_aura(is_aura)
         ∙ Determines how health should be handled. Not used externally by default.
         ∙ Allows the user to conditionally switch between Aura and Barrier defense types.
@@ -61,6 +66,14 @@ Must be required as a Dependency under the 'libraries' section in a mod's packag
         ∙ Shouldn't be needed for regular usage. Only use if you know what you're doing.
     ∙ get_owner()
         ∙ Returns the entity that the defense is registered to.
+    ∙ set_blocks_damage_on_destruction(boolean)
+        ∙ Set whether or not your Barrier or Aura blocks damage on the hit that destroys it.
+        ∙ Enabled by default. Set to false to have the defended entity take damage when losing their barrier/aura
+    ∙ blocks_damage_on_destruction()
+        ∙ Returns the above value.
+    ∙ set_blocks_damage_on_weakness_hit(boolean)
+        ∙ Set whether or not your Barrier or Aura blocks damage when taking a hit from its Elemental and/or HitFlag weaknesses.
+        ∙ On by default. Set to false to have the entity take damage when losing their barrier/aura (e.g. BubbleWrap)
 
 == Texture & Animation ==
     ∙ set_texture(path)
