@@ -5,7 +5,7 @@ function tile_state_init(custom_state)
   local tracked_auxprops = {}
 
   custom_state.on_entity_enter_func = function(self, entity)
-    if not Character.from(entity) and not Obstacle.from(entity) then
+    if not Character.from(entity) then
       return
     end
 
