@@ -92,6 +92,8 @@ function card_init(user, props)
 
 		local bomb = Obstacle.new(Team.Other)
 
+		bomb:set_owner(user)
+
 		bomb:add_aux_prop(AuxProp.new():declare_immunity(~Hit.Drag))
 		bomb.can_move_to_func = function(tile)
 			return tile:is_walkable()
