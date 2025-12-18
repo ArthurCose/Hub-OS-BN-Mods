@@ -116,8 +116,12 @@ local function spawn_shield_artifact(self, user)
     shield:erase()
   end)
 
+  local remaining_time = self._duration
+
   shield.on_update_func = function()
-    if TurnGauge.frozen() then
+    remaining_time = remaining_time - 1
+
+    if remaining_time > 0 or TurnGauge.frozen() then
       shield_anim:pause()
     else
       shield_anim:resume()
