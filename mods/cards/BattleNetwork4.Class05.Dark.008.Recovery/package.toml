@@ -16,4 +16,5 @@ conceal = true
 can_boost = false
 
 [dependencies]
+augments = ["BattleNetwork6.Bugs.BattleHPBug"]
 cards = ["BattleNetwork6.RecoveryBase"]

@@ -1,4 +1,4 @@
-imagePath="C:\Users\seven\OneDrive\Desktop\Games, Engines, and Assets\0 Games\HubOS Release\client\mods\libraries\BattleNetwork.Assets\Animations & Images\WideShot.png"
+imagePath="C:\Users\seven\OneDrive\Documents\My Games\Hub OS\mods\libraries\BattleNetwork.Assets\Animations & Images\WideShot.png"
 
 animation state="SPAWN"
 frame duration="0.05" x="71" y="102" w="13" h="10" originx="6" originy="5" flipx="0" flipy="0"
@@ -10,3 +10,19 @@ frame duration="0.05" x="2" y="2" w="38" h="64" originx="18" originy="32" flipx=
 frame duration="0.05" x="2" y="70" w="20" h="48" originx="-6" originy="24" flipx="0" flipy="0"
 frame duration="0.05" x="44" y="2" w="32" h="56" originx="12" originy="28" flipx="0" flipy="0"
 frame duration="0.05" x="26" y="70" w="23" h="48" originx="-5" originy="24" flipx="0" flipy="0"
+
+animation state="SPAWN_DARK"
+frame duration="0.05" x="175" y="102" w="13" h="10" originx="6" originy="5" flipx="0" flipy="0"
+frame duration="0.05" x="175" y="70" w="24" h="28" originx="6" originy="14" flipx="0" flipy="0"
+frame duration="0.05" x="157" y="70" w="14" h="42" originx="7" originy="21" flipx="0" flipy="0"
+
+animation state="LOOP_DARK"
+frame duration="0.05" x="106" y="2" w="38" h="64" originx="18" originy="32" flipx="0" flipy="0"
+frame duration="0.05" x="106" y="70" w="20" h="48" originx="-6" originy="24" flipx="0" flipy="0"
+frame duration="0.05" x="148" y="2" w="32" h="56" originx="12" originy="28" flipx="0" flipy="0"
+frame duration="0.05" x="130" y="70" w="23" h="48" originx="-5" originy="24" flipx="0" flipy="0"
+
+animation state="SHADOW"
+frame duration="0.05" x="49" y="128" w="38" h="64" originx="18" originy="32" flipx="0" flipy="0"
+frame duration="0.05" x="127" y="136" w="20" h="48" originx="-6" originy="24" flipx="0" flipy="0"
+frame duration="0.05" x="90" y="132" w="32" h="56" originx="12" originy="28" flipx="0" flipy="0"

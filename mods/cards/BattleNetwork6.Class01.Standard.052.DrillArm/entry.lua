@@ -62,6 +62,15 @@ function card_init(user, props)
 
   action:set_lockout(ActionLockout.new_animation())
 
+  local max_spells = 3
+  local state = "DEFAULT"
+  local pause_state = "PAUSE"
+  if props.card_class == CardClass.Dark then
+    max_spells = 5
+    state = "DARK"
+    pause_state = "PAUSE_DARK"
+  end
+
   action.on_execute_func = function()
     local attachment = action:create_attachment("BUSTER")
     local sprite = attachment:sprite()
@@ -70,8 +79,11 @@ function card_init(user, props)
     sprite:set_texture(TEXTURE)
     animation:load(ANIMATION_PATH)
 
-    animation:set_state("DEFAULT")
+    animation:set_state(state)
     animation:set_playback(Playback.Once)
+    animation:on_complete(function()
+      animation:set_state(pause_state)
+    end)
 
     local timer = 0
     local can_attack = true
@@ -80,7 +92,7 @@ function card_init(user, props)
     local hit_props = HitProps.from_card(props, user:context(), drag)
 
     action.on_update_func = function()
-      if #spells == 3 then can_attack = false end
+      if #spells == max_spells then can_attack = false end
 
       if timer % 11 == 0 and can_attack == true then
         attack(user, hit_props, spells)

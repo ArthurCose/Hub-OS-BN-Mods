@@ -1,8 +1,17 @@
+imagePath="C:\Users\seven\OneDrive\Documents\My Games\Hub OS\mods\libraries\BattleNetwork.Assets\Animations & Images\buster_fan.png"
+
 animation state="DEFAULT"
-frame duration="0.083" x="2" y="2" w="26" h="25" originx="12" originy="13"
+frame duration="0.083" x="2" y="2" w="26" h="25" originx="2" originy="13" flipx="0" flipy="0"
 
 animation state="LOOP"
-frame duration="0.017" x="32" y="2" w="26" h="25" originx="12" originy="13"
-frame duration="0.017" x="2" y="31" w="26" h="25" originx="13" originy="13"
-frame duration="0.017" x="32" y="31" w="26" h="25" originx="12" originy="13"
+frame duration="0.017" x="32" y="2" w="26" h="25" originx="2" originy="13" flipx="0" flipy="0"
+frame duration="0.017" x="2" y="31" w="26" h="25" originx="2" originy="13" flipx="0" flipy="0"
+frame duration="0.017" x="32" y="31" w="26" h="25" originx="2" originy="13" flipx="0" flipy="0"
 
+animation state="DEFAULT_DARK"
+frame duration="0.083" x="72" y="2" w="26" h="25" originx="2" originy="13" flipx="0" flipy="0"
+
+animation state="LOOP_DARK"
+frame duration="0.017" x="102" y="2" w="26" h="25" originx="2" originy="13" flipx="0" flipy="0"
+frame duration="0.017" x="72" y="31" w="26" h="25" originx="2" originy="13" flipx="0" flipy="0"
+frame duration="0.017" x="102" y="31" w="26" h="25" originx="2" originy="13" flipx="0" flipy="0"

@@ -11,7 +11,7 @@ preview_texture_path = "preview.png"
 codes = [ "B", "F", "I" ]
 limit = 0
 conceal = true
-hit_flags = ["Impact", "Freeze"]
+hit_flags = ["Freeze"]
 status_durations = [
     {flag_name = "Freeze", duration = 60}
 ]

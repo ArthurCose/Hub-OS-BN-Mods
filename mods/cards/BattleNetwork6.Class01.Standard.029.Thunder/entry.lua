@@ -16,7 +16,7 @@ local create_spell
 function card_init(user, props)
 	local card_action = Action.new(user, "CHARACTER_SHOOT")
 
-	if props.damage == 0 and props.card_class == CardClass.Giga then
+	if (props.damage == 0 and props.card_class == CardClass.Giga) or (props.card_class == CardClass.Dark) then
 		-- assume BDT
 		card_action:set_lockout(ActionLockout.new_async(30))
 	end
@@ -107,7 +107,7 @@ function create_spell(user, props)
 	local state_prefix = "THUNDER_"
 	local AUDIO = THUNDER_AUDIO
 
-	if props.damage == 0 and props.card_class == CardClass.Giga then
+	if (props.damage == 0 and props.card_class == CardClass.Giga) or (props.card_class == CardClass.Dark) then
 		timer = 480
 		slide_timer = 40
 		state_prefix = "BDT_"

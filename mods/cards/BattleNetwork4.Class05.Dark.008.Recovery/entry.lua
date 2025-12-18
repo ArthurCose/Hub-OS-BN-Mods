@@ -1,10 +1,6 @@
 function card_mutate(user, card_index)
-    local health_drain = AuxProp.new()
-        :require_interval(7)
-        :require_health(Compare.GT, 1)
-        :drain_health(1)
-
-    user:add_aux_prop(health_drain)
+    if Player.from(user) == nil then return end
+    user:boost_augment("BattleNetwork6.Bugs.BattleHPBug", 1)
 end
 
 function card_init(actor, props)
