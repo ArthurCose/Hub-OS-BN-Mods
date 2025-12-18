@@ -388,7 +388,7 @@ function PanelStep:create_action(user, create_action_steps)
       lagging_ghost:erase()
     end
 
-    if not returned then
+    if not returned and original_tile then
       user:current_tile():remove_entity(user)
       original_tile:add_entity(user)
       original_tile:remove_reservation_for(user)
