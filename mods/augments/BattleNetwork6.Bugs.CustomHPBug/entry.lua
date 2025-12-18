@@ -24,6 +24,8 @@ function augment_init(augment)
       return
     end
 
+    if player:health() <= 1 then return end
+
     time = time + 1
 
     local rate = TIMING[augment:level()] or TIMING[#TIMING]
