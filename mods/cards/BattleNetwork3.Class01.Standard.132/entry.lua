@@ -32,7 +32,7 @@ function card_init(actor, props)
 		end
 		if not SNAKE_FINISHED and timer <= 0 then
 			Resources.play_audio(APPEAR, AudioBehavior.NoOverlap)
-			print(start)
+
 			for i = start, start + 2, 1 do
 				if i < #tile_array + 1 then
 					local snake = spawn_snake(actor, props)
