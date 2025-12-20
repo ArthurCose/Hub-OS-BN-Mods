@@ -128,7 +128,11 @@ function card_init(user, props)
     end
 
     -- 各敵に対してステップを作成
+    local reservation_exclusion = { user:id() }
+    
     for i, target in ipairs(targets) do
+      local moved_successfully = false
+      
       -- ターゲットの前に移動
       local exit_to_enemy_step = action:create_step()
       exit_to_enemy_step.on_update_func = function()
@@ -153,11 +157,13 @@ function card_init(user, props)
         end
 
         local spawn_tile = target_tile:get_tile(user:facing_away(), 1)
-        if spawn_tile and not spawn_tile:is_edge() then
+        if spawn_tile and not spawn_tile:is_edge() and spawn_tile:is_walkable() and not spawn_tile:is_reserved(reservation_exclusion) then
           spawn_tile:add_entity(navi)
-        else
+          moved_successfully = true
+        elseif target_tile:is_walkable() and not target_tile:is_reserved(reservation_exclusion) then
           -- タイルが無い場合、ターゲットと同じタイルに
           target_tile:add_entity(navi)
+          moved_successfully = true
         end
       end
 
@@ -167,6 +173,12 @@ function card_init(user, props)
       local wide_sword_step = action:create_step()
       wide_sword_step.on_update_func = function()
         wide_sword_step.on_update_func = nil
+
+        -- 移動できなかった場合は攻撃をスキップ
+        if not moved_successfully then
+          wide_sword_step:complete_step()
+          return
+        end
 
         if target:deleted() then
           wide_sword_step:complete_step()
