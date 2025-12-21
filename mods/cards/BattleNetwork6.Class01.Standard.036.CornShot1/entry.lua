@@ -8,6 +8,9 @@ local EXPLOSION_ANIM_PATH = bn_helpers.fetch_animation_path("explosion_energy_bo
 
 local AUDIO = bn_helpers.load_audio("circusman_clap.ogg")
 
+---@type fun(team: Team, facing: Direction, hit_props: HitProps, spawn_tile: Tile?)
+local spread_explosion
+
 ---@param hit_props HitProps
 ---@param team Team
 ---@param facing Direction
@@ -41,11 +44,14 @@ local function spawn_explosion(team, facing, hit_props, spawn_tile)
 			local tile_up_forward = spawn_tile:get_tile(Direction.join(dir, Direction.Up), 1)
 			local tile_down_forward = spawn_tile:get_tile(Direction.join(dir, Direction.Down), 1)
 
-			spawn_explosion(team, facing, hit_props, tile_forward)
-			spawn_explosion(team, facing, hit_props, tile_up_forward)
-			spawn_explosion(team, facing, hit_props, tile_down_forward)
+			spread_explosion(team, facing, hit_props, tile_forward)
+			spread_explosion(team, facing, hit_props, tile_up_forward)
+			spread_explosion(team, facing, hit_props, tile_down_forward)
 
 			explosion:current_tile():set_state(TileState.Grass)
+		elseif time == 15 then
+			-- attack again after attempting to spread explosions
+			explosion:attack_tile()
 		end
 	end
 
@@ -67,6 +73,22 @@ local function spawn_explosion(team, facing, hit_props, spawn_tile)
 
 	-- spawn the explosion
 	Field.spawn(explosion, spawn_tile)
+end
+
+function spread_explosion(team, facing, hit_props, spawn_tile)
+	if not spawn_tile then return end
+
+	local has_enemy
+	spawn_tile:find_characters(function(c)
+		if not has_enemy then
+			has_enemy = c:team() ~= team and c:hittable()
+		end
+		return false
+	end)
+
+	if has_enemy then
+		spawn_explosion(team, facing, hit_props, spawn_tile)
+	end
 end
 
 ---@param user Entity
