@@ -1,0 +1,8 @@
+animation state="SERVER_OFF"
+frame x="6" y="3" w="45" h="123" originx="20" originy="92"
+
+animation state="SERVER_ON"
+frame x="60" y="3" w="45" h="123" originx="20" originy="92"
+
+
+

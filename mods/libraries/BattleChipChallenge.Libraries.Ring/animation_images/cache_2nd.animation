@@ -1,0 +1,28 @@
+animation state="CHARACTER_IDLE"
+frame x="477" y="9" w="83" h="91" originx="53" originy="75" duration="0.05"
+
+animation state="CACHE_BEAM"
+frame x="386" y="11" w="83" h="89" originx="53" originy="73" duration="0.05"
+frame x="386" y="11" w="83" h="89" originx="54" originy="73" duration="0.05"
+
+animation state="CACHE_BEAM_FIRE"
+frame x="295" y="11" w="83" h="89" originx="53" originy="73" duration="0.05"
+
+animation state="CACHE_LOAD"
+frame x="204" y="9" w="83" h="91" originx="53" originy="75" duration="0.1"
+frame x="107" y="13" w="89" h="87" originx="53" originy="71" duration="0.1"
+
+animation state="CACHE_LOAD_FIRE"
+frame x="5" y="13" w="94" h="87" originx="53" originy="71" duration="1"
+frame x="477" y="9" w="83" h="91" originx="53" originy="75" duration="0.05"
+
+animation state="CACHE_SERVER"
+frame x="470" y="122" w="90" h="123" originx="60" originy="92" duration="1"
+
+animation state="CACHE_OUT"
+frame x="470" y="122" w="90" h="123" originx="60" originy="92" duration="0.05"
+frame x="378" y="122" w="90" h="123" originx="60" originy="92" duration="0.05"
+frame x="286" y="122" w="90" h="123" originx="60" originy="92" duration="0.05"
+frame x="192" y="122" w="90" h="123" originx="60" originy="92" duration="0.05"
+frame x="99" y="122" w="90" h="123" originx="60" originy="92" duration="0.05"
+frame x="4" y="122" w="90" h="123" originx="60" originy="92" duration="0.05"

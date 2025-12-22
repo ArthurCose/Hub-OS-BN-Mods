@@ -1,0 +1,4 @@
+animation state="CACHE_ATTACK"
+frame x="93" y="5" w="38" h="16" originx="19" originy="14" duration="0.1"
+frame x="48" y="4" w="38" h="18" originx="19" originy="15" duration="0.1"
+frame x="4" y="4" w="36" h="18" originx="18" originy="15" duration="0.1"

@@ -177,17 +177,17 @@ function player_init(player)
     local function create_wind_gust(tile)
         local gust = Spell.new(player:team())
 
+        local facing = tile:facing()
         local hit_props = HitProps.new(
             0,
-            Hit.Drain,
+            Hit.None | Hit.Drag,
             Element.None,
             player:context(),
-            Drag.None
+            Drag.new(facing, 1)
         )
 
         gust:set_hit_props(hit_props)
 
-        local facing = tile:facing()
         gust:set_facing(facing)
 
         gust:set_texture(wind_puff_texture)
@@ -214,32 +214,33 @@ function player_init(player)
             self:erase()
         end
 
-        gust.on_collision_func = function(self, other)
-            if wind_components[other:id()] == true then return end
+        -- gust.on_collision_func = function(self, other)
+        -- if wind_components[other:id()] == true then return end
 
-            local slide_component = other:create_component(Lifetime.ActiveBattle)
+        -- local slide_component = other:create_component(Lifetime.ActiveBattle)
 
-            slide_component._direction = self:facing()
-            slide_component._id = other:id()
+        -- direction = self:facing()
+        -- id = other:id()
 
-            slide_component.on_update_func = function(self)
-                local owner = self:owner()
+        -- slide_component.on_update_func = function(self)
+        --     local owner = self:owner()
 
-                local slide_tile = owner:get_tile(self._direction, 1)
+        --     local slide_tile = owner:get_tile(direction, 1)
 
-                if not owner:can_move_to(slide_tile) then
-                    wind_components[other:id()] = false
-                    self:eject()
-                    return
-                end
+        --     if not owner:can_move_to(slide_tile) then
+        --         wind_components[other:id()] = false
+        --         self:eject()
+        --         return
+        --     end
 
-                if owner:is_moving() then return end
-                if owner:is_dragged() then return end
-                owner:slide(slide_tile, 6)
-            end
+        --     if owner:is_moving() then return end
+        --     if owner:is_dragged() then return end
 
-            wind_components[other:id()] = true
-        end
+        --     owner:slide(slide_tile, 6)
+        -- end
+
+        -- wind_components[other:id()] = true
+        -- end
 
         Field.spawn(gust, tile)
     end
@@ -1116,17 +1117,26 @@ function player_init(player)
 
         player:queue_action(Action.from_card(player, card_properties))
 
-        local wind_x = Field.width()
+        local wind_increment = -1
+        local wind_x = Field.width() - 1
         local wind_tile = Field.tile_at(wind_x, 1)
+
+        if player:team() == Team.Blue then
+            wind_increment = 1
+            wind_x = 1
+        end
+
         while wind_tile == nil do
-            wind_x = wind_x - 1
+            wind_x = wind_x + wind_increment
             wind_tile = Field.tile_at(wind_x, 1)
         end
+
         for y = 1, Field.height() - 1, 1 do
             local tile = Field.tile_at(wind_x, y)
 
             if tile == nil then goto continue end
             if tile:get_tile(Direction.Down, 1) == nil then goto continue end
+            if tile:get_tile(Direction.Down, 1):is_edge() then goto continue end
 
             table.insert(wind_list, tile)
 

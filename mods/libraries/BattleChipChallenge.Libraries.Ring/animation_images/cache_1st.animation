@@ -1,0 +1,7 @@
+animation state="CHARACTER_IDLE"
+frame x="124" y="6" w="30" h="53" originx="19" originy="48" duration="0.05"
+
+animation state="CHARACTER_HAND"
+frame x="86" y="6" w="30" h="53" originx="19" originy="48" duration="0.05"
+frame x="48" y="6" w="30" h="53" originx="19" originy="48" duration="0.05"
+frame x="4" y="6" w="36" h="53" originx="19" originy="48" duration="0.05"

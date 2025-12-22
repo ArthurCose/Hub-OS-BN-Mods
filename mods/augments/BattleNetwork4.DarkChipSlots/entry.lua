@@ -157,12 +157,17 @@ function augment_init(augment)
 		{ range = 24, wound_range = 30, id = "BattleNetwork4.Class05.Dark.003.Bomb" },
 		{ range = 36, wound_range = 33, id = "BattleNetwork4.Class05.Dark.004.Vulcan" },
 		{ range = 48, wound_range = 36, id = "BattleNetwork4.Class05.Dark.005.Lance" },
-		{ range = 56, wound_range = 38, id = "BattleNetwork4.Class05.Dark.006.Spreader" },
+		{ range = 56, wound_range = 38, id = "BattleNetwork4.Class05.Dark.006.Spreader", },
 		{ range = 64, wound_range = 40, id = "BattleNetwork4.Class05.Dark.007.Stage" },
 		{ range = 0,  wound_range = 64, id = "BattleNetwork4.Class05.Dark.008.Recovery" },
 	}
 
-	local prior_chips = {}
+	local prior_draws = {}
+	local current_chips = {}
+
+	for index, value in ipairs(chip_list) do
+		prior_draws[value.id] = 0
+	end
 
 	local function get_random_chip(is_wounded)
 		local number = math.random(1, 64)
@@ -175,13 +180,14 @@ function augment_init(augment)
 			for index, value in ipairs(chip_list) do
 				if is_wounded then range = value.wound_range else range = value.range end
 				if range == 0 then goto skip end
+				if prior_draws[value.id] == 2 then goto skip end
+				if current_chips[value.id] ~= nil then goto skip end
 
-				if #prior_chips > 0 then
-					-- skip if it's one we just pulled within the last turn
-					if value.id == prior_chips[1] or value.id == prior_chips[2] then goto skip end
+				if number <= range then
+					table.insert(current_chips, chip)
+					chip = value.id
+					break
 				end
-
-				if number <= range then chip = value.id end
 
 				::skip::
 			end
@@ -190,13 +196,14 @@ function augment_init(augment)
 			attempts = attempts + 1
 		end
 
-		-- If we failed to get a chip, then ignore previous logic and select a random one from the list.
-		if chip == nil then chip = chip_list[math.random(#chip_list)].id end
+		if chip == nil then return end
 
-		-- This check goes before the table.insert call because it would reset upon *reaching* two entries otherwise.
-		-- By putting it here, it would happen on the *third* addition to the table - in other words, after you've gotten two.
-		if #prior_chips == 2 then prior_chips = {} end
-		table.insert(prior_chips, chip)
+		if #current_chips > 2 then
+			current_chips = {}
+		end
+
+		prior_draws[chip] = prior_draws[chip] + 1
+
 
 		return chip
 	end
