@@ -16,6 +16,8 @@ hit_flags = ["Flinch", "Flash"]
 card_class = "dark"
 conceal = true
 tags = ["DAMAGE_EQUALS_POWER"]
+can_boost = false
+can_charge = false
 
 [dependencies]
 cards = ["BattleNetwork6.CannonBase"]

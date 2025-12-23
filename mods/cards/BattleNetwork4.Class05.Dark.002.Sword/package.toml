@@ -12,9 +12,9 @@ element = "sword"
 description = "USE LARGE SWORD AND SLICE"
 card_class = "dark"
 limit = 0
-conceal = true
 long_description = "A Dark Chip. Slashes 3x2 and forces forward movement."
 can_boost = false
+can_charge = false
 tags = ["FOE_HEALTH_EQUALS_POWER", "EXE4", "BN4"]
 
 [dependencies]

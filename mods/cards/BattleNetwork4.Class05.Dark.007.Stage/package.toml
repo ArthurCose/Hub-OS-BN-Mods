@@ -10,10 +10,10 @@ damage = 0
 time_freeze = true
 element = "none"
 description = "STAGE OF DARKNESS"
-can_boost = false
 card_class = "dark"
 limit = 0
-conceal = true
+can_boost = false
+can_charge = false
 
 [dependencies]
 libraries = ["BattleNetwork.Assets"]

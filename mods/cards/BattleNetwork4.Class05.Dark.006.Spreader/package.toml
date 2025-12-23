@@ -11,8 +11,9 @@ element = "none"
 description = "SPREADER\nBLASTS\nWIDE"
 hit_flags = []
 limit = 0
-conceal = true
 card_class = "dark"
+can_boost = false
+can_charge = false
 
 [dependencies]
 augments = ["BattleNetwork4.Bugs.PanelBug"]

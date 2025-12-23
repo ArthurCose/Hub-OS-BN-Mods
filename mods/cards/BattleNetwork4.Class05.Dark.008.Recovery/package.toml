@@ -12,8 +12,8 @@ element = "none"
 description = "RESTORE\n1000 HP\nAND WIN"
 card_class = "dark"
 limit = 0
-conceal = true
 can_boost = false
+can_charge = false
 
 [dependencies]
 augments = ["BattleNetwork6.Bugs.BattleHPBug"]

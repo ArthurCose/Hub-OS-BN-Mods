@@ -14,6 +14,7 @@ card_class = "dark"
 limit = 1
 long_description = "A Dark Chip. Slashes 3x2 and forces forward movement."
 can_boost = false
+can_charge = false
 
 [dependencies]
 libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]

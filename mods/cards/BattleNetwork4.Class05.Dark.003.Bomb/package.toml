@@ -13,9 +13,9 @@ long_description = "9 PANEL EXPLOSION 3 SQUARES AHEAD"
 limit = 0
 hit_flags = ["Flinch", "Flash", "PierceGround"]
 card_class = "dark"
-conceal = true
+can_boost = false
+can_charge = false
 
-# conceal = true
 [dependencies]
 libraries = ["BattleNetwork.Assets", "dev.konstinople.library.bomb"]
 augments = ["BattleNetwork4.Bugs.BackwardMovement"]

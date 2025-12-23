@@ -12,9 +12,10 @@ element = "none"
 description = "24 SHOTS TO PIRECE 1 PANEL"
 long_description = "Devastating 24-shot vulcan attack. Bugs the user."
 limit = 0
-conceal = true
 hit_flags = ["Flinch"]
 card_class = "dark"
+can_boost = false
+can_charge = false
 
 [dependencies]
 cards = ["BattleNetwork6.Class01.Standard.005"]
