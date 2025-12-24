@@ -43,7 +43,7 @@ function status_init(status)
 
         entity:add_aux_prop(
             AuxProp.new()
-            :require_health(Compare.GT, 1)
+            :require_projected_health("HEALTH - DAMAGE", Compare.GT, 1)
             :drain_health(1)
             :once()
         )
