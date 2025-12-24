@@ -1,0 +1,53 @@
+animation state="CHARACTER_IDLE"
+frame x="53" y="5" w="39" h="39" originx="22" originy="34" duration="0.05"
+
+animation state="CHARACTER_PURI"
+frame x="6" y="8" w="37" h="36" originx="20" originy="31" duration="0.05"
+
+animation state="CHARACTER_IDLE_RED"
+frame x="53" y="55" w="39" h="39" originx="22" originy="34" duration="0.05"
+
+animation state="CHARACTER_PURI_RED"
+frame x="6" y="58" w="37" h="36" originx="20" originy="31" duration="0.05"
+
+animation state="CHARACTER_IDLE_BLUE"
+frame x="53" y="105" w="39" h="39" originx="22" originy="34" duration="0.05"
+
+animation state="CHARACTER_PURI_BLUE"
+frame x="6" y="108" w="37" h="36" originx="20" originy="31" duration="0.05"
+
+animation state="CHARACTER_IDLE_YELLOW"
+frame x="53" y="155" w="39" h="39" originx="22" originy="34" duration="0.05"
+
+animation state="CHARACTER_PURI_YELLOW"
+frame x="6" y="158" w="37" h="36" originx="20" originy="31" duration="0.05"
+
+animation state="CHARACTER_IDLE_GREEN"
+frame x="53" y="205" w="39" h="39" originx="22" originy="34" duration="0.05"
+
+animation state="CHARACTER_PURI_GREEN"
+frame x="6" y="208" w="37" h="36" originx="20" originy="31" duration="0.05"
+
+animation state="CHARACTER_IDLE_BLACK"
+frame x="53" y="255" w="39" h="39" originx="22" originy="34" duration="0.05"
+
+animation state="CHARACTER_PURI_BLACK"
+frame x="6" y="258" w="37" h="36" originx="20" originy="31" duration="0.05"
+
+animation state="CHARACTER_IDLE_PAPLE"
+frame x="53" y="305" w="39" h="39" originx="22" originy="34" duration="0.05"
+
+animation state="CHARACTER_PURI_PAPLE"
+frame x="6" y="308" w="37" h="36" originx="20" originy="31" duration="0.05"
+
+animation state="CHARACTER_IDLE_WHITE"
+frame x="53" y="355" w="39" h="39" originx="22" originy="34" duration="0.05"
+
+animation state="CHARACTER_PURI_WHITE"
+frame x="6" y="358" w="37" h="36" originx="20" originy="31" duration="0.05"
+
+animation state="CHARACTER_IDLE_ORANGE"
+frame x="53" y="405" w="39" h="39" originx="22" originy="34" duration="0.05"
+
+animation state="CHARACTER_PURI_ORANGE"
+frame x="6" y="408" w="37" h="36" originx="20" originy="31" duration="0.05"

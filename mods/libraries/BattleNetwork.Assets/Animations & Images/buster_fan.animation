@@ -15,3 +15,11 @@ animation state="LOOP_DARK"
 frame duration="0.017" x="102" y="2" w="26" h="25" originx="2" originy="13" flipx="0" flipy="0"
 frame duration="0.017" x="72" y="31" w="26" h="25" originx="2" originy="13" flipx="0" flipy="0"
 frame duration="0.017" x="102" y="31" w="26" h="25" originx="2" originy="13" flipx="0" flipy="0"
+
+animation state="DEFAULT_STATIC"
+frame duration="0.083" x="140" y="2" w="26" h="25" originx="2" originy="13" flipx="0" flipy="0"
+
+animation state="LOOP_STATIC"
+frame duration="0.017" x="170" y="2" w="26" h="25" originx="2" originy="13" flipx="0" flipy="0"
+frame duration="0.017" x="140" y="31" w="26" h="25" originx="2" originy="13" flipx="0" flipy="0"
+frame duration="0.017" x="170" y="31" w="26" h="25" originx="2" originy="13" flipx="0" flipy="0"
