@@ -5,18 +5,10 @@ function augment_init(augment)
       :require_interval(60)
       :with_callback(function()
         local chance = math.floor(math.random(1, 16))
-        local normal_emotion_name = "NORMAL"
+        local normal_emotion_name = "DEFAULT"
         local synchro_emotion_name = "SYNCHRO"
-        local anger_emotion_name = "ANGRY"
+        local anger_emotion_name = "ANGER"
         local tired_emotion_name = "TIRED"
-        local emotions = player:emotions()
-
-        for index, value in ipairs(emotions) do
-          if value == "DEFAULT" then normal_emotion_name = value end
-          if value == "FULL_SYNCHRO" then synchro_emotion_name = value end
-          if value == "ANGER" or value == "RAGE" then anger_emotion_name = value end
-          if value == "WORRIED" then tired_emotion_name = value end
-        end
 
         local normal_emotion_table = {
           { emotion = tired_emotion_name,   range = 14 },

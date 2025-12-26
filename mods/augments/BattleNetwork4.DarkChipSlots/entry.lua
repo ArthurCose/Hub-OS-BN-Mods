@@ -50,16 +50,10 @@ function augment_init(augment)
 			return nil
 		end)
 
-	local synchro_state;
-	local fear_state;
-	local evil_state;
-	local normal_state;
-	for _, emotion in ipairs(player:emotions()) do
-		if string.find(emotion, "SYNCHRO") then synchro_state = emotion end
-		if string.find(emotion, "ANXIOUS") or string.find(emotion, "WORRIED") then fear_state = emotion end
-		if string.find(emotion, "EVIL") or string.find(emotion, "DARK") then evil_state = emotion end
-		if string.find(emotion, "DEFAULT") or string.find(emotion, "NORMAL") then normal_state = emotion end
-	end
+	local synchro_state = "SYNCHRO";
+	local fear_state = "ANXIOUS";
+	local evil_state = "EVIL";
+	local normal_state = "DEFAULT";
 
 	local become_evil = AuxProp.new()
 		:require_action(ActionType.Card)
@@ -203,7 +197,6 @@ function augment_init(augment)
 		end
 
 		prior_draws[chip] = prior_draws[chip] + 1
-
 
 		return chip
 	end
