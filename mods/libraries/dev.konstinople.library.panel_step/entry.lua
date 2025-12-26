@@ -115,11 +115,17 @@ local function create_static_blinking_ghost(user, color)
   local ghost = create_ghost(user, color)
   local ghost_sprite = ghost:sprite()
 
+  local spawned_during_freeze = TurnGauge.frozen()
+
   local i = 0
   ghost.on_update_func = function()
+    -- blink
     ghost_sprite:set_visible(math.floor(i / 2) % 2 == 0)
 
-    i = i + 1
+    if spawned_during_freeze or not TurnGauge.frozen() then
+      -- avoid animating during freeze if we weren't spawned during freeze
+      i = i + 1
+    end
   end
 
   return ghost
