@@ -176,8 +176,22 @@ function card_init(user, props)
 
 		local hit_props = HitProps.from_card(props)
 
+		local spell_team = user:team()
+
+		---@param tile Tile
 		local function create_explosion_and_visual(tile)
-			local spell = Spell.new(Team.Other)
+			local tile_team = tile:team()
+			if tile_team == spell_team then
+				if Team.Red then
+					spell_team = Team.Blue
+				else
+					spell_team = Team.Red
+				end
+			elseif tile_team == Team.Other then
+				spell_team = Team.Other
+			end
+
+			local spell = Spell.new(spell_team)
 
 			-- Use TimeBomb's hit props
 			spell:set_hit_props(hit_props)
