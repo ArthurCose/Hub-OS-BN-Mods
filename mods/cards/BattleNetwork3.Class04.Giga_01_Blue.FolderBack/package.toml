@@ -11,6 +11,7 @@ skip_time_freeze_intro = true
 prevent_time_freeze_counter = true
 element = "none"
 description = "Restores all chips & folders"
+long_description = "Restores all used chips and shuffles the folders of every player still alive. Does not restore itself."
 card_class = "giga"
 limit = 1
 can_boost = false

@@ -1,0 +1,5 @@
+[package]
+category = "library"
+id = "dev.konstinople.library.field_math"
+name = "Field Math Library"
+description = "Convert local offsets to global offsets and back."

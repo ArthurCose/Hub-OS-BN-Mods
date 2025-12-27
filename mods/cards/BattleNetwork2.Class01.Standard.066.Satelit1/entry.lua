@@ -2,63 +2,167 @@
 local SwordLib = require("dev.konstinople.library.sword")
 ---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
+---@type dev.konstinople.library.field_math
+local FieldMath = require("dev.konstinople.library.field_math")
 
 local TEXTURE = Resources.load_texture("satelite.png")
 local ANIMATION_PATH = _folder_path .. "satelite.animation"
+
+local SHADOW_TEXTURE = Resources.load_texture("shadow.png")
+local SHADOW_ANIMATION_PATH = _folder_path .. "shadow.animation"
+
 local LAUNCH_SFX = bn_assets.load_audio("thunder.ogg")
-local HIT_EFFECT_TEXTURE = bn_assets.load_texture("bn6_hit_effects.png")
-local HIT_EFFECT_ANIMATION_PATH = bn_assets.fetch_animation_path("bn6_hit_effects.animation")
 local HIT_EFFECT_STATE = "ELEC"
-local COLUMN_AVERAGE = 25.5 -- the average time spent in a full column
+local COLUMN_AVERAGE = 26.5 -- the average time spent in a full column
+local ORBITAL_PERIOD = 150
 
 local Sword = SwordLib.new_sword()
 Sword:set_frame_data({ { 1, 2 }, { 2, 2 }, { 3, 2 }, { 4, 15 } })
 Sword:use_hand()
 
----@param user Entity
-local function create_star(user, hit_props)
-  local spell = Spell.new(user:team())
-  spell:set_texture(TEXTURE)
-  spell:set_facing(user:facing())
-  spell:set_hit_props(hit_props)
+---@param satellite Entity
+---@param center_tile Tile
+---@param angle number
+local function begin_orbit(satellite, center_tile, angle)
+  local TILE_W = Tile:width()
+  local TILE_H = Tile:height()
 
-  local animation = spell:animation()
+  local time = 0
+
+  local function update()
+    time = time + 1
+
+    if time > 6 * 60 then
+      satellite:delete()
+      -- continue to allow the offset to update
+    end
+
+    local offset_x = math.cos(angle) * TILE_W
+    local offset_y = math.sin(angle) * TILE_H
+
+    angle = angle + math.pi * 2 / ORBITAL_PERIOD
+
+    local global_x, global_y = FieldMath.local_to_global(center_tile, offset_x, offset_y)
+    local tile = FieldMath.global_to_tile(global_x, global_y)
+
+    if tile and tile ~= center_tile then
+      tile:add_entity(satellite)
+      satellite:attack_tile()
+      satellite:enable_hitbox(true)
+
+      offset_x, offset_y = FieldMath.global_to_relative(tile, global_x, global_y)
+    else
+      -- avoid attacking the obstacle we're orbiting
+      center_tile:add_entity(satellite)
+      satellite:enable_hitbox(false)
+    end
+
+    satellite:set_movement_offset(offset_x, offset_y)
+  end
+
+  satellite.on_update_func = update
+  update()
+end
+
+---@param satellite Entity
+local function recenter_for_orbit(satellite)
+  local collision_offset = satellite:movement_offset()
+  local center_tile = satellite:current_tile()
+
+  local TILE_W = Tile:width()
+  local TILE_H = Tile:height()
+
+  local angle
+
+  if math.abs(collision_offset.x / TILE_W) > math.abs(collision_offset.y / TILE_H) then
+    if collision_offset.x > 0 then
+      angle = 0
+    else
+      angle = -math.pi
+    end
+  elseif collision_offset.y < 0 then
+    angle = -math.pi * 0.5
+  else
+    angle = -math.pi * 1.5
+  end
+
+  local target_x = math.cos(angle) * TILE_W
+  local target_y = math.sin(angle) * TILE_H
+
+  local time = 0
+
+  local function update()
+    time = time + 1
+
+    local progress = time / 8
+
+    if progress >= 1 then
+      begin_orbit(satellite, center_tile, angle)
+      return
+    end
+
+    local offset_x = (target_x - collision_offset.x) * progress + collision_offset.x
+    local offset_y = (target_y - collision_offset.y) * progress + collision_offset.y
+
+    local global_x, global_y = FieldMath.local_to_global(center_tile, offset_x, offset_y)
+    local tile = FieldMath.global_to_tile(global_x, global_y)
+
+    if tile and tile ~= center_tile then
+      tile:add_entity(satellite)
+      satellite:attack_tile()
+      satellite:enable_hitbox(true)
+
+      offset_x, offset_y = FieldMath.global_to_relative(tile, global_x, global_y)
+    else
+      -- avoid attacking the obstacle we're orbiting
+      center_tile:add_entity(satellite)
+      satellite:enable_hitbox(false)
+    end
+
+    satellite:set_movement_offset(offset_x, offset_y)
+  end
+
+  satellite.on_update_func = update
+  update()
+end
+
+---@param user Entity
+---@param hit_props HitProps
+local function create_satellite(user, hit_props)
+  local satellite = Obstacle.new(user:team())
+  satellite:set_texture(TEXTURE)
+  satellite:set_shadow(SHADOW_TEXTURE, SHADOW_ANIMATION_PATH)
+  satellite:set_facing(user:facing())
+  satellite:set_hit_props(hit_props)
+  satellite:set_health(hit_props.damage // 2)
+  satellite:set_tile_highlight(Highlight.Solid)
+
+  satellite.can_move_to_func = function()
+    return true
+  end
+
+  local animation = satellite:animation()
   animation:load(ANIMATION_PATH)
   animation:set_state("DEFAULT")
   animation:set_playback(Playback.Loop)
 
-  spell.on_spawn_func = function()
+  satellite.on_spawn_func = function()
     Resources.play_audio(LAUNCH_SFX)
   end
 
-  ---@type Entity[]
-  local obstacles_hit = {}
-  local can_attack = true
-
-  -- disable attack + track obstacles + hit artifact
-  spell.on_collision_func = function(_, other)
-    can_attack = false
-
-    -- track obstacles
-    if other and Obstacle.from(other) then
-      table.insert(obstacles_hit, other)
-    end
-
-    local artifact = Artifact.new()
-    artifact:set_texture(HIT_EFFECT_TEXTURE)
+  -- hit artifact
+  satellite.on_collision_func = function(_, other)
+    local artifact = bn_assets.HitParticle.new(HIT_EFFECT_STATE)
     artifact:sprite():set_layer(-1)
 
-    local artifact_anim = artifact:animation()
-    artifact_anim:load(HIT_EFFECT_ANIMATION_PATH)
-    artifact_anim:set_state(HIT_EFFECT_STATE)
-    artifact_anim:on_complete(function()
-      artifact:erase()
-    end)
 
-    local offset = spell:movement_offset()
-    artifact:set_offset(offset.x, offset.y)
+    local offset = other:movement_offset()
+    artifact:set_offset(
+      offset.x + math.random(-16, 16),
+      offset.y + math.random(-other:height(), 0)
+    )
 
-    Field.spawn(artifact, spell:current_tile())
+    Field.spawn(artifact, other:current_tile())
   end
 
   -- movement and attack
@@ -75,20 +179,11 @@ local function create_star(user, hit_props)
   local a = math.pi
   local a_speed = math.pi / COLUMN_AVERAGE
 
-  spell.on_update_func = function()
-    local current_tile = spell:current_tile()
+  satellite.on_update_func = function()
+    local current_tile = satellite:current_tile()
 
     if not initial_tile then
       initial_tile = current_tile
-    else
-      for i, obstacle in ipairs(obstacles_hit) do
-        if not obstacle:deleted() then
-          spell:erase()
-          return
-        end
-
-        obstacles_hit[i] = nil
-      end
     end
 
     -- move forward
@@ -115,30 +210,36 @@ local function create_star(user, hit_props)
     local y_offset = y - (tile_y - initial_tile:y()) * tile_height
 
     -- update offset
-    spell:set_movement_offset(x_offset, y_offset)
+    satellite:set_movement_offset(x_offset, y_offset)
 
     -- updating tile
     local tile = Field.tile_at(tile_x, tile_y)
 
     if not tile then
-      spell:erase()
+      satellite:erase()
       return
     end
 
     -- update tile
     if current_tile ~= tile then
-      can_attack = true
-      current_tile:remove_entity(spell)
-      tile:add_entity(spell)
+      current_tile:remove_entity(satellite)
+      tile:add_entity(satellite)
+
+      if #tile:find_obstacles(function(o) return o:hittable() and o:owner() ~= nil end) > 0 then
+        recenter_for_orbit(satellite)
+        return
+      end
     end
 
-    if can_attack then
-      tile:set_highlight(Highlight.Solid)
-      spell:attack_tile()
-    end
+    satellite:attack_tile()
   end
 
-  return spell
+  satellite.on_delete_func = function()
+    Field.spawn(Explosion.new(), satellite:current_tile())
+    satellite:erase()
+  end
+
+  return satellite
 end
 
 ---@param user Entity
@@ -149,7 +250,7 @@ function card_init(user, props)
 
     if tile then
       local hit_props = HitProps.from_card(props, user:context())
-      local star = create_star(user, hit_props)
+      local star = create_satellite(user, hit_props)
 
       Field.spawn(star, tile)
     end

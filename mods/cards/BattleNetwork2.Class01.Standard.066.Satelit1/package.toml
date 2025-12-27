@@ -13,4 +13,8 @@ damage = 80
 limit = 5
 
 [dependencies]
-libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
+libraries = [
+  "BattleNetwork.Assets",
+  "dev.konstinople.library.sword",
+  "dev.konstinople.library.field_math"
+]
