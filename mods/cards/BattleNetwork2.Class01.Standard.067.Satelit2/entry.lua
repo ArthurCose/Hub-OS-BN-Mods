@@ -29,6 +29,12 @@ local function begin_orbit(satellite, center_tile, angle)
 
   local time = 0
 
+  local angle_vel = math.pi * 2 / ORBITAL_PERIOD
+
+  if satellite:facing() == Direction.Left then
+    angle_vel = -angle_vel
+  end
+
   local function update()
     time = time + 1
 
@@ -40,7 +46,7 @@ local function begin_orbit(satellite, center_tile, angle)
     local offset_x = math.cos(angle) * TILE_W
     local offset_y = math.sin(angle) * TILE_H
 
-    angle = angle + math.pi * 2 / ORBITAL_PERIOD
+    angle = angle + angle_vel
 
     local global_x, global_y = FieldMath.local_to_global(center_tile, offset_x, offset_y)
     local tile = FieldMath.global_to_tile(global_x, global_y)
