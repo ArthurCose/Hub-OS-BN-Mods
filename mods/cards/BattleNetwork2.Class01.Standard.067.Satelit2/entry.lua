@@ -38,7 +38,7 @@ local function begin_orbit(satellite, center_tile, angle)
   local function update()
     time = time + 1
 
-    if time > 6 * 60 then
+    if time > 5 * 60 then
       satellite:delete()
       -- continue to allow the offset to update
     end
