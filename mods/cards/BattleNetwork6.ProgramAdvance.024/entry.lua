@@ -136,7 +136,11 @@ function poof_user(user, context, props, defense_rule)
     user:hide()
   end
 
+  local aux_prop = AuxProp.new():declare_immunity(Hit.action_blockers())
+
   action.on_action_end_func = function()
+    user:remove_aux_prop(aux_prop)
+
     if executed then
       user:reveal()
       user:enable_hitbox(true)
