@@ -38,8 +38,8 @@ return function(player, form, base_animation_path)
       aqua_heal_aux_prop = AuxProp.new()
           :require_card_primary_element(Element.Aqua)
           :require_card_time_freeze(false)
-          :increase_card_multiplier(0)
-          :with_callback(function()
+          :require_action(ActionType.Card)
+          :update_context(function(context)
             player:set_health(player:health() + math.min(player:max_health() * 0.05, 50))
 
             Resources.play_audio(RECOVER_SFX)
@@ -56,6 +56,8 @@ return function(player, form, base_animation_path)
             end)
 
             Field.spawn(artifact, player:current_tile())
+
+            return context
           end)
       player:add_aux_prop(aqua_heal_aux_prop)
     end,

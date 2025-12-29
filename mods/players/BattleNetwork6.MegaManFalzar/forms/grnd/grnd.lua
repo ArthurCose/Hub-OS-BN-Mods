@@ -33,8 +33,8 @@ return function(player, form, base_animation_path)
           :require_card_primary_element(Element.Break)
           :require_card_time_freeze(false)
           :require_charged_card()
-          :increase_card_multiplier(0)
-          :with_callback(function()
+          :require_action(ActionType.Card)
+          :update_context(function(context)
             local hit_props =
                 HitProps.new(
                   20 * player:attack_level() + 30,
@@ -44,6 +44,8 @@ return function(player, form, base_animation_path)
 
             FallingRockLib.spawn_falling_rocks(player:team(), 3, hit_props)
             Field.shake(3, 40)
+
+            return context
           end)
       player:add_aux_prop(rock_aux_prop)
 
