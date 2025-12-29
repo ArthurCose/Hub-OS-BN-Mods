@@ -34,7 +34,10 @@ function augment_init(augment)
     end
   end
 
+  owner:boost_augment("BattleNetwork.Bugs.EmotionFlicker", 1)
+
   augment.on_delete_func = function()
+    owner:boost_augment("BattleNetwork.Bugs.EmotionFlicker", -1)
     component:eject()
   end
 end

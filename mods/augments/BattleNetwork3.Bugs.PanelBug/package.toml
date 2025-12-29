@@ -6,6 +6,5 @@ description = "Changes all tiles depending on augment level."
 tags = ["BUG"]
 
 [dependencies]
-tile_states = [
-    "BattleNetwork6.TileStates.Poison"
-]
+augments = ["BattleNetwork.Bugs.EmotionFlicker"]
+tile_states = ["BattleNetwork6.TileStates.Poison"]

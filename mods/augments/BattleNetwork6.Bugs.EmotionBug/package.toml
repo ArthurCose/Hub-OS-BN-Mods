@@ -4,3 +4,6 @@ id = "BattleNetwork6.Bugs.EmotionBug"
 name = "EmotionBug"
 description = "Cycles player Emotions once per second, with chances depending on bug level."
 tags = ["BUG"]
+
+[dependencies]
+augments = ["BattleNetwork.Bugs.EmotionFlicker"]

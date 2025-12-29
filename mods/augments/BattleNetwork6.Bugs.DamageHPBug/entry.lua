@@ -9,8 +9,11 @@ function augment_init(augment)
   local player = augment:owner()
   local entity_id = player:id()
 
+  player:boost_augment("BattleNetwork.Bugs.EmotionFlicker", 1)
+
   -- handle removal
   augment.on_delete_func = function()
+    player:boost_augment("BattleNetwork.Bugs.EmotionFlicker", -1)
     tracking[entity_id].augment = nil
   end
 

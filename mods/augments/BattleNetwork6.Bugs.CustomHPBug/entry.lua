@@ -38,7 +38,11 @@ function augment_init(augment)
     player:set_health(player:health() - 1)
   end
 
+  player:boost_augment("BattleNetwork.Bugs.EmotionFlicker", 1)
+
   augment.on_delete_func = function()
+    player:boost_augment("BattleNetwork.Bugs.EmotionFlicker", -1)
+
     open_component:eject()
     close_component:eject()
     component:eject()

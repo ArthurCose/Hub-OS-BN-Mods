@@ -5,3 +5,6 @@ name = "Custom-"
 description = "Removes a card slot for each augment level."
 hand_size_boost = -1
 tags = ["BUG"]
+
+[dependencies]
+augments = ["BattleNetwork.Bugs.EmotionFlicker"]

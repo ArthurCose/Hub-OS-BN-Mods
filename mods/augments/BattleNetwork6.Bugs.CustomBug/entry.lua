@@ -31,8 +31,11 @@ function augment_init(augment)
     end
   end
 
+  player:boost_augment("BattleNetwork.Bugs.EmotionFlicker", 1)
+
   augment.on_delete_func = function()
     component:eject()
     player:boost_augment("BattleNetwork6.Bugs.Custom-", -boosts)
+    player:boost_augment("BattleNetwork.Bugs.EmotionFlicker", -1)
   end
 end

@@ -6,4 +6,7 @@ description = "Boosts BattleHPBug when the player is flinched or dragged."
 tags = ["BUG"]
 
 [dependencies]
-augments = ["BattleNetwork6.Bugs.BattleHPBug"]
+augments = [
+  "BattleNetwork6.Bugs.BattleHPBug",
+  "BattleNetwork.Bugs.EmotionFlicker",
+]

@@ -6,4 +6,4 @@ description = "Removes a card slot each turn after number of turns, depending on
 tags = ["BUG"]
 
 [dependencies]
-augments = ["BattleNetwork6.Bugs.Custom-"]
+augments = ["BattleNetwork6.Bugs.Custom-", "BattleNetwork.Bugs.EmotionFlicker"]

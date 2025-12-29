@@ -4,3 +4,6 @@ id = "BattleNetwork.Bugs.CustomDamageBug"
 name = "CustomDamageBug"
 description = "Upon opening cust, take 100 damage."
 tags = ["BUG"]
+
+[dependencies]
+augments = ["BattleNetwork.Bugs.EmotionFlicker"]

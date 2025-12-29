@@ -26,4 +26,10 @@ function augment_init(augment)
       owner:queue_default_player_movement(dest_tile)
     end
   end
+
+  owner:boost_augment("BattleNetwork.Bugs.EmotionFlicker", 1)
+
+  augment.on_delete_func = function()
+    owner:boost_augment("BattleNetwork.Bugs.EmotionFlicker", -1)
+  end
 end

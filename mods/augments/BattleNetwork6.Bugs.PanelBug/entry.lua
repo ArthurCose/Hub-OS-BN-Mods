@@ -24,7 +24,10 @@ function augment_init(augment)
     last_tile = current_tile
   end
 
+  player:boost_augment("BattleNetwork.Bugs.EmotionFlicker", 1)
+
   augment.on_delete_func = function()
+    player:boost_augment("BattleNetwork.Bugs.EmotionFlicker", -1)
     component:eject()
   end
 end

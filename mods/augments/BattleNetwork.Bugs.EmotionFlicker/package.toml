@@ -1,0 +1,5 @@
+[package]
+category = "augment"
+id = "BattleNetwork.Bugs.EmotionFlicker"
+name = "EmotionFlicker"
+description = "Flickers the emotion window to signal active bugs to the player"
