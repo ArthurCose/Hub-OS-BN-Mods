@@ -13,8 +13,8 @@ Efforts have been made to reduce the chances if a chip was drawn last turn."""
 colors = [ "blue", "green", "pink", "red", "yellow", "white" ]
 shape = [
   [ 0, 0, 0, 0, 0 ],
-  [ 0, 0, 0, 0, 0 ],
   [ 0, 0, 1, 0, 0 ],
+  [ 0, 1, 1, 1, 0 ],
   [ 0, 0, 1, 0, 0 ],
   [ 0, 0, 0, 0, 0 ]
 ]

@@ -21,3 +21,4 @@ tile_states = [
     "BattleNetwork4.TileStates.Dark",
     "BattleNetwork6.TileStates.Poison"
 ]
+augments = ["BattleNetwork.Bugs.CustomDamageBug"]

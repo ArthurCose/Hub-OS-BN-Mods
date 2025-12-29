@@ -22,9 +22,9 @@ function card_mutate(user, card_index)
 
 	if track_health == nil then
 		track_health = user:create_component(Lifetime.ActiveBattle)
-		track_health._stored_value = 0
-		track_health._is_update_value = true
-		track_health._field_list = Field.find_characters(function(ent)
+		local stored_value = 0
+		local is_update_value = true
+		local field_list = Field.find_characters(function(ent)
 			if Living.from(ent) == nil then return false end
 			if ent:current_tile() == nil then return false end
 			if user:is_team(ent:team()) then return false end
@@ -39,21 +39,21 @@ function card_mutate(user, card_index)
 
 			for _, tag in ipairs(card.tags) do
 				if tag == "FOE_HEALTH_EQUALS_POWER" then
-					for i = 1, #self._field_list, 1 do
-						local target = self._field_list[i]
+					for i = 1, #field_list, 1 do
+						local target = field_list[i]
 
 						-- Sanity check, targets can be deleted by other actions esp. in multibattles
 						-- Be willing to skip deleted targets or 0-hp targets that should be dying.
 						if not target or target:deleted() or target:will_erase_eof() or target:health() == 0 then goto continue end
 
-						if self._field_list[i]:health() > self._stored_value then
-							self._stored_value = self._field_list[i]:health()
+						if field_list[i]:health() > stored_value then
+							stored_value = field_list[i]:health()
 						end
 
 						::continue::
 					end
 
-					card.damage = math.min(500, self._stored_value)
+					card.damage = math.min(500, stored_value)
 
 					user:set_field_card(1, card)
 				end

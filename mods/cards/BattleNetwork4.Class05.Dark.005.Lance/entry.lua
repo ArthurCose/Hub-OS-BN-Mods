@@ -4,67 +4,10 @@ local lance_texture = bn_assets.load_texture("bn4_spell_lance.png")
 local lance_anim_path = bn_assets.fetch_animation_path("bn4_spell_lance.animation")
 local lance_audio = bn_assets.load_audio("sword.ogg")
 
-local track_health;
-
 function card_mutate(user, card_index)
-	if Player.from(user) ~= nil then
-		local deck = user:deck_cards()
-		local count = #deck
-		local removed = 0
-		local stop_early = false
-		while removed < 5 and not stop_early do
-			if removed >= count then stop_early = true end
-			if stop_early == true then return end
+	if Player.from(user) == nil then return end
 
-			local card_to_remove = math.random(1, count)
-			user:remove_deck_card(card_to_remove)
-
-			removed = removed + 1
-			count = #user:deck_cards()
-		end
-	end
-
-	if track_health == nil then
-		track_health = user:create_component(Lifetime.ActiveBattle)
-		track_health._stored_value = 0
-		track_health._is_update_value = true
-		track_health._field_list = Field.find_characters(function(ent)
-			if Living.from(ent) == nil then return false end
-			if ent:current_tile() == nil then return false end
-			if user:is_team(ent:team()) then return false end
-			return true
-		end)
-
-		track_health.on_update_func = function(self)
-			local owner = self:owner()
-			local card = owner:field_card(1)
-
-			if card == nil then return end
-
-			for _, tag in ipairs(card.tags) do
-				if tag == "HALF_FOE_HEALTH_EQUALS_POWER" then
-					for i = 1, #self._field_list, 1 do
-						local target = self._field_list[i]
-
-						-- Sanity check, targets can be deleted by other actions esp. in multibattles
-						-- Be willing to skip deleted targets or 0-hp targets that should be dying.
-						if not target or target:deleted() or target:will_erase_eof() or target:health() == 0 then goto continue end
-
-						local value = math.max(1, math.floor(target:health() / 2))
-						if value > self._stored_value then
-							self._stored_value = value
-						end
-
-						::continue::
-					end
-
-					card.damage = math.min(999, self._stored_value)
-
-					user:set_field_card(1, card)
-				end
-			end
-		end
-	end
+	user:boost_augment("BattleNetwork.Bugs.CustomDamageBug", 1)
 end
 
 local function spawn_spell(tile, props, user)
@@ -87,22 +30,22 @@ local function spawn_spell(tile, props, user)
 
 	spell:set_offset(40, 0)
 
-	spell._is_fade = false
-	spell._fade_timer = 0
-	spell._sprite_ref = spell:sprite()
-	spell._flicker_count = 7
+	local is_fade = false
+	local fade_timer = 0
+	local sprite_ref = spell:sprite()
+	local flicker_count = 7
 	spell:sprite():set_layer(-2)
 	spell.on_update_func = function(self)
-		if self._flicker_count == 0 then
+		if flicker_count == 0 then
 			self:erase()
 			return
 		end
 
-		if self._is_fade == true then
-			self._fade_timer = self._fade_timer + 1
-			if self._fade_timer % 4 == 0 then
-				self._sprite_ref:set_visible(not self._sprite_ref:visible())
-				self._flicker_count = self._flicker_count - 1
+		if is_fade == true then
+			fade_timer = fade_timer + 1
+			if fade_timer % 4 == 0 then
+				sprite_ref:set_visible(not sprite_ref:visible())
+				flicker_count = flicker_count - 1
 			end
 			return
 		end
@@ -111,7 +54,7 @@ local function spawn_spell(tile, props, user)
 		if offset.x > 0 then
 			self:set_offset(offset.x - 8, offset.y)
 		else
-			self._is_fade = true
+			is_fade = true
 		end
 
 		self:attack_tile()
@@ -142,5 +85,6 @@ function card_init(actor, props)
 
 		Resources.play_audio(lance_audio)
 	end
+
 	return action
 end

@@ -14,8 +14,9 @@ long_description = "CANNON DAMAGE IS EQUAL TO LOST HEALTH"
 limit = 0
 hit_flags = ["Flinch", "Flash"]
 card_class = "dark"
+dynamic_damage = true
 conceal = true
-tags = ["DAMAGE_EQUALS_POWER"]
+tags = ["EXE4", "BN4"]
 can_boost = false
 can_charge = false
 

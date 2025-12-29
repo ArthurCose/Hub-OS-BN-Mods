@@ -217,7 +217,7 @@ function augment_init(augment)
 				id = get_random_chip(is_wounded)
 			end
 
-			player:set_fixed_card(CardProperties.from_package(id), i)
+			player:set_fixed_card(CardProperties.from_package(id, " "), i)
 		end
 	end
 

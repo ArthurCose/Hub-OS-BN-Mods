@@ -52,12 +52,12 @@ function create_attack(user, props)
 		)
 	)
 
-	spell.slide_started = false
-	spell.should_erase = false
+	local slide_started = false
+	local should_erase = false
 
 	spell.on_update_func = function(self)
 		local tile = spell:current_tile()
-		if self.should_erase == true then
+		if should_erase == true then
 			local burst_tiles = {
 				tile:get_tile(Direction.join(direction, Direction.Up), 1),
 				tile:get_tile(direction, 1),
@@ -95,18 +95,18 @@ function create_attack(user, props)
 		tile:attack_entities(self)
 
 		if self:is_sliding() == false then
-			if tile:is_edge() and self.slide_started then
+			if tile:is_edge() and slide_started then
 				self:delete()
 			end
 
 			local dest = self:get_tile(direction, 1)
-			local ref = self
-			self:slide(dest, 2, function() ref.slide_started = true end)
+
+			self:slide(dest, 2, function() slide_started = true end)
 		end
 	end
 
 	spell.on_collision_func = function(self, other)
-		self.should_erase = true;
+		should_erase = true;
 	end
 
 	spell.on_delete_func = function(self)
@@ -118,5 +118,6 @@ function create_attack(user, props)
 	end
 
 	Resources.play_audio(AUDIO)
+
 	return spell
 end

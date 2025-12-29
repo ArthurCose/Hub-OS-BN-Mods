@@ -5,7 +5,7 @@ name = "DrkLance"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
 codes = [" "]
-damage = 0
+damage = 400
 time_freeze = false
 element = "none"
 description = "Lances through back line"
@@ -19,3 +19,4 @@ can_charge = false
 
 [dependencies]
 libraries = ["BattleNetwork.Assets"]
+augments = ["BattleNetwork.Bugs.CustomDamageBug"]
