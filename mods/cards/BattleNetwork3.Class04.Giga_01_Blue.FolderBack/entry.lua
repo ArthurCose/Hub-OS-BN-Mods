@@ -52,34 +52,41 @@ function card_init(actor, props)
 		TurnGauge.set_enabled(false)
 
 		for p = 1, #players, 1 do
-			local player_id = players[p]:id()
+			local player = players[p]
+			local player_id = player:id()
 			local tracker = decks[player_id]
-			if tracker ~= nil then
-				for l = 1, #players[p]:deck_cards(), 1 do
-					players[p]:remove_deck_card(l)
-				end
 
-				local shuffled = {}
-				for i, v in ipairs(tracker) do
-					if v.package_id == props.package_id then goto continue end
 
-					local pos = math.random(1, #shuffled + 1)
+			if tracker == nil then goto continue end
 
-					table.insert(shuffled, pos, v)
-
-					::continue::
-				end
-
-				for c = 1, #shuffled, 1 do
-					players[p]:insert_deck_card(c, shuffled[c])
-				end
-
-				local drain_aux = AuxProp.new()
-					:drain_health(math.min(user:health() - 1, 200))
-					:immediate()
-				user:add_aux_prop(drain_aux)
+			while #player:deck_cards() > 0 do
+				player:remove_deck_card(1)
+				print(#player:deck_cards())
 			end
+
+			local shuffled = {}
+			for c = 1, #tracker, 1 do
+				local card = tracker[c]
+				if card.package_id == props.package_id then goto continue end
+
+				local pos = math.random(1, #shuffled + 1)
+
+				table.insert(shuffled, pos, card)
+
+				::continue::
+			end
+
+			for c = 1, #shuffled, 1 do
+				players[p]:insert_deck_card(c, shuffled[c])
+			end
+
+			::continue::
 		end
+
+		local drain_aux = AuxProp.new()
+			:drain_health(math.min(user:health() - 1, 200))
+			:immediate()
+		user:add_aux_prop(drain_aux)
 
 		local timer = 127
 		step.on_update_func = function()
