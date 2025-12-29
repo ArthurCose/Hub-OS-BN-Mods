@@ -12,6 +12,7 @@ description = "10-shot vulcan cannon!"
 long_description = "A ten-round burst which hits the panel behind the target as well."
 limit = 1
 hit_flags = ["Flinch"]
+regular_allowed = false
 
 [defines]
 characters = []
