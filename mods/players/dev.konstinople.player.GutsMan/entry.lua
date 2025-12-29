@@ -319,7 +319,7 @@ function player_init(player)
     buster_animation:copy_from(player:animation())
     local buster_sprite = buster:sprite()
     buster_sprite:set_texture(player:texture())
-    buster_sprite:set_color_mode(ColorMode.Additive)
+    buster_sprite:set_color_mode(ColorMode.Add)
 
     action.on_execute_func = function()
       player:set_counterable(true)

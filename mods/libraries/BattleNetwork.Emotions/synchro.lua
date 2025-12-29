@@ -76,7 +76,7 @@ local color_entities = function(player, player_sprite, counterable_tracking)
 
     local sprite = character:sprite()
 
-    if sprite:color_mode() == ColorMode.Additive then
+    if sprite:color_mode() == ColorMode.Add then
       sprite:set_color(COUNTERABLE_COLOR)
     end
 

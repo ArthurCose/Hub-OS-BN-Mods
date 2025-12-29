@@ -139,8 +139,9 @@ Playback = {
 
 ---@enum ColorMode
 ColorMode = {
-  Additive = 0,
+  Add = 0,
   Multiply = 0,
+  Adopt = 0,
 }
 
 ---@enum SpriteShaderEffect
@@ -643,6 +644,8 @@ CustomTileState = {}
 
 --- A global sprite node, used to add sprites to the HUD.
 ---
+--- Hiding this node will also hide engine Hud elements.
+---
 --- ```lua
 --- local sprite = Hud:create_node()
 --- ```
@@ -934,7 +937,9 @@ function Entity:element() end
 ---@param element Element
 function Entity:set_element(element) end
 
---- Returns the facing [Direction](https://docs.hubos.dev/client/lua-api/field-api/direction) of the entity, used by attacks to decide which direction to move in.
+--- Returns the facing [Direction](https://docs.hubos.dev/client/lua-api/field-api/direction) of the entity.
+---
+--- Many mods use this to decide which direction to move in.
 ---@return Direction
 function Entity:facing() end
 
@@ -944,8 +949,14 @@ function Entity:facing() end
 ---@return Direction
 function Entity:facing_away() end
 
---- Sets the facing [Direction](https://docs.hubos.dev/client/lua-api/field-api/direction) of the entity, used by attacks to decide which direction to move in.
+--- Returns the facing [Direction](https://docs.hubos.dev/client/lua-api/field-api/direction) of the entity.
+---
+--- Used by the engine to resolve how to display the visual based on perspective.
+--- This should be set to either `Direction.Left` or `Direction.Right` generally.
+---
+--- Many mods use this to decide which direction to move in.
 ---@param direction Direction
+---@return Direction
 function Entity:set_facing(direction) end
 
 --- Returns the [Team](https://docs.hubos.dev/client/lua-api/entity-api/entity#entityset_teamteam) of the entity
@@ -1471,6 +1482,14 @@ function Entity:apply_status(hit_flag, duration) end
 --- Throws if the Entity doesn't pass [Living.from()](https://docs.hubos.dev/client/lua-api/entity-api/living)
 ---@param hit_flags Hit | number
 function Entity:remove_status(hit_flags) end
+
+--- Returns a number, representing the hit flags the entity is currently immune to.
+---
+--- This won't cover checks inside of statuses, such as a the `CHARACTER_HIT` animation required by `Hit.Flinch`
+---
+--- Throws if the Entity doesn't pass [Living.from()](https://docs.hubos.dev/client/lua-api/entity-api/living)
+---@return number
+function Entity:status_immunities() end
 
 --- - `hit_flag` a single hit flag, see [HitProps](https://docs.hubos.dev/client/lua-api/attack-api/hit-props)
 ---
@@ -2839,10 +2858,11 @@ function Sprite:set_color(color) end
 function Sprite:color_mode() end
 
 --- - `color_mode`
----   - `ColorMode.Additive` each pixel will be added by the sprite's color, alpha will be multiplied.
+---   - `ColorMode.Add` each pixel will be added by the sprite's color, alpha will be multiplied.
 ---   - `ColorMode.Multiply` each pixel will be multiplied by the sprite's color.
+---   - `ColorMode.Adopt` the RGB components of the sprite's color will be directly used, alpha will be multiplied.
 ---
---- The color mode will be reset to `ColorMode.Additive` at the start of the next frame for root sprites.
+--- The color mode will be reset to `ColorMode.Add` at the start of the next frame for root sprites.
 ---@param color_mode ColorMode
 function Sprite:set_color_mode(color_mode) end
 
@@ -3165,6 +3185,10 @@ function Tile:facing() end
 ---@param direction Direction
 function Tile:set_facing(direction) end
 
+--- Returns a [Direction](https://docs.hubos.dev/client/lua-api/field-api/direction)
+---@return Direction
+function Tile:original_facing() end
+
 --- - `highlight`
 ---   - `Highlight.None`
 ---   - `Highlight.Flash`
@@ -3442,6 +3466,20 @@ function Encounter:set_turn_limit(limit) end
 ---@param chain_limit TimeFreezeChainLimit
 function Encounter:set_time_freeze_chain_limit(chain_limit) end
 
+--- How many entities can be owned by the team before old entities start deleting, 2 by default.
+---@param limit number
+function Encounter:set_team_owner_limit(limit) end
+
+--- How many entities can be owned by an entity before old entities start deleting, 1 by default.
+---@param limit number
+function Encounter:set_entity_owner_limit(limit) end
+
+--- Decides whether the entity owner limit is shared between the team or is tied directly to the owner, true by default.
+---
+--- If the entity owner limit is 1, there can only be one entity owned by any member of the team when this is true, otherwise there can be one for each unique owner.
+---@param share? boolean
+function Encounter:set_entities_share_ownership(share) end
+
 --- - `enable`: defaults to true.
 --- - `player_index`: starts at 0, if unset applies to all players.
 ---
@@ -3678,6 +3716,14 @@ function Hit.duration_for(hit_flag, level) end
 ---@param hit_flag Hit
 ---@return number
 function Hit.mutual_exclusions_for(hit_flag) end
+
+--- Returns a number, representing all of the hit flags of statuses that have `blocks_actions` set to true.
+---@return number
+function Hit.action_blockers() end
+
+--- Returns a number, representing all of the hit flags of statuses that have `blocks_mobility` set to true.
+---@return number
+function Hit.mobility_blockers() end
 
 --- Returns true if `element_a` is weak to `element_b`.
 ---@param element_a Element
@@ -3923,6 +3969,12 @@ function AuxProp:require_element(element) end
 --- The AuxProp will check `entity:ignoring_negative_tile_effects() == false`.
 ---@return AuxProp
 function AuxProp:require_negative_tile_interaction() end
+
+--- - Body Priority
+---
+--- Applies when a new `entity:context()` has started.
+---@return AuxProp
+function AuxProp:require_context_start() end
 
 --- - Body Priority
 --- - `action_types`

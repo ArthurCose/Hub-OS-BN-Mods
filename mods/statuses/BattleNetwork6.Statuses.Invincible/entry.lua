@@ -24,7 +24,7 @@ function status_init(status)
     local progress = math.abs(time % 32 - 16) / 16
     time = time + 1
 
-    sprite:set_color_mode(ColorMode.Additive)
+    sprite:set_color_mode(ColorMode.Add)
     sprite:set_color(Color.mix(lime, black, progress))
   end
 

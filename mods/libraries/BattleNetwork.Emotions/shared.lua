@@ -7,7 +7,7 @@ end
 
 ---@param sprite Sprite
 function shared.is_sprite_color_unmodified(sprite)
-  return sprite:color_mode() == ColorMode.Additive and is_black(sprite:color())
+  return sprite:color_mode() == ColorMode.Add and is_black(sprite:color())
 end
 
 ---@param player Entity
