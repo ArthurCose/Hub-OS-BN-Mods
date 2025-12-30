@@ -5,7 +5,7 @@
 -- 2 transparent
 -- 2 solid
 -- 2 black
--- - every other loop restarts here
+-- - randomly restarts here?
 -- 2 solid
 -- 2 black
 -- 2 solid
@@ -81,9 +81,8 @@ function augment_init(augment)
     node:set_color(last_color)
 
 
-    -- one loop is 44 frames
-    -- we reset 32 frames into the second loop to break up the pattern identically to bn6
-    if time == 76 then
+    -- we restart the animation 32 frames in randomly
+    if time % 44 == 32 and math.random(5) == 1 then
       time = 0
     end
   end
