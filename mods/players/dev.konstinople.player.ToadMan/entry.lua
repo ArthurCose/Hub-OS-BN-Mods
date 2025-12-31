@@ -250,12 +250,12 @@ local function find_frog_smack_dest_tile(player, original_tile, find_fn)
       end
 
       local dest_tile = tile:get_tile(player:facing_away(), 1)
-      if dest_tile and not dest_tile:is_reserved(reservation_exclude_list) and (dest_tile:is_walkable() or player:ignore_hole_tiles()) then
+      if dest_tile and not dest_tile:is_reserved(reservation_exclude_list) and (dest_tile:is_walkable() or player:ignoring_hole_tiles()) then
         return dest_tile, player:facing()
       end
 
       dest_tile = tile:get_tile(player:facing(), 1)
-      if dest_tile and not dest_tile:is_reserved(reservation_exclude_list) and (dest_tile:is_walkable() or player:ignore_hole_tiles()) then
+      if dest_tile and not dest_tile:is_reserved(reservation_exclude_list) and (dest_tile:is_walkable() or player:ignoring_hole_tiles()) then
         return dest_tile, player:facing_away()
       end
 

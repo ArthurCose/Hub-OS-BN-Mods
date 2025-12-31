@@ -139,7 +139,7 @@ function card_init(user, props)
 
   ---@param tile Tile
   local can_move_to = function(tile)
-    return (tile:is_walkable() or user:ignore_hole_tiles()) and not tile:is_reserved() and not tile:is_edge()
+    return (tile:is_walkable() or user:ignoring_hole_tiles()) and not tile:is_reserved() and not tile:is_edge()
   end
 
   action.on_execute_func = function()

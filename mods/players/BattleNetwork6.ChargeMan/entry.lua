@@ -141,7 +141,7 @@ function player_init(player)
 
     ---@param tile Tile
     local can_move_to = function(tile)
-      return (tile:is_walkable() or player:ignore_hole_tiles()) and not tile:is_edge()
+      return (tile:is_walkable() or player:ignoring_hole_tiles()) and not tile:is_edge()
     end
 
     action.can_move_to_func = function(tile)
@@ -162,7 +162,7 @@ function player_init(player)
       attack_spell:set_movement_offset(player_offset.x, player_offset.y)
       attack_spell:attack_tile()
 
-      if not player:ignore_hole_tiles() and not current_tile:is_walkable() and not current_tile:is_edge() then
+      if not player:ignoring_hole_tiles() and not current_tile:is_walkable() and not current_tile:is_edge() then
         attack_step:complete_step()
         -- signal to the cars
         fell = true
