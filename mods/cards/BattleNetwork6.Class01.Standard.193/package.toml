@@ -1,7 +1,8 @@
 [package]
 category = "card"
 id = "BattleNetwork6.Class01.Standard.193"
-name = "Uninstall"
+name = "Uninstll"
+long_name = "Uninstall"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
 codes = ["G", "L", "R"]
