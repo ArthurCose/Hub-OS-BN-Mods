@@ -1,0 +1,8 @@
+[package]
+category = "library"
+id = "BattleNetwork4.TournamentIntro"
+name = "Tournament Intro"
+description = ""
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
