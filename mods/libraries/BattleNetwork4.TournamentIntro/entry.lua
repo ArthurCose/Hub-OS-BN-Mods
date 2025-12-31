@@ -272,33 +272,42 @@ local function create_vertical_grid_lines_step(action, grid_lines)
   end
 end
 
-local intro_func = function(c)
-  local action = Action.new(c)
+local intro_func = function(character)
+  local action = Action.new(character)
   action:set_lockout(ActionLockout.new_sequence())
 
   local background = create_background()
 
   ---@type Entity[]
-  local ghosts = {}
-
+  local grid_lines = {}
   ---@type Entity[]
-  local removed_characters = Field.find_characters(function(c)
-    local tile = c:current_tile()
-    tile:remove_entity(c)
+  local ghosts = {}
+  ---@type Entity[]
+  local removed_entities = {}
 
-    local ghost = create_ghost(c, GREEN)
-    ghosts[#ghosts + 1] = ghost
+  -- track removed entities and prevent the background from being removed
+  local removed_entity_map = { [background:id()] = true }
 
-    Field.spawn(ghost, tile)
+  local ghost_component = character:create_component(Lifetime.Scene)
+  ghost_component.on_update_func = function()
+    Field.find_entities(function(e)
+      if not removed_entity_map[e:id()] then
+        local tile = e:current_tile()
+        tile:remove_entity(e)
 
-    return true
-  end)
+        removed_entities[#removed_entities + 1] = e
+        removed_entity_map[e:id()] = true
+      end
 
-  local function return_characters()
-    -- return characters to the field
-    for _, c in ipairs(removed_characters) do
-      if not c:deleted() then
-        c:current_tile():add_entity(c)
+      return false
+    end)
+  end
+
+  local function return_entities()
+    -- return entities to the field
+    for _, e in ipairs(removed_entities) do
+      if not e:deleted() then
+        e:current_tile():add_entity(e)
       end
     end
 
@@ -308,44 +317,53 @@ local intro_func = function(c)
     end
   end
 
-  ---@type Entity[]
-  local grid_lines = {}
+  action.on_execute_func = function()
+    ghost_component:eject()
 
-  for y = 1, Field.height() - 1 do
-    local tile = Field.tile_at(0, 0)
+    for _, e in ipairs(removed_entities) do
+      local ghost = create_ghost(e, GREEN)
+      ghosts[#ghosts + 1] = ghost
 
-    if tile then
-      local h_line = Artifact.new()
-      h_line:set_facing(Direction.Right)
-      local sprite = h_line:sprite()
-      sprite:set_texture(WHITE_TEXTURE)
-      sprite:set_width(Field.width() * Tile:width())
-      sprite:set_offset(0, Tile:height() * y - Tile:height() // 2)
-
-      h_line:create_component(Lifetime.Scene).on_update_func = function()
-        sprite:set_color(GREEN)
-        sprite:set_color_mode(ColorMode.Multiply)
-      end
-
-      Field.spawn(h_line, tile)
-      grid_lines[#grid_lines + 1] = h_line
+      Field.spawn(ghost, e:current_tile())
     end
+
+    for y = 1, Field.height() - 1 do
+      local tile = Field.tile_at(0, 0)
+
+      if tile then
+        local h_line = Artifact.new()
+        h_line:set_facing(Direction.Right)
+        local sprite = h_line:sprite()
+        sprite:set_texture(WHITE_TEXTURE)
+        sprite:set_width(Field.width() * Tile:width())
+        sprite:set_offset(0, Tile:height() * y - Tile:height() // 2)
+
+        h_line:create_component(Lifetime.Scene).on_update_func = function()
+          sprite:set_color(GREEN)
+          sprite:set_color_mode(ColorMode.Multiply)
+        end
+
+        Field.spawn(h_line, tile)
+        grid_lines[#grid_lines + 1] = h_line
+      end
+    end
+
+    -- steps
+    create_delay_step(action, 16)
+    create_horizontal_lines_step(action)
+    create_vertical_grid_lines_step(action, grid_lines)
+    create_delay_step(action, 12, function()
+      return_entities()
+      background:delete()
+
+      Resources.play_audio(FINISH_SFX)
+    end)
+    create_delay_step(action, 16)
   end
 
-  -- steps
-  create_delay_step(action, 16)
-  create_horizontal_lines_step(action)
-  create_vertical_grid_lines_step(action, grid_lines)
-  create_delay_step(action, 12, function()
-    return_characters()
-    background:delete()
-
-    Resources.play_audio(FINISH_SFX)
-  end)
-  create_delay_step(action, 16)
-
   action.on_action_end_func = function()
-    return_characters()
+    ghost_component:eject()
+    return_entities()
 
     for _, line in ipairs(grid_lines) do
       line:delete()
@@ -375,8 +393,6 @@ function Lib.init()
       return false
     end)
   end
-
-
 
   Field.spawn(artifact, 0, 0)
 end
