@@ -969,6 +969,7 @@ local function create_triple_slash_factory(entity)
       end
 
       entity:set_counterable(false)
+      entity:set_facing(entity:current_tile():facing())
     end
 
     action.can_move_to_func = function(tile)
@@ -1055,6 +1056,7 @@ local function create_jab_factory(entity)
       end
 
       entity:set_counterable(false)
+      entity:set_facing(entity:current_tile():facing())
     end
 
     action.can_move_to_func = function(tile)
