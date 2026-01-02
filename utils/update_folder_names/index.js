@@ -31,7 +31,7 @@ for (const categoryFolder of fs.readdirSync(modsFolder)) {
         path.join(categoryPath, encodeURIComponent(packageId))
       );
     } catch (err) {
-      console.err(`Failed to read package.toml in ${modPath}: \n`, err);
+      console.error(`Failed to read package.toml in ${modPath}: \n`, err);
     }
   }
 }
