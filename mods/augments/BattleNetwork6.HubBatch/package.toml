@@ -1,0 +1,11 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.HubBatch"
+name = "HubBatch"
+description = ""
+priority = true
+colors = ["white"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.shield"]
+augments = ["HubOS.Augments.IgnoreNegativeTileEffects", "HubOS.Augments.IgnoreHoles"]

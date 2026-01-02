@@ -1,0 +1,32 @@
+animation state="SPAWN_FIRE"
+frame duration="0.1" x="0" y="0" w="24" h="27" originx="8" originy="12"
+frame duration="0.1" x="24" y="0" w="24" h="27" originx="8" originy="12"
+
+animation state="ATTACK_FIRE"
+frame duration="0.1" x="48" y="0" w="24" h="27" originx="8" originy="12"
+frame duration="0.1" x="72" y="0" w="24" h="27" originx="7" originy="12"
+
+animation state="SPAWN_ICE"
+frame duration="0.1" x="0" y="27" w="24" h="27" originx="8" originy="12"
+frame duration="0.1" x="24" y="27" w="24" h="27" originx="8" originy="12"
+
+animation state="ATTACK_ICE"
+frame duration="0.1" x="48" y="27" w="24" h="27" originx="8" originy="12"
+frame duration="0.1" x="72" y="27" w="24" h="27" originx="7" originy="12"
+
+animation state="SPAWN_WOOD"
+frame duration="0.1" x="0" y="54" w="24" h="27" originx="8" originy="12"
+frame duration="0.1" x="24" y="54" w="24" h="27" originx="8" originy="12"
+
+animation state="ATTACK_WOOD"
+frame duration="0.1" x="48" y="54" w="24" h="27" originx="8" originy="12"
+frame duration="0.1" x="72" y="54" w="24" h="27" originx="7" originy="12"
+
+animation state="SPAWN_ELEC"
+frame duration="0.1" x="0" y="81" w="24" h="27" originx="8" originy="12"
+frame duration="0.1" x="24" y="81" w="24" h="27" originx="8" originy="12"
+
+animation state="ATTACK_ELEC"
+frame duration="0.1" x="48" y="81" w="24" h="27" originx="8" originy="12"
+frame duration="0.1" x="72" y="81" w="24" h="27" originx="7" originy="12"
+

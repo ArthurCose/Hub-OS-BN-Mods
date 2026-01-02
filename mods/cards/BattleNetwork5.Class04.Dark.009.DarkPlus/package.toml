@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class04.Dark.009.DarkPlus"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "DarkPlus"
+time_freeze = true
+description = "PAIN BECOMES PLEASURE"
+long_description = "Use as a normal chip to increase the multiplier of the *next* card relative to the health you are missing at time of use. Missing HP is converted into a percent and turned into the boost. At 1 HP, boost is 2x."
+codes = ["*"]
+element = "plus"
+can_boost = false
+limit = 1
+card_class = "dark"
+tags = [
+    "BN5",
+    "EXE5"
+]
+can_charge = false
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+augments = ["BattleNetwork6.Bugs.WarpStep"]

@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class03.Giga.002-RedSun.HolyDrem"
+past_ids = ["iSsjGohan.Card.giga.01.HolyDream"]
+name = "HolyDrem"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["H"]
+damage = 50
+time_freeze = true
+element = "none"
+description = "Fire Holy orbs in straight line! Holy panels = more orbs!"
+long_description = "Fires an orb of holy light straight down the row the user is standing.\nAbsorbs all holy panels on the field, spawning one more orb per panel."
+limit = 1
+card_class = "giga"
+hit_flags = ["Flinch", "Flash"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+tile_states = ["BattleNetwork6.TileStates.Holy"]

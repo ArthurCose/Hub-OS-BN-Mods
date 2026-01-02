@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class01.Standard.170.AntiElec"
+name = "AntiElec"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["A", "N", "Y", "*"]
+damage = 200
+time_freeze = true
+element = "elec"
+description = "Trap enmy and attk with electricity!"
+can_boost = true
+limit = 2
+hit_flags = ["Flinch"]
+conceal = true
+
+# this section is optional
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

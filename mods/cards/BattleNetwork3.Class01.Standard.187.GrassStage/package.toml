@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork3.Class01.Standard.187.GrassStage"
+name = "GrassStge"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["G", "W", "T", "S"]
+time_freeze = true
+element = "none"
+description = "All panl become grass!"
+card_class = "standard"
+limit = 3
+can_boost = false
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+tile_states = ["BattleNetwork6.TileStates.Grass"]

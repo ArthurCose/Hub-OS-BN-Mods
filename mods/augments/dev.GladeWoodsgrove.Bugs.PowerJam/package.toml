@@ -1,0 +1,9 @@
+[package]
+category = "augment"
+id = "dev.GladeWoodsgrove.Bugs.PowerJam"
+name = "PwrAtkJam"
+description = "Jams the charge shot of the buster rather than the peashot."
+tags = ["BUG"]
+
+[dependencies]
+augments = ["BattleNetwork.Bugs.EmotionFlicker"]

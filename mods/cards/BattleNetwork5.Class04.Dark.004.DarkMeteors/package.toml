@@ -1,0 +1,24 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class04.Dark.004.DarkMeteors"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "DarkMetr"
+description = "METEOR SHOWER ON ENMY"
+long_description = "Launches an amount of meteors based on your HP percentage. Meteors track enemies, break panels, and cause Flinching and Flashing. Launches 12 meteors at 66%~100% HP, 14 meteors at 26~65% HP, and 16 meteors at critical HP (25% or less)."
+codes = ["F"]
+element = "fire"
+hit_flags = ["Flash", "Flinch"]
+damage = 100
+limit = 1
+card_class = "dark"
+tags = [
+    "BN5",
+    "EXE5"
+]
+can_boost = false
+can_charge = false
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.CustomHPBug"]
+libraries = ["BattleNetwork.Assets"]

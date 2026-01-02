@@ -1,0 +1,8 @@
+animation state="SPAWN"
+frame duration="3f" x="0" y="0" w="26" h="24" originx="12" originy="12"
+frame duration="3f" x="26" y="0" w="26" h="24" originx="12" originy="12"
+
+animation state="MOVE"
+frame duration="3f" x="0" y="24" w="26" h="24" originx="12" originy="12"
+frame duration="3f" x="26" y="24" w="26" h="24" originx="12" originy="12"
+

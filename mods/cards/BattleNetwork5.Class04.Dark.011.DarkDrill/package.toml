@@ -1,0 +1,25 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class04.Dark.011.DarkDrill"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "DarkDril"
+time_freeze = false
+description = "LETHAL DRILL OF DARKNESS"
+long_description = "Attacks the 2 tiles ahead with up to 5 hits. Pierces guards and pushes."
+codes = ["D"]
+element = "break"
+hit_flags = ["PierceGuard", "Drag"]
+damage = 100
+limit = 1
+card_class = "dark"
+tags = [
+    "BN5",
+    "EXE5"
+]
+can_boost = false
+can_charge = false
+
+[dependencies]
+augments = ["BattleNetwork4.Bugs.PanelBug"]
+cards = ["BattleNetwork6.Class01.Standard.052.DrillArm"]

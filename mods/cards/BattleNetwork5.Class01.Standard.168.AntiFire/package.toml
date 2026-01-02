@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class01.Standard.168.AntiFire"
+name = "AntiFire"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["E", "K", "T", "*"]
+damage = 200
+time_freeze = true
+element = "fire"
+description = "Trap enmy and attk with fire!"
+can_boost = true
+limit = 2
+hit_flags = ["Flinch"]
+conceal = true
+
+# this section is optional
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

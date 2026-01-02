@@ -1,0 +1,16 @@
+[package]
+category = "encounter"
+id = "BattleNetwork6.Encounter.FighterPlane"
+past_ids = ["Dawn.Viruses.FighterPlane"]
+name = "FighterPlane"
+description = "Eyes to the skies!"
+preview_texture_path = "preview.png"
+
+[[defines.characters]]
+id = "BattleNetwork6.Enemy.FighterPlane"
+path = "virus"
+
+[dependencies]
+characters = [ ]
+libraries = [ ]
+cards = [ ]

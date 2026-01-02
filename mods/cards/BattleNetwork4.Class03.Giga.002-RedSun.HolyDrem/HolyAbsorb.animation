@@ -1,0 +1,7 @@
+imagePath="C:/Users/seven/OneDrive/Documents/My Games/Hub OS/mods/libraries/BattleNetwork.Assets/Animations & Images/panelgrab.png"
+animation state="GRAB"
+frame x="1" y="1" w="46" h="28" originx="23" originy="16" duration="4f"
+frame x="48" y="1" w="48" h="29" originx="24" originy="17" duration="3f"
+frame x="97" y="1" w="52" h="31" originx="26" originy="19" duration="3f"
+frame x="150" y="1" w="40" h="24" originx="20" originy="12" duration="3f"
+frame x="0" y="50" w="40" h="24" originx="20" originy="12" duration="3f"

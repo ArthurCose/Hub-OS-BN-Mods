@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class04.Dark.010.Lance"
+name = "DrkLance"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["W"]
+damage = 300
+time_freeze = false
+element = "wood"
+description = "ATK ENMY FROM BEHIND"
+long_description = "Strike the far column of the enemy field."
+card_class = "dark"
+limit = 1
+conceal = true
+hit_flags = ["Flinch", "Drag"]
+tags = ["EXE5", "BN5"]
+can_boost = false
+can_charge = false
+
+[dependencies]
+augments = ["BattleNetwork.Bugs.CustomDamageBug"]
+libraries = ["BattleNetwork.Assets"]

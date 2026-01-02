@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class03.Giga.004.Falzar.HubBatch"
+name = "HubBatch"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["J"]
+damage = 0
+time_freeze = true
+element = "null"
+description = "Blend Hub DNA Data w/MegaMan"
+can_boost = false
+limit = 1
+card_class = "giga"
+
+[dependencies]
+augments = ["BattleNetwork6.HubBatch"]

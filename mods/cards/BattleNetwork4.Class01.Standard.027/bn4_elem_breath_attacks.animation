@@ -1,0 +1,41 @@
+animation state="SPAWN_FIRE"
+frame duration="3f" x="27" y="117" w="27" h="26" originx="14" originy="24" flipx=1
+frame duration="3f" x="0" y="117" w="27" h="28" originx="14" originy="25" flipx=1
+frame duration="3f" x="122" y="85" w="28" h="29" originx="14" originy="26" flipx=1
+
+animation state="DESPAWN_FIRE"
+frame duration="3f" x="40" y="48" w="38" h="35" originx="17" originy="27" flipx=1
+frame duration="3f" x="113" y="0" w="37" h="39" originx="17" originy="31" flipx=1
+frame duration="3f" x="86" y="0" w="27" h="44" originx="17" originy="35" flipx=1
+frame duration="3f" x="32" y="0" w="20" h="46" originx="17" originy="35" flipx=1
+
+animation state="SPAWN_ICE"
+frame duration="3f" x="0" y="170" w="29" h="16" originx="15" originy="12" flipx=1
+frame duration="3f" x="59" y="85" w="31" h="30" originx="16" originy="25" flipx=1
+
+animation state="LOOP_ICE"
+frame duration="3f" x="0" y="0" w="32" h="48" originx="16" originy="43" flipx=1
+
+animation state="DESPAWN_ICE"
+frame duration="3f" x="52" y="0" w="34" h="46" originx="16" originy="43" flipx=1
+frame duration="3f" x="0" y="48" w="40" h="37" originx="18" originy="27" flipx=1
+frame duration="3f" x="36" y="145" w="38" h="23" originx="11" originy="18" flipx=1
+
+animation state="DEFAULT_WOOD"
+frame duration="3f" x="54" y="117" w="38" h="26" originx="20" originy="16" flipx=1
+frame duration="3f" x="74" y="145" w="34" h="22" originx="16" originy="14" flipx=1 
+frame duration="3f" x="0" y="145" w="36" h="25" originx="19" originy="15" flipx=1
+frame duration="3f" x="92" y="117" w="38" h="26" originx="19" originy="16" flipx=1
+frame duration="3f" x="108" y="145" w="34" h="22" originx="18" originy="14" flipx=1
+
+animation state="SPAWN_ELEC"
+frame duration="3f" x="78" y="48" w="30" h="32" originx="15" originy="23" flipx=1
+frame duration="3f" x="108" y="48" w="29" h="32" originx="15" originy="23" flipx=1
+frame duration="3f" x="90" y="85" w="32" h="30" originx="15" originy="23" flipx=1
+frame duration="3f" x="0" y="85" w="30" h="32" originx="15" originy="23" flipx=1
+frame duration="3f" x="30" y="85" w="29" h="32" originx="15" originy="23" flipx=1
+
+animation state="DESPAWN_ELEC"
+frame duration="3f" x="130" y="117" w="24" h="26" originx="13" originy="22" flipx=1
+frame duration="3f" x="142" y="145" w="15" h="20" originx="7" originy="18" flipx=1
+

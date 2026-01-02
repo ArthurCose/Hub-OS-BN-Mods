@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.137.CircGun"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "CircGun"
+time_freeze = true
+description = "Stop sght w/Button and attck"
+long_description = "Circles the field so long as enemy tiles are in that column. Press your Use Chip button to stop the cursor and fire. Automatically fires after six seconds. Attacks the panel it is stopped on and three additional panels. Does not deal damage to targets who are floating on Broken panels."
+codes = ["P", "T", "V"]
+element = "cursor"
+hit_flags = ["Flash", "Flinch"]
+damage = 150
+limit = 3
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

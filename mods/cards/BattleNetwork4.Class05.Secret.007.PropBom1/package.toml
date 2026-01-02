@@ -1,0 +1,21 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class05.Secret.007.PropBom1"
+name = "PropBom1"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["E","G","P","*"]
+damage = 120
+time_freeze = false
+element = "none"
+description = "Slow moving bomb explodes if hits back edge!"
+long_description = """
+Fire a slow moving bomb forwards! If it hits the back edge explode the back 2 columns of the enemy field!
+Does nothing if it makes contact with an enemy!
+"""
+limit = 3
+card_class = "standard"
+hit_flags = ["Flinch", "Flash"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"] 

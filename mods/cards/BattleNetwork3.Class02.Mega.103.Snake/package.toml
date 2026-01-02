@@ -1,0 +1,18 @@
+[package]
+category = "card"
+id = "BattleNetwork3.Class02.Mega.103.Snake"
+name = "Snake"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["R"]
+damage = 40
+time_freeze = true
+element = "wood"
+description = "Call out snakes from hole"
+long_description = "Summon a Snake from every unoccupied empty or broken tile on your side of the field."
+card_class = "standard"
+limit = 1
+hit_flags = ["Flinch", "Flash"]
+
+[dependencies]
+cards = ["BattleNetwork6.Class01.Standard.103.Snake"]

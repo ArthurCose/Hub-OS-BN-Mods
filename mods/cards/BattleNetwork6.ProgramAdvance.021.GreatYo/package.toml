@@ -1,0 +1,33 @@
+[package]
+category = "card"
+id = "BattleNetwork6.ProgramAdvance.021.GreatYo"
+name = "GreatYo"
+icon_texture_path = "icon.png"
+codes = [ "*" ]
+damage = 100
+time_freeze = false
+element = "sword"
+description = "Moves 3sq vertical"
+hit_flags = ["Flinch"]
+long_description = "Fire 3 bladed YoYos which hit six times, three tiles ahead!"
+limit = 0
+card_class = "recipe"
+tags = [
+    "PROGRAM_ADVANCE",
+    "BN6",
+    "EXE6"
+]
+
+recipes = [
+  { id = "BattleNetwork6.Class01.Standard.018", codes = ["L", "M", "N"] }
+]
+
+[defines]
+characters = []
+
+[dependencies]
+characters = []
+libraries = ["BattleNetwork.Assets"]
+cards = [
+    "BattleNetwork6.Class01.Standard.018"
+]

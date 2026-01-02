@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class01.Standard.029"
+past_ids = ["iSsjGohan.Card.stnd.05.ElecShok"]
+name = "ElecShok"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["J","L","S","*"]
+damage = 80
+time_freeze = false
+element = "Elec"
+hit_flags = ["Paralyze", "Flash"]
+description = "Electric attack! T formation leaves cracked panels!"
+long_description = "Attack with electricity! T formation and leaves cracked panels behind!"
+limit = 3
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+

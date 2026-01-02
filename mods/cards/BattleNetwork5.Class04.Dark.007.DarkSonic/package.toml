@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class04.Dark.007.DarkSonic"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "DrkSonic"
+time_freeze = true
+description = "PARALYZE THE ENEMY"
+long_description = "Spawns a dark Trumpy which inflicts Paralysis."
+codes = ["E"]
+element = "summon"
+can_boost = false
+limit = 1
+card_class = "dark"
+tags = [
+    "BN5",
+    "EXE5"
+]
+can_charge = false
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+augments = ["BattleNetwork6.Bugs.WarpStep"]

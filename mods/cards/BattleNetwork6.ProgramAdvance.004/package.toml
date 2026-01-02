@@ -1,0 +1,30 @@
+[package]
+category = "card"
+id = "BattleNetwork6.ProgramAdvance.004"
+name = "WideBrn1"
+icon_texture_path = "icon.png"
+codes = [ "*" ]
+damage = 300
+time_freeze = false
+element = "fire"
+description = "An expnd 3 row fire attk"
+hit_flags = [ "Flinch", "Flash" ]
+limit = 0
+card_class = "recipe"
+tags = [
+    "PROGRAM_ADVANCE",
+    "BN6",
+    "EXE6"
+]
+
+recipes = [
+  { id = "BattleNetwork6.Class01.Standard.019", codes = ["F", "G", "H"] }
+]
+
+[dependencies]
+cards = [
+  "BattleNetwork6.Class01.Standard.019"
+]
+libraries = [
+  "BattleNetwork.Assets"
+]

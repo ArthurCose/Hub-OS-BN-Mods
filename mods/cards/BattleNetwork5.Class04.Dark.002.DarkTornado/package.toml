@@ -1,0 +1,21 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class04.Dark.002.DarkTornado"
+name = "DarkTorn"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["T"]
+damage = 50
+time_freeze = false
+element = "wind"
+description = "TORNADO EXPANDS WHEN WEAK"
+long_description = "Spawns an 8-hit Tornado that inflicts Custom HP Bug on the user as well as targets hit. At 75% HP, spawns a second Tornado 1 tile ahead. At 50% HP, spawns two additional Tornadoes above and below the one 2 tiles ahead. At 25% HP, spawns one final Tornado 3 tiles ahead."
+limit = 1
+hit_flags = ["Flinch"]
+card_class = "dark"
+can_boost = false
+can_charge = false
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.CustomHPBug"]
+cards = ["BattleNetwork6.Class01.Standard.053"]

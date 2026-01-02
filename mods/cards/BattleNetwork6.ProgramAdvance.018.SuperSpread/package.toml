@@ -1,0 +1,28 @@
+[package]
+category = "card"
+id = "BattleNetwork6.ProgramAdvance.018.SuperSpread"
+name = "SuprSpr"
+icon_texture_path = "icon.png"
+codes = [ "*" ]
+damage = 150
+time_freeze = false
+element = "aqua"
+description = "Fire 3 consec. WideShts"
+hit_flags = ["Flinch"]
+long_description = "Hits panels above and below, travels, and stops on contact."
+limit = 0
+card_class = "recipe"
+tags = [
+    "PROGRAM_ADVANCE",
+    "BN6",
+    "EXE6"
+]
+
+recipes = [
+  { id = "BattleNetwork6.Class01.Standard.022.WideShot", codes = ["P", "Q", "R"] }
+]
+
+[dependencies]
+cards = [
+    "BattleNetwork6.Class01.Standard.022.WideShot"
+]

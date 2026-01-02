@@ -1,0 +1,25 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class04.Dark.006.DarkRecovery"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "DrkRecov"
+description = "BECOME ALMOST INVINCBLE"
+long_description = "Restores 1,000 HP to your navi, but bugs them with HP Bug during active battle and reduces their maximum health by 1/3."
+codes = ["H"]
+element = "none"
+hit_flags = ["Flash", "Flinch"]
+damage = 0
+recover = 1000
+limit = 1
+card_class = "dark"
+tags = [
+    "BN5",
+    "EXE5"
+]
+can_boost = false
+can_charge = false
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.BattleHPBug"]
+cards = ["BattleNetwork4.Class05.Dark.008.Recovery"]

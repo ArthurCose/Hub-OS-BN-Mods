@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class01.Standard.027"
+past_ids = ["iSsjGohan.Card.stnd.05.Blizzard"]
+name = "Blizzard"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["H","J","V","*"]
+damage = 100
+time_freeze = false
+element = "Aqua"
+hit_flags = ["Flinch","Flash"]
+description = "Snowstorm attack! T formation leaves ice panels!"
+long_description = "Attack with icicles! T formation and leaves ice panels behind!"
+limit = 3
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+tile_states = ["BattleNetwork6.TileStates.Ice"]
+

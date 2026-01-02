@@ -1,0 +1,25 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class04.Dark.003.DarkCircleGun"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "DarkCirc"
+time_freeze = true
+description = "STOP CURSR AND ATTACK"
+long_description = "Circles the field so long as enemy tiles are in that column. Press your Use Chip button to stop the cursor and fire. Automatically fires after six seconds. Attacks the panel it is stopped on as well as the next six panels. Does not deal damage to targets who are floating on Broken panels."
+codes = ["R"]
+element = "cursor"
+hit_flags = ["Flash", "Flinch"]
+damage = 200
+limit = 1
+card_class = "dark"
+tags = [
+    "BN5",
+    "EXE5"
+]
+can_boost = false
+can_charge = false
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.CustomHPBug"]
+cards = ["BattleNetwork6.Class01.Standard.137.CircGun"]

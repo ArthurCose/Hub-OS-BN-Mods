@@ -1,0 +1,24 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class02.Mega.015.Anubis"
+name = "Anubis"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "A"]
+damage = 10
+time_freeze = true
+element = "summon"
+secondary_element = "break"
+description = "Billow out continuous poison on the enemy!"
+long_description = """
+Place an object one tile infront of you that spews out continuous poison on the enemies
+until destroyed! Bypasses iframes!
+"""
+hit_flags = ["Flinch", "Flash", "PierceGuard", "PierceGround"]
+limit = 2
+card_class = "mega"
+
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+statuses = ["LDR100.Statuses.Poison"]

@@ -1,0 +1,15 @@
+[package]
+category = "status"
+id = "LDR100.Statuses.Poison"
+name = "Poison Status"
+icon_texture_path = "icon.png"
+flag_name = "PoisonLDR"
+description = "Take 5 damage every 60 frames for 420 frames. Every 3 procs take 2.5% (Min.20) current HP damage. Take 5% (Min.30) current HP on reapplication (75f CD). Take 25% extra damage on Poison panels. Cursor attacks extend the duration by 120 frames."
+blocks_flags = []
+blocked_by = []
+blocks_actions = false
+blocks_mobility = false
+durations = [420]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

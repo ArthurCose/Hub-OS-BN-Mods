@@ -1,0 +1,22 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class01.Standard.120"
+past_ids = ["iSsjGohan.Card.stnd.04.MetaGel"]
+name = "MetaGel"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["M","G","V","Q"]
+damage = 120
+time_freeze = true
+element = "aqua"
+description = "Gel attck steals a panel!"
+long_description = "Drop gels on the opponents side and claim the tiles!"
+card_class = "Standard"
+limit = 2
+can_boost = true
+hit_flags = ["Flinch", "PierceGround", "Flash"]
+
+
+
+[dependencies]
+libraries = []
