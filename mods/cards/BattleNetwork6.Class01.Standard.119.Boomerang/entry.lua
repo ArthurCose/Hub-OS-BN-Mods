@@ -26,7 +26,7 @@ function card_init(user, props)
 
 		spell:set_facing(facing)
 
-		spell._direction = facing
+		local direction = facing
 		spell.on_update_func = function(self)
 			local tile = self:current_tile()
 
@@ -37,7 +37,7 @@ function card_init(user, props)
 			self:attack_tile()
 
 			if self:is_sliding() == false then
-				local next_tile = tile:get_tile(self._direction, 1)
+				local next_tile = tile:get_tile(direction, 1)
 				if next_tile == nil or next_tile:is_edge() then
 					next_tile = tile:get_tile(Direction.Up, 1)
 					if next_tile == nil or next_tile:is_edge() then
@@ -46,10 +46,10 @@ function card_init(user, props)
 							self:erase()
 							return
 						else
-							self._direction = self:facing_away()
+							direction = self:facing_away()
 						end
 					else
-						self._direction = Direction.Up
+						direction = Direction.Up
 					end
 				end
 
@@ -61,7 +61,7 @@ function card_init(user, props)
 		local start_x = 1
 		local increment = 1
 		local goal = Field.width()
-		if (team == Team.Red and facing == Direction.Left) or (team == Team.Blue and facing == Direction.Right) then
+		if facing == Direction.Left then
 			start_x = Field.width()
 			increment = -1
 			goal = 1
