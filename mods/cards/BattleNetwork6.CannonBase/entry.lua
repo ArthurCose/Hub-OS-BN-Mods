@@ -9,6 +9,9 @@ local IMPACT_TEXTURE = bn_helpers.load_texture("spell_explosion.png")
 -- TODO: Implement proper explosion
 local AUDIO = bn_helpers.load_audio("cannon.ogg")
 
+---@param spell Entity
+---@param target Entity?
+---@param tile Tile?
 local function explode(spell, target, tile)
 	if tile == nil then
 		if target ~= nil then tile = target:current_tile() else tile = spell:current_tile() end
@@ -26,19 +29,21 @@ local function explode(spell, target, tile)
 	Field.spawn(explosion, tile)
 end
 
-local splash_explosion = function(self, other)
-	local tile = self._tile
-	local tile_x = self._tile:x()
-	local tile_y = self._tile:y()
+---@param self Entity
+---@param other Entity?
+---@param tile Tile
+local splash_explosion = function(self, other, tile)
+	local tile_x = tile:x()
+	local tile_y = tile:y()
 
 	for x = -1, 1, 1 do
 		for y = -1, 1, 1 do
-			tile = Field.tile_at(tile_x + x, tile_y + y)
+			local splash_tile = Field.tile_at(tile_x + x, tile_y + y)
 
-			if tile and not tile:is_edge() then
-				self:attack_tile(tile)
+			if splash_tile and not splash_tile:is_edge() then
+				self:attack_tile(splash_tile)
 
-				explode(self, other, tile)
+				explode(self, other, splash_tile)
 			end
 		end
 	end
@@ -59,91 +64,74 @@ local function create_attack(user, props, context, facing, is_recipe)
 		)
 	)
 	-- store starting tile as the user's own tile
-	spell._tile = user:current_tile()
+	local tile = user:current_tile()
 
 	-- this will be used to teleport 1 frame in.
-	spell._first_move = false
+	local first_move = false
 
 	-- the wait is to make the spell count how many frames it waited without moving
 	-- the count_to is the amount of frames to wait. NOTE: May need to -1? is 0 > 1 two frames or is it 0 > 1 > 2...?
-	spell._wait = 0
-	spell._count_to = 2
+	local wait = 0
+	local has_collided = false
 
 	-- Spell cycles this every frame.
 	spell.on_update_func = function(self)
 		-- If the current tile is an edge tile, immediately remove the spell and do nothing else.
-		if self._tile:is_edge() then return self:erase() end
+		if tile:is_edge() then return self:erase() end
 
-		if self._has_collided == true then
-			self._wait = self._wait + 1
-			if self._wait >= 6 then self:delete() end
+		if has_collided == true then
+			wait = wait + 1
+			if wait >= 6 then self:delete() end
 			return
 		end
 
 		-- Remember your ABCs: Always Be Casting.
 		-- Most attacks try to land a hit every frame!
-		self._tile:attack_entities(self)
+		tile:attack_entities(self)
 
 		-- Perform first movement
-		if self._first_move == false then
+		if first_move == false then
 			local dest = self:get_tile(self:facing(), 1)
 			self:teleport(dest, function()
-				spell._tile = dest
-				spell._first_move = true
+				tile = dest
+				first_move = true
 			end)
 		else
 			-- Begin counting up the wait timer
-			self._wait = self._wait + 1
+			wait = wait + 1
 
 			-- When it hits 2, teleport it.
-			if self._wait == 2 then
+			if wait == 2 then
 				-- Obtain a destination tile
 				local dest = self:get_tile(self:facing(), 1)
 
-				if is_recipe and dest:is_edge() then
-					explode(self, nil, self._tile)
-					splash_explosion(self, nil)
-					self._count_to = 6
-					self._wait = 0
+				if is_recipe and (not dest or dest:is_edge()) then
+					explode(self, nil, tile)
+					splash_explosion(self, nil, tile)
+					has_collided = true
+					wait = 0
 				else
 					-- Initiate teleport
 					self:teleport(dest, function()
 						-- Set current tile property and reset wait timer
-						spell._tile = dest
-						spell._wait = 0
+						tile = dest
+						wait = 0
 					end)
 				end
 			end
 		end
 	end
 
-	spell._has_collided = false
+	has_collided = false
 	-- Upon hitting anything, delete self after exploding
 	spell.on_collision_func = function(self, other)
-		if not self._has_collided then
-			self._count_to = 6
-			self._wait = 0
+		if not has_collided then
+			wait = 0
 
 			explode(self, other, nil)
-			if is_recipe then splash_explosion(self, other) end
-			self._has_collided = true
+			if is_recipe then splash_explosion(self, other, tile) end
+			has_collided = true
 		end
-	end
-
-	-- No specialty on actually dealing damage, but left in as reference
-	-- "Other" is the entity hit by the attack
-	spell.on_attack_func = function(self, other) end
-
-	-- On delete, simply remove the spell.
-	-- TODO: Explosion on impact
-	spell.on_delete_func = function(self)
-		self:erase()
-	end
-
-	-- As an invisible projectile no tile blocks its passage
-	-- Returning true without checking tiles means the spell can always proceed
-	spell.can_move_to_func = function(tile)
-		return true
 	end
 
 	-- return the attack we created for spawning.
