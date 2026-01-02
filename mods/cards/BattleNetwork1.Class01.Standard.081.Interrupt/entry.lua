@@ -18,8 +18,10 @@ function card_init(user, props)
 		interrupt_animation:load(ANIM_PATH)
 		interrupt_animation:set_state("DEFAULT")
 		interrupt_animation:on_complete(function()
-			for i = #entity:field_cards(), 1, -1 do
-				entity:remove_field_card(i)
+			if entity:has_actions() then
+				entity:cancel_actions()
+			else
+				entity:remove_field_card(1)
 			end
 
 			interrupt:erase()

@@ -35,6 +35,7 @@ function card_init(user, props)
 
             if hit_props.damage >= 10 and hit_props.flags & Hit.Drain == 0 then
                 defense:block_damage()
+                user:remove_status(Hit.action_blockers())
                 user:queue_action(poof_user(user, context, props, antidamage_rule))
                 activated = true
             end

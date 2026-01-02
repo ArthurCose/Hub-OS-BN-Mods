@@ -8,7 +8,7 @@ local gun_sound = bn_assets.load_audio("gunner_shot.ogg")
 function create_soldier_shot(user, props, facing)
     local spell = Spell.new(user:team())
     spell:set_facing(facing)
-    spell.slide_started = false
+    local slide_started = false
     spell:set_hit_props(
         HitProps.from_card(
             props,
@@ -20,12 +20,12 @@ function create_soldier_shot(user, props, facing)
         self:get_tile():attack_entities(self)
         local dest = self:get_tile(self:facing(), 1)
         if not self:is_sliding() then
-            if self:current_tile():is_edge() and self.slide_started then
+            if self:current_tile():is_edge() and slide_started then
                 self:delete()
             end
-            local ref = self
+
             self:slide(dest, 1, function()
-                ref.slide_started = true
+                slide_started = true
             end)
         end
     end
@@ -92,11 +92,13 @@ function card_init(actor, props)
 
             anim:on_complete(function()
                 anim:set_state("ATTACK")
-                for i = 3, 3, 9 do
+
+                for i = 3, 9, 3 do
                     anim:on_frame(i, function()
                         Field.spawn(create_soldier_shot(user, props, facing), tile:get_tile(soldier:facing(), 1))
                     end)
                 end
+
                 anim:on_complete(function()
                     anim:set_state("REMOVE")
                     anim:on_complete(function()

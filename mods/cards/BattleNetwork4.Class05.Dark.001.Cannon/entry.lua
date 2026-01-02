@@ -1,8 +1,6 @@
-local track_health;
-
 ---@param user Entity
 function card_dynamic_damage(user)
-    return math.min(999, user:max_health() - user:health())
+    return math.min(500, math.floor(user:max_health() - user:health() / 2))
 end
 
 function card_mutate(entity, card_index)

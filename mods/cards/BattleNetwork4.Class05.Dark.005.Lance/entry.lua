@@ -68,8 +68,15 @@ function card_init(actor, props)
 
 	action:set_lockout(ActionLockout.new_async(40))
 
+
 	action.on_execute_func = function(self, user)
 		local x = Field.width() - 2
+
+		local add_confusion = AuxProp.new()
+			:require_hit_damage(Compare.GT, 50)
+			:apply_status(Hit.Confuse, Hit.duration_for(Hit.Confuse, 1))
+
+		user:add_aux_prop(add_confusion)
 
 		if user:facing() == Direction.Left then
 			x = 1

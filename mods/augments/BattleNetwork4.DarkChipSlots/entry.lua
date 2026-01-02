@@ -121,6 +121,8 @@ function augment_init(augment)
 	karmic_tracker.on_update_func = function()
 		local mood = player:recall("KARMA_VALUE")
 
+		if player:emotion() == evil_state then return end
+
 		-- Exit fear/synchro as necesary
 		if (fear_state ~= nil and mood > 64 and player:emotion() == fear_state) or (synchro_state ~= nil and mood < 255 and player:emotion() == synchro_state) then
 			player:set_emotion(normal_state)
@@ -138,6 +140,7 @@ function augment_init(augment)
 		elseif mood == 0 and evil_state ~= nil then
 			-- Permanent for rest of the fight.
 			player:remember("PAUSE_KARMA_GAIN", 0)
+
 			-- Set evil state
 			player:set_emotion(evil_state)
 		end

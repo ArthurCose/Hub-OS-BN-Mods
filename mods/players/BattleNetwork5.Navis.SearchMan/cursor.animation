@@ -1,5 +1,3 @@
-imagePath="C:/Users/seven/Desktop/ONB/resources/mods/players/SearchmanChargeShot/cursor.png"
-
 animation state="0"
 frame duration="0.05" x="2" y="58" w="21" h="21" originx="11" originy="10" flipx="0" flipy="0"
 frame duration="0.067" x="2" y="31" w="23" h="23" originx="12" originy="11" flipx="0" flipy="0"

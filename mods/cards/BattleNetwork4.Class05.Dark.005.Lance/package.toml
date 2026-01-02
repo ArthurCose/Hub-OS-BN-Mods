@@ -5,7 +5,7 @@ name = "DrkLance"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
 codes = [" "]
-damage = 400
+damage = 300
 time_freeze = false
 element = "none"
 description = "Lances through back line"
@@ -13,7 +13,7 @@ long_description = "Strike the far column of the enemy field."
 card_class = "dark"
 limit = 0
 hit_flags = ["Flinch", "Drag"]
-tags = ["HALF_FOE_HEALTH_EQUALS_POWER", "EXE4", "BN4"]
+tags = ["EXE4", "BN4"]
 can_boost = false
 can_charge = false
 

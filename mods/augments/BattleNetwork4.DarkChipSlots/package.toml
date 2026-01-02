@@ -19,7 +19,10 @@ shape = [
   [ 0, 0, 0, 0, 0 ]
 ]
 
+byproducts = ["BattleNetwork6.Bugs.CustomBug"]
+
 [dependencies]
+augments = ["BattleNetwork6.Bugs.CustomBug"]
 cards = [
   "BattleNetwork4.Class05.Dark.001.Cannon",
   "BattleNetwork4.Class05.Dark.002.Sword",

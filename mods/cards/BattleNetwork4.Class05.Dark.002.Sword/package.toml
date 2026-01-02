@@ -5,17 +5,18 @@ name = "DrkSword"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
 codes = [" "]
-damage = 0
+damage = 300
 time_freeze = false
 regular_allowed = false
 element = "sword"
 description = "USE LARGE SWORD AND SLICE"
 card_class = "dark"
 limit = 0
+hit_flags = ["Flinch", "Flash"]
 long_description = "A Dark Chip. Slashes 3x2 and forces forward movement."
 can_boost = false
 can_charge = false
-tags = ["FOE_HEALTH_EQUALS_POWER", "EXE4", "BN4"]
+tags = ["EXE4", "BN4"]
 
 [dependencies]
 libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]

@@ -8,8 +8,11 @@ codes = ["A", "M", "T"]
 damage = 130
 time_freeze = false
 element = "sword"
+hit_flags = ["Flinch", "Flash", "BattleHPBug"]
 description = "Slices enemies around"
 limit = 3
 
 [dependencies]
+augments = ["BattleNetwork6.Bugs.BattleHPBug"]
+statuses = ["BattleNetwork6.Statuses.BattleHPBug"]
 libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]

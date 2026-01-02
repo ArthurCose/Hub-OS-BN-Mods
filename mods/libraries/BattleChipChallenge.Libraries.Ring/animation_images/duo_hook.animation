@@ -1,0 +1,5 @@
+animation state="DUO_HOOK_R"
+frame duration="0.05" x="48" y="145" w="119" h="85" originx="110" originy="0"
+
+animation state="DUO_HOOK_L"
+frame duration="0.05" x="102" y="16" w="78" h="102" originx="20" originy="102"

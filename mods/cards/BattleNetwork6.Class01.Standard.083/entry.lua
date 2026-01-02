@@ -22,15 +22,7 @@ function create_slash(animation_state, user, props)
 	local spell = Spell.new(user:team())
 	spell:set_texture(TEXTURE)
 	spell:set_facing(user:facing())
-	spell:set_hit_props(
-		HitProps.new(
-			props.damage,
-			Hit.Flinch,
-			Element.Sword,
-			user:context(),
-			Drag.None
-		)
-	)
+	spell:set_hit_props(HitProps.from_card(props, user:context(), Drag.None))
 	local anim = spell:animation()
 	anim:load(ANIMATION_PATH)
 	anim:set_state(animation_state)
