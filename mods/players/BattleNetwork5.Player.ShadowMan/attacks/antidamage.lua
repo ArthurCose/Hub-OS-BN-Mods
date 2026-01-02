@@ -137,6 +137,7 @@ local function poof_user(user, hit_props, defense_rule, callback)
   end
 
   local aux_prop = AuxProp.new():declare_immunity(Hit.action_blockers())
+  user:add_aux_prop(aux_prop)
 
   action.on_action_end_func = function()
     user:remove_aux_prop(aux_prop)

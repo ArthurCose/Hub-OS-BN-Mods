@@ -35,7 +35,6 @@ function card_init(user, props)
 
             if hit_props.damage >= 10 and hit_props.flags & Hit.Drain == 0 then
                 defense:block_damage()
-                user:remove_status(Hit.action_blockers())
                 user:queue_action(poof_user(user, context, props, antidamage_rule))
                 activated = true
             end
@@ -104,6 +103,7 @@ function poof_user(user, context, props, defense_rule)
     end
 
     local aux_prop = AuxProp.new():declare_immunity(Hit.action_blockers())
+    user:add_aux_prop(aux_prop)
 
     action.on_action_end_func = function()
         user:remove_aux_prop(aux_prop)
