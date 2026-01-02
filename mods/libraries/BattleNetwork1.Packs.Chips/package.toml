@@ -1,0 +1,11 @@
+[package]
+category = "pack"
+id = "BattleNetwork1.Packs.Chips"
+name = "BN1 Chips"
+description = "Every chip in the BattleNetwork1 namespace"
+
+[dependencies]
+cards = [
+  "BattleNetwork1.Class01.Standard.081.Interrupt",
+  "BattleNetwork1.Class01.Standard.105",
+]

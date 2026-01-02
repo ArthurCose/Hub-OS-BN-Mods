@@ -1,0 +1,19 @@
+[package]
+category = "pack"
+id = "BattleNetwork2.Packs.Chips"
+name = "BN2 Chips"
+description = "Every chip in the BattleNetwork2 namespace"
+
+[dependencies]
+cards = [
+  "BattleNetwork2.Class01.Standard.006.CrossGun",
+  "BattleNetwork2.Class01.Standard.029",
+  "BattleNetwork2.Class01.Standard.030",
+  "BattleNetwork2.Class01.Standard.031",
+  "BattleNetwork2.Class01.Standard.060",
+  "BattleNetwork2.Class01.Standard.061",
+  "BattleNetwork2.Class01.Standard.066.Satelit1",
+  "BattleNetwork2.Class01.Standard.067.Satelit2",
+  "BattleNetwork2.Class01.Standard.068.Satelit3",
+  "BattleNetwork2.ProgramAdvance.021.LifeSword3",
+]

@@ -1,0 +1,15 @@
+[package]
+category = "pack"
+id = "BattleNetwork.Packs.Chips"
+name = "BN Chips"
+description = "Every chip in the BattleNetwork namespaces"
+
+[dependencies]
+cards = [
+  "BattleNetwork1.Packs.Chips",
+  "BattleNetwork2.Packs.Chips",
+  "BattleNetwork3.Packs.Chips",
+  "BattleNetwork4.Packs.Chips",
+  "BattleNetwork5.Packs.Chips",
+  "BattleNetwork6.Packs.Chips",
+]

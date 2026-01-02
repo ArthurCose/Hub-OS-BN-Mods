@@ -1,0 +1,12 @@
+[package]
+category = "pack"
+id = "BattleNetwork.Packs.NCPs"
+name = "BN NCPs"
+description = "Every NCP in the BattleNetwork namespaces"
+
+[dependencies]
+libraries = [
+  "BattleNetwork3.Packs.NCPs",
+  "BattleNetwork5.Packs.NCPs",
+  "BattleNetwork6.Packs.NCPs",
+]

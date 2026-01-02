@@ -1,0 +1,46 @@
+[package]
+category = "pack"
+id = "BattleNetwork3.Packs.Chips"
+name = "BN3 Chips"
+description = "Every chip in the BattleNetwork3 namespace"
+
+[dependencies]
+cards = [
+  "BattleNetwork3.Class01.Standard.011.Shotgun",
+  "BattleNetwork3.Class01.Standard.012.V-Gun",
+  "BattleNetwork3.Class01.Standard.013.SideGun",
+  "BattleNetwork3.Class01.Standard.015.Bubbler",
+  "BattleNetwork3.Class01.Standard.016.Bub-v",
+  "BattleNetwork3.Class01.Standard.017.BubSide",
+  "BattleNetwork3.Class01.Standard.018.HeatShot",
+  "BattleNetwork3.Class01.Standard.019.Heat-V",
+  "BattleNetwork3.Class01.Standard.020.HeatSide",
+  "BattleNetwork3.Class01.Standard.025",
+  "BattleNetwork3.Class01.Standard.026",
+  "BattleNetwork3.Class01.Standard.027",
+  "BattleNetwork3.Class01.Standard.039",
+  "BattleNetwork3.Class01.Standard.042",
+  "BattleNetwork3.Class01.Standard.084.NOBeam1",
+  "BattleNetwork3.Class01.Standard.085.NOBeam2",
+  "BattleNetwork3.Class01.Standard.086.NOBeam3",
+  "BattleNetwork3.Class01.Standard.159",
+  "BattleNetwork3.Class01.Standard.160",
+  "BattleNetwork3.Class01.Standard.161",
+  "BattleNetwork3.Class01.Standard.185.LavaStage",
+  "BattleNetwork3.Class01.Standard.186.IceStage",
+  "BattleNetwork3.Class01.Standard.187.GrassStage",
+  "BattleNetwork3.Class01.Standard.188.SandStage",
+  "BattleNetwork3.Class01.Standard.189.MetalStage",
+  "BattleNetwork3.Class02.Mega.002",
+  "BattleNetwork3.Class02.Mega.008",
+  "BattleNetwork3.Class02.Mega.009",
+  "BattleNetwork3.Class02.Mega.034.FlashMan",
+  "BattleNetwork3.Class02.Mega.035.FlashManEX",
+  "BattleNetwork3.Class02.Mega.036.FlashManSP",
+  "BattleNetwork3.Class02.Mega.103.Snake",
+  "BattleNetwork3.Class04.Giga_01_Blue.FolderBack",
+  "BattleNetwork3.ProgramAdvance.007",
+  "BattleNetwork3.ProgramAdvance.013.BubbleSpread",
+  "BattleNetwork3.ProgramAdvance.014.HeatSpread",
+  "BattleNetwork3.ProgramAdvance.18",
+]

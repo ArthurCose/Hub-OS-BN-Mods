@@ -1,0 +1,40 @@
+[package]
+category = "pack"
+id = "BattleNetwork4.Packs.Chips"
+name = "BN4 Chips"
+description = "Every chip in the BattleNetwork4 namespace"
+
+[dependencies]
+cards = [
+  "BattleNetwork4.Class01.Standard.027",
+  "BattleNetwork4.Class01.Standard.028",
+  "BattleNetwork4.Class01.Standard.029",
+  "BattleNetwork4.Class01.Standard.030",
+  "BattleNetwork4.Class01.Standard.043",
+  "BattleNetwork4.Class01.Standard.063",
+  "BattleNetwork4.Class01.Standard.064",
+  "BattleNetwork4.Class01.Standard.065",
+  "BattleNetwork4.Class01.Standard.075.Lance",
+  "BattleNetwork4.Class01.Standard.120",
+  "BattleNetwork4.Class01.Standard.130",
+  "BattleNetwork4.Class01.Standard.132.DarkHole",
+  "BattleNetwork4.Class02.Mega.018.DarkLine",
+  "BattleNetwork4.Class03.Giga.002-RedSun.HolyDrem",
+  "BattleNetwork4.Class05.Dark.001.Cannon",
+  "BattleNetwork4.Class05.Dark.002.Sword",
+  "BattleNetwork4.Class05.Dark.003.Bomb",
+  "BattleNetwork4.Class05.Dark.004.Vulcan",
+  "BattleNetwork4.Class05.Dark.005.Lance",
+  "BattleNetwork4.Class05.Dark.006.Spreader",
+  "BattleNetwork4.Class05.Dark.007.Stage",
+  "BattleNetwork4.Class05.Dark.008.Recovery",
+  "BattleNetwork4.Class05.Secret.001",
+  "BattleNetwork4.Class05.Secret.002",
+  "BattleNetwork4.Class05.Secret.003",
+  "BattleNetwork4.Class05.Secret.007.PropBom1",
+  "BattleNetwork4.Class05.Secret.008.PropBom2",
+  "BattleNetwork4.Class05.Secret.009.PropBom3",
+  "BattleNetwork4.Class05.Secret.010",
+  "BattleNetwork4.Class05.Secret.011",
+  "BattleNetwork4.Class05.Secret.012",
+]

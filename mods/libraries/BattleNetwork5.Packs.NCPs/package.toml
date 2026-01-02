@@ -1,0 +1,10 @@
+[package]
+category = "pack"
+id = "BattleNetwork5.Packs.NCPs"
+name = "BN5 NCPs"
+description = "Every NCP in the BattleNetwork5 namespace"
+
+[dependencies]
+augments = [
+  "BattleNetwork5.NaviCustomizer.Program35.SoulTime1",
+]

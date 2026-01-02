@@ -1,0 +1,40 @@
+[package]
+category = "pack"
+id = "BattleNetwork5.Packs.Chips"
+name = "BN5 Chips"
+description = "Every chip in the BattleNetwork5 namespace"
+
+[dependencies]
+cards = [
+  "BattleNetwork5.Class01.Standard.037",
+  "BattleNetwork5.Class01.Standard.047",
+  "BattleNetwork5.Class01.Standard.048",
+  "BattleNetwork5.Class01.Standard.060",
+  "BattleNetwork5.Class01.Standard.061",
+  "BattleNetwork5.Class01.Standard.062",
+  "BattleNetwork5.Class01.Standard.063.Katana1",
+  "BattleNetwork5.Class01.Standard.064.Katana2",
+  "BattleNetwork5.Class01.Standard.065.Katana3",
+  "BattleNetwork5.Class01.Standard.168.AntiFire",
+  "BattleNetwork5.Class01.Standard.169.AntiWater",
+  "BattleNetwork5.Class01.Standard.170.AntiElec",
+  "BattleNetwork5.Class01.Standard.171.AntiWood",
+  "BattleNetwork5.Class02.Mega.007.Poltergeist",
+  "BattleNetwork5.Class02.Mega.015.Anubis",
+  "BattleNetwork5.Class04.Dark.001",
+  "BattleNetwork5.Class04.Dark.002.DarkTornado",
+  "BattleNetwork5.Class04.Dark.003.DarkCircleGun",
+  "BattleNetwork5.Class04.Dark.004.DarkMeteors",
+  "BattleNetwork5.Class04.Dark.005.DarkThunder",
+  "BattleNetwork5.Class04.Dark.006.DarkRecovery",
+  "BattleNetwork5.Class04.Dark.007.DarkSonic",
+  "BattleNetwork5.Class04.Dark.008.DarkInvis",
+  "BattleNetwork5.Class04.Dark.009.DarkPlus",
+  "BattleNetwork5.Class04.Dark.010.Lance",
+  "BattleNetwork5.Class04.Dark.011.DarkDrill",
+  "BattleNetwork5.Class04.Dark.012.DarkWideShot",
+  "BattleNetwork5.Class06.Fixed.001.Colonel",
+  "BattleNetwork5.Class06.Fixed.002.Colonel",
+  "BattleNetwork5.Class06.Fixed.005.Colonel",
+  "BattleNetwork5.Class06.Fixed.006.Colonel",
+]

@@ -1,0 +1,16 @@
+[package]
+category = "pack"
+id = "BattleNetwork3.Packs.NCPs"
+name = "BN3 NCPs"
+description = "Every NCP in the BattleNetwork3 namespace"
+
+[dependencies]
+augments = [
+  "BattleNetwork3.Program02.BreakBuster",
+  "BattleNetwork3.Program04.SetGreen",
+  "BattleNetwork3.Program05.SetIce",
+  "BattleNetwork3.Program06.SetLava",
+  "BattleNetwork3.Program07.SetSand",
+  "BattleNetwork3.Program08.SetMetal",
+  "BattleNetwork3.Program09.SetHoly",
+]
