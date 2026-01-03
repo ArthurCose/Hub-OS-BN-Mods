@@ -113,6 +113,7 @@ const chipNamespaceMap = packagesByNamespace(
   (id) =>
     id["BattleNetwork".length + 1] == "." && // must come from a BattleNetwork[number] namepace
     !id.includes(".EX.") && // must be fully vanilla
+    !id.includes("Alternative") && // must be fully vanilla
     (id.includes(".Class") || id.includes(".ProgramAdvance")) // exclude helper chips (RecoveryBase)
 );
 

@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "BattleNetwork3.Class01.Mega.011.Class03.GigaAlternative"
+name = "GaiaDrem"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "G" ]
+damage = 200
+time_freeze = false
+element = "wood"
+secondary_element = "sword"
+description = "2x3 swrd\natk w/\nPwrUp!"
+card_class = "giga"
+limit = 1
+can_boost = false
+hit_flags = ["Flinch", "Flash"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]

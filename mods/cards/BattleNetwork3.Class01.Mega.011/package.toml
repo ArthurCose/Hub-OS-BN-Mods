@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "BattleNetwork3.Class01.Mega.011"
+name = "GaiaBlde"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "G", "*" ]
+damage = 100
+time_freeze = false
+element = "wood"
+secondary_element = "sword"
+description = "PwrUp w/\nnext chip!"
+card_class = "mega"
+limit = 2
+can_boost = true
+hit_flags = ["Flinch", "Flash"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
