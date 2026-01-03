@@ -9,7 +9,6 @@ time_freeze = false
 element = "none"
 description = "Secondary explosion after hit"
 hit_flags = ["Paralyze"]
-limit = 0
 card_class = "recipe"
 tags = ["PROGRAM_ADVANCE", "BN6", "EXE6"]
 recipes = [

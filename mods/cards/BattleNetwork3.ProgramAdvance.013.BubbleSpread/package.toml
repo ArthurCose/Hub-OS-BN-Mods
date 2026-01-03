@@ -3,25 +3,27 @@ category = "card"
 id = "BattleNetwork3.ProgramAdvance.013.BubbleSpread"
 name = "BubSprd"
 icon_texture_path = "icon.png"
-codes = [ "*" ]
+codes = ["*"]
 damage = 300
 time_freeze = false
 element = "aqua"
 description = "Attks w/ spreading bubbles!"
-hit_flags = [ "None" ]
-limit = 0
+hit_flags = ["None"]
 card_class = "recipe"
 can_charge = false
-tags = [
-    "PROGRAM_ADVANCE",
-    "BN3",
-    "EXE3"
-]
-
+tags = ["PROGRAM_ADVANCE", "BN3", "EXE3"]
 recipes = [
-  { id = "BattleNetwork3.Class01.Standard.015.Bubbler", codes = ["B", "C", "D"] },
+  { id = "BattleNetwork3.Class01.Standard.015.Bubbler", codes = [
+    "B",
+    "C",
+    "D"
+  ] },
   { id = "BattleNetwork3.Class01.Standard.016.Bub-v", codes = ["D", "E", "F"] },
-  { id = "BattleNetwork3.Class01.Standard.017.BubSide", codes = ["E", "F", "G"] },
+  { id = "BattleNetwork3.Class01.Standard.017.BubSide", codes = [
+    "E",
+    "F",
+    "G"
+  ] },
   { mix = [
     { id = "BattleNetwork3.Class01.Standard.015.Bubbler" },
     { id = "BattleNetwork3.Class01.Standard.016.Bub-v" },
@@ -30,9 +32,7 @@ recipes = [
 ]
 
 [dependencies]
-libraries = [
-    "BattleNetwork.Assets"
-]
+libraries = ["BattleNetwork.Assets"]
 cards = [
   "BattleNetwork3.Class01.Standard.015.Bubbler",
   "BattleNetwork3.Class01.Standard.016.Bub-v",

@@ -3,25 +3,31 @@ category = "card"
 id = "BattleNetwork3.ProgramAdvance.014.HeatSpread"
 name = "HeatSprd"
 icon_texture_path = "icon.png"
-codes = [ "*" ]
+codes = ["*"]
 damage = 300
 time_freeze = false
 element = "fire"
 description = "Attks w/ spreading fireball!"
-hit_flags = [ "None" ]
-limit = 0
+hit_flags = ["None"]
 card_class = "recipe"
 can_charge = false
-tags = [
-    "PROGRAM_ADVANCE",
-    "BN3",
-    "EXE3"
-]
-
+tags = ["PROGRAM_ADVANCE", "BN3", "EXE3"]
 recipes = [
-  { id = "BattleNetwork3.Class01.Standard.018.HeatShot", codes = ["H", "I", "J"] },
-  { id = "BattleNetwork3.Class01.Standard.019.Heat-V", codes = ["I", "J", "K"] },
-  { id = "BattleNetwork3.Class01.Standard.020.HeatSide", codes = ["J", "K", "L"] },
+  { id = "BattleNetwork3.Class01.Standard.018.HeatShot", codes = [
+    "H",
+    "I",
+    "J"
+  ] },
+  { id = "BattleNetwork3.Class01.Standard.019.Heat-V", codes = [
+    "I",
+    "J",
+    "K"
+  ] },
+  { id = "BattleNetwork3.Class01.Standard.020.HeatSide", codes = [
+    "J",
+    "K",
+    "L"
+  ] },
   { mix = [
     { id = "BattleNetwork3.Class01.Standard.018.HeatShot" },
     { id = "BattleNetwork3.Class01.Standard.019.Heat-V" },
@@ -30,9 +36,7 @@ recipes = [
 ]
 
 [dependencies]
-libraries = [
-    "BattleNetwork.Assets"
-]
+libraries = ["BattleNetwork.Assets"]
 cards = [
   "BattleNetwork3.Class01.Standard.018.HeatShot",
   "BattleNetwork3.Class01.Standard.019.Heat-V",

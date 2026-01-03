@@ -9,7 +9,6 @@ time_freeze = false
 element = "none"
 description = "Unlimited VarSwrd for 5 sec"
 hit_flags = ["Flinch", "Flash"]
-limit = 0
 card_class = "recipe"
 tags = ["PROGRAM_ADVANCE", "BN3", "EXE3"]
 recipes = [

@@ -10,7 +10,6 @@ time_freeze = false
 element = "none"
 description = "Giga lvl cannon attack!"
 hit_flags = ["Flinch", "Flash"]
-limit = 0
 card_class = "recipe"
 tags = ["PROGRAM_ADVANCE", "BN6", "EXE6"]
 recipes = [

@@ -10,7 +10,6 @@ element = "sword"
 description = ""
 long_description = "Same damage as BN6 LifeSword, kept the name for consistency's sake."
 hit_flags = ["Flash", "Flinch"]
-limit = 0
 card_class = "recipe"
 tags = ["PROGRAM_ADVANCE", "BN2", "EXE2"]
 recipes = [

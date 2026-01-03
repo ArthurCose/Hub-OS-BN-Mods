@@ -3,20 +3,14 @@ category = "card"
 id = "BattleNetwork6.ProgramAdvance.005"
 name = "WideBrn2"
 icon_texture_path = "icon.png"
-codes = [ "*" ]
+codes = ["*"]
 damage = 350
 time_freeze = false
 element = "fire"
 description = "An expnd 3 row fire attk"
-hit_flags = [ "Flinch", "Flash" ]
-limit = 0
+hit_flags = ["Flinch", "Flash"]
 card_class = "recipe"
-tags = [
-    "PROGRAM_ADVANCE",
-    "BN6",
-    "EXE6"
-]
-
+tags = ["PROGRAM_ADVANCE", "BN6", "EXE6"]
 recipes = [
   { id = "BattleNetwork6.Class01.Standard.020", codes = ["S", "T", "U"] }
 ]

@@ -10,7 +10,6 @@ time_freeze = false
 element = "sword"
 description = "Slices\n2sq wide\n3sq vrtcl"
 hit_flags = ["Flash", "Flinch"]
-limit = 0
 card_class = "recipe"
 tags = ["PROGRAM_ADVANCE", "BN6", "EXE6"]
 recipes = [

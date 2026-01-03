@@ -9,7 +9,6 @@ time_freeze = false
 element = "elec"
 description = "Fire puls that caus strg bug!"
 hit_flags = ["PierceInvis", "Paralyze", "Blind"]
-limit = 0
 card_class = "recipe"
 tags = ["PROGRAM_ADVANCE", "BN6", "EXE6"]
 status_durations = [
