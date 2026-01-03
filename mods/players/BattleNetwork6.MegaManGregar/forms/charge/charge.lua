@@ -250,7 +250,7 @@ return function(player, form, base_animation_path)
   end
 
   form.calculate_card_charge_time_func = function(self, card_properties)
-    if card_properties.element == Element.Fire and not card_properties.time_freeze then
+    if card_properties.element == Element.Fire and not card_properties.time_freeze and card_properties.can_boost then
       return 500
     end
   end

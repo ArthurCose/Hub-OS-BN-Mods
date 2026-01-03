@@ -98,7 +98,8 @@ function player_init(player)
   player.calculate_card_charge_time_func = function(self, card)
     local can_charge = not card.time_freeze and
         (card.element == Element.Wood or card.secondary_element == Element.Wood) and
-        card.package_id ~= FIXED_CARD_ID
+        card.package_id ~= FIXED_CARD_ID and
+        card.can_boost
 
     if not can_charge then
       return

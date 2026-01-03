@@ -197,7 +197,7 @@ function player_init(player)
   end
 
   player.calculate_card_charge_time_func = function(_, props)
-    if not props.time_freeze and props.element == Element.Aqua then
+    if not props.time_freeze and props.element == Element.Aqua and props.can_boost then
       return 30
     end
   end
