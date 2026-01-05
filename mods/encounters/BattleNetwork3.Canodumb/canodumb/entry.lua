@@ -224,7 +224,7 @@ function character_init(canodumb)
 
   -- meta
   canodumb:set_name("Canodumb")
-  canodumb:set_height(55)
+  canodumb:set_height(44)
 
   local rank = canodumb:rank()
 
