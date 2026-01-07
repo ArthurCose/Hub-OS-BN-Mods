@@ -20,6 +20,3 @@ animation state="ESCAPE"
 frame x="1" y="40" w="34" h="39" originx="18" originy="26" duration="0.033"
 frame x="1" y="40" w="34" h="39" originx="18" originy="28" duration="0.05"
 frame x="1" y="40" w="34" h="39" originx="18" originy="26" duration="0.033"
-
-animation state="SHADOW"
-frame x="111" y="33" w="16" h="6" originx="8" originy="3" duration="0.005"

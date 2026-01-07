@@ -251,7 +251,13 @@ function augment_init(augment)
     local component = owner:create_component(Lifetime.ActiveBattle)
 
     component.on_update_func = function(self)
-        if owner:health() > math.floor(owner:max_health() / 4) or owner:is_inactionable() or owner:is_immobile() then
+        -- Don't activate if:
+        -- * Time is stopped (e.g. during a time-freeze attack)
+        -- * Your health is not at critical levels (iow, higher than 25%)
+        -- * You are inactionable
+        -- * You are immobile
+        -- * You are being dragged
+        if TurnGauge.frozen() or owner:health() > math.floor(owner:max_health() / 4) or owner:is_inactionable() or owner:is_immobile() or owner:is_dragged() then
             return
         end
 

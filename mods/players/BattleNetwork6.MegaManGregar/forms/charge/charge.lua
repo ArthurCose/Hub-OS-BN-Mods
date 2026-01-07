@@ -127,7 +127,9 @@ return function(player, form, base_animation_path)
     spell.on_collision_func = function(_, other)
       hit = true
       tackle_step:complete_step()
+    end
 
+    spell.on_attack_func = function(_, other)
       local offset_x = math.random(-Tile:width() / 2, Tile:width())
       local offset_y = math.random(-player:height(), 0)
       shared.spawn_hit_artifact(other, "FIRE", offset_x, offset_y)
@@ -211,6 +213,7 @@ return function(player, form, base_animation_path)
         animation:set_state("CHARGE_LOOP")
         animation:set_playback(Playback.Loop)
         start_tile = player:current_tile()
+        start_tile:reserve_for(player)
 
         invulnerability = DefenseRule.new(DefensePriority.Action, DefenseOrder.Always)
         invulnerability.defense_func = function(defense)
@@ -239,6 +242,7 @@ return function(player, form, base_animation_path)
       if start_tile then
         player:current_tile():remove_entity(player)
         start_tile:add_entity(player)
+        start_tile:remove_reservation_for(player)
       end
 
       if invulnerability then
