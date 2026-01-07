@@ -10,8 +10,9 @@ time_freeze = false
 element = "elec"
 description = "Sprd elec puls. Hit w/HP bug."
 limit = 2
-hit_flags = ["PierceInvis", "Flinch", "Flash"]
+hit_flags = ["PierceInvis", "Flinch", "Flash", "BattleHPBug"]
 status_durations = [{ flag_name = "Flash", level = 1 }]
 
 [dependencies]
 cards = ["BattleNetwork6.Class01.Standard.033"]
+statuses = ["BattleNetwork6.Statuses.BattleHPBug"]

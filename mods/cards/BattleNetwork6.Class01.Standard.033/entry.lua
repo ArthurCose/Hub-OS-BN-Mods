@@ -137,9 +137,7 @@ function create_pulse(user, props)
 	spell.on_attack_func = function(self, entity)
 		if Player.from(entity) == nil then return end
 
-		if props.short_name == "ElcPuls3" then
-			entity:boost_augment("BattleNetwork6.Bugs.BattleHPBug", 1)
-		elseif props.short_name == "DestPuls" then
+		if props.short_name == "DestPuls" then
 			local blind_aux = AuxProp.new()
 					:immediate()
 					:apply_status(Hit.Blind, 1200)
