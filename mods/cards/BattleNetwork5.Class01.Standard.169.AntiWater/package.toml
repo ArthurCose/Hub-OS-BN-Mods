@@ -1,14 +1,14 @@
 [package]
 category = "card"
 id = "BattleNetwork5.Class01.Standard.169.AntiWater"
-name = "AntiWater"
+name = "AntiWatr"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
 codes = ["D", "G", "Q", "*"]
 damage = 200
 time_freeze = true
 element = "water"
-description = "Trap enmy and attk with water!"
+description = "Trap enmy and attk with aqua!"
 can_boost = true
 limit = 2
 hit_flags = ["Flinch"]

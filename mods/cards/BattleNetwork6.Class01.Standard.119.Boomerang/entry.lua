@@ -64,7 +64,7 @@ function card_init(user, props)
 		if facing == Direction.Left then
 			start_x = Field.width()
 			increment = -1
-			goal = 1
+			goal = 0
 		end
 
 		for x = start_x, goal, increment do

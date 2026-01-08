@@ -1,0 +1,33 @@
+animation state="DEFAULT"
+frame duration="60f" x="8" y="5" w="32" h="51" originx="15" originy="44"
+point label="countdown" x="15" y="27"
+
+animation state="DEFAULT2"
+frame duration="60f" x="44" y="5" w="32" h="51" originx="15" originy="44"
+point label="countdown" x="15" y="27"
+
+animation state="DEFAULT3"
+frame duration="60f" x="80" y="5" w="32" h="51" originx="15" originy="44"
+point label="countdown" x="15" y="27"
+
+animation state="COUNTDOWN"
+frame duration="60f" x="7" y="67" w="13" h="16" originx="7" originy="8" flipx="0" flipy="0"
+frame duration="60f" x="23" y="67" w="7" h="16" originx="4" originy="8" flipx="0" flipy="0"
+frame duration="60f" x="33" y="67" w="7" h="16" originx="4" originy="8" flipx="0" flipy="0"
+frame duration="60f" x="43" y="67" w="7" h="16" originx="4" originy="8" flipx="0" flipy="0"
+frame duration="60f" x="53" y="67" w="7" h="16" originx="4" originy="8" flipx="0" flipy="0"
+frame duration="60f" x="63" y="67" w="7" h="16" originx="4" originy="8" flipx="0" flipy="0"
+frame duration="60f" x="73" y="67" w="7" h="16" originx="4" originy="8" flipx="0" flipy="0"
+frame duration="60f" x="83" y="67" w="7" h="16" originx="4" originy="8" flipx="0" flipy="0"
+frame duration="60f" x="93" y="67" w="7" h="16" originx="4" originy="8" flipx="0" flipy="0"
+frame duration="60f" x="103" y="67" w="7" h="16" originx="4" originy="8" flipx="0" flipy="0"
+frame duration="60f" x="113" y="67" w="7" h="51" originx="4" originy="8" flipx="0" flipy="0"
+
+animation state="HP"
+frame duration="60f" x="7" y="91" w="24" h="13" originx="12" originy="55" flipx="0" flipy="0"
+
+animation state="HP2"
+frame duration="60f" x="48" y="91" w="24" h="13" originx="12" originy="55" flipx="0" flipy="0"
+
+animation state="HP3"
+frame duration="60f" x="86" y="91" w="24" h="13" originx="12" originy="55" flipx="0" flipy="0"

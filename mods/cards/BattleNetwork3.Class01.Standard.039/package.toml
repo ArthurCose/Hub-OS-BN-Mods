@@ -5,17 +5,13 @@ name = "VarSwrd"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
 codes = ["B", "C", "D", "E", "F"]
-damage = 160
+damage = 100
 time_freeze = false
 regular_allowed = false
 element = "sword"
 description = "A magical shifting sword."
-limit = 4
+limit = 1
 hit_flags = ["Flinch", "Flash"]
 
-[defines]
-characters = []
-
 [dependencies]
-characters = []
 libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
