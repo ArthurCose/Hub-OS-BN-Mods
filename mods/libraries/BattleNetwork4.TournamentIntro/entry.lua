@@ -272,6 +272,7 @@ local function create_vertical_grid_lines_step(action, grid_lines)
   end
 end
 
+---@param character Entity
 local intro_func = function(character)
   local action = Action.new(character)
   action:set_lockout(ActionLockout.new_sequence())
@@ -317,6 +318,10 @@ local intro_func = function(character)
     end
   end
 
+  -- initial steps
+  create_delay_step(action, 16)
+  create_horizontal_lines_step(action)
+
   action.on_execute_func = function()
     ghost_component:eject()
 
@@ -348,9 +353,7 @@ local intro_func = function(character)
       end
     end
 
-    -- steps
-    create_delay_step(action, 16)
-    create_horizontal_lines_step(action)
+    -- steps continued
     create_vertical_grid_lines_step(action, grid_lines)
     create_delay_step(action, 12, function()
       return_entities()
