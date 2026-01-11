@@ -4,13 +4,13 @@ local bn_assets = require("BattleNetwork.Assets")
 local FINISH_SFX = bn_assets.load_audio("flashbomb.ogg")
 
 ---@class BattleNetwork4.TournamentIntro
-local Lib = {}
+local Lib = {
+  BG_COLOR = Color.new(0, 0, 0),
+  LINE_COLOR = Color.new(0, 255, 0),
+  LINE_SPEED = 16
+}
 
 local WHITE_TEXTURE = Resources.load_texture("pixel.png")
-
-local BLACK = Color.new(0, 0, 0)
-local GREEN = Color.new(0, 255, 0)
-local LINE_SPEED = 16
 
 local SCREEN_W = 240
 local SCREEN_H = 160
@@ -28,7 +28,7 @@ local function create_background()
 
   background:create_component(Lifetime.Scene).on_update_func = function()
     sprite:set_color_mode(ColorMode.Multiply)
-    sprite:set_color(BLACK)
+    sprite:set_color(Lib.BG_COLOR)
   end
 
   Field.spawn(background, 0, 0)
@@ -117,7 +117,7 @@ local function create_horizontal_lines_step(action)
   local black_lines = {}
 
   for y = 0, SCREEN_H - 1 do
-    local sprite = create_pixel(BLACK)
+    local sprite = create_pixel(Lib.BG_COLOR)
     sprite:set_offset(0, y)
     sprite:set_width(SCREEN_W)
     black_lines[#black_lines + 1] = sprite
@@ -132,7 +132,7 @@ local function create_horizontal_lines_step(action)
     local black_line = table.remove(black_lines, math.random(#black_lines))
     local y = black_line:offset().y
 
-    local sprite = create_pixel(GREEN)
+    local sprite = create_pixel(Lib.LINE_COLOR)
 
     local width = math.random(16, 120)
     sprite:set_width(width)
@@ -189,8 +189,8 @@ local function create_horizontal_lines_step(action)
     end
 
     if #black_lines > 0 then
-      create_green_line(LINE_SPEED)
-      create_green_line(-LINE_SPEED)
+      create_green_line(Lib.LINE_SPEED)
+      create_green_line(-Lib.LINE_SPEED)
     end
 
     if #green_lines == 0 then
@@ -246,7 +246,7 @@ local function create_vertical_grid_lines_step(action, grid_lines)
 
         local is_pending = true
         line:create_component(Lifetime.Scene).on_update_func = function()
-          sprite:set_color(GREEN)
+          sprite:set_color(Lib.LINE_COLOR)
           sprite:set_color_mode(ColorMode.Multiply)
 
           sprite:set_offset(x_offset, y_offset)
@@ -321,7 +321,7 @@ local intro_func = function(character)
     ghost_component:eject()
 
     for _, e in ipairs(removed_entities) do
-      local ghost = create_ghost(e, GREEN)
+      local ghost = create_ghost(e, Lib.LINE_COLOR)
       ghosts[#ghosts + 1] = ghost
 
       Field.spawn(ghost, e:current_tile())
@@ -339,7 +339,7 @@ local intro_func = function(character)
         sprite:set_offset(0, Tile:height() * y - Tile:height() // 2)
 
         h_line:create_component(Lifetime.Scene).on_update_func = function()
-          sprite:set_color(GREEN)
+          sprite:set_color(Lib.LINE_COLOR)
           sprite:set_color_mode(ColorMode.Multiply)
         end
 
