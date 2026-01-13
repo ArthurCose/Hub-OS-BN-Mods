@@ -122,13 +122,23 @@ return function(player, form, base_animation_path)
 
       Field.spawn(create_slash(player, hit_props), forward_tile)
 
+      -- spawning gusts with a delay
       local team = player:team()
-      local x = forward_tile:x()
+      local facing = player:facing()
 
-      for y = 0, Field.height() - 1 do
-        local gust = forward_gust_builder:create_spell(team, player:facing())
-        Field.spawn(gust, x, y)
+      local delayed_spawner = Spell.new()
+      delayed_spawner.on_spawn_func = function()
+        local x = forward_tile:x()
+
+        for y = 0, Field.height() - 1 do
+          local gust = forward_gust_builder:create_spell(team, facing)
+          Field.spawn(gust, x, y)
+        end
+
+        delayed_spawner:delete()
       end
+
+      Field.spawn(delayed_spawner, 0, 0)
 
       Resources.play_audio(SLASH_SFX)
     end)
