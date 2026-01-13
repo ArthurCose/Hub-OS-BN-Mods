@@ -218,13 +218,18 @@ return function(character, props)
     end
 
     if hit_props.damage > 1 then
-      hit_props.damage = hit_props.damage // 2
       remaining_blink = 24
       Resources.play_audio(DAMAGE_REDUCED_SFX, AudioBehavior.Restart)
     end
 
     return hit_props
   end
+
+  character:add_aux_prop(
+    AuxProp.new()
+    :require_hit_flags_absent(Hit.Drain)
+    :decrease_hit_damage("DAMAGE / 2")
+  )
 
   character.on_update_func = function()
     if remaining_blink <= 0 then return end
