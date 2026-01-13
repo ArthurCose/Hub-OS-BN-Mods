@@ -1,0 +1,30 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class01.Standard.106.WavePit"
+name = "WavePit"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["B", "E", "Z", "*"]
+damage = 160
+time_freeze = false
+element = "aqua"
+description = "Summon waves from broken panels!"
+long_description = """Attack by summoning up to 3 waves from broken panels! \n
+One from each row!
+"""
+can_boost = true
+card_class = "standard"
+limit = 3
+hit_flags = ["Flinch"]
+
+tags = ["WavePit"]
+
+[dependencies]
+characters = []
+libraries = [
+    "Battle.Helpers",
+    "BattleNetwork.Assets",
+]
+tile_states = ["BattleNetwork5.TileStates.Sea","BattleNetwork5.TileStates.Lava","BattleNetwork3.TileStates.Metal",
+"BattleNetwork6.TileStates.Grass"]
+

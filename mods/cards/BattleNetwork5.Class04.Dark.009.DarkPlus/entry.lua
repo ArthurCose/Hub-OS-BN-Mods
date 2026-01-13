@@ -20,9 +20,6 @@ local function create_boost_aux(user, card)
     boost = 1 - (health / max_health)
   end
 
-
-  print(boost)
-
   local aux = AuxProp.new()
       :require_card_damage(Compare.EQ, card.damage)
       :increase_card_multiplier(boost)
@@ -61,6 +58,9 @@ function card_init(actor, props)
     comp.on_update_func = function(self)
       if time == 32 then
         local card = user:field_card(1)
+
+        if card == nil then return end
+
         create_boost_aux(user, card)
         step:complete_step()
         action:end_action()
@@ -72,7 +72,7 @@ function card_init(actor, props)
       local progress = math.abs(time % 32 - 16) / 16
       time = time + 1
 
-      sprite:set_color_mode(ColorMode.Additive)
+      sprite:set_color_mode(ColorMode.Add)
       sprite:set_color(Color.mix(lime, black, progress))
     end
   end

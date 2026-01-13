@@ -29,7 +29,7 @@ function card_init(actor, props)
 			local color = sprite:color()
 			color.a = 128
 			sprite:set_color(color)
-			sprite:set_color_mode(ColorMode.Additive)
+			sprite:set_color_mode(ColorMode.Add)
 		end
 
 		Field.spawn(flash, Field.tile_at(1, 1))

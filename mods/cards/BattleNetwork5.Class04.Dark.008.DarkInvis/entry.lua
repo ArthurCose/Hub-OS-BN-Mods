@@ -45,7 +45,7 @@ function card_init(user)
       local progress = math.abs(color_timer % 32 - 16) / 16
       color_timer = color_timer + 1
 
-      sprite:set_color_mode(ColorMode.Additive)
+      sprite:set_color_mode(ColorMode.Add)
       sprite:set_color(Color.mix(transparent, black, progress))
     end
 

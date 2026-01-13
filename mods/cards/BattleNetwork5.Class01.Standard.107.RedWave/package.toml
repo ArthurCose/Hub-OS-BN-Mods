@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class01.Standard.107.RedWave"
+name = "RedWave"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["A", "F", "H", "*"]
+damage = 190
+time_freeze = false
+element = "fire"
+description = "Summon waves from lava panels!"
+long_description = """Attack by summoning up to 3 waves from lava panels! \n
+One from each row!
+"""
+can_boost = true
+card_class = "standard"
+limit = 3
+hit_flags = ["Flinch"]
+tags = ["RedWave"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"] 
+cards = ["BattleNetwork5.Class01.Standard.106.WavePit"]

@@ -1,0 +1,19 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program33.Rush"
+name = "Rush"
+flat = true
+description = "VS only! Tracks enemy"
+colors = ["yellow"]
+shape = [
+  [0, 0, 0, 0, 0],
+  [0, 0, 1, 0, 0],
+  [0, 0, 1, 0, 0],
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0]
+]
+byproducts = ["BattleNetwork6.Bugs.RushDisabled"]
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.RushDisabled"]
+libraries = ["BattleNetwork.Assets", "BattleNetwork6.Libraries.ChipNavi"]

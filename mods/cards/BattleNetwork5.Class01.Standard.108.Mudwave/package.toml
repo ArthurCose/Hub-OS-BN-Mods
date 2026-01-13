@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class01.Standard.108.Mudwave"
+name = "MudWave"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["D", "N", "W", "*"]
+damage = 170
+time_freeze = false
+element = "wood"
+description = "Summon waves from grass panels!"
+long_description = """Attack by summoning up to 3 waves from grass panels! \n
+One from each row!
+"""
+can_boost = true
+card_class = "standard"
+limit = 3
+hit_flags = ["Flinch"]
+tags = ["MudWave"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"] 
+cards = ["BattleNetwork5.Class01.Standard.106.WavePit"]

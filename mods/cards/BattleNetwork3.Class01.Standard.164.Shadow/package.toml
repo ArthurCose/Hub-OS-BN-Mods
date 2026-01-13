@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "BattleNetwork3.Class01.Standard.164.Shadow"
+name = "Shadow"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["N", "Q", "U"]
+damage = 0
+time_freeze = true
+element = "none"
+description = "Only Swrd atks deal dmg!"
+card_class = "standard"
+limit = 2
+long_description = "For 4 seconds most attacks will pass through you. Sword-element attacks will break the defense."
+can_boost = false
+
+tags = ["EXE3", "BN3", "APPLY_RUSH"]
+
+[dependencies]
+statuses = ["BattleNetwork3.Statuses.Shadow"]

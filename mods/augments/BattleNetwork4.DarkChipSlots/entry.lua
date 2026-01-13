@@ -149,14 +149,54 @@ function augment_init(augment)
 	local chip_component = player:create_component(Lifetime.CardSelectOpen)
 
 	local chip_list = {
-		{ range = 0,  wound_range = 24, id = "BattleNetwork4.Class05.Dark.001.Cannon" },
-		{ range = 12, wound_range = 27, id = "BattleNetwork4.Class05.Dark.002.Sword" },
-		{ range = 24, wound_range = 30, id = "BattleNetwork4.Class05.Dark.003.Bomb" },
-		{ range = 36, wound_range = 33, id = "BattleNetwork4.Class05.Dark.004.Vulcan" },
-		{ range = 48, wound_range = 36, id = "BattleNetwork4.Class05.Dark.005.Lance" },
-		{ range = 56, wound_range = 38, id = "BattleNetwork4.Class05.Dark.006.Spreader", },
-		{ range = 64, wound_range = 40, id = "BattleNetwork4.Class05.Dark.007.Stage" },
-		{ range = 0,  wound_range = 64, id = "BattleNetwork4.Class05.Dark.008.Recovery" },
+		{
+			range = 0,
+			wound_range = 24,
+			id = "BattleNetwork4.Class05.Dark.001.Cannon",
+
+		},
+		{
+			range = 12,
+			wound_range = 27,
+			id = "BattleNetwork4.Class05.Dark.002.Sword",
+
+		},
+		{
+			range = 24,
+			wound_range = 30,
+			id = "BattleNetwork4.Class05.Dark.003.Bomb",
+
+		},
+		{
+			range = 36,
+			wound_range = 33,
+			id = "BattleNetwork4.Class05.Dark.004.Vulcan",
+
+		},
+		{
+			range = 48,
+			wound_range = 36,
+			id = "BattleNetwork4.Class05.Dark.005.Lance",
+
+		},
+		{
+			range = 56,
+			wound_range = 38,
+			id = "BattleNetwork4.Class05.Dark.006.Spreader",
+
+		},
+		{
+			range = 64,
+			wound_range = 40,
+			id = "BattleNetwork4.Class05.Dark.007.Stage",
+
+		},
+		{
+			range = 0,
+			wound_range = 64,
+			id = "BattleNetwork4.Class05.Dark.008.Recovery",
+
+		},
 	}
 
 	local prior_draws = {}
@@ -170,32 +210,29 @@ function augment_init(augment)
 		local number = math.random(1, 64)
 		local chip;
 		local range;
-		local attempts = 0
 
 		-- Attempt to obey dark chip selection logic.
-		while chip == nil and attempts < 10 do
-			for index, value in ipairs(chip_list) do
-				if is_wounded then range = value.wound_range else range = value.range end
-				if range == 0 then goto skip end
-				if prior_draws[value.id] == 2 then goto skip end
-				if current_chips[value.id] ~= nil then goto skip end
 
-				if number <= range then
-					table.insert(current_chips, chip)
-					chip = value.id
-					break
-				end
+		for index, value in ipairs(chip_list) do
+			local id = value.id
+			if use_backup_ids == true then id = value.backup_id end
 
-				::skip::
+			if is_wounded then range = value.wound_range else range = value.range end
+			if range == 0 then goto skip end
+			if prior_draws[value.id] == 2 then goto skip end
+
+			if number <= range then
+				table.insert(current_chips, chip)
+				chip = id
+				break
 			end
 
-			number = math.random(1, 64)
-			attempts = attempts + 1
+			::skip::
 		end
 
 		if chip == nil then return end
 
-		if #current_chips > 2 then
+		if #current_chips == 2 then
 			current_chips = {}
 		end
 
@@ -214,11 +251,22 @@ function augment_init(augment)
 		local is_wounded = false
 		if player:health() <= math.floor(player:max_health() / 2) then is_wounded = true end
 
-		for i = 1, 2 do
+		local remaining_chip_count = 8
+		for index, value in ipairs(chip_list) do
+			if prior_draws[value.id] == 2 then remaining_chip_count = remaining_chip_count - 1 end
+		end
+
+		if remaining_chip_count == 0 then return end
+
+		for i = 1, 2, 1 do
 			local id = nil
-			while id == nil do
+			local attempts = 10
+			while id == nil and attempts > 0 do
 				id = get_random_chip(is_wounded)
+				attempts = attempts - 1
 			end
+
+			if id == nil then return end
 
 			player:set_fixed_card(CardProperties.from_package(id, " "), i)
 		end

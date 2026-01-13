@@ -105,7 +105,6 @@ function character_init(self, character_info)
 
     self.on_battle_start_func = function(self)
         debug_print("battle_start_func called")
-        add_enemy_to_tracking(self)
         local mob_sort_func = function(a, b)
             local met_a_tile = Field.get_entity(a):current_tile()
             local met_b_tile = Field.get_entity(b):current_tile()
@@ -123,10 +122,7 @@ function character_init(self, character_info)
     end
     self.on_spawn_func = function(self, spawn_tile)
         debug_print("on_spawn_func called")
-        --In theory we should not need to do this as they would be cleared at the end of the last battle
-        --However there is a bug in ONB V2 which causes battle_end_func to be missed sometimes.
-        left_mob_tracker:clear()
-        right_mob_tracker:clear()
+        add_enemy_to_tracking(self)
     end
     self.on_delete_func = function(self)
         debug_print("delete_func called")

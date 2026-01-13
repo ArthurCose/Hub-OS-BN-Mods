@@ -1,0 +1,5 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Bugs.BeatDisabled"
+name = "Beat Disabled"
+description = "Disables Beat if bugged at battle start."

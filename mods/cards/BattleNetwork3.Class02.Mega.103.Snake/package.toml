@@ -10,9 +10,10 @@ time_freeze = true
 element = "wood"
 description = "Call out snakes from hole"
 long_description = "Summon a Snake from every unoccupied empty or broken tile on your side of the field."
-card_class = "standard"
 limit = 1
+card_class = "mega"
 hit_flags = ["Flinch", "Flash"]
 
 [dependencies]
 cards = ["BattleNetwork6.Class01.Standard.103.Snake"]
+tile_states = ["BattleNetwork6.TileStates.Grass"]

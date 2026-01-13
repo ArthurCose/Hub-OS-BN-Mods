@@ -61,7 +61,6 @@ function card_init(actor, props)
 
 			while #player:deck_cards() > 0 do
 				player:remove_deck_card(1)
-				print(#player:deck_cards())
 			end
 
 			local shuffled = {}

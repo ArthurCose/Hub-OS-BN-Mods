@@ -11,9 +11,7 @@ function tile_state_init(custom_state)
 
     ---@param entity Entity
     local entity_update = function(entity)
-        if entity:ignoring_negative_tile_effects() then
-            return
-        end
+        if entity:ignoring_negative_tile_effects() then return end
 
         if entity:is_moving() then
             -- reset tracking
@@ -23,6 +21,10 @@ function tile_state_init(custom_state)
 
         local direction = nil
         local current_tile = entity:current_tile()
+
+        -- Do not drag if already on a magnet tile
+        if current_tile:state() == TileState.Magnet then return end
+
         local up_tile = current_tile:get_tile(Direction.Up, 1)
         local down_tile = current_tile:get_tile(Direction.Down, 1)
 
@@ -38,15 +40,11 @@ function tile_state_init(custom_state)
         local elapsed_since_movement = tracking[entity:id()] or 0
         tracking[entity:id()] = elapsed_since_movement + 1
 
-        if elapsed_since_movement < CONVEYOR_WAIT_DELAY then
-            return
-        end
+        if elapsed_since_movement < CONVEYOR_WAIT_DELAY then return end
 
         local dest = current_tile:get_tile(direction, 1)
 
-        if not entity:can_move_to(dest) then
-            return
-        end
+        if not entity:can_move_to(dest) then return end
 
         entity:slide(dest, CONVEYOR_SLIDE_DURATION)
     end

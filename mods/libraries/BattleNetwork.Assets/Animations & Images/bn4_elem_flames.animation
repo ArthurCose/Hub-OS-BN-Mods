@@ -1,0 +1,35 @@
+animation state="FIRE"
+frame duration="0.1" x="46" y="90" w="39" h="24" originx="-3" originy="12"
+frame duration="0.1" x="31" y="31" w="46" h="28" originx="-4" originy="15" 
+
+animation state="FIRE_DESPAWN"
+frame duration="0.1" x="0" y="0" w="31" h="31" originx="-13" originy="16"
+
+animation state="AQUA"
+frame duration="0.1" x="85" y="90" w="39" h="24" originx="-3" originy="12"
+frame duration="0.1" x="77" y="31" w="46" h="28" originx="-4" originy="15"
+
+animation state="AQUA_DESPAWN"
+frame duration="0.1" x="31" y="0" w="31" h="31" originx="-13" originy="16"
+
+animation state="WOOD"
+frame duration="0.1" x="0" y="118" w="39" h="24" originx="-3" originy="12"
+frame duration="0.1" x="0" y="62" w="46" h="28" originx="-4" originy="15"
+
+animation state="WOOD_DESPAWN"
+frame duration="0.1" x="62" y="0" w="31" h="31" originx="-13" originy="16"
+
+animation state="SAND"
+frame duration="0.1" x="39" y="118" w="39" h="24" originx="-3" originy="12"
+frame duration="0.1" x="46" y="62" w="46" h="28" originx="-4" originy="15"
+
+animation state="SAND_DESPAWN"
+frame duration="0.1" x="93" y="0" w="31" h="31" originx="-13" originy="16"
+
+animation state="DARK"
+frame duration="0.1" x="78" y="118" w="39" h="24" originx="-3" originy="12"
+frame duration="0.1" x="0" y="90" w="46" h="28" originx="-4" originy="15"
+
+animation state="DARK_DESPAWN"
+frame duration="0.1" x="0" y="31" w="31" h="31" originx="-13" originy="16"
+

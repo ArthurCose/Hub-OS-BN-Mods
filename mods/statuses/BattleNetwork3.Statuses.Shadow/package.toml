@@ -1,0 +1,15 @@
+[package]
+category = "status"
+id = "BattleNetwork3.Statuses.Shadow"
+name = "ShadowBody effect"
+description = "Ignore non-Sword damage"
+icon_texture_path = "icon.png"
+flag_name = "Shadow"
+blocks_flags = []
+blocked_by = []
+blocks_actions = false
+blocks_mobility = false
+durations = [240]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

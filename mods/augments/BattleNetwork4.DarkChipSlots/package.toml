@@ -26,10 +26,10 @@ augments = ["BattleNetwork6.Bugs.CustomBug"]
 cards = [
   "BattleNetwork4.Class05.Dark.001.Cannon",
   "BattleNetwork4.Class05.Dark.002.Sword",
-  "BattleNetwork4.Class05.Dark.003.Bomb",
-  "BattleNetwork4.Class05.Dark.004.Vulcan",
-  "BattleNetwork4.Class05.Dark.005.Lance",
-  "BattleNetwork4.Class05.Dark.006.Spreader",
+  "BattleNetwork4.Class05.Dark.003.Bomb", 
+  "BattleNetwork4.Class05.Dark.004.Vulcan", 
+  "BattleNetwork4.Class05.Dark.005.Lance", 
+  "BattleNetwork4.Class05.Dark.006.Spreader", 
   "BattleNetwork4.Class05.Dark.007.Stage",
   "BattleNetwork4.Class05.Dark.008.Recovery"
 ]

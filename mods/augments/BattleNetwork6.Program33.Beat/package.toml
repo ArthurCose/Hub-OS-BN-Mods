@@ -1,0 +1,19 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Program33.Beat"
+name = "Beat"
+flat = true
+description = "VS only! Snatches MegaChps"
+colors = ["blue"]
+shape = [
+  [0, 0, 0, 0, 0],
+  [0, 0, 0, 1, 0],
+  [0, 0, 1, 1, 0],
+  [0, 0, 1, 0, 0],
+  [0, 0, 0, 0, 0]
+]
+byproducts = ["BattleNetwork6.Bugs.BeatDisabled"]
+
+[dependencies]
+augments = ["BattleNetwork6.Bugs.BeatDisabled"]
+libraries = ["BattleNetwork.Assets", "BattleNetwork6.Libraries.ChipNavi"]

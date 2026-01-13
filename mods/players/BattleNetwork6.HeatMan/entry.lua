@@ -92,6 +92,7 @@ function player_init(player)
   player:add_aux_prop(
     AuxProp.new()
     :require_card_primary_element(Element.Fire)
+    :require_card_time_freeze(false)
     :increase_card_damage(50)
   )
 

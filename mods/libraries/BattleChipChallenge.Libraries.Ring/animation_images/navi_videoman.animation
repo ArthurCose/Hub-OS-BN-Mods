@@ -1,0 +1,49 @@
+animation state="CHARACTER_MOVE_DEFAULT"
+frame duration="0.05" x="172" y="6" w="37" h="79" originx="23" originy="67" flipx="1"
+
+animation state="CHARACTER_IDLE_DEFAULT"
+frame duration="0.05" x="8" y="14" w="37" h="71" originx="23" originy="67" flipx="1"
+frame duration="0.05" x="48" y="13" w="37" h="72" originx="23" originy="68" flipx="1"
+frame duration="0.05" x="88" y="12" w="37" h="73" originx="23" originy="69" flipx="1"
+frame duration="0.05" x="129" y="11" w="37" h="74" originx="23" originy="70" flipx="1"
+frame duration="0.05" x="88" y="12" w="37" h="73" originx="23" originy="69" flipx="1"
+frame duration="0.05" x="48" y="13" w="37" h="72" originx="23" originy="68" flipx="1"
+
+animation state="CHARACTER_ATTACK_DEFAULT"
+frame duration="0.1" x="16" y="92" w="34" h="71" originx="20" originy="67" flipx="1"
+frame duration="0.1" x="57" y="93" w="26" h="70" originx="13" originy="66" flipx="1"
+
+animation state="CHARACTER_ATTACK_LOOP_DEFAULT"
+frame duration="0.05" x="88" y="95" w="54" h="68" originx="34" originy="64" flipx="1"
+frame duration="0.05" x="145" y="95" w="58" h="68" originx="38" originy="64" flipx="1"
+
+animation state="CHARACTER_MOVE_RECLAIM"
+frame duration="0.05" x="172" y="174" w="37" h="79" originx="23" originy="67" flipx="1"
+
+animation state="CHARACTER_IDLE_RECLAIM"
+frame duration="0.05" x="8" y="182" w="37" h="71" originx="23" originy="67" flipx="1"
+frame duration="0.05" x="48" y="181" w="37" h="72" originx="23" originy="68" flipx="1"
+frame duration="0.05" x="88" y="180" w="37" h="73" originx="23" originy="69" flipx="1"
+frame duration="0.05" x="129" y="179" w="37" h="74" originx="23" originy="70" flipx="1"
+frame duration="0.05" x="88" y="180" w="37" h="73" originx="23" originy="69" flipx="1"
+frame duration="0.05" x="48" y="181" w="37" h="72" originx="23" originy="68" flipx="1"
+
+animation state="CHARACTER_ATTACK_RECLAIM"
+frame duration="0.1" x="20" y="258" w="34" h="71" originx="20" originy="67" flipx="1"
+frame duration="0.1" x="61" y="259" w="26" h="70" originx="13" originy="66" flipx="1"
+
+animation state="CHARACTER_ATTACK_LOOP_RECLAIM"
+frame duration="0.05" x="92" y="261" w="54" h="68" originx="34" originy="64" flipx="1"
+frame duration="0.05" x="149" y="261" w="58" h="68" originx="38" originy="64" flipx="1"
+
+animation state="TAPE_ATTACK_DEFAULT"
+frame duration="0.05" x="245" y="167" w="103" h="41" originx="36" originy="4" flipx="1"
+frame duration="0.05" x="244" y="223" w="109" h="43" originx="37" originy="5" flipx="1"
+
+animation state="TAPE_ATTACK_RECLAIM"
+frame duration="0.05" x="224" y="19" w="11" h="108" originx="7" originy="0" flipx="1"
+frame duration="0.05" x="247" y="19" w="11" h="108" originx="7" originy="0" flipx="1"
+frame duration="0.05" x="272" y="19" w="11" h="108" originx="7" originy="0" flipx="1"
+frame duration="0.05" x="298" y="19" w="11" h="108" originx="7" originy="0" flipx="1"
+frame duration="0.05" x="322" y="19" w="11" h="108" originx="7" originy="0" flipx="1"
+frame duration="0.05" x="349" y="19" w="16" h="108" originx="4" originy="0" flipx="1"

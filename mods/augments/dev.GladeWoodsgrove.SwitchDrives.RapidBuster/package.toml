@@ -1,0 +1,8 @@
+[package]
+category = "augment"
+id = "dev.GladeWoodsgrove.SwitchDrives.RapidBuster"
+name = "RpdBustr"
+slot = "Arms"
+colors = ["white"]
+description = "Hold B\nto use\nRpdShoot!"
+byproducts = []

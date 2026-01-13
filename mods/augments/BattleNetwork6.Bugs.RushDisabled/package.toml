@@ -1,0 +1,5 @@
+[package]
+category = "augment"
+id = "BattleNetwork6.Bugs.RushDisabled"
+name = "Rush Disabled"
+description = "Disables Rush if bugged at battle start."
