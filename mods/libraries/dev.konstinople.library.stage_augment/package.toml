@@ -1,0 +1,7 @@
+[package]
+category = "library"
+id = "dev.konstinople.library.stage_augment"
+name = "Stage Augment Library"
+description = """
+Library for augments that change the field.
+"""
