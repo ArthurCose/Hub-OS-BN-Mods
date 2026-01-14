@@ -326,10 +326,12 @@ local intro_func = function(character)
     ghost_component:eject()
 
     for _, e in ipairs(removed_entities) do
-      local ghost = create_ghost(e, Lib.LINE_COLOR)
-      ghosts[#ghosts + 1] = ghost
+      if not e:deleted() then
+        local ghost = create_ghost(e, Lib.LINE_COLOR)
+        ghosts[#ghosts + 1] = ghost
 
-      Field.spawn(ghost, e:current_tile())
+        Field.spawn(ghost, e:current_tile())
+      end
     end
 
     for y = 1, Field.height() - 1 do
