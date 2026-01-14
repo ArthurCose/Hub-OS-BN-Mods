@@ -314,13 +314,22 @@ function player_init(player)
     end
 
     return rod_bomb:create_action(player, function(tile)
-      if tile then
-        local rod = create_elec_rod()
-        rod:set_owner(player)
-        Field.spawn(rod, tile)
-
-        prev_rod = rod
+      if not tile then
+        return
       end
+
+      if not tile:is_walkable() then
+        local poof = bn_assets.MobMove.new("MEDIUM_END")
+        poof:set_offset(0, -16)
+        Field.spawn(poof, tile)
+        return
+      end
+
+      local rod = create_elec_rod()
+      rod:set_owner(player)
+      Field.spawn(rod, tile)
+
+      prev_rod = rod
     end)
   end
 
