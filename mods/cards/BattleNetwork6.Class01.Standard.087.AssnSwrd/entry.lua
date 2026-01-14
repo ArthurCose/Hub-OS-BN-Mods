@@ -69,7 +69,7 @@ function targeting(user)
     local tile
 
     local enemy_filter = function(character)
-        return character:team() ~= user:team() and character:hittable() and (character:remaining_status_time(Hit.Paralyze) > 0 or character:current_tile():state() == TileState.Grass or character:current_tile():state() == TileState.Ice or character:current_tile():state() == TileState.Sea or character:current_tile():state() == TileState.Volcano)
+        return character:team() ~= user:team() and character:hittable() and (character:remaining_status_time(Hit.Paralyze) > 0 or character:current_tile():state() == TileState.Grass or character:current_tile():state() == TileState.Ice or character:current_tile():state() == TileState.Sea or character:current_tile():state() == TileState.Volcano or character:current_tile():state() == TileState.Lava)
     end
     
     local enemy_list = nil

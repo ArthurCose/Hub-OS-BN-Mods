@@ -16,6 +16,8 @@ local RECOVER_TEXTURE = bn_assets.load_texture("recover.png")
 local RECOVER_ANIMATION = bn_assets.fetch_animation_path("recover.animation")
 local RECOVER_SFX = bn_assets.load_audio("recover.ogg")
 
+local shadow = bn_assets.load_texture("navi_shadow.png")
+
 local function create_sparkle()
   local artifact = Artifact.new()
   artifact:set_layer(-5)
@@ -101,9 +103,14 @@ function card_init(user, props)
     previously_visible = user:sprite():visible()
 
     roll = Spell.new(user:team())
+
+    roll:set_shadow(shadow)
+
     roll:set_facing(user:facing())
     roll:set_hit_props(HitProps.from_card(props, user:context()))
+
     roll:hide()
+
     roll:set_texture(NAVI_TEXTURE)
 
     local roll_animation = roll:animation()

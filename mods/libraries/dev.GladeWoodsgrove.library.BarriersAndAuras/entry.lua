@@ -184,6 +184,10 @@ local function shared_weakness_check(self, hit_props)
   return false
 end
 
+function BarrierLib:set_defense_rule(defense_rule)
+  self._defense_rule = defense_rule
+end
+
 function BarrierLib:set_default_defense_barrier()
   self._defense_rule.defense_func = function(defense, attacker, defender, hit_props)
     if shared_weakness_check(self, hit_props) then
@@ -300,8 +304,53 @@ function BarrierLib:set_regeneration_timer(time)
   self:enable_regeneration_timer(true)
 end
 
+function BarrierLib:enable_regen_from_movement(is_enabled)
+  self._regenerate_by_moving = is_enabled
+  self._movement_regen_component = self._owner:create_component(Lifetime.ActiveBattle)
+  self._movement_regen_component.on_update_func = function()
+    self:track_movement()
+
+    if self._moves_until_regeneration - self._movement_count <= 0 then
+      self._barrier_node:reveal()
+
+      if self._is_draw_health then
+        self._number_root:reveal()
+      end
+
+      self:set_health(self:get_max_health())
+
+      if self._regeneration_audio ~= nil then
+        Resources.play_audio(self._regeneration_audio)
+      end
+    end
+  end
+end
+
+function BarrierLib:set_moves_to_regenerate(steps)
+  self._moves_until_regeneration = steps
+  self:enable_regen_from_movement(true)
+
+  self._last_tile = nil
+  self._movement_count = 0
+end
+
 function BarrierLib:set_regeneration_audio(audio)
   self._regeneration_audio = audio
+end
+
+function BarrierLib:track_movement()
+  if self._last_tile == nil then self._last_tile = self._owner:current_tile() end
+
+  -- Ignore if owner is in drag
+  if self._owner:is_dragged() then return end
+
+  -- Ignore if owner is in an action or about to execute one
+  if self._owner:has_actions() then return end
+
+  -- Ignore if tile is the same as last frame
+  if self._last_tile == self._owner:current_tile() then return end
+
+  self._movement_count = self._movement_count + 1
 end
 
 function BarrierLib:setup_animation()
@@ -368,6 +417,7 @@ end
 
 function BarrierLib:do_shared_removal()
   if self._regeneration_timer_component ~= nil then self._regeneration_timer_component:eject() end
+  if self._movement_regen_component ~= nil then self._movement_regen_component:eject() end
 
   if self._is_draw_health then
     self._owner:sprite():remove_node(self._number_root)

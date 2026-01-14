@@ -7,6 +7,8 @@ local NAVI_ANIM_PATH = bn_assets.fetch_animation_path("navi_blastman.animation")
 
 local ATTACK_AUDIO = bn_assets.load_audio("firehit4.ogg")
 
+local shadow = bn_assets.load_texture("navi_shadow.png")
+
 ---@param user Entity
 ---@param props CardProperties
 function card_init(user, props)
@@ -19,9 +21,7 @@ function card_init(user, props)
 	local previously_visible = user:sprite():visible()
 
 	local function attempt_fireball(tile)
-		if not tile then
-			return
-		end
+		if not tile then return end
 
 		local fireball = Spell.new(user:team())
 		fireball:set_facing(user:facing())
@@ -95,6 +95,8 @@ function card_init(user, props)
 		-- Done separately from the actual state and texture assignments for a reason.
 		-- We need this to be accessible by other local functions down below.
 		navi = Artifact.new(user:team())
+
+		navi:set_shadow(shadow)
 
 		local navi_sprite = navi:sprite()
 		navi_animation = navi:animation()

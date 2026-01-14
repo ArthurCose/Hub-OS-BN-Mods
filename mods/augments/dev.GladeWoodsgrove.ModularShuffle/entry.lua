@@ -72,7 +72,7 @@ function augment_init(augment)
   local open_component = player:create_component(Lifetime.CardSelectOpen)
   open_component.on_update_func = function()
     animation:set_state("DEFAULT")
-    used_count = 0
+    used_count = math.min(augment:level(), used_count + 1)
   end
 
   augment.on_delete_func = function(self)

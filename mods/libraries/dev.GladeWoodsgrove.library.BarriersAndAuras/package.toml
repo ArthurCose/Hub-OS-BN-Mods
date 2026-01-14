@@ -64,6 +64,8 @@ Must be required as a Dependency under the 'libraries' section in a mod's packag
     ∙ get_defense_rule()
         ∙ Returns the defense rule that is currently in use.
         ∙ Shouldn't be needed for regular usage. Only use if you know what you're doing.
+    ∙ set_defense_rule(defense_rule)
+        ∙ Sets a custom Defense Rule for the Barrier or Aura to use.
     ∙ get_owner()
         ∙ Returns the entity that the defense is registered to.
     ∙ set_blocks_damage_on_destruction(boolean)
@@ -74,6 +76,12 @@ Must be required as a Dependency under the 'libraries' section in a mod's packag
     ∙ set_blocks_damage_on_weakness_hit(boolean)
         ∙ Set whether or not your Barrier or Aura blocks damage when taking a hit from its Elemental and/or HitFlag weaknesses.
         ∙ On by default. Set to false to have the entity take damage when losing their barrier/aura (e.g. BubbleWrap)
+    ∙ set_moves_to_regenerate(steps)
+        ∙ Argument is any whole number.
+        ∙ Sets the amount of movements you have to make to regenerate the Barrier or Aura.
+        ∙ Does not count during actions (e.g. StepSword) or if you are Dragged.
+    ∙ enable_regen_from_movement(is_enabled)
+        ∙ Set whether or not your Barrier or Aura regenerates.
 
 == Texture & Animation ==
     ∙ set_texture(path)

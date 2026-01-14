@@ -28,20 +28,21 @@ function card_init(actor, props)
 	local tile_Index = 1
 	local frame = { 1, 26 }
 	local frame_times = { { 1, 26 } }
-	for i = start_columns, end_columns, x_increment do
-		for j = 0, Field.height() - 1, 1 do
-			local tile = Field.tile_at(i, j)
-			if tile:state() == TileState.Sea and tile:team() == actor:team() then
-				table.insert(frame_times, frame)
-			end
-		end
-	end
+
 
 	action:override_animation_frames(frame_times)
 	action:set_lockout(ActionLockout.new_async(300))
 
 
 	action.on_execute_func = function(self, user)
+		for i = start_columns, end_columns, x_increment do
+			for j = 0, Field.height() - 1, 1 do
+				local tile = Field.tile_at(i, j)
+				if tile:state() == TileState.Sea and tile:team() == actor:team() then
+					table.insert(frame_times, frame)
+				end
+			end
+		end
 		CLOUD_SPAWNED = false
 		user:set_counterable(false)
 

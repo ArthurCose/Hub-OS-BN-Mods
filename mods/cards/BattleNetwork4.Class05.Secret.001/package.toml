@@ -8,16 +8,11 @@ codes = ["A", "F", "T"]
 damage = 50
 time_freeze = false
 element = "none"
-description = "Arrow breaks enmy chip!"
+description = "Arrow heals on hit!"
 card_class = "standard"
 limit = 1
-long_description = "Fire an arrow which destroys the enemy's current chip."
+long_description = "Fire an arrow which heals you equal to damage dealt. Doesn't heal from hitting barriers."
 hit_flags = ["Flinch", "Flash"]
 
-[defines]
-characters = []
-
 [dependencies]
-characters = []
-libraries = []
-cards = []
+libraries = ["BattleNetwork.Assets"]
