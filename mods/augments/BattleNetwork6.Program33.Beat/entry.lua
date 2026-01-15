@@ -48,7 +48,10 @@ local function track(entity, aug_owner)
                 for key, value in pairs(aux_prop_list) do
                     if value == nil then goto continue end
                     local remove_target = Field.get_entity(key)
-                    remove_target:remove_aux_prop(value)
+
+                    if remove_target then
+                        remove_target:remove_aux_prop(value)
+                    end
 
                     ::continue::
                 end
