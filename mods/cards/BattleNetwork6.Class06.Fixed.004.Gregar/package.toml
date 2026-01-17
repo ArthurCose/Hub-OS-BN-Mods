@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class06.Fixed.004.Gregar"
+name = "EDeletBm"
+long_name = "Eraser Delete Beam"
+description = """
+Pierce
+fwd and
+fire beam
+"""
+long_description = "Pierce forward and fire beam"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+hit_flags = ["Flinch", "Flash", "Paralyze"]
+dynamic_damage = true
+element = "cursor"
+hidden = true
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

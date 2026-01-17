@@ -316,6 +316,8 @@ Input = {
 ---@field intro_func fun(self: Entity): Action|nil
 --- Used to handle movement input, setting this overrides the default handling.
 ---@field movement_func fun(self: Entity, direction: Direction)
+--- Used to generate movement input, setting this overrides the input gathering method.
+---@field movement_input_func fun(self: Entity): Direction?
 --- Will not be called if there's no matching `calculate_card_charge_time_func`
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) or `nil` is expected as a return value.
@@ -514,6 +516,10 @@ Field = {}
 ---
 --- Used to handle movement input.
 ---@field movement_func fun(self: Augment, direction: Direction)
+--- Overrides [player.movement_input_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playermovement_input_func--functionself-direction).
+---
+--- Used to generate movement input.
+---@field movement_input_func fun(self: Augment): Direction?
 --- Will not be called if there's no matching `calculate_card_charge_time_func`
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) or `nil` is expected as a return value.
@@ -553,6 +559,11 @@ Augment = {}
 ---
 --- Used to handle movement input.
 ---@field movement_func fun(self: PlayerForm)
+--- Overrides [player.movement_input_func](https://docs.hubos.dev/client/lua-api/entity-api/player#playermovement_input_func--functionself-direction) when this form is active.
+--- Also overrides any [Augment](https://docs.hubos.dev/client/lua-api/entity-api/player#augment)'s override.
+---
+--- Used to generate movement input.
+---@field movement_input_func fun(self: PlayerForm): Direction?
 --- Will not be called if there's no matching `calculate_card_charge_time_func`
 ---
 --- An [Action](https://docs.hubos.dev/client/lua-api/attack-api/action) or `nil` is expected as a return value.
@@ -3885,6 +3896,32 @@ function AuxProp:immediate() end
 function AuxProp:with_callback(callback) end
 
 --- - Interval priority
+--- - `chance`: number, 1 is 100%, 0 is 0%.
+---
+--- The AuxProp will be given a random chance to pass.
+---
+--- ```lua
+--- -- one in five chance on hit to paralyze:
+--- player:add_aux_prop(
+---   AuxProp.new()
+---   :require_chance(1 / 5) -- 1 in 5 chance
+---   :require_hit_damage(Compare.GT, 0) -- on hit
+---   :apply_status(Hit.Paralyze, 20)
+--- )
+---
+--- -- 20% chance on hit to freeze:
+--- player:add_aux_prop(
+---   AuxProp.new()
+---   :require_chance(0.2)
+---   :require_hit_damage(Compare.GT, 0)
+---   :apply_status(Hit.Freeze, 20)
+--- )
+--- ```
+---@param chance number
+---@return AuxProp
+function AuxProp:require_chance(chance) end
+
+--- - Interval priority
 --- - `frames`: number
 ---
 --- The AuxProp can pass if `battle_frame_time % frames == 0`
@@ -4136,6 +4173,22 @@ function AuxProp:require_card_tag(tag) end
 ---@param tag string
 ---@return AuxProp
 function AuxProp:require_card_not_tag(tag) end
+
+--- - Body priority
+--- - `hit_flags`: [Hit](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#hit_propsflags)
+---
+--- The AuxProp will check active status [flags](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#hit_propsflags) to see if all matching flags apply.
+---@param hit_flags Hit | number
+---@return AuxProp
+function AuxProp:require_statuses(hit_flags) end
+
+--- - Body priority
+--- - `hit_flags`: [Hit](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#hit_propsflags)
+---
+--- The AuxProp will check active status [flags](https://docs.hubos.dev/client/lua-api/attack-api/hit-props#hit_propsflags) to verify no flags match.
+---@param hit_flags Hit | number
+---@return AuxProp
+function AuxProp:require_statuses_absent(hit_flags) end
 
 --- - HP Expression priority
 --- - `expr`: [Math Expression String](https://docs.hubos.dev/client/lua-api/defense-api/aux-prop#math-expression-strings), `"DAMAGE"` will represent the total damage value for all incoming hits.
