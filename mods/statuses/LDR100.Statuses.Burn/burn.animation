@@ -1,0 +1,14 @@
+animation state="DEFAULT"
+frame duration="5f" x="0" y="0" w="12" h="12" originx="6" originy="6" flipx="0" flipy="0"
+
+animation state="SMALL"
+frame duration="5f" x="13" y="0" w="16" h="12" originx="8" originy="6" flipx="0" flipy="0"
+
+animation state="BIG"
+frame duration="5f" x="30" y="0" w="20" h="12" originx="10" originy="6" flipx="0" flipy="0"
+
+animation state="BIGGER"
+frame duration="5f" x="51" y="0" w="24" h="12" originx="12" originy="6" flipx="0" flipy="0"
+
+animation state="BIGGEST"
+frame duration="5f" x="76" y="0" w="29" h="12" originx="15" originy="6" flipx="0" flipy="0"

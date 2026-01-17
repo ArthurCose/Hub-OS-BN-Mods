@@ -51,12 +51,13 @@ function remove_enemy_from_tracking(enemy)
     mob_tracker:remove_by_id(id)
 end
 
+local TEXTURE = Resources.load_texture("battle.greyscaled.png")
+
 function character_init(self, character_info)
     debug_print("character_init called")
     -- Required function, main package information
 
     -- Load character resources
-    self.texture = Resources.load_texture("battle.greyscaled.png")
     local animation = self:animation()
     animation:load("battle.animation")
 
@@ -65,11 +66,9 @@ function character_init(self, character_info)
     -- Set up character meta
     self:set_name(character_info.name)
     self:set_health(character_info.hp)
-    self:set_texture(self.texture)
+    self:set_texture(TEXTURE)
     self:set_height(character_info.height)
     self:enable_sharing_tile(false)
-    -- self:set_explosion_behavior(2, 1, false)
-    self:set_offset(0 * 0.5, 0 * 0.5)
     self:set_palette(Resources.load_texture(character_info.palette))
 
     --defense rules
@@ -120,14 +119,14 @@ function character_init(self, character_info)
         left_mob_tracker:clear()
         right_mob_tracker:clear()
     end
-    self.on_spawn_func = function(self, spawn_tile)
+    self.on_spawn_func = function(self)
         debug_print("on_spawn_func called")
         add_enemy_to_tracking(self)
     end
     self.on_delete_func = function(self)
         debug_print("delete_func called")
-        remove_enemy_from_tracking(self)
         self:default_character_delete()
+        remove_enemy_from_tracking(self)
     end
 end
 

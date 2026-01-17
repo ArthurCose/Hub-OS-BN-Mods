@@ -1,0 +1,16 @@
+[package]
+category = "status"
+id = "LDR100.Statuses.Burn"
+name = "Burn Status"
+icon_texture_path = "icon.png"
+flag_name = "BurnLDR"
+description = "Take 1 damage every 6 frames for 300 frames. Fire damage refreshes the duration and also places flames on hit. Reapplying Burn 5 times causes overheat which deals 5% Max HP and spreads fire in a plus shape (can only trigger once per burn time). Cannot be frozen while under this status and being hit by Aqua attacks remove this status but causes blind. Take 25 damage on walking on an ice panel this melts it into a sea panel."
+blocks_flags = ["Freeze"]
+blocked_by = ["Invincible"]
+blocks_actions = false
+blocks_mobility = false
+durations = [300]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+tile_states = ["BattleNetwork5.TileStates.Sea"]
