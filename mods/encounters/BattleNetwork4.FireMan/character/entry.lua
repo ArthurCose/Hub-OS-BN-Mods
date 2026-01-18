@@ -644,6 +644,7 @@ function character_init(entity)
   flame_sprite:set_texture(Resources.load_texture("overlay.png"))
   flame_sprite:use_parent_shader()
   flame_node:animation():load("overlay.animation")
+  flame_node:animation():set_state("CHARACTER_IDLE")
 
   local rank = entity:rank()
   entity:set_health(RANK_TO_HP[rank])

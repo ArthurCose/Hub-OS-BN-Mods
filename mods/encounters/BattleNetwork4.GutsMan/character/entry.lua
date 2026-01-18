@@ -487,7 +487,7 @@ function character_init(entity)
 
   -- guts machine gun
   local guts_mach_gun_factory = create_guts_mach_gun_factory(entity, RANK_TO_MACH_GUN_DAMAGE[rank])
-  local guts_mach_gun_setup_factory = create_short_range_setup_factory(entity, 3, 0)
+  local guts_mach_gun_setup_factory = create_short_range_setup_factory(entity, 3, end_idle_duration)
 
   local mach_gun_plan = ai:create_plan()
   mach_gun_plan:set_weight(3)

@@ -1117,6 +1117,7 @@ function character_init(entity)
   cape:sprite():set_texture(CAPE_TEXTURE)
   cape:sprite():use_parent_shader()
   cape:animation():load(CAPE_ANIM_PATH)
+  cape:animation():set_state("CHARACTER_IDLE")
 
   entity.on_idle_func = function()
     animation:set_state("CHARACTER_IDLE")
