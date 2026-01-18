@@ -193,6 +193,7 @@ function PanelStep:wrap_action(wrapped_action)
         original_tile:remove_reservation_for(user)
         user:set_facing(original_facing)
         debug_print("default returned")
+        returned = true
       end
     end
 
@@ -253,12 +254,15 @@ function PanelStep:wrap_action(wrapped_action)
         eject_component()
       elseif i == return_frame then
         eject_component()
-        user:current_tile():remove_entity(user)
-        original_tile:add_entity(user)
-        original_tile:remove_reservation_for(user)
-        user:set_facing(original_facing)
-        debug_print("returned")
-        returned = true
+
+        if not returned then
+          user:current_tile():remove_entity(user)
+          original_tile:add_entity(user)
+          original_tile:remove_reservation_for(user)
+          user:set_facing(original_facing)
+          debug_print("returned")
+          returned = true
+        end
       end
     end
   end
@@ -354,12 +358,15 @@ function PanelStep:create_action(user, create_action_steps)
         eject_component()
       elseif i == return_frame then
         eject_component()
-        user:current_tile():remove_entity(user)
-        original_tile:add_entity(user)
-        original_tile:remove_reservation_for(user)
-        user:set_facing(original_facing)
-        debug_print("returned")
-        returned = true
+
+        if not returned then
+          user:current_tile():remove_entity(user)
+          original_tile:add_entity(user)
+          original_tile:remove_reservation_for(user)
+          user:set_facing(original_facing)
+          debug_print("returned")
+          returned = true
+        end
       end
     end
   end
@@ -384,7 +391,7 @@ function PanelStep:create_action(user, create_action_steps)
   create_action_steps(action)
 
   -- clean up
-  action.on_action_end_func = function()
+  action:on_end(function()
     -- just in case we never landed on it
     if dest_tile then
       dest_tile:remove_reservation_for(user)
@@ -400,8 +407,9 @@ function PanelStep:create_action(user, create_action_steps)
       original_tile:remove_reservation_for(user)
       user:set_facing(original_facing)
       debug_print("default returned")
+      returned = true
     end
-  end
+  end)
 
   return action
 end
