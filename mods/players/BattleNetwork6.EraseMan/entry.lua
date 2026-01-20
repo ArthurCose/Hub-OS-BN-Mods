@@ -98,7 +98,7 @@ function player_init(player)
       local tile = cursor:get_tile(player:facing_away(), 2)
       local should_jump = false
 
-      if not tile or player:is_immobile() then
+      if not tile or player:is_immobile() or (not tile:is_walkable() and not player:ignoring_hole_tiles()) then
         tile = player:current_tile()
       end
 

@@ -11,7 +11,7 @@ fire beam
 long_description = "Pierce forward and fire beam"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-hit_flags = ["Flinch", "Flash", "Paralyze"]
+hit_flags = ["Flinch", "Flash", "Paralyze", "PierceGuard", "PierceInvis"]
 dynamic_damage = true
 element = "cursor"
 hidden = true
