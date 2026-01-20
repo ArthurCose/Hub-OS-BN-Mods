@@ -70,7 +70,7 @@ local Ai = {}
 Ai.__index = Ai
 
 ---@param plans AiPlan[]
-local function pick_plan(rolls, plans)
+local function pick_plan_index(rolls, plans)
   -- resolve total weight
   local combined_weight = 0
 
@@ -83,17 +83,17 @@ local function pick_plan(rolls, plans)
   local roll = math.random() * combined_weight
 
   -- resolve roll
-  for _, plan in ipairs(plans) do
+  for i, plan in ipairs(plans) do
     if plan:usable_after() <= rolls then
       roll = roll - plan:weight()
 
       if roll < 0 then
-        return plan
+        return i
       end
     end
   end
 
-  return plans[#plans]
+  return #plans
 end
 
 function Ai:create_plan()
@@ -113,24 +113,36 @@ end
 ---@private
 function Ai:_create_component()
   self._component = self._entity:create_component(Lifetime.Local)
+  local plans_attempted = {}
 
   self._component.on_update_func = function()
     if self._entity:has_actions() then
       return
     end
 
+    -- restore plans
+    for i = #plans_attempted, 1, -1 do
+      self._plans[#self._plans + 1] = plans_attempted[i]
+      plans_attempted[i] = nil
+    end
+
+    ---@type Action?
     local action
     local attempts = 0
 
     while true do
       while not self._action_iter do
-        local plan = pick_plan(self._rolls, self._plans)
-        self._rolls = self._rolls + 1
+        local plan_index = pick_plan_index(self._rolls, self._plans)
+        local plan = table.remove(self._plans, plan_index)
 
         if not plan then
           -- no plans
           return
         end
+
+        print(#plans_attempted)
+        plans_attempted[#plans_attempted + 1] = plan
+        print(#plans_attempted)
 
         local iter_factory = plan:action_iter_factory()
 
@@ -162,8 +174,10 @@ function Ai:_create_component()
       self._action_iter = nil
     end
 
-    ---@diagnostic disable-next-line: param-type-mismatch
-    self._entity:queue_action(action)
+    if action then
+      self._entity:queue_action(action)
+      self._rolls = self._rolls + 1
+    end
   end
 end
 
