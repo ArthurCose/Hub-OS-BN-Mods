@@ -140,9 +140,7 @@ function Ai:_create_component()
           return
         end
 
-        print(#plans_attempted)
         plans_attempted[#plans_attempted + 1] = plan
-        print(#plans_attempted)
 
         local iter_factory = plan:action_iter_factory()
 
