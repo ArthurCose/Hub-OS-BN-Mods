@@ -1,0 +1,8 @@
+[package]
+category = "library"
+id = "dev.konstinople.library.liberation"
+name = "Liberation Library"
+description = "Utilities for synchronizing server data from liberation missions."
+
+[dependencies]
+statuses = ["BattleNetwork6.Statuses.Invincible"]
