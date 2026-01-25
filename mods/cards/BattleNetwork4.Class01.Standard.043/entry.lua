@@ -56,12 +56,12 @@ function card_init(actor, props)
 			local tile = user:get_tile(user:facing(), 2)
 			local initial_tile_x = tile:x()
 			local initial_tile_y = tile:y()
-			local onebug = Field.tile_at(initial_tile_x + 1, initial_tile_y)
+			local onebug = tile:get_tile(user:facing(), 1)
 
-			local twoBug_first = Field.tile_at(initial_tile_x, initial_tile_y + 1)
-			local twoBug_Second = Field.tile_at(initial_tile_x, initial_tile_y - 1)
-			local threeBug_first = Field.tile_at(initial_tile_x + 1, initial_tile_y + 1)
-			local threeBug_Second = Field.tile_at(initial_tile_x + 1, initial_tile_y - 1)
+			local twoBug_first = tile:get_tile(Direction.Up, 1)
+			local twoBug_Second = tile:get_tile(Direction.Down, 1)
+			local threeBug_first = tile:get_tile(user:facing(), 1):get_tile(Direction.Up, 1)
+			local threeBug_Second = tile:get_tile(user:facing(), 1):get_tile(Direction.Down, 1)
 
 			if tile then
 				create_attack(user, props, tile)

@@ -59,7 +59,7 @@ function GutsMachGun.new(user, damage)
     end
 
     for i = 2, 10, 2 do
-        action:add_anim_action(i, function()
+        action:on_anim_frame(i, function()
             local spell = Spell.new(user:team())
 
             spell:set_facing(user:facing())
@@ -143,7 +143,7 @@ function GutsMachGun.new(user, damage)
         end)
 
         -- flare attachment
-        action:add_anim_action(i + 1, function()
+        action:on_anim_frame(i + 1, function()
             local flare_attachment = buster_attachment:create_attachment("ENDPOINT")
             local flare_sprite = flare_attachment:sprite()
             flare_sprite:set_texture(Resources.game_folder() .. "resources/scenes/battle/buster_flare.png")

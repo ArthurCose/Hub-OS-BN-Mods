@@ -72,7 +72,7 @@ function augment_init(augment)
   local open_component = player:create_component(Lifetime.CardSelectOpen)
   open_component.on_update_func = function()
     animation:set_state("DEFAULT")
-    used_count = math.min(augment:level(), used_count + 1)
+    used_count = math.max(0, used_count - 1)
   end
 
   augment.on_delete_func = function(self)
@@ -80,7 +80,7 @@ function augment_init(augment)
   end
 
   button.use_func = function()
-    if used_count >= augment:level() then
+    if used_count > augment:level() then
       return false
     end
 
@@ -130,7 +130,7 @@ function augment_init(augment)
       -- complete
       player:set_card_selection_blocked(false)
 
-      if used_count >= augment:level() then
+      if used_count > augment:level() then
         animation:set_state("DISABLED")
       else
         animation:set_state("DEFAULT")

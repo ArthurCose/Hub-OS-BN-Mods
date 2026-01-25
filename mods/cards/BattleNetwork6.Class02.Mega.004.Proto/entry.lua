@@ -90,8 +90,14 @@ function card_init(user, props)
     local targets = {}
     local user_x = user:current_tile():x()
     local all_enemies = Field.find_characters(function(e)
-      if e:team() == user:team() then
-        return false
+      if user:team() ~= Team.Other then
+        if e:team() == user:team() then
+          return false
+        end
+      else
+        if e:id() ~= user:id() then
+          return true
+        end
       end
 
       if not e:hittable() then

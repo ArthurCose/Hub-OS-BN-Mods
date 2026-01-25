@@ -179,8 +179,14 @@ function card_init(user, props)
       -- find nearest free enemy
       local user_x = user:current_tile():x()
       local nearest = Field.find_nearest_characters(user, function(e)
-        if e:team() == user:team() then
-          return false
+        if user:team() ~= Team.Other then
+          if e:team() == user:team() then
+            return false
+          end
+        else
+          if e:id() == user:id() then
+            return false
+          end
         end
 
         -- needs a free tile to stand on

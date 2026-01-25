@@ -1,37 +1,87 @@
 local battle_helpers = require("Battle.Helpers")
-local bn_helpers = require("BattleNetwork.Assets")
+local bn_assets = require("BattleNetwork.Assets")
 
-local attachment_texture = bn_helpers.load_texture("vulcan_attachment.png")
-local attachment_animation_path = bn_helpers.fetch_animation_path("vulcan_attachment.animation")
+local attachment_texture = bn_assets.load_texture("vulcan_attachment.png")
+local attachment_animation_path = bn_assets.fetch_animation_path("vulcan_attachment.animation")
 
-local vulcan_impact_texture = bn_helpers.load_texture("vulcan_impact.png")
-local vulcan_impact_animation_path = bn_helpers.fetch_animation_path("vulcan_impact.animation")
+local vulcan_impact_texture = bn_assets.load_texture("vulcan_impact.png")
+local vulcan_impact_animation_path = bn_assets.fetch_animation_path("vulcan_impact.animation")
 
-local bullet_hit_texture = bn_helpers.load_texture("vulcan_bullet_hit.png")
-local bullet_hit_animation_path = bn_helpers.fetch_animation_path("vulcan_bullet_hit.animation")
+local bullet_hit_texture = bn_assets.load_texture("vulcan_bullet_hit.png")
+local bullet_hit_animation_path = bn_assets.fetch_animation_path("vulcan_bullet_hit.animation")
 
-local gun_sfx = bn_helpers.load_audio("vulcan.ogg")
+local gun_sfx = bn_assets.load_audio("vulcan.ogg")
+
+local Lib = {
+    PREFIX = "VULCANDATA:",
+}
+
+---@param s string
+---@param separator string
+local function read_until(s, separator)
+    local start_index, end_index = s:find(separator)
+    return s:sub(1, start_index - 1), s:sub(end_index + 1)
+end
+
+---Parses a tag with the format `VULCANDATA:SHOTS#_ANIMATED#_STATE`
+---SHOTS# is the number of attacks the vulcan performs
+---ANIMATED# is the number of attacks the vulcan _seems_ to perform
+---STATE is the animation state for the vulcan attachment, relevant values are "Vulcan1", "Vulcan2", "Vulcan3", "SuprVulc", and "DarkVulc"
+---`*` is processed as either -infinity or infinity.
+---@param tag string
+---@return number shots, number shots_animated, string anim_state
+function Lib.data_from_tag(tag)
+    local shots, shots_animated, anim_state
+
+    local remaining_tag = tag:sub(#Lib.PREFIX + 1)
+    local value_str
+
+    value_str, remaining_tag = read_until(remaining_tag, "_")
+    shots = tonumber(string.match(value_str, "%d+")) or 3
+
+    value_str, remaining_tag = read_until(remaining_tag, "_")
+    shots_animated = tonumber(string.match(value_str, "%d+")) or 4
+
+    anim_state = tostring(remaining_tag) or "Vulcan1"
+    print(anim_state)
+
+    return shots, shots_animated, anim_state
+end
 
 function card_init(user, props)
     local action = Action.new(user, "CHARACTER_SHOOT")
     local shots_animated = 1
     local hits = 0
-    if props.short_name == "Vulcan1" then
-        shots_animated = 4
-        hits = 3
-    elseif props.short_name == "Vulcan2" then
-        shots_animated = 5
-        hits = 4
-    elseif props.short_name == "Vulcan3" then
-        shots_animated = 6
-        hits = 5
-    elseif props.short_name == "SuprVulc" then
-        shots_animated = 17
-        hits = 10
-    elseif props.short_name == "DarkVulc" then
-        shots_animated = 36;
-        hits = 24
+    local data
+
+    for _, tag in ipairs(props.tags) do
+        if string.find(tag, "VULCANDATA") then
+            data = tag
+            break
+        end
     end
+
+    if data == nil then
+        if props.short_name == "Vulcan1" then
+            shots_animated = 4
+            hits = 3
+        elseif props.short_name == "Vulcan2" then
+            shots_animated = 5
+            hits = 4
+        elseif props.short_name == "Vulcan3" then
+            shots_animated = 6
+            hits = 5
+        elseif props.short_name == "SuprVulc" then
+            shots_animated = 17
+            hits = 10
+        elseif props.short_name == "DarkVulc" then
+            shots_animated = 36;
+            hits = 24
+        end
+    else
+        hits, shots_animated, props.short_name = Lib.data_from_tag(data)
+    end
+
     local vulcan_direction = user:facing()
     local f_padding = { 1, 2 }
     local frames = { f_padding, f_padding, f_padding, f_padding, f_padding, f_padding, f_padding }
@@ -80,16 +130,16 @@ function card_init(user, props)
                     --ignore any hits beyond the first one
                     return
                 end
+
                 local hit_tile = target:current_tile()
 
                 -- Impact effect
                 battle_helpers.create_effect(facing, vulcan_impact_texture, vulcan_impact_animation_path, "IMPACT",
-                    -10 * 0.5, -55 * 0.5, -3, hit_tile, Playback.Once, true, nil)
+                    -5, -15, -3, hit_tile, Playback.Once, true, nil)
 
                 -- Hit particle
                 battle_helpers.create_effect(facing, bullet_hit_texture, bullet_hit_animation_path, "HIT",
-                    math.random(-20, 20) * 0.5, math.random(-55, -30) * 0.5, -3, hit_tile, Playback.Once, true,
-                    nil)
+                    math.random(-10, 10), math.random(-15, -15), -3, hit_tile, Playback.Once, true, nil)
 
                 create_vulcan_damage(user, vulcan_direction, hit_tile, hit_props)
             end)

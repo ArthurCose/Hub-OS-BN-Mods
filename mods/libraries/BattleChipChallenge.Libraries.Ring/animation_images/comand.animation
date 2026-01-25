@@ -1,0 +1,67 @@
+animation state="DOWN_PINK"
+frame duration="0.05" x="8" y="8" w="14" h="14" originx="7" originy="8"
+frame duration="0.05" x="24" y="8" w="14" h="14" originx="7" originy="7"
+frame duration="0.05" x="40" y="8" w="14" h="14" originx="7" originy="6"
+
+animation state="UP_PINK"
+frame duration="0.05" x="8" y="24" w="14" h="14" originx="7" originy="6"
+frame duration="0.05" x="24" y="24" w="14" h="14" originx="7" originy="7"
+frame duration="0.05" x="40" y="24" w="14" h="14" originx="7" originy="8"
+
+animation state="RIGHT_PINK"
+frame duration="0.05" x="8" y="40" w="14" h="14" originx="8" originy="7"
+frame duration="0.05" x="24" y="40" w="14" h="14" originx="7" originy="7"
+frame duration="0.05" x="40" y="40" w="14" h="14" originx="6" originy="7"
+
+animation state="LEFT_PINK"
+frame duration="0.05" x="8" y="56" w="14" h="14" originx="6" originy="7"
+frame duration="0.05" x="24" y="56" w="14" h="14" originx="7" originy="7"
+frame duration="0.05" x="40" y="56" w="14" h="14" originx="8" originy="7"
+
+animation state="DOWN_GRAY"
+frame duration="0.05" x="8" y="72" w="14" h="14" originx="7" originy="7"
+
+animation state="UP_GRAY"
+frame duration="0.05" x="24" y="72" w="14" h="14" originx="7" originy="7"
+
+animation state="RIGHT_GRAY"
+frame duration="0.05" x="40" y="72" w="14" h="14" originx="7" originy="7"
+
+animation state="LEFT_GRAY"
+frame duration="0.05" x="56" y="72" w="14" h="14" originx="7" originy="7"
+
+animation state="CURSOR_UP"
+frame duration="0.05" x="64" y="8" w="28" h="12" originx="14" originy="1"
+frame duration="0.05" x="64" y="8" w="28" h="12" originx="14" originy="0"
+frame duration="0.05" x="64" y="8" w="28" h="12" originx="14" originy="-1"
+frame duration="0.05" x="64" y="8" w="28" h="12" originx="14" originy="0"
+
+animation state="CURSOR_STOP"
+frame duration="0.05" x="64" y="24" w="28" h="28" originx="14" originy="14"
+
+animation state="CMD_O"
+frame duration="0.05" x="104" y="8" w="40" h="40" originx="20" originy="20"
+
+animation state="CMD_X"
+frame duration="0.05" x="104" y="56" w="40" h="40" originx="20" originy="20"
+
+animation state="NUMBER_0"
+frame duration="0.05" x="8" y="88" w="8" h="13" originx="4" originy="0"
+animation state="NUMBER_1"
+frame duration="0.05" x="16" y="88" w="8" h="13" originx="4" originy="0"
+animation state="NUMBER_2"
+frame duration="0.05" x="24" y="88" w="8" h="13" originx="4" originy="0"
+animation state="NUMBER_3"
+frame duration="0.05" x="32" y="88" w="8" h="13" originx="4" originy="0"
+animation state="NUMBER_4"
+frame duration="0.05" x="40" y="88" w="8" h="13" originx="4" originy="0"
+animation state="NUMBER_5"
+frame duration="0.05" x="48" y="88" w="8" h="13" originx="4" originy="0"
+animation state="NUMBER_6"
+frame duration="0.05" x="56" y="88" w="8" h="13" originx="4" originy="0"
+animation state="NUMBER_7"
+frame duration="0.05" x="64" y="88" w="8" h="13" originx="4" originy="0"
+animation state="NUMBER_8"
+frame duration="0.05" x="72" y="88" w="8" h="13" originx="4" originy="0"
+animation state="NUMBER_9"
+frame duration="0.05" x="80" y="88" w="8" h="13" originx="4" originy="0"

@@ -1,0 +1,51 @@
+imagePath="navi_larkman.png"
+
+animation state="CHARACTER_IDLE"
+frame duration="0.167" x="50" y="75" w="50" h="75" originx="27" originy="72" flipx="0" flipy="0"
+frame duration="0.133" x="412" y="0" w="50" h="76" originx="27" originy="73" flipx="0" flipy="0"
+frame duration="0.133" x="312" y="0" w="50" h="77" originx="27" originy="74" flipx="0" flipy="0"
+frame duration="0.167" x="262" y="0" w="50" h="78" originx="27" originy="75" flipx="0" flipy="0"
+frame duration="0.133" x="362" y="0" w="50" h="77" originx="27" originy="74" flipx="0" flipy="0"
+frame duration="0.133" x="0" y="75" w="50" h="76" originx="27" originy="73" flipx="0" flipy="0"
+
+animation state="CHARACTER_HIT"
+frame duration="0.067" x="100" y="75" w="56" h="69" originx="30" originy="66" flipx="0" flipy="0"
+frame duration="0.033" x="412" y="76" w="56" h="69" originx="32" originy="66" flipx="0" flipy="0"
+frame duration="0.05" x="312" y="77" w="56" h="69" originx="33" originy="66" flipx="0" flipy="0"
+frame duration="0.05" x="201" y="79" w="56" h="69" originx="32" originy="66" flipx="0" flipy="0"
+
+animation state="CHARACTER_MOVE"
+frame duration="0.017" x="262" y="78" w="50" h="75" originx="27" originy="72" flipx="0" flipy="0"
+frame duration="0.083" x="100" y="144" w="50" h="75" originx="27" originy="72" flipx="0" flipy="0"
+frame duration="0.083" x="462" y="0" w="49" h="75" originx="26" originy="72" flipx="0" flipy="0"
+frame duration="0.083" x="462" y="145" w="49" h="75" originx="26" originy="72" flipx="0" flipy="0"
+frame duration="0.083" x="150" y="144" w="50" h="75" originx="27" originy="72" flipx="0" flipy="0"
+frame duration="0.017" x="412" y="145" w="50" h="75" originx="27" originy="72" flipx="0" flipy="0"
+
+animation state="CHARACTER_SPECIAL"
+frame duration="0.167" x="201" y="0" w="61" h="79" originx="45" originy="76" flipx="0" flipy="0"
+frame duration="0.067" x="0" y="0" w="69" h="75" originx="40" originy="72" flipx="0" flipy="0"
+frame duration="0.05" x="69" y="0" w="66" h="75" originx="30" originy="72" flipx="0" flipy="0"
+frame duration="0.167" x="135" y="0" w="66" h="75" originx="29" originy="72" flipx="0" flipy="0"
+
+animation state="DIVE_UR"
+frame duration="0.033" x="312" y="146" w="53" h="56" originx="29" originy="24" flipx="0" flipy="0"
+
+animation state="DIVE_R"
+frame duration="0.033" x="0" y="151" w="64" h="44" originx="36" originy="21" flipx="0" flipy="0"
+
+animation state="DIVE_DR"
+frame duration="0.033" x="312" y="202" w="55" h="50" originx="29" originy="27" flipx="0" flipy="0"
+
+animation state="DIVE_DL"
+frame duration="0.033" x="201" y="204" w="55" h="50" originx="26" originy="27" flipx="0" flipy="0"
+
+animation state="DIVE_L"
+frame duration="0.033" x="0" y="195" w="64" h="44" originx="28" originy="21" flipx="0" flipy="0"
+
+animation state="DIVE_Ul"
+frame duration="0.033" x="201" y="148" w="53" h="56" originx="24" originy="24" flipx="0" flipy="0"
+
+animation state="BIRD"
+frame duration="0.05" x="468" y="76" w="37" h="26" originx="24" originy="13" flipx="0" flipy="0"
+frame duration="0.05" x="156" y="75" w="37" h="30" originx="23" originy="15" flipx="0" flipy="0"

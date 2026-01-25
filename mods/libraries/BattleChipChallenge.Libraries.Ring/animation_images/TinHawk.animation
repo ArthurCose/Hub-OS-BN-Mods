@@ -1,0 +1,11 @@
+animation state="DEFAULT"
+frame duration="0.033" x="8" y="8" w="105" h="80" originx="42" originy="74"
+
+animation state="DEFAULT2"
+frame duration="0.033" x="8" y="96" w="105" h="80" originx="42" originy="74"
+
+animation state="DEFAULT3"
+frame duration="0.033" x="8" y="184" w="105" h="80" originx="42" originy="74"
+
+animation state="SHADOW"
+frame duration="0.033" x="50" y="280" w="30" h="8" originx="0" originy="4"
