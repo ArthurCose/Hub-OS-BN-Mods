@@ -76,6 +76,11 @@ function card_init(user)
             :require_card_not_class(CardClass.Giga)
             :require_card_not_class(CardClass.Recipe)
             :intercept_action(function(opponent_action)
+                if user:deleted() then
+                    uninstall_all()
+                    return opponent_action
+                end
+
                 activate(opponent, opponent_action)
                 return nil
             end)

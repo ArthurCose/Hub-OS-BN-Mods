@@ -137,6 +137,11 @@ function card_init(user)
 		local intercept_auxprop = AuxProp.new()
 				:require_card_recover(Compare.GT, 0)
 				:intercept_action(function(opponent_action)
+					if user:deleted() then
+						uninstall_all()
+						return opponent_action
+					end
+
 					activate(opponent, opponent_action)
 					return nil
 				end)
