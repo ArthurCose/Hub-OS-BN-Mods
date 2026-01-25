@@ -306,6 +306,8 @@ local function create_snowball(blizzardman, damage)
   anim:set_state("SNOWBALL")
   anim:set_playback(Playback.Loop)
 
+  snowball:add_aux_prop(AuxProp.new():declare_immunity(~0))
+
   snowball:set_hit_props(HitProps.new(
     damage,
     Hit.Flash | Hit.Flinch,

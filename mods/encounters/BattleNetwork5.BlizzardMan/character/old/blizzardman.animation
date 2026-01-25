@@ -1,6 +1,0 @@
-animation state="IDLE"
-frame duration="0.1" x="0" y="130" w="53" h="61" originx="25" originy="60"
-
-animation state="TELEPORT"
-frame duration="0.1" x="0" y="68" w="82" h="62" originx="25" originy="60"
-frame duration="0.1" x="0" y="0" w="80" h="68" originx="24" originy="65"
