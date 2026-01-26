@@ -1,0 +1,24 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class01.Standard.038.ElemSand"
+name = "ElemSand"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["A","L","S","*"]
+damage = 100
+time_freeze = false
+element = "none"
+description = "Shoot a flame of sand forwards 3 squares! Whole row when on sand pane!"
+long_description = """
+Shoot a flame of sand 3 tiles forwards that hits 2 times! Standing on a
+sand panel transforms this attack to extend down the entire row!
+"""
+hit_flags = ["Flinch"]
+can_boost = true
+card_class = "standard"
+limit = 3
+tags = ["ElemSand"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"] 
+cards = ["BattleNetwork4.Class01.Standard.035.ElemFlar"]

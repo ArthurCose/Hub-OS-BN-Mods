@@ -1,0 +1,25 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class01.Standard.036.ElemLeaf"
+name = "ElemLeaf"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["C","D","I"]
+damage = 80
+time_freeze = false
+element = "wood"
+description = "Shoot a flame of grass forwards 3 squares! Whole row when on grass pane!"
+long_description = """
+Shoot a flame of grass 3 tiles forwards that hits 2 times! Standing on a
+grass panel transforms this attack to extend down the entire row!
+"""
+hit_flags = ["Flinch"]
+can_boost = true
+card_class = "standard"
+limit = 3
+
+tags = ["ElemLeaf"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"] 
+cards = ["BattleNetwork4.Class01.Standard.035.ElemFlar"]

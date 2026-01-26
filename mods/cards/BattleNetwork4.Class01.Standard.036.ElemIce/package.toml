@@ -1,0 +1,24 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class01.Standard.036.ElemIce"
+name = "ElemIce"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["H","Q","V"]
+damage = 100
+time_freeze = false
+element = "aqua"
+description = "Shoot a flame of ice forwards 3 squares! Whole row when on ice pane!"
+long_description = """
+Shoot a flame of ice 3 tiles forwards that hits 2 times! Standing on a
+ice panel transforms this attack to extend down the entire row!
+"""
+hit_flags = ["Flinch"]
+can_boost = true
+card_class = "standard"
+limit = 3
+tags = ["ElemIce"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"] 
+cards = ["BattleNetwork4.Class01.Standard.035.ElemFlar"]

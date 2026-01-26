@@ -6,6 +6,9 @@ description = "Every chip in the BattleNetwork5 namespace"
 
 [dependencies]
 cards = [
+  "BattleNetwork5.Class01.Standard.024.CactBal1",
+  "BattleNetwork5.Class01.Standard.025.CactBal2",
+  "BattleNetwork5.Class01.Standard.026.CactBal3",
   "BattleNetwork5.Class01.Standard.037",
   "BattleNetwork5.Class01.Standard.047",
   "BattleNetwork5.Class01.Standard.048",

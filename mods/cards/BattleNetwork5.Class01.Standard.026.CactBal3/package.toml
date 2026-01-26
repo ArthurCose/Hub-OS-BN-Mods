@@ -1,0 +1,23 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class01.Standard.026.CactBal3"
+name = "CactBal3"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["L", "M", "N"]
+damage = 50
+time_freeze = false
+element = "wood"
+description = "Shoot ball hit 4 times!"
+long_description = """
+Shoot a cactus ball forwards! Bounces off entities 4 times, hits barriers up to an additional 4 times!
+"""
+limit = 3
+tags = ["Cact3"]
+card_class = "standard"
+hit_flags = ["Flinch"] 
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+cards = ["BattleNetwork5.Class01.Standard.024.CactBal1"]
+

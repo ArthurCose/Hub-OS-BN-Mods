@@ -1,0 +1,15 @@
+animation state="CACT1"
+frame duration="0.1" x="8" y="8.5" w="26" h="24" originx="13" originy="10"
+frame duration="0.1" x="50" y="8.5" w="27" h="26" originx="13" originy="12"
+frame duration="0.1" x="92" y="8.5" w="28" h="28" originx="14" originy="12"
+
+animation state="CACT2"
+frame duration="0.1" x="7" y="48.5" w="26" h="24" originx="13" originy="10"
+frame duration="0.1" x="49" y="48.5" w="27" h="26" originx="13" originy="12"
+frame duration="0.1" x="91" y="48.5" w="28" h="28" originx="14" originy="12"
+
+animation state="CACT3"
+frame duration="0.1" x="7" y="89.5" w="26" h="24" originx="13" originy="10"
+frame duration="0.1" x="49" y="89.5" w="27" h="26" originx="13" originy="12"
+frame duration="0.1" x="91" y="89.5" w="28" h="28" originx="14" originy="12"
+

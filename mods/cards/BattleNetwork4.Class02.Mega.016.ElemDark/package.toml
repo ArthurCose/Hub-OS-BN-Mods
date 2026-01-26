@@ -1,0 +1,24 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class02.Mega.016.ElemDark"
+name = "ElemDark"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["E"]
+damage = 220
+time_freeze = false
+element = "none"
+description = "Shoot a flame of darkness forwards 3 squares! Whole row when on poison panel!"
+long_description = """
+Shoot a flame of darkness 3 tiles forwards that hits 2 times! Standing on a
+darkness panel transforms this attack to extend down the entire row!
+"""
+hit_flags = ["Flinch"]
+can_boost = true
+card_class = "mega"
+limit = 2
+tags = ["ElemDark"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"] 
+cards = ["BattleNetwork4.Class01.Standard.035.ElemFlar"]

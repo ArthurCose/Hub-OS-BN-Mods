@@ -1,0 +1,24 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class01.Standard.035.ElemFlar"
+name = "ElemFlar"
+damage = 100
+time_freeze = false
+element = "fire"
+description = "Shoot a flame of fire forwards 3 squares! Whole row when on ice panel!"
+long_description = """
+Shoot a flame of fire 3 tiles forwards that hits 2 times! Standing on a
+lava panel transforms this attack to extend down the entire row!
+"""
+hit_flags = ["Flinch"]
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["K","N","P"]
+limit = 3
+
+tags = ["ElemFlar"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+tile_states = ["BattleNetwork3.TileStates.Sand", "BattleNetwork6.TileStates.Ice", "BattleNetwork5.TileStates.Lava",
+"BattleNetwork6.TileStates.Grass", "BattleNetwork6.TileStates.Poison"]
