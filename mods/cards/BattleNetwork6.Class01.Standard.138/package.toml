@@ -12,4 +12,7 @@ description = "Place a RockCube in front"
 can_boost = false
 
 [dependencies]
-libraries = ["BattleNetwork6.Libraries.CubesAndBoulders"]
+libraries = [
+  "BattleNetwork.Assets",
+  "BattleNetwork6.Libraries.CubesAndBoulders"
+]

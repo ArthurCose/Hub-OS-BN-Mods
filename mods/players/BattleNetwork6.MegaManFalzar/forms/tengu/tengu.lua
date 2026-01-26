@@ -56,8 +56,9 @@ end
 
 local function create_back_gust(team, direction)
   local spell = backward_gust_builder:create_spell(team, direction)
-
+  spell:set_facing(direction)
   spell:set_texture(GUST_TEXTURE)
+
   local animation = spell:animation()
   animation:load(GUST_ANIMATION_PATH)
   animation:set_state("GREEN")
