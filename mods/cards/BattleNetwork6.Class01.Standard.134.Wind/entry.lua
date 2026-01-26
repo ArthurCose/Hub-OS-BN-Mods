@@ -73,7 +73,10 @@ function card_init(user)
     unit:set_owner(user)
     unit:set_facing(user:facing())
     unit:set_texture(TEXTURE)
-    unit:set_health(40)
+
+    -- 120 HP, LDR's suggestion
+    unit:set_health(120)
+    -- unit:set_health(40)
 
     local anim = unit:animation()
     anim:load(ANIM_PATH)

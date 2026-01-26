@@ -9,6 +9,30 @@ local explosion_audio = bn_assets.load_audio("timebomb3.ogg")
 
 local spawn_audio = bn_assets.load_audio("obstacle_spawn.ogg")
 
+---@param seed_tile Tile this tile will still be tested by test_fn
+---@param test_fn fun(tile: Tile): boolean if this returns true, this function will be called again for unchecked neighbor tiles
+local function flood_fill(seed_tile, test_fn)
+	-- find tiles using flood fill
+	---@type (Tile?)[]
+	local pending_visit = { seed_tile }
+	local visited = {}
+
+	while #pending_visit > 0 do
+		local popped = pending_visit[#pending_visit]
+		pending_visit[#pending_visit] = nil
+
+		if popped and not visited[popped] and test_fn(popped) then
+			visited[popped] = true
+
+			-- visit neighbors
+			pending_visit[#pending_visit + 1] = popped:get_tile(Direction.Up, 1)
+			pending_visit[#pending_visit + 1] = popped:get_tile(Direction.Down, 1)
+			pending_visit[#pending_visit + 1] = popped:get_tile(Direction.Left, 1)
+			pending_visit[#pending_visit + 1] = popped:get_tile(Direction.Right, 1)
+		end
+	end
+end
+
 ---@param user Entity
 ---@param tile Tile
 local function is_dest_valid(user, tile)
@@ -176,22 +200,9 @@ function card_init(user, props)
 
 		local hit_props = HitProps.from_card(props)
 
-		local spell_team = user:team()
-
 		---@param tile Tile
 		local function create_explosion_and_visual(tile)
-			local tile_team = tile:team()
-			if tile_team == spell_team then
-				if Team.Red then
-					spell_team = Team.Blue
-				else
-					spell_team = Team.Red
-				end
-			elseif tile_team == Team.Other then
-				spell_team = Team.Other
-			end
-
-			local spell = Spell.new(spell_team)
+			local spell = Spell.new(Team.Other)
 
 			-- Use TimeBomb's hit props
 			spell:set_hit_props(hit_props)
@@ -208,29 +219,17 @@ function card_init(user, props)
 
 		local function create_explosion_visual_handler()
 			-- find tiles using flood fill
-			---@type (Tile?)[]
-			local pending_visit = { bomb:current_tile() }
 			local tile_list = {}
-			local visited = {}
 			local match_team = bomb:current_tile():team()
 
-			while #pending_visit > 0 do
-				local popped = pending_visit[#pending_visit]
-				pending_visit[#pending_visit] = nil
-
-				if popped and not visited[popped] and not popped:is_edge() and popped:team() == match_team then
-					visited[popped] = true
-
-					-- accept tile
-					tile_list[#tile_list + 1] = popped
-
-					-- visit neighbors
-					pending_visit[#pending_visit + 1] = popped:get_tile(Direction.Up, 1)
-					pending_visit[#pending_visit + 1] = popped:get_tile(Direction.Down, 1)
-					pending_visit[#pending_visit + 1] = popped:get_tile(Direction.Left, 1)
-					pending_visit[#pending_visit + 1] = popped:get_tile(Direction.Right, 1)
+			flood_fill(bomb:current_tile(), function(tile)
+				if not tile:is_edge() and tile:team() == match_team then
+					tile_list[#tile_list + 1] = tile
+					return true
 				end
-			end
+
+				return false
+			end)
 
 			-- shuffle tiles, aside from the first tile
 			for i = 2, #tile_list - 1 do
