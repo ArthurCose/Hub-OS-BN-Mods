@@ -6,15 +6,15 @@ function card_init(user)
     action:set_lockout(ActionLockout.new_async(20))
 
     action.on_execute_func = function()
-        local recov = create_recov(user)
-        Field.spawn(recov, user:current_tile())
+        local busterup = create_busterup(user)
+        Field.spawn(busterup, user:current_tile())
         user:boost_attack_level(1)
     end
 
     return action
 end
 
-function create_recov(user)
+function create_busterup(user)
     local artifact = Artifact.new()
     artifact:set_texture(TEXTURE)
     artifact:set_facing(user:facing())
@@ -23,11 +23,7 @@ function create_recov(user)
     local anim = artifact:animation()
     anim:load("artifact.animation")
     anim:set_state("DEFAULT")
-    anim:on_complete(
-        function()
-            artifact:erase()
-        end
-    )
+    anim:on_complete(function() artifact:erase() end)
 
     Resources.play_audio(AUDIO)
 

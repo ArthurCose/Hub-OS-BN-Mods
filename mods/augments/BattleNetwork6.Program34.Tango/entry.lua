@@ -13,33 +13,10 @@ local BARRIER_TEXTURE = bn_assets.load_texture("bn6_barriers.png")
 local BARRIER_ANIMATION_PATH = bn_assets.fetch_animation_path("bn6_barriers.animation")
 local BARRIER_UP_SOUND = bn_assets.load_audio("barrier.ogg")
 
-local RECOVER_TEXTURE = bn_assets.load_texture("recover.png")
-local RECOVER_ANIMATION = bn_assets.fetch_animation_path("recover.animation")
-local RECOVER_AUDIO = bn_assets.load_audio("recover.ogg")
-
-local function create_recov(user)
-    local artifact = Artifact.new()
-    artifact:set_texture(RECOVER_TEXTURE)
-    artifact:set_facing(user:facing())
-    artifact:sprite():set_layer(-1)
-
-    local anim = artifact:animation()
-    anim:load(RECOVER_ANIMATION)
-    anim:set_state("DEFAULT")
-    anim:on_complete(function()
-        artifact:erase()
-    end)
-
-    Resources.play_audio(RECOVER_AUDIO)
-
-    return artifact
-end
-
 
 local function heal_and_create_barrier(user)
-    local recov = create_recov(user)
+    local recov = bn_assets.Recovery.new(user, 300)
     Field.spawn(recov, user:current_tile())
-    user:set_health(user:health() + 300)
 
     local HP = 100
 

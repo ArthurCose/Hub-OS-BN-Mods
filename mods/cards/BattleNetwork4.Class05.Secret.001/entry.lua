@@ -5,28 +5,6 @@ local bow_texture = bn_assets.load_texture("bn4_bow_roll.png")
 
 local buster_anim_path = bn_assets.fetch_animation_path("bn4_bow_roll.animation")
 
-local RECOVER_TEXTURE = bn_assets.load_texture("recover.png")
-local RECOVER_ANIMATION = bn_assets.fetch_animation_path("recover.animation")
-local RECOVER_AUDIO = bn_assets.load_audio("recover.ogg")
-
-local function create_recov(user)
-    local artifact = Artifact.new()
-    artifact:set_texture(RECOVER_TEXTURE)
-    artifact:set_facing(user:facing())
-    artifact:sprite():set_layer(-1)
-
-    local anim = artifact:animation()
-    anim:load(RECOVER_ANIMATION)
-    anim:set_state("DEFAULT")
-    anim:on_complete(function()
-        artifact:erase()
-    end)
-
-    Resources.play_audio(RECOVER_AUDIO)
-
-    return artifact
-end
-
 function card_init(player, props)
     local action = Action.new(player, "CHARACTER_SHOOT")
     action:set_lockout(ActionLockout.new_animation())
@@ -63,12 +41,8 @@ function card_init(player, props)
             end
 
             spell.on_attack_func = function(self, other)
-                local recover = create_recov(user)
-                recover.on_spawn_func = function()
-                    user:set_health(math.min(user:max_health(), user:health() + props.damage))
-                end
-
-                Field.spawn(recover, user:current_tile())
+                local recov = bn_assets.Recovery.new(player, props.damage)
+                Field.spawn(recov, player:current_tile())
             end
 
             spell.on_collision_func = function(self, other)

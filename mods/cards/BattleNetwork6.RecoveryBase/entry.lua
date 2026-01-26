@@ -1,36 +1,13 @@
-local bn_helpers = require("BattleNetwork.Assets")
-
-local TEXTURE = bn_helpers.load_texture("recover.png")
-local ANIMATION = bn_helpers.fetch_animation_path("recover.animation")
-local AUDIO = bn_helpers.load_audio("recover.ogg")
+local bn_assets = require("BattleNetwork.Assets")
 
 function card_init(user, props)
     local action = Action.new(user)
     action:set_lockout(ActionLockout.new_async(30))
 
     action.on_execute_func = function(self)
-        local recov = create_recov(user)
+        local recov = bn_assets.Recovery.new(user, props.recover)
         Field.spawn(recov, user:current_tile())
-        user:set_health(user:health() + props.recover)
     end
 
     return action
-end
-
-function create_recov(user)
-    local artifact = Artifact.new()
-    artifact:set_texture(TEXTURE)
-    artifact:set_facing(user:facing())
-    artifact:sprite():set_layer(-1)
-
-    local anim = artifact:animation()
-    anim:load(ANIMATION)
-    anim:set_state("DEFAULT")
-    anim:on_complete(function()
-        artifact:erase()
-    end)
-
-    Resources.play_audio(AUDIO)
-
-    return artifact
 end

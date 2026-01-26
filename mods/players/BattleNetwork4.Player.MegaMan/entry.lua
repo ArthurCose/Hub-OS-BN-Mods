@@ -56,10 +56,6 @@ local staged_soul_wind = Resources.load_texture("SOUL_ICON_WIND.png")
 local staged_soul_search = Resources.load_texture("SOUL_ICON_SEARCH.png")
 local staged_soul_thunder = Resources.load_texture("SOUL_ICON_THUNDER.png")
 
-local RECOVER_AUDIO = bn_assets.load_audio("recover.ogg")
-local RECOVER_TEXTURE = bn_assets.load_texture("recover.png")
-local RECOVER_ANIMATION = bn_assets.fetch_animation_path("recover.animation")
-
 local bubble_impact_texture = bn_assets.load_texture("bn4_bubble_impact.png")
 local bubbler_buster_texture = bn_assets.load_texture("bn4_bubbler_buster.png")
 local bubble_impact_animation_path = bn_assets.fetch_animation_path("bn4_bubble_impact.animation")
@@ -180,7 +176,7 @@ function player_init(player)
         local facing = tile:facing()
         local hit_props = HitProps.new(
             0,
-            Hit.None | Hit.Drag,
+            Hit.None,
             Element.None,
             player:context(),
             Drag.new(facing, 1)
@@ -207,6 +203,19 @@ function player_init(player)
             self:attack_tile()
 
             self:slide(self:current_tile():get_tile(self:facing(), 1), 2)
+        end
+
+        gust.on_collision_func = function(self, other)
+            if Obstacle.from(other) == true then self:erase() end
+        end
+
+        gust.on_attack_func = function(self, other)
+            local slide_tile = other:get_tile(other:facing(), 1)
+
+            if not other:can_move_to(slide_tile) then return end
+            if other:is_moving() then return end
+
+            other:queue_movement(Movement.new_slide(slide_tile, 6))
         end
 
         gust.on_delete_func = function(self)
@@ -357,28 +366,6 @@ function player_init(player)
         return result
     end
 
-    local function create_recov()
-        local artifact = Artifact.new()
-        artifact:set_texture(RECOVER_TEXTURE)
-        artifact:set_facing(player:facing())
-        artifact:sprite():set_layer(-1)
-
-        local anim = artifact:animation()
-        anim:load(RECOVER_ANIMATION)
-        anim:set_state("DEFAULT")
-        anim:on_complete(function()
-            artifact:erase()
-        end)
-
-        artifact.on_spawn_func = function()
-            Resources.play_audio(RECOVER_AUDIO)
-        end
-
-        if player:spawned() then
-            Field.spawn(artifact, player:current_tile())
-        end
-    end
-
     local function create_form_prop(required_element, is_exclusive, minimum_damage, damage_bonus, hit_flag,
                                     is_duration, duration_or_level)
         local prop = AuxProp.new()
@@ -522,7 +509,10 @@ function player_init(player)
             player:set_health(player:health() + math.floor(player:max_health() * 0.1))
             return action
         end)
-        :with_callback(create_recov)
+        :with_callback(function()
+            local recov = bn_assets.Recovery.new(player)
+            Field.spawn(recov, player:current_tile())
+        end)
 
     local damage_plus_thirty = create_form_prop(Element.None, true, 1, 30, nil, nil, nil)
 
@@ -1918,8 +1908,8 @@ function player_init(player)
         local player_tile = player:current_tile()
         if player_tile:state() == TileState.Lava then
             player_tile:set_state(TileState.Normal)
-            player:set_health(player:health() + 50)
-            create_recov()
+            local recov = bn_assets.Recovery.new(player, 50)
+            Field.spawn(recov, player:current_tile())
         end
     end
 

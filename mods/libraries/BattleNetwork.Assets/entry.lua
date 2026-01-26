@@ -17,6 +17,36 @@ function Lib.load_audio(name)
     return Resources.load_audio(sounds_folder .. name)
 end
 
+-- Recovery Effect support
+Lib.Recovery = {}
+function Lib.Recovery.new(user, heal_amount)
+    local RECOVER_TEXTURE = Lib.load_texture("recover.png")
+    local RECOVER_ANIMATION = Lib.fetch_animation_path("recover.animation")
+    local RECOVER_AUDIO = Lib.load_audio("recover.ogg")
+
+    local artifact = Artifact.new()
+    artifact:set_texture(RECOVER_TEXTURE)
+    artifact:set_facing(user:facing())
+    artifact:sprite():set_layer(-1)
+
+    local anim = artifact:animation()
+    anim:load(RECOVER_ANIMATION)
+    anim:set_state("DEFAULT")
+    anim:on_complete(function()
+        artifact:erase()
+    end)
+
+    artifact.on_spawn_func = function()
+        if type(heal_amount) == "number" then
+            user:set_health(math.min(user:max_health(), user:health() + heal_amount))
+        end
+
+        Resources.play_audio(RECOVER_AUDIO)
+    end
+
+    return artifact
+end
+
 -- Poof support
 Lib.ParticlePoof = {}
 
