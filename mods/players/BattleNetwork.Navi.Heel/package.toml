@@ -1,0 +1,17 @@
+[package]
+category = "player"
+id = "BattleNetwork.Navi.Heel"
+past_ids = ["dev.konstinople.player.Heel"]
+name = "Heel"
+description = ""
+health = 1000
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+overworld_animation_path = "overworld.animation"
+overworld_texture_path = "overworld.png"
+mugshot_texture_path = "mug.png"
+mugshot_animation_path = "mug.animation"
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+cards = ["BattleNetwork6.Class01.Standard.058"]
