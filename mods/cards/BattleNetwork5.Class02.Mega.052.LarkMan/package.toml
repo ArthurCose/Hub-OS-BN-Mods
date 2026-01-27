@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class02.Mega.052.LarkMan"
+name = "LarkMan"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "S" ]
+damage = 140
+time_freeze = true
+regular_allowed = false
+element = "wind"
+description = "Whirl forward and atk"
+can_boost = true
+card_class = "mega"
+hit_flags = [ "Flinch", "Flash" ]
+limit = 1
+tags = ["NAVI"]
+
+[dependencies]
+libraries = ["BattleNetwork6.Libraries.ChipNavi", "BattleNetwork.Assets"]

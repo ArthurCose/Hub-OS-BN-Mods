@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "BattleNetwork5.Class02.Mega.053.LarkManEX"
+name = "LarkMan\ue000"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "S" ]
+damage = 180
+time_freeze = true
+regular_allowed = false
+element = "wind"
+description = "Whirl forward and atk"
+can_boost = true
+card_class = "mega"
+hit_flags = [ "Flinch", "Flash" ]
+limit = 1
+tags = ["BN5", "EXE5", "NAVI"]
+
+[dependencies]
+cards = ["BattleNetwork5.Class02.Mega.052.LarkMan"]

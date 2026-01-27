@@ -44,18 +44,15 @@ local function track(entity, aug_owner)
 
             aux_prop_list[action_owner:id()] = nil
 
-            beat_action.on_execute_func = function()
-                for key, value in pairs(aux_prop_list) do
-                    if value == nil then goto continue end
-                    local remove_target = Field.get_entity(key)
+            for key, value in pairs(aux_prop_list) do
+                local remove_target = Field.get_entity(key)
 
-                    if remove_target then
-                        remove_target:remove_aux_prop(value)
-                    end
-
-                    ::continue::
+                if remove_target then
+                    remove_target:remove_aux_prop(value)
                 end
+            end
 
+            beat_action.on_execute_func = function()
                 ChipNaviLib.exit(aug_owner, function()
                     ChipNaviLib.delay_for_swap(function()
                         local beat_artifact = Artifact.new()
