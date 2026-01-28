@@ -6,6 +6,86 @@ local BURST_TEXTURE = bn_assets.load_texture("spread_impact.png")
 local BURST_ANIM_PATH = bn_assets.fetch_animation_path("spread_impact.animation")
 local AUDIO = bn_assets.load_audio("spreader.ogg")
 
+local function create_attack(user, props)
+	local spell = Spell.new(user:team())
+	local direction = user:facing()
+	local reverse = user:facing_away()
+
+	spell:set_facing(direction)
+
+	spell:set_hit_props(
+		HitProps.from_card(
+			props,
+			user:context(),
+			Drag.None
+		)
+	)
+
+	spell.on_update_func = function()
+		spell:attack_tile()
+
+		if spell:is_moving() then
+			return
+		end
+
+		local dest = spell:get_tile(direction, 1)
+
+		if dest then
+			spell:slide(dest, 2)
+		else
+			spell:delete()
+		end
+	end
+
+	spell.on_collision_func = function(self, other)
+		if spell:deleted() then
+			return
+		end
+
+		local tile = spell:current_tile()
+
+		local burst_tiles = {
+			tile:get_tile(Direction.join(direction, Direction.Up), 1),
+			tile:get_tile(direction, 1),
+			tile:get_tile(Direction.join(direction, Direction.Down), 1),
+			tile:get_tile(Direction.Down, 1),
+			tile:get_tile(Direction.join(reverse, Direction.Down), 1),
+			tile:get_tile(reverse, 1),
+			tile:get_tile(Direction.join(reverse, Direction.Up), 1),
+			tile:get_tile(Direction.Up, 1),
+		}
+
+		for i = 1, #burst_tiles, 1 do
+			local spawn_tile = burst_tiles[i]
+
+			if not spawn_tile or spawn_tile:is_edge() then
+				goto continue
+			end
+
+			local fx = Artifact.new()
+			fx:set_texture(BURST_TEXTURE)
+			fx:animation():load(BURST_ANIM_PATH)
+			fx:animation():set_state("DARK")
+			fx:animation():on_complete(function()
+				fx:erase()
+			end)
+
+			fx:set_elevation(8.0)
+
+			Field.spawn(fx, spawn_tile)
+			spell:attack_tile(spawn_tile)
+
+			::continue::
+		end
+
+		spell:delete()
+	end
+
+	Resources.play_audio(AUDIO)
+
+	return spell
+end
+
 function card_mutate(user, card_index)
 	if Player.from(user) == nil then return end
 	user:boost_augment("BattleNetwork4.Bugs.PanelBug", 3)
@@ -30,94 +110,10 @@ function card_init(actor, props)
 
 		local tile = user:get_tile(user:facing(), 1)
 		if tile then
-			local cannonshot = create_attack(user, props)
-			Field.spawn(cannonshot, tile)
+			local spell = create_attack(user, props)
+			Field.spawn(spell, tile)
 		end
 	end
+
 	return action
-end
-
-function create_attack(user, props)
-	local spell = Spell.new(user:team())
-	local direction = user:facing()
-	local reverse = user:facing_away()
-
-	spell:set_facing(direction)
-
-	spell:set_hit_props(
-		HitProps.from_card(
-			props,
-			user:context(),
-			Drag.None
-		)
-	)
-
-	local slide_started = false
-	local should_erase = false
-
-	spell.on_update_func = function(self)
-		local tile = spell:current_tile()
-		if should_erase == true then
-			local burst_tiles = {
-				tile:get_tile(Direction.join(direction, Direction.Up), 1),
-				tile:get_tile(direction, 1),
-				tile:get_tile(Direction.join(direction, Direction.Down), 1),
-				tile:get_tile(Direction.Down, 1),
-				tile:get_tile(Direction.join(reverse, Direction.Down), 1),
-				tile:get_tile(reverse, 1),
-				tile:get_tile(Direction.join(reverse, Direction.Up), 1),
-				tile:get_tile(Direction.Up, 1),
-			}
-
-			for i = 1, #burst_tiles, 1 do
-				local fx = Artifact.new()
-				fx:set_texture(BURST_TEXTURE)
-				fx:animation():load(BURST_ANIM_PATH)
-				fx:animation():set_state("DARK")
-				fx:animation():on_complete(function()
-					fx:erase()
-				end)
-
-				fx:set_elevation(8.0)
-
-				local spawn_tile = burst_tiles[i]
-				if spawn_tile and not spawn_tile:is_edge() then
-					Field.spawn(fx, spawn_tile)
-					spawn_tile:attack_entities(self)
-				end
-			end
-
-			self:delete()
-
-			return
-		end
-
-		tile:attack_entities(self)
-
-		if self:is_sliding() == false then
-			if tile:is_edge() and slide_started then
-				self:delete()
-			end
-
-			local dest = self:get_tile(direction, 1)
-
-			self:slide(dest, 2, function() slide_started = true end)
-		end
-	end
-
-	spell.on_collision_func = function(self, other)
-		should_erase = true;
-	end
-
-	spell.on_delete_func = function(self)
-		self:erase()
-	end
-
-	spell.can_move_to_func = function(tile)
-		return true
-	end
-
-	Resources.play_audio(AUDIO)
-
-	return spell
 end
