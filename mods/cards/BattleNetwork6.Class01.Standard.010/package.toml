@@ -2,6 +2,7 @@
 category = "card"
 id = "BattleNetwork6.Class01.Standard.010"
 name = "Spreadr2"
+long_name = "Spreader2"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
 codes = ["A", "B", "C", "*"]
