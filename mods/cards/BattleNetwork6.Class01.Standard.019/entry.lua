@@ -39,21 +39,7 @@ local function create_flame_spell(user, props)
 
     spell:set_facing(user:facing())
 
-    spell.has_spawned = false
-
-    spell.on_spawn_func = function(self)
-        self.has_spawned = true
-
-        local tile = self:current_tile()
-
-        if not tile:is_walkable() then return end
-
-        if tile:state() == TileState.Cracked then
-            tile:set_state(TileState.Broken)
-        else
-            tile:set_state(TileState.Cracked)
-        end
-    end
+    local timer = 0
 
     spell.on_collision_func = function(self, other)
         local fx = Spell.new(self:team())
@@ -78,14 +64,25 @@ local function create_flame_spell(user, props)
     end
 
     spell.on_update_func = function(self)
-        self:current_tile():attack_entities(self)
+        self:attack_tile()
     end
+
+    spell.on_delete_func = function(self)
+        local tile = self:current_tile()
+        if tile:state() == TileState.Cracked then
+            tile:set_state(TileState.Broken)
+        elseif tile:can_set_state(TileState.Cracked) then
+            tile:set_state(TileState.Cracked)
+        end
+        self:erase()
+    end
+
     return spell
 end
 
 local function despawn_flame(flame)
     -- Do nothing if the flame never appeared.
-    if flame._has_spawned ~= true then return end
+    if flame:spawned() then return end
 
     -- Change the animation and erase on completion.
     local anim = flame:animation()
@@ -101,8 +98,12 @@ function card_init(actor, props)
     local action = Action.new(actor, "CHARACTER_SHOOT")
     local tile_array = {}
     local frames = { { 1, 35 } }
+
     action:override_animation_frames(frames)
     action:set_lockout(ActionLockout.new_animation())
+
+    local flame1, flame2, flame3
+
     action.on_execute_func = function(self, user)
         local self_tile = user:current_tile()
         local facing = user:facing()
@@ -120,9 +121,9 @@ function card_init(actor, props)
         buster_sprite:set_layer(-2)
         buster_sprite:use_root_shader()
 
-        self.flame1 = create_flame_spell(user, props)
-        self.flame2 = create_flame_spell(user, props)
-        self.flame3 = create_flame_spell(user, props)
+        flame1 = create_flame_spell(user, props)
+        flame2 = create_flame_spell(user, props)
+        flame3 = create_flame_spell(user, props)
 
         buster_sprite:set_texture(buster_texture)
         buster_sprite:set_layer(-2)
@@ -137,14 +138,14 @@ function card_init(actor, props)
         local fire_x = buster_point.x - origin.x + 21 - Tile:width()
         local fire_y = buster_point.y - origin.y
 
-        self.flame1:set_offset(fire_x, fire_y)
-        self.flame2:set_offset(fire_x, fire_y)
-        self.flame3:set_offset(fire_x, fire_y)
+        flame1:set_offset(fire_x, fire_y)
+        flame2:set_offset(fire_x, fire_y)
+        flame3:set_offset(fire_x, fire_y)
 
         -- spawn first flame
         Resources.play_audio(AUDIO)
         if #tile_array > 0 then
-            Field.spawn(self.flame1, tile_array[1])
+            Field.spawn(flame1, tile_array[1])
         end
 
         local time = 0
@@ -154,26 +155,26 @@ function card_init(actor, props)
             if time == 5 then
                 if #tile_array > 1 then
                     -- queue spawn frame 5, should appear frame 6
-                    Field.spawn(self.flame2, tile_array[2])
+                    Field.spawn(flame2, tile_array[2])
                 end
             elseif time == 9 then
                 if #tile_array > 2 then
                     -- queue spawn frame 9, should appear frame 10
-                    Field.spawn(self.flame3, tile_array[3])
+                    Field.spawn(flame3, tile_array[3])
                 end
             elseif time == 25 then
-                despawn_flame(self.flame1)
+                despawn_flame(flame1)
             elseif time == 26 then
-                despawn_flame(self.flame2)
+                despawn_flame(flame2)
             elseif time == 27 then
-                despawn_flame(self.flame3)
+                despawn_flame(flame3)
             end
         end
     end
     action.on_action_end_func = function(self)
-        if not self.flame1:deleted() then self.flame1:erase() end
-        if not self.flame2:deleted() then self.flame2:erase() end
-        if not self.flame3:deleted() then self.flame3:erase() end
+        if not flame1:deleted() then flame1:erase() end
+        if not flame2:deleted() then flame2:erase() end
+        if not flame3:deleted() then flame3:erase() end
     end
     return action
 end

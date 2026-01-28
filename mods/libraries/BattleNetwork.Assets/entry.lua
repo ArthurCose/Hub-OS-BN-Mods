@@ -37,7 +37,7 @@ function Lib.Recovery.new(user, heal_amount)
     end)
 
     artifact.on_spawn_func = function()
-        if type(heal_amount) == "number" then
+        if heal_amount ~= nil then
             user:set_health(math.min(user:max_health(), user:health() + heal_amount))
         end
 

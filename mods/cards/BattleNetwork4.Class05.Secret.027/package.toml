@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class05.Secret.027"
+name = "MetlGer3"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["I", "L", "Q", "*"]
+damage = 160
+time_freeze = true
+hit_flags = ["Flash", "Flinch"]
+element = "break"
+description = "Gear crushes enmy area"
+can_boost = true
+limit = 2
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

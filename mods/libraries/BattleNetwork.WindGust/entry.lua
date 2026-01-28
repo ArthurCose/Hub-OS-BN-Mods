@@ -65,7 +65,7 @@ function WindGustBuilder:create_spell(team, direction)
     local tile = spell:current_tile()
     spell:attack_tile()
 
-    if self._despawn_on_team and tile:team() == team and team ~= Team.Other then
+    if self._despawn_on_team and tile:team() == team then
       spell:delete()
       return
     end

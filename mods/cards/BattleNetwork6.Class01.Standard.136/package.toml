@@ -1,0 +1,24 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.136"
+name = "Magnum"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["F", "L", "W"]
+damage = 130
+time_freeze = true
+element = "cursor"
+limit = 3
+description = "Cursor destroys panel!"
+can_boost = true
+hit_flags = [
+    "Flinch",
+    "Flash",
+    "PierceGround",
+    ]
+
+[defines]
+characters = []
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

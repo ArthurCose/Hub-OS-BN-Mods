@@ -1,0 +1,14 @@
+[package]
+category = "card"
+id = "BattleNetwork2.Class01.Standard.017.LittleBomb"
+name = "LilBomb"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["F", "J", "O", "Q", "T", "*"]
+damage = 160
+hit_flags = ["Flinch", "PierceGround"]
+description = "Bomb that explodes vertically"
+limit = 5
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.bomb"]

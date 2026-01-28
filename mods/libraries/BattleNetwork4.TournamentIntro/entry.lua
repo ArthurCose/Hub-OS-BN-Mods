@@ -388,7 +388,7 @@ function Lib.init()
 
   artifact.on_spawn_func = function()
     Field.find_characters(function(c)
-      if is_first_character then
+      if not c:deleted() and is_first_character then
         c.intro_func = intro_func
         is_first_character = false
       else

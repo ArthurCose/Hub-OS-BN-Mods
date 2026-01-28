@@ -10,16 +10,6 @@ local BOOM_TEXT = bn_assets.load_texture("fire_tower.png")
 
 local BURN_INTERVAL = 6
 
-local function spawn_alert(parent)
-  local alert_artifact = Alert.new()
-  alert_artifact:sprite():set_never_flip(true)
-
-  local movement_offset = parent:movement_offset()
-  alert_artifact:set_offset(movement_offset.x, movement_offset.y - parent:height())
-
-  parent:field():spawn(alert_artifact, parent:current_tile())
-end
-
 ---@param status Status
 function status_init(status)
   local entity = status:owner()
@@ -142,9 +132,17 @@ function status_init(status)
       end
     end
 
-    if hit_props.element == Element.Aqua or hit_props.secondary_element == Element.Aqua then
+    if hit_props.element == Element.Aqua or hit_props.secondary_element == Element.Aqua then  
+      entity:apply_status(Hit.Blind, 180)
+      local extra = math.floor(hit_props.damage * (0.15 + (0.5 * (entity:remaining_status_time(Hit.BurnLDR) / 900))))
+      
+      local vuln_prop = AuxProp.new()
+        :require_hit_damage(Compare.GE, 50)
+        :require_hit_flags_absent(Hit.Drain)
+        :increase_hit_damage(extra)
+        :once()
+      entity:add_aux_prop(vuln_prop)
       hit_props.damage = 0
-      entity:apply_status(Hit.Blind, entity:remaining_status_time(Hit.BurnLDR))
       status:set_remaining_time(0)
     end
 

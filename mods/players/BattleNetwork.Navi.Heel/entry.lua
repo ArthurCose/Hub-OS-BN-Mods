@@ -11,7 +11,7 @@ function player_init(player)
     end
 
     player.charged_attack_func = function()
-        local card_props = CardProperties.from_package("BattleNetwork6.Class01.Standard.058")
+        local card_props = CardProperties.from_package("BattleNetwork2.Class01.Standard.017.LittleBomb")
         card_props.damage = player:attack_level() * 10
 
         return Action.from_card(player, card_props)

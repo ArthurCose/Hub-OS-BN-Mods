@@ -1,0 +1,9 @@
+animation state="DEFAULT_REVERSE"
+frame duration="4f" x="6" y="6" w="38" h="28" originx="19" originy="22"
+frame duration="4f" x="49" y="7" w="39" h="27" originx="19" originy="21"
+frame duration="4f" x="92" y="7" w="39" h="27" originx="20" originy="21"
+
+animation state="DEFAULT"
+frame duration="4f" x="6" y="6" w="38" h="28" originx="19" originy="22"
+frame duration="4f" x="92" y="7" w="39" h="27" originx="20" originy="21"
+frame duration="4f" x="49" y="7" w="39" h="27" originx="19" originy="21"
