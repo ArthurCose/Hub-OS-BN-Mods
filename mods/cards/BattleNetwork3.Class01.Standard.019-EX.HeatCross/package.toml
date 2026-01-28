@@ -2,17 +2,16 @@
 category = "card"
 id = "BattleNetwork3.Class01.Standard.019-EX.HeatCross"
 name = "HeatCros"
+long_name = "HeatCross"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = [ "K", "L", "M", "S", "X", "*" ]
+codes = ["K", "L", "M", "S", "X", "*"]
 damage = 40
 time_freeze = false
 element = "fire"
 description = "Explodes 4 diagonal squares"
-hit_flags = [ "None" ]
+hit_flags = ["None"]
 limit = 5
 
 [dependencies]
-libraries = [
-    "BattleNetwork.Assets"
-]
+libraries = ["BattleNetwork.Assets"]
