@@ -1,0 +1,18 @@
+[package]
+category = "card"
+id = "BattleNetwork3.Class01.Standard.017-EX.BubPlus"
+name = "BubPlus"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "C", "J", "N", "P", "S", "*" ]
+damage = 60
+time_freeze = false
+element = "aqua"
+description = "Explodes 4 adj. squares"
+hit_flags = [ "None" ]
+limit = 5
+
+[dependencies]
+libraries = [
+    "BattleNetwork.Assets"
+]
