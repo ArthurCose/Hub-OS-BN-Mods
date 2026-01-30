@@ -65,7 +65,9 @@ end
 
 ---@param status Status
 function status_init(status)
-  Resources.play_audio(SFX)
+  if not status:reapplied() then
+    Resources.play_audio(SFX)
+  end
 
   local entity = status:owner()
   local entity_animation = entity:animation()
@@ -75,8 +77,10 @@ function status_init(status)
   sprite:set_layer(-1)
 
   if entity_animation:has_state("CHARACTER_HIT") then
-    entity:cancel_movement()
-    entity:cancel_actions()
+    if not status:reapplied() then
+      entity:cancel_movement()
+      entity:cancel_actions()
+    end
 
     entity_animation:set_state("CHARACTER_HIT", { { 1, 1 } })
     entity_animation:on_complete(function()
