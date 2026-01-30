@@ -38,7 +38,8 @@ end
 local function is_dest_valid(user, tile)
 	return not tile:is_reserved() and
 			tile:is_walkable() and
-			tile:team() ~= user:team()
+			tile:team() ~= user:team() or
+			tile:team() == Team.Other
 end
 
 ---@param user Entity
