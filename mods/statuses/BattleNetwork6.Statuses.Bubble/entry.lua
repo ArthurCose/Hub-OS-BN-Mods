@@ -124,7 +124,7 @@ function status_init(status)
       status:set_remaining_time(remaining_time - 1)
 
       -- speed up animation
-      time = time + 1
+      time = time + 5
     end
   end
 
@@ -160,10 +160,8 @@ function status_init(status)
 
   -- clean up
   status.on_delete_func = function()
-    entity:remove_defense_rule(defense_rule)
-    entity:set_elevation(entity:elevation() - last_added_elevation)
-
     entity:remove_aux_prop(aux_prop)
+    entity:remove_defense_rule(defense_rule)
 
     -- pop
     local artifact = spawn_pop(entity)
@@ -171,6 +169,7 @@ function status_init(status)
     -- remove sprites after the artifact spawns for a seamless pop
     artifact.on_spawn_func = function()
       entity:sprite():remove_node(sprite)
+      entity:set_elevation(entity:elevation() - last_added_elevation)
       component:eject()
     end
   end
