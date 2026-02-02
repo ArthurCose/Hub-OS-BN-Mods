@@ -60,12 +60,9 @@ function create_wideshot(user, props)
 	)
 
 	local attacking = false
-	spell:set_tile_highlight(Highlight.Flash)
 
 	local anim = spell:animation()
 	spell:set_texture(SHOT_TEXTURE)
-
-	local can_move_yet = false
 
 	local buster_point = user:animation():get_point("BUSTER")
 	local origin = user:sprite():origin()
@@ -81,14 +78,11 @@ function create_wideshot(user, props)
 		-- Allowed to attack
 		attacking = true
 
-		-- Allowed to move
-		can_move_yet = true
-
 		anim:set_state("LOOP_DARK")
 		anim:set_playback(Playback.Loop)
 	end)
 
-	local move_speed_table = { 4, 6, 7, 6 }
+	local move_speed_table = { 6, 6, 7, 6 }
 	local move_index = 1
 
 	local function create_shadow()
@@ -140,7 +134,7 @@ function create_wideshot(user, props)
 			}
 		)
 
-		if self:is_sliding() == false and can_move_yet == true then
+		if not self:is_moving() then
 			local dest = self:get_tile(spell:facing(), 1)
 
 			self:slide(dest, move_speed_table[move_index], function()
@@ -148,14 +142,6 @@ function create_wideshot(user, props)
 				move_index = math.min(4, move_index + 1)
 			end)
 		end
-	end
-
-	spell.on_delete_func = function(self)
-		self:erase()
-	end
-
-	spell.can_move_to_func = function(tile)
-		return can_move_yet
 	end
 
 	spell.on_spawn_func = function()

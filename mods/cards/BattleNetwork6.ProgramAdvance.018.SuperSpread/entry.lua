@@ -33,27 +33,30 @@ function card_init(actor, props)
 		buster_anim:on_frame(5, function()
 			user:set_counterable(false)
 
-			local shot = create_wideshot(user, props, false)
-
 			local tile = user:get_tile(user:facing(), 1)
 
-			Field.spawn(shot, tile)
+			if tile then
+				local shot = create_wideshot(user, props, false)
+				Field.spawn(shot, tile)
+			end
 		end)
 
 		buster_anim:on_frame(8, function()
-			local shot = create_wideshot(user, props, false)
-
 			local tile = user:get_tile(user:facing(), 1)
 
-			Field.spawn(shot, tile)
+			if tile then
+				local shot = create_wideshot(user, props, false)
+				Field.spawn(shot, tile)
+			end
 		end)
 
 		buster_anim:on_frame(11, function()
-			local shot = create_wideshot(user, props, true)
-
 			local tile = user:get_tile(user:facing(), 1)
 
-			Field.spawn(shot, tile)
+			if tile then
+				local shot = create_wideshot(user, props, true)
+				Field.spawn(shot, tile)
+			end
 		end)
 	end
 	return action
@@ -84,8 +87,6 @@ function create_wideshot(user, props, is_last)
 	local anim = spell:animation()
 	spell:set_texture(SHOT_TEXTURE)
 
-	spell._can_move_yet = false
-
 	local buster_point = user:animation():get_point("BUSTER")
 	local origin = user:sprite():origin()
 	local fire_x = buster_point.x - origin.x + (21 - user:current_tile():width())
@@ -100,14 +101,11 @@ function create_wideshot(user, props, is_last)
 		-- Allowed to attack
 		attacking = true
 
-		-- Allowed to move
-		spell._can_move_yet = true
-
 		anim:set_state("LOOP")
 		anim:set_playback(Playback.Loop)
 	end)
 
-	local move_speed_table = { 4, 6, 7, 6 }
+	local move_speed_table = { 6, 6, 7, 6 }
 	local move_index = 1
 
 	spell.on_update_func = function(self)
@@ -122,11 +120,7 @@ function create_wideshot(user, props, is_last)
 
 		self:attack_tiles(tiles)
 
-		for index, value in ipairs(tiles) do
-			value:set_highlight(Highlight.Flash)
-		end
-
-		if self:is_sliding() == false and spell._can_move_yet == true then
+		if not self:is_moving() then
 			if tile:is_edge() then self:delete() end
 
 			local dest = self:get_tile(spell:facing(), 1)
@@ -137,12 +131,8 @@ function create_wideshot(user, props, is_last)
 		end
 	end
 
-	spell.on_delete_func = function(self)
-		self:erase()
-	end
-
-	spell.can_move_to_func = function(tile)
-		return spell._can_move_yet
+	spell.on_collision_func = function(self, other)
+		self:delete()
 	end
 
 	spell.on_spawn_func = function()

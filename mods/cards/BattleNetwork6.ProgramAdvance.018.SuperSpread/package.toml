@@ -2,6 +2,7 @@
 category = "card"
 id = "BattleNetwork6.ProgramAdvance.018.SuperSpread"
 name = "SuprSpr"
+long_name = "SuperSpread"
 icon_texture_path = "icon.png"
 codes = ["*"]
 damage = 150
