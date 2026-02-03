@@ -1,0 +1,16 @@
+[package]
+category = "card"
+id = "dev.delta.card.xylos"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "Horn"
+description = "Plays a healing song!"
+codes = ["A", "D", "E", "P"]
+element = "summon"
+time_freeze = true
+can_boost = false
+limit = 3
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+

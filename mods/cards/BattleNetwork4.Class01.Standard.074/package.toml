@@ -1,0 +1,18 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class01.Standard.074"
+name = "SidBmbo3"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["A", "F", "U"]
+damage = 140
+time_freeze = false
+element = "wood"
+description = "Lances attck 3sq ahead"
+can_boost = true
+card_class = "standard"
+limit = 3
+hit_flags = ["Flinch", "Drag"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

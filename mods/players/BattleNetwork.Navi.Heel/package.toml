@@ -5,9 +5,9 @@ past_ids = ["dev.konstinople.player.Heel"]
 name = "Heel"
 description = ""
 long_description = """
-Charged Attack = LilBomb
+Charged Attack = LilBomb (15 + ATK*15)
 
-Special = Cheer
+Special = Cheer (Chip Damage +10 (Once per turn))
 
 """
 health = 1000
@@ -19,5 +19,5 @@ mugshot_texture_path = "mug.png"
 mugshot_animation_path = "mug.animation"
 
 [dependencies]
-libraries = ["BattleNetwork.Assets"]
+libraries = ["BattleNetwork.Emotions"]
 cards = ["BattleNetwork2.Class01.Standard.017.LittleBomb"]

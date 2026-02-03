@@ -4,6 +4,7 @@ id = "BattleNetwork.Navi.NormalNavi"
 past_ids = ["dev.konstinople.player.NormalNavi"]
 name = "NormalNavi"
 description = ""
+long_description = "Charge Shot:\nNormCann (25+ATKx25)\nAbilities:\nNull +25%.\nBuster has a 25% chance to shoot a mini shot for 1.5x damage. Speed of the shot scales with SPD.\nSpecial:\nNormSupp (Can be used once per turn)."
 health = 1000
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
@@ -11,3 +12,7 @@ overworld_animation_path = "overworld.animation"
 overworld_texture_path = "overworld.png"
 mugshot_texture_path = "mug.png"
 mugshot_animation_path = "mug.animation"
+
+[dependencies]
+libraries = ["BattleNetwork.Emotions"]
+cards = ["LDR100.card.plyr.23.NormCann", "LDR100.card.plyr.24.NormSupp"]

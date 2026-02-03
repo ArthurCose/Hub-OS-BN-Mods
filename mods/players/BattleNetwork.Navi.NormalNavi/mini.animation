@@ -1,0 +1,5 @@
+animation state="DEFAULT"
+frame duration="5f" x="0" y="0" w="18" h="9" originx="9" originy="5" flipx="0" flipy="0"
+
+animation state="INVIS"
+frame duration="5f" x="0" y="0" w="1" h="1" originx="1" originy="1" flipx="0" flipy="0"

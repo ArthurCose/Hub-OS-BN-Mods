@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "LDR100.card.plyr.23.NormCann"
+name = "NormCann"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+damage = 160
+codes = ["*"]
+element = "none"
+description = "Norm Cann removes elements!"
+long_description = "A slow moving cannonshot that changes the opponents next damaging chip to null element."
+limit = 3
+hit_flags = ["Flinch", "Flash"]
+
+tags = ["LDR"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "Battle.Helpers"]
+

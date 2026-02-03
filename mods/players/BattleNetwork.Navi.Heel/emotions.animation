@@ -1,0 +1,23 @@
+animation state="DEFAULT"
+frame w="44" h="16"
+
+animation state="SYNCHRO"
+frame y="16" w="44" h="16"
+
+animation state="ANGER"
+frame y="32" w="44" h="16"
+
+animation state="EVIL"
+frame y="48" w="44" h="16"
+
+animation state="ANXIOUS"
+frame y="64" w="44" h="16"
+
+animation state="TIRED"
+frame y="80" w="44" h="16"
+
+animation state="EXHAUST"
+frame y="96" w="44" h="16"
+
+animation state="PINCH"
+frame y="112" w="44" h="16"

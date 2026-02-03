@@ -13,6 +13,7 @@ hit_flags = ["Flinch", "Paralyze"]
 description = "8hit para strm\n2 squares\nahead\nBuffed w/ more Bugs"
 long_description = "8 hit tornado starting 2 squares away that paralyzes!\nWith 1 bug this spawns an exta tornado one extra space forward from the initial tornado\nWith 2 bugs this spawns an exta 2 tornados on each side of the inidial tornado\nWith 3 or more bugs this spawns an exta 2 tornados on each side of the tornado spawned with 1 bug\nExamples:\n1 Bug: --\n2 Bugs: |-\n3 Bugs: ||"
 limit = 2
+tags = ["Bug"]
 
 
 

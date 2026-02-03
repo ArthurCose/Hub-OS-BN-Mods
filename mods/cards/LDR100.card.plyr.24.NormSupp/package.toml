@@ -1,0 +1,21 @@
+[package]
+category = "card"
+id = "LDR100.card.plyr.24.NormSupp"
+name = "NormSupp"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["*"]
+damage = 0
+time_freeze = true
+element = "None"
+description = "Get a rdm support chip!"
+long_description = "Uses one many support chips between. Fanfare, Discord, Timpani, Silence, Horn, Outrage, Wind, Fan, Guardian."
+limit = 5
+regular_allowed = true
+
+tags = ["LDR"]
+
+[dependencies]
+cards = ["BattleNetwork6.Class01.Standard.149", "BattleNetwork6.Class01.Standard.150", "BattleNetwork6.Class01.Standard.151", "BattleNetwork6.Class01.Standard.152",
+"BattleNetwork6.Class01.Standard.154.Guardian", "BattleNetwork6.Class01.Standard.135.Fan", "BattleNetwork6.Class01.Standard.134.Wind", "dev.delta.card.xylos",
+"MysticalSobble.card.mega.10.Outrage"]

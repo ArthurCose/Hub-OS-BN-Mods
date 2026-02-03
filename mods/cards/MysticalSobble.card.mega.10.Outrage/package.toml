@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "MysticalSobble.card.mega.10.Outrage"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "Outrage"
+description = "Plays an empowring song!"
+long_description = "Summons a Grumpy virus that gives attack chips a 1.5x damage multiplier while its song plays"
+codes = ["D", "O", "U"]
+element = "summon"
+time_freeze = true
+can_boost = false
+limit = 1
+card_class = "mega"
+regular_allowed = false
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]
+

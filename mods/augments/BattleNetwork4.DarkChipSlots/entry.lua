@@ -215,7 +215,6 @@ function augment_init(augment)
 
 		for index, value in ipairs(chip_list) do
 			local id = value.id
-			if use_backup_ids == true then id = value.backup_id end
 
 			if is_wounded then range = value.wound_range else range = value.range end
 			if range == 0 then goto skip end

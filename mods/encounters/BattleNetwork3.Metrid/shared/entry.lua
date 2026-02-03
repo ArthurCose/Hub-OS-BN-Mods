@@ -7,11 +7,19 @@ local METEOR_TEXTURE = bn_assets.load_texture("meteor.png")
 local METEOR_ANIM_PATH = bn_assets.fetch_animation_path("meteor.animation")
 local EXPLOSION_TEXTURE = bn_assets.load_texture("ring_explosion.png")
 local EXPLOSION_ANIM_PATH = bn_assets.fetch_animation_path("ring_explosion.animation")
-local EXPLOSION_SFX = Resources.load_audio("sounds/explosion.ogg")
+local EXPLOSION_SFX = bn_assets.load_audio("explosion_defeatedboss")
 local LANDING_SFX = bn_assets.load_audio("meteor_land.ogg")
 
 local MobTracker = require("mob_tracker.lua")
 local mob_tracker = MobTracker:new()
+
+local attack = 0
+local cooldown = 16
+local minimum_meteors = 4
+local maximum_meteors = 8
+local meteor_cooldown = 0
+local accuracy_chance = 0
+local idle_max = 40
 
 ---@class Metrid : Entity
 ---@field _attack number
@@ -26,12 +34,14 @@ local function create_meteor(metrid)
     meteor:set_tile_highlight(Highlight.Flash)
     meteor:set_facing(metrid:facing())
     local flags = Hit.Flash | Hit.Flinch | Hit.PierceGround
+
     if metrid:rank() == Rank.NM then
         flags = flags & ~Hit.Flash
     end
+
     meteor:set_hit_props(
         HitProps.new(
-            metrid._attack,
+            attack,
             flags,
             Element.Fire,
             metrid:context(),
@@ -45,11 +55,10 @@ local function create_meteor(metrid)
     anim:apply(meteor:sprite())
     meteor:sprite():set_layer(-2)
     local boom = EXPLOSION_TEXTURE
-    local cooldown = 16
-    local x = 224
-    local increment_x = 14
-    local increment_y = 14
-    meteor:set_offset(meteor:offset().x + x * 0.5, meteor:offset().y - 224 * 0.5)
+
+    local increment_x = 7
+    local increment_y = 7
+    meteor:set_offset(meteor:offset().x + 112, meteor:offset().y - 112)
     meteor.on_update_func = function(self)
         if cooldown <= 0 then
             local tile = self:current_tile()
@@ -75,7 +84,7 @@ local function create_meteor(metrid)
             self:erase()
         else
             local offset = self:offset()
-            self:set_offset(offset.x - increment_x * 0.5, offset.y + increment_y * 0.5)
+            self:set_offset(offset.x - increment_x, offset.y + increment_y)
             cooldown = cooldown - 1
         end
     end
@@ -87,24 +96,34 @@ end
 
 local function find_best_target(virus)
     if not virus or virus and virus:deleted() then return end
-    local target = nil --Grab a basic target from the virus itself.
+    local target
     local query = function(c)
-        return c:team() ~=
-            virus:team()                                   --Make sure you're not targeting the same team, since that won't work for an attack.
+        --Make sure you're not targeting the same team, since that won't work for an attack.
+        return c:team() ~= virus:team() or c:team() == Team.Other
     end
-    local potential_threats = Field.find_characters(query) --Find CHARACTERS, not entities, to attack.
-    local goal_hp = 999999                                 --Start with a ridiculous health.
-    if #potential_threats > 0 then                         --If the list is bigger than 0, we go in to a loop.
-        for i = 1, #potential_threats, 1 do                --The pound sign, or hashtag if you're more familiar with that term, is used to denote length of a list or array in lua.
-            local possible_target = potential_threats[i]   --Index with square brackets.
-            --Make sure it exists, is not deleted, and that its health is less than the goal HP. First one always will be.
-            if possible_target and not possible_target:deleted() and possible_target:health() <= goal_hp then
+
+    --Find CHARACTERS, not entities, to attack.
+    local potential_threats = Field.find_characters(query)
+
+    --Start with a ridiculous health.
+    local goal_hp = 999999
+
+    --If the list is bigger than 0, we go in to a loop.
+    if #potential_threats > 0 then
+        --The pound sign, or hashtag if you're more familiar with that term, is used to denote length of a list or array in lua.
+        for i = 1, #potential_threats, 1 do
+            --Index with square brackets.
+            local possible_target = potential_threats[i]
+
+            --Make sure it has less health than the goal HP. First one always will meet this requirement.
+            if possible_target:health() <= goal_hp then
                 --Make it the new target. This way the lowest HP target is attacked.
                 target = possible_target
             end
         end
     end
-    --Return whoever the target is.
+
+    --Return whoever we get.
     return target
 end
 
@@ -119,12 +138,11 @@ local function create_meteor_action(metrid)
 
     local function create_component()
         local meteor_component = metrid:create_component(Lifetime.ActiveBattle)
-        local count = math.random(metrid._minimum_meteors, metrid._maximum_meteors)
-        local attack_cooldown_max = metrid._meteor_cooldown
+        local count = math.random(minimum_meteors, maximum_meteors)
+        local attack_cooldown_max = meteor_cooldown
         local highlight_cooldown_max = 24
         local highlight_cooldown = 24
         local attack_cooldown = 0
-        local accuracy_chance = metrid._accuracy_chance
         local desired_cooldown = 0
         local next_tile = nil
 
@@ -277,55 +295,23 @@ end
 
 ---@param self Metrid
 function character_init(self)
-    --Obtain the rank of the virus.
-    --This can be V1, V2, V3, EX, SP, R1, R2, or NM.
-    --There's also RV, DS, virus, Beta, and Omega in the next build.
-    local rank = self:rank()
     self:set_height(38)
-    --Set its name, health, and attack based on rank.
-    --Start with V2 because Omega will share a name with V1, just with a symbol.
-    self._minimum_meteors = 4
-    self._maximum_meteors = 8
-    local idle_max = 40
-    self._accuracy_chance = 20
-    self._meteor_cooldown = 32
-    if rank == Rank.V2 then
-        self:set_name("Metrod")
-        self:set_texture(Resources.load_texture("Metrod.png"))
-        self:set_health(200)
-        self._attack = 80
-        idle_max = 30
-    elseif rank == Rank.V3 then
-        self:set_name("Metrodo")
-        self:set_texture(Resources.load_texture("Metrodo.png"))
-        self:set_health(250)
-        self._attack = 120
-        idle_max = 20
-    else
-        --All ranks like this will be called Metrid, so use that name.
-        self:set_name("Metrid")
-        if rank == Rank.NM then
-            self:set_texture(Resources.load_texture("MetridNM.png"))
-            self:set_health(500)
-            self._attack = 300
-            idle_max = 16
-            self._minimum_meteors = 20
-            self._maximum_meteors = 40
-            self._accuracy_chance = 40
-        elseif rank == Rank.SP then
-            self:set_texture(Resources.load_texture("Omega.png"))
-            self:set_health(300)
-            self._attack = 200
-            idle_max = 16
-        else
-            --If unsupported, assume rank 1.
-            self:set_texture(Resources.load_texture("Metrid.png"))
-            self:set_health(150)
-            self._attack = 40
-        end
-    end
+
+    accuracy_chance = 20
+    meteor_cooldown = 32
+
+    attack = self._damage
+    idle_max = self._idle_max
+    minimum_meteors = self._minimum_meteors
+    maximum_meteors = self._maximum_meteors
+    accuracy_chance = self._accuracy_chance
+
+    self:set_health(self._health)
+
     self:set_element(Element.Fire)
+
     self:add_aux_prop(StandardEnemyAux.new())
+
     local anim = self:animation()
     anim:load("Metrid.animation")
     anim:set_state("IDLE")
@@ -335,10 +321,12 @@ function character_init(self)
     self.on_battle_start_func = function()
         mob_tracker:add_by_id(self:id())
     end
+
     self.on_delete_func = function()
         mob_tracker:remove_by_id(self:id())
         self:default_character_delete()
     end
+
     self.on_idle_func = function()
         anim:set_state("IDLE")
         anim:set_playback(Playback.Loop)
@@ -380,3 +368,5 @@ function character_init(self)
         )
     end)
 end
+
+return character_init

@@ -1,0 +1,31 @@
+[package]
+category = "card"
+id = "BattleNetwork4.Class05.Secret.022"
+name = "NumbrBl1"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["E", "L", "W"]
+dynamic_damage = true
+time_freeze = true
+element = "none"
+secondary_element = "none"
+limit = 3
+card_class = "Standard"
+can_boost = true
+description = "3-shot ball atk reduce HP"
+
+hit_flags = [
+    "Flinch",
+    "Flash"
+    ]
+tags = ["NAVI"]
+
+regular_allowed = true
+
+[defines]
+characters = []
+
+[dependencies]
+characters = []
+libraries = ["BattleNetwork.Assets", "BattleNetwork6.Libraries.ChipNavi"]
+cards = []

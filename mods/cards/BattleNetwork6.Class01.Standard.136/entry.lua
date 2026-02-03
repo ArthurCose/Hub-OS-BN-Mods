@@ -1,7 +1,7 @@
 local bn_assets = require("BattleNetwork.Assets")
 
-local CURSOR_TEXTURE = bn_assets.load_texture("magnum_cursor.png")
-local CURSOR_ANIMATION = bn_assets.fetch_animation_path("magnum_cursor.animation")
+local CURSOR_TEXTURE = bn_assets.load_texture("cursor_circgun.png")
+local CURSOR_ANIMATION = bn_assets.fetch_animation_path("cursor_circgun.animation")
 local CURSOR_SOUND = bn_assets.load_audio("magnum_cursor.ogg")
 
 ---@param user Entity
@@ -94,14 +94,14 @@ function card_init(user, props)
 				sprite:ignore_hole_tiles(true)
 				sprite:ignore_negative_tile_effects(true)
 				sprite:set_layer(-1)
-				
+
 				local anim = sprite:animation()
 				anim:load(CURSOR_ANIMATION)
-				anim:set_state("DEFAULT")
+				anim:set_state("IDLE_BLUE")
 				anim:set_playback(Playback.Loop)
-				
+
 				Field.spawn(sprite, tile)
-				
+
 				table.insert(cursor_sprites, sprite)
 				table.insert(cursor_animations, anim)
 			end
@@ -123,17 +123,17 @@ function card_init(user, props)
 		-- 自分のエリアの最後列を見つける
 		local player_x = user:current_tile():x()
 		local last_own_x = player_x
-		
+
 		-- プレイヤーの後方に向かって自分のエリアを探す
 		local back_offset = -test_offset
 		for i = 1, 10 do
 			local check_x = player_x + (back_offset * i)
 			local check_tile = Field.tile_at(check_x, 1)
-			
+
 			if not check_tile or check_tile:is_edge() then
 				break
 			end
-			
+
 			if check_tile:team() == team then
 				last_own_x = check_x
 			else
@@ -153,14 +153,14 @@ function card_init(user, props)
 				sprite:ignore_hole_tiles(true)
 				sprite:ignore_negative_tile_effects(true)
 				sprite:set_layer(-1)
-				
+
 				local anim = sprite:animation()
 				anim:load(CURSOR_ANIMATION)
-				anim:set_state("DEFAULT")
+				anim:set_state("IDLE_BLUE")
 				anim:set_playback(Playback.Loop)
-				
+
 				Field.spawn(sprite, tile)
-				
+
 				table.insert(cursor_sprites, sprite)
 				table.insert(cursor_animations, anim)
 			end
@@ -178,7 +178,7 @@ function card_init(user, props)
 	local start_x = nil
 	local confirmed = false
 	local confirmed_x = nil
-	local confirmed_y = 1  -- デフォルト値を設定
+	local confirmed_y = 1 -- デフォルト値を設定
 	local is_horizontal_mode = false
 	local horizontal_y = 1
 	local is_horizontal = false
@@ -196,7 +196,7 @@ function card_init(user, props)
 			end
 			start_x = current_x
 			create_cursors(current_x)
-			move_count = 1  -- 最初の表示も1回とカウント
+			move_count = 1 -- 最初の表示も1回とカウント
 		end
 
 		-- 入力チェック：使用ボタン（Useボタン）で確定
@@ -205,14 +205,14 @@ function card_init(user, props)
 			confirmed_x = current_x
 			confirmed_y = horizontal_y
 			is_horizontal = is_horizontal_mode
-			
+
 			-- カーソルを削除
 			for _, sprite in ipairs(cursor_sprites) do
 				sprite:delete()
 			end
 			cursor_sprites = {}
 			cursor_animations = {}
-			
+
 			cursor_step:complete_step()
 			return
 		end
@@ -223,14 +223,14 @@ function card_init(user, props)
 			confirmed_x = current_x
 			confirmed_y = horizontal_y
 			is_horizontal = is_horizontal_mode
-			
+
 			-- カーソルを削除
 			for _, sprite in ipairs(cursor_sprites) do
 				sprite:delete()
 			end
 			cursor_sprites = {}
 			cursor_animations = {}
-			
+
 			cursor_step:complete_step()
 			return
 		end
@@ -255,7 +255,7 @@ function card_init(user, props)
 			else
 				-- 横3マスモード
 				horizontal_y = horizontal_y + 1
-				
+
 				if horizontal_y > 3 then
 					-- y=3まで終わったら縦列モードに戻る
 					is_horizontal_mode = false
@@ -265,7 +265,7 @@ function card_init(user, props)
 					create_horizontal_cursors(horizontal_y)
 				end
 			end
-			
+
 			move_count = move_count + 1
 		end
 	end
@@ -305,17 +305,17 @@ function card_init(user, props)
 				-- 横3マスモード：自分のエリアの最後列から4,5,6列目
 				local player_x = user:current_tile():x()
 				local last_own_x = player_x
-				
+
 				-- プレイヤーの後方に向かって自分のエリアを探す
 				local back_offset = -test_offset
 				for i = 1, 10 do
 					local check_x = player_x + (back_offset * i)
 					local check_tile = Field.tile_at(check_x, 1)
-					
+
 					if not check_tile or check_tile:is_edge() then
 						break
 					end
-					
+
 					if check_tile:team() == team then
 						last_own_x = check_x
 					else
@@ -346,9 +346,9 @@ function card_init(user, props)
 						local spell = Spell.new(team)
 						spell:set_hit_props(HitProps.from_card(props, user:context(), Drag.None))
 						spell:hide()
-						
+
 						Field.spawn(spell, tile)
-						
+
 						spell.on_update_func = function()
 							spell:attack_tile()
 							spell:delete()
@@ -378,9 +378,9 @@ function card_init(user, props)
 						local spell = Spell.new(team)
 						spell:set_hit_props(HitProps.from_card(props, user:context(), Drag.None))
 						spell:hide()
-						
+
 						Field.spawn(spell, tile)
-						
+
 						spell.on_update_func = function()
 							spell:attack_tile()
 							spell:delete()
