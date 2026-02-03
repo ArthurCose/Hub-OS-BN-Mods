@@ -3,8 +3,8 @@ local bn_assets = require("BattleNetwork.Assets")
 ---@type BattleNetwork.Emotions
 local EmotionsLib = require("BattleNetwork.Emotions")
 
-local AQUA_HOSE_TEXTURE = Resources.load_texture("aqua_hose.png")
-local AQUA_HOSE_ANIM = "aqua_hose.animation"
+local AQUA_HOSE_TEXTURE = bn_assets.load_texture("aqua_hose.png")
+local AQUA_HOSE_ANIM = bn_assets.fetch_animation_path("aqua_hose.animation")
 local BUBBLES_TEXTURE = bn_assets.load_texture("bn4_bubble_impact.png")
 local BUBBLES_ANIMATION_PATH = bn_assets.fetch_animation_path("bn4_bubble_impact.animation")
 local BUBBLES_SFX = bn_assets.load_audio("bubbler.ogg")
@@ -15,8 +15,12 @@ local FIXED_CARD_ID = "BattleNetwork6.Class06.Fixed.001.Falzar"
 ---@param player Entity
 function player_init(player)
   player:set_height(35.0)
-  player:set_texture(Resources.load_texture("battle.png"))
-  player:load_animation("battle.animation")
+  player:set_texture(bn_assets.load_texture("navi_aquaman.png"))
+  player:load_animation(bn_assets.fetch_animation_path("navi_aquaman.animation"))
+  player:set_shadow(
+    bn_assets.load_texture("navi_aquaman_shadow.png"),
+    bn_assets.fetch_animation_path("navi_aquaman_shadow.animation")
+  )
   player:set_fully_charged_color(Color.new(180, 237, 49, 255))
   player:set_charge_position(2, -14)
 
