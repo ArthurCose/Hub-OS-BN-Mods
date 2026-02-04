@@ -79,6 +79,30 @@ function Lib.create_enter_step(action, navi)
   end
 end
 
+---Adds a delay step, calls on the first frame.
+---@param action Action
+---@param navi Entity
+---@param delay number? 30 by default
+function Lib.create_idle_step(action, navi, delay)
+  delay = delay or 30
+
+  local step = action:create_step()
+
+  local function tick()
+    delay = delay - 1
+    if delay <= 0 then
+      step:complete_step()
+    end
+  end
+
+  step.on_update_func = function()
+    navi:set_idle()
+
+    step.on_update_func = tick
+    tick()
+  end
+end
+
 ---@param action Action
 ---@param delay number
 function Lib.create_delay_step(action, delay)
