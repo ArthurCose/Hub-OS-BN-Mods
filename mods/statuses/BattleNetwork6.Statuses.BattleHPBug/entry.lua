@@ -51,5 +51,6 @@ function status_init(status)
 
     entity:on_delete(function()
         HPBugLevels[entity:id()] = nil
+        component:eject()
     end)
 end
