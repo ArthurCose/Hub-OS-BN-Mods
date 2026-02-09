@@ -13,17 +13,89 @@ local FRAME3 = { 3, 3 }
 local FRAMES = { FRAME1, FRAME3, FRAME2, FRAME3, FRAME2, FRAME3, FRAME2, FRAME3, FRAME2, FRAME3, FRAME2, FRAME1, FRAME3,
 	FRAME2, FRAME3, FRAME2 }
 
-function card_init(actor, props)
-	local action = Action.new(actor, "CHARACTER_SHOOT")
+local function includes(list, value)
+	for _, v in ipairs(list) do
+		if v == value then
+			return true
+		end
+	end
+
+	return false
+end
+
+local BOOST_STATES = {
+	TileState.Grass or -1,
+	TileState.Lava or -1,
+	TileState.Ice or -1,
+	TileState.Sand or -1,
+	TileState.Magnet or -1,
+	TileState.Volcano or -1
+}
+
+---@param user Entity
+---@param props CardProperties
+local function create_attack(user, props)
+	local spell = Spell.new(user:team())
+	spell:set_facing(user:facing())
+	spell:set_tile_highlight(Highlight.Solid)
+	spell:set_texture(TEXTURE)
+	spell:set_layer(-1)
+
+	local anim = spell:animation()
+	anim:load(SPELL_ANIM_PATH)
+	anim:set_state("DEFAULT")
+	anim:set_playback(Playback.Loop)
+
+	spell.on_spawn_func = function()
+		local hit_props = HitProps.from_card(
+			props,
+			user:context(),
+			Drag.None
+		)
+
+		local cur_tile = spell:current_tile()
+
+		if cur_tile and includes(BOOST_STATES, cur_tile:state()) then
+			hit_props.damage = hit_props.damage + hit_props.damage
+			cur_tile:set_state(TileState.Normal)
+		end
+
+		spell:set_hit_props(hit_props)
+
+		local hits = 4
+		anim:on_complete(function()
+			if hits > 1 then
+				hits = hits - 1
+				local hitbox = Hitbox.new(spell:team())
+				hitbox:set_hit_props(hit_props)
+				Field.spawn(hitbox, spell:current_tile())
+			else
+				spell:erase()
+			end
+		end)
+	end
+
+	spell.on_update_func = function(self)
+		self:attack_tile()
+	end
+
+	Resources.play_audio(AUDIO)
+
+	return spell
+end
+
+---@param user Entity
+---@param props CardProperties
+function card_init(user, props)
+	local action = Action.new(user, "CHARACTER_SHOOT")
 	action:override_animation_frames(FRAMES)
 	action:set_lockout(ActionLockout.new_animation())
+
 	action.on_execute_func = function(self, user)
 		local buster = self:create_attachment("BUSTER")
-		buster:sprite():set_texture(BUSTER_TEXTURE, true)
+		buster:sprite():set_texture(BUSTER_TEXTURE)
 		buster:sprite():set_layer(-1)
-		self:on_anim_frame(1, function()
-			user:set_counterable(true)
-		end)
+
 		local buster_anim = buster:animation()
 		buster_anim:load(BUSTER_ANIM_PATH)
 		buster_anim:set_state("DEFAULT")
@@ -32,75 +104,26 @@ function card_init(actor, props)
 			buster_anim:set_state("LOOP")
 			buster_anim:set_playback(Playback.Loop)
 		end
-		self:on_anim_frame(4, function()
-			user:set_counterable(false)
-			local tile = user:get_tile(user:facing(), 2)
-			if tile then
-				local cannonshot = create_attack(user, props)
-				Field.spawn(cannonshot, tile)
-			end
-		end)
 	end
-	return action
-end
 
-function create_attack(user, props)
-	local spell = Spell.new(user:team())
+	action:on_anim_frame(1, function()
+		user:set_counterable(true)
+	end)
 
-	spell.hits = 4
-	spell:set_facing(user:facing())
-	spell:set_tile_highlight(Highlight.Solid)
-	spell:set_texture(TEXTURE)
-	spell:sprite():set_layer(-1)
+	action:on_anim_frame(4, function()
+		user:set_counterable(false)
 
-	local hit_props = HitProps.from_card(
-		props,
-		user:context(),
-		Drag.None
-	)
+		local tile = user:get_tile(user:facing(), 2)
 
-	local do_once = true
-	spell.on_update_func = function(self)
-		if do_once then
-			local anim = spell:animation()
-			anim:load(SPELL_ANIM_PATH)
-			anim:set_state("DEFAULT")
-
-			local cur_tile = spell:current_tile()
-			if cur_tile and cur_tile:state() == (TileState.Grass or TileState.Lava or TileState.Ice) then
-				hit_props.damage = hit_props.damage + hit_props.damage
-			end
-
-			spell:set_hit_props(hit_props)
-			anim:apply(spell:sprite())
-
-			anim:set_playback(Playback.Loop)
-
-			anim:on_complete(function()
-				if spell.hits > 1 then
-					spell.hits = spell.hits - 1
-					local hitbox = Hitbox.new(spell:team())
-					hitbox:set_hit_props(spell:copy_hit_props())
-					Field.spawn(hitbox, spell:current_tile())
-				else
-					spell:erase()
-				end
-			end)
-			do_once = false
+		if tile then
+			local spell = create_attack(user, props)
+			Field.spawn(spell, tile)
 		end
-		self:current_tile():attack_entities(self)
+	end)
+
+	action.on_action_end_func = function()
+		user:set_counterable(false)
 	end
 
-	spell.on_collision_func = function(self, other) end
-
-	spell.on_attack_func = function(self, other) end
-
-	spell.on_delete_func = function(self) self:erase() end
-
-	-- Tornado cannot move. It only spawns.
-	spell.can_move_to_func = function(tile) return false end
-
-	Resources.play_audio(AUDIO)
-
-	return spell
+	return action
 end

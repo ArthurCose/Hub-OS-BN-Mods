@@ -12,15 +12,5 @@ hit_flags = ["Flinch"]
 description = "8hit strm\n2 squares\nahead"
 limit = 5
 
-[defines]
-characters = []
-
 [dependencies]
-characters = []
 libraries = ["BattleNetwork.Assets"]
-cards = []
-tile_states = [
-    "BattleNetwork5.TileStates.Lava",
-    "BattleNetwork6.TileStates.Grass",
-    "BattleNetwork6.TileStates.Ice"
-]

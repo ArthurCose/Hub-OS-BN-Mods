@@ -24,7 +24,7 @@ local do_once, wait_before_moving
 -- Instead of repeating the code each time.
 local function create_ratton(ratty)
     -- Ratty itself is input as the argument, so we can get various facts about it.
-    local spell = Spell.new(ratty:team())
+    local spell = Obstacle.new(ratty:team())
 
     spell:set_facing(ratty:facing()) -- Make sure the spell faces the right way. Must face the same way as the ratty so it looks at the player.
 
@@ -87,11 +87,13 @@ local function create_ratton(ratty)
         self:delete()
     end
 
+    local use_mob_move = false
+
     spell.on_delete_func = function(self)
         local tile = self:current_tile()
 
         -- If the tile is an edge or broken tile, use a Mob Move effect to get rid of it without "exploding", as it didn't attack.
-        if not tile:is_walkable() then
+        if use_mob_move == true then
             local fx = bn_assets.MobMove.new("SMALL_END")
             Field.spawn(fx, tile)
         end
@@ -126,12 +128,19 @@ local function create_ratton(ratty)
         -- If it's an unwalkable tile, and we're sliding and not already deleted, then self-delete. We'll puff out of existence.
         if not cur_tile:is_walkable() then
             self:delete()
+            return
         end
 
         -- If we're not sliding, then we need to slide.
         if not self:is_sliding() then
             -- The destination is the direction we're facing, 1 tile over at a time.
             local dest = self:get_tile(direction, 1)
+
+            if dest:is_edge() then
+                use_mob_move = true
+                self:delete()
+                return
+            end
 
             -- If we haven't turned, we can run the search. Don't run it if we have turned, as it would be a waste of processing power, however little.
             -- At least, a bigger one than checking a boolean, I feel.

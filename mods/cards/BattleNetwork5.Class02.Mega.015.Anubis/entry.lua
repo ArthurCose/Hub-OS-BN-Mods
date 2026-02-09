@@ -70,8 +70,8 @@ function card_init(actor, props)
 		local enemies = Field.find_characters(function(entity)
 			if entity:team() ~= user:team() then
 				auxprop_array[#auxprop_array + 1] = AuxProp.new()
-						:drain_health(1)
-						:require_interval(DRAIN_RATE)
+					:drain_health(1)
+					:require_interval(DRAIN_RATE)
 				enemy_poisoned[#enemy_poisoned + 1] = false
 				return true
 			end
@@ -94,8 +94,14 @@ function card_init(actor, props)
 			end
 
 			local current_tile = anubis:current_tile()
-			if not current_tile then return anubis:delete() end
-			if not current_tile:is_walkable() then return anubis:delete() end
+			if not current_tile then
+				anubis:delete()
+				return
+			end
+			if not current_tile:is_walkable() then
+				anubis:delete()
+				return
+			end
 
 			current_tile:attack_entities(anubis)
 
@@ -119,8 +125,8 @@ function card_init(actor, props)
 						end
 					end
 					auxprop_array[#auxprop_array + 1] = AuxProp.new()
-							:drain_health(1)
-							:require_interval(DRAIN_RATE)
+						:drain_health(1)
+						:require_interval(DRAIN_RATE)
 					enemy_poisoned[#enemy_poisoned + 1] = false
 					enemies[#enemies + 1] = entity
 				end
@@ -172,7 +178,7 @@ function card_init(actor, props)
 						local tile = Field.tile_at(x, y)
 
 						if tile and tile:team() ~= user:team() and not tile:is_edge() and
-								tile ~= self:current_tile() then
+							tile ~= self:current_tile() then
 							enemy_tiles[#enemy_tiles + 1] = tile
 						end
 					end

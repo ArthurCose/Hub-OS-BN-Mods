@@ -193,11 +193,13 @@ local function create_generator(owner)
         return
       end
 
+      if incoming_hit.flags & Hit.Drain ~= 0 then
+        return
+      end
+
       if activated then
-        if incoming_hit.flags & Hit.Drain == 0 then
-          -- block all impact damage while we're waiting for the action to complete
-          defense:block_damage()
-        end
+        -- block all impact damage while we're waiting for the action to complete
+        defense:block_damage()
         return
       end
 
