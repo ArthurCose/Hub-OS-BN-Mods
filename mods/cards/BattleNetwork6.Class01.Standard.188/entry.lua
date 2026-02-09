@@ -25,6 +25,7 @@ function card_init(user)
     local activate =
         function(opponent, opponent_action)
             local card = opponent_action:copy_card_properties()
+            card.prevent_time_freeze_counter = true
             local generated_action = Action.from_card(user, card)
 
             if not generated_action then
