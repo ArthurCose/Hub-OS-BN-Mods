@@ -5,6 +5,7 @@ name = "AirShoes"
 damage = 0
 time_freeze = true
 element = "none"
+regular_allowed = false
 description = "Stand on empty square"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"

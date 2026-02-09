@@ -1,0 +1,20 @@
+imagePath="C:/Users/seven/Desktop/ONB Play/Development/resources/mods/enemies/Alpha/virus/arm_upper.png"
+
+animation state="IDLE_SPAWN"
+frame duration="0.033" x="2" y="57" w="58" h="32" originx="19" originy="27" flipx="1"
+
+animation state="IDLE"
+frame duration="0.05" x="64" y="57" w="58" h="32" originx="19" originy="27" flipx="1"
+frame duration="0.15" x="2" y="93" w="58" h="32" originx="19" originy="26" flipx="1"
+frame duration="0.15" x="64" y="93" w="58" h="32" originx="19" originy="25" flipx="1"
+frame duration="0.15" x="2" y="129" w="58" h="32" originx="19" originy="24" flipx="1"
+frame duration="0.15" x="64" y="129" w="58" h="32" originx="19" originy="25" flipx="1"
+frame duration="0.15" x="2" y="165" w="58" h="32" originx="19" originy="26" flipx="1"
+
+animation state="ATTACK_OMEGA"
+frame duration="0.033" x="2" y="2" w="36" h="51" originx="22" originy="24" flipx="1"
+frame duration="0.033" x="42" y="2" w="36" h="51" originx="22" originy="24" flipx="1"
+frame duration="0.033" x="82" y="2" w="36" h="51" originx="22" originy="24" flipx="1"
+
+animation state="ATTACK"
+frame duration="0.033" x="122" y="2" w="36" h="51" originx="22" originy="24" flipx="1"

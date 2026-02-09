@@ -116,15 +116,15 @@ point label="ENDPOINT" x="10" y="4"
 frame x="266" y="61" w="15" h="11" orignix="2" originy="6"
 point label="ENDPOINT" x="10" y="4"
 
-animation state="MEGA_CHIP_START"
+animation state="AQUA_STREAM_START"
 frame x="183" y="101" w="24" h="38" originx="11" originy="35" duration="0.017"
 frame x="105" y="102" w="34" h="35" originx="27" originy="32" duration="0.083"
 frame x="237" y="1" w="27" h="39" originx="18" originy="36" duration="0.067"
 
-animation state="MEGA_CHIP_IDLE"
+animation state="AQUA_STREAM_IDLE"
 frame x="237" y="87" w="27" h="38" originx="13" originy="35" duration="0.033"
 
-animation state="MEGA_CHIP_LOOP"
+animation state="AQUA_STREAM_LOOP"
 frame x="237" y="87" w="27" h="38" originx="13" originy="35" duration="0.067"
 frame x="237" y="87" w="27" h="38" originx="14" originy="35" duration="0.067"
 

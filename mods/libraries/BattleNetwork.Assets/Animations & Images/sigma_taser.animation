@@ -1,0 +1,17 @@
+imagePath="C:\Users\seven\Desktop\ONB\resources\mods\enemies\Alpha\virus\alpha taser.png"
+
+animation state="SINGLE ROW"
+frame duration="0.05" x="2" y="378" w="145" h="17" originx="128" originy="31" flipx="1" flipy="0"
+frame duration="0.05" x="2" y="318" w="148" h="26" originx="128" originy="33" flipx="1" flipy="0"
+frame duration="0.033" x="151" y="399" w="1" h="1" originx="192" originy="192" flipx="1" flipy="0"
+frame duration="0.05" x="2" y="399" w="145" h="17" originx="128" originy="31" flipx="1" flipy="0"
+frame duration="0.05" x="2" y="348" w="148" h="26" originx="128" originy="33" flipx="1" flipy="0"
+frame duration="0.033" x="156" y="399" w="1" h="1" originx="192" originy="192" flipx="1" flipy="0"
+
+animation state="DOUBLE ROW"
+frame duration="0.05" x="2" y="172" w="145" h="69" originx="128" originy="51" flipx="1" flipy="0"
+frame duration="0.05" x="2" y="2" w="146" h="81" originx="128" originy="57" flipx="1" flipy="0"
+frame duration="0.033" x="161" y="399" w="1" h="1" originx="192" originy="192" flipx="1" flipy="0"
+frame duration="0.05" x="2" y="245" w="145" h="69" originx="128" originy="51" flipx="1" flipy="0"
+frame duration="0.05" x="2" y="87" w="148" h="81" originx="128" originy="57" flipx="1" flipy="0"
+frame duration="0.033" x="166" y="399" w="1" h="1" originx="192" originy="192" flipx="1" flipy="0"

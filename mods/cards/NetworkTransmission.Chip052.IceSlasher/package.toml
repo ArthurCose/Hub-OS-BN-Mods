@@ -1,0 +1,19 @@
+[package]
+category = "card"
+id = "NetworkTransmission.Chip052.IceSlasher"
+name = "IceSlshr"
+long_name = "Ice Slasher"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["I"]
+damage = 100
+time_freeze = false
+element = "aqua"
+description = "Slash the enmy w/ ice!"
+hit_flags = ["Flash", "Flinch"]
+limit = 3
+card_class = "standard"
+tags = ["NT", "CHIP"]
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

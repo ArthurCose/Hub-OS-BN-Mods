@@ -1,0 +1,6 @@
+imagePath="C:/Users/seven/OneDrive/Desktop/Games, Engines, and Assets/0 Games/HubOS Release/client/mods/players/Tactical Roll/battle_fx4D_animations.png"
+
+animation state="DEFAULT"
+frame duration="0.033" x="2" y="2" w="122" h="67" originx="-36" originy="61" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="73" w="123" h="67" originx="-36" originy="61" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="144" w="123" h="67" originx="-36" originy="61" flipx="0" flipy="0"

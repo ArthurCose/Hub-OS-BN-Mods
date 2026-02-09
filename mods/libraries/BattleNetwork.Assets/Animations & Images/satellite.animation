@@ -1,0 +1,27 @@
+imagePath="C:/Users/seven/OneDrive/Desktop/Games, Engines, and Assets/0 Games/HubOS Release/client/mods/cards/Glade.TacticalRoll/SATELLITE.png"
+
+animation state="0"
+frame duration="0.05" x="2" y="183" w="39" h="85" originx="1" originy="81" flipx="0" flipy="0"
+frame duration="0.05" x="2" y="2" w="39" h="87" originx="1" originy="83" flipx="0" flipy="0"
+frame duration="0.033" x="45" y="2" w="39" h="86" originx="1" originy="82" flipx="0" flipy="0"
+
+animation state="1"
+frame duration="0.033" x="88" y="2" w="46" h="86" originx="1" originy="82" flipx="0" flipy="0"
+frame duration="0.033" x="138" y="2" w="48" h="86" originx="1" originy="82" flipx="0" flipy="0"
+
+animation state="2"
+frame duration="0.05" x="2" y="93" w="81" h="86" originx="1" originy="82" flipx="0" flipy="0"
+
+animation state="3"
+frame duration="0.05" x="87" y="93" w="39" h="86" originx="1" originy="82" flipx="0" flipy="0"
+frame duration="0.05" x="130" y="93" w="39" h="86" originx="1" originy="82" flipx="0" flipy="0"
+
+animation state="ATTACK"
+frame duration="0.05" x="2" y="183" w="39" h="85" originx="1" originy="81" flipx="0" flipy="0"
+frame duration="0.05" x="2" y="2" w="39" h="87" originx="1" originy="83" flipx="0" flipy="0"
+frame duration="0.033" x="45" y="2" w="39" h="86" originx="1" originy="82" flipx="0" flipy="0"
+frame duration="0.05" x="87" y="93" w="39" h="86" originx="1" originy="82" flipx="0" flipy="0"
+frame duration="0.05" x="130" y="93" w="39" h="86" originx="1" originy="82" flipx="0" flipy="0"
+frame duration="0.033" x="88" y="2" w="46" h="86" originx="1" originy="82" flipx="0" flipy="0"
+frame duration="0.033" x="138" y="2" w="48" h="86" originx="1" originy="82" flipx="0" flipy="0"
+frame duration="0.05" x="2" y="93" w="81" h="86" originx="1" originy="82" flipx="0" flipy="0"

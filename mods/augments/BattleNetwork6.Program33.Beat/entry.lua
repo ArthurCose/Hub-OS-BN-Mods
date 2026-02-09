@@ -18,7 +18,9 @@ local aux_prop_list = {}
 
 local function track(entity, aug_owner)
     local beat_prop = AuxProp.new()
-        :require_card_class(CardClass.Mega)
+        :require_card_not_class(CardClass.Standard)
+        :require_card_not_class(CardClass.Recipe)
+        :require_card_not_class(CardClass.Dark)
         :intercept_action(function(action)
             if TurnGauge.frozen() then return action end
 

@@ -1,33 +1,113 @@
-local snowman_texture = Resources.load_texture("snowman.png")
+local bn_assets = require("BattleNetwork.Assets")
+local snowman_texture = bn_assets.load_texture("snowman.png")
+local navi_texture = bn_assets.load_texture("navi_iceman.png")
+
+local snowman_anim_path = bn_assets.fetch_animation_path("snowman.animation")
+local navi_animation_path = bn_assets.fetch_animation_path("navi_iceman.animation")
 
 function player_init(player)
 	player:set_name("IceMan")
 
 	player:set_height(33.0)
 
-	local base_texture = Resources.load_texture("battle.png")
-	local base_animation_path = "battle.animation"
 	local base_charge_color = Color.new(0, 200, 255, 255)
 
-	player:load_animation(base_animation_path)
-	player:set_texture(base_texture)
+	player:load_animation(navi_animation_path)
+	player:set_texture(navi_texture)
 	player:set_fully_charged_color(base_charge_color)
 	player:set_charge_position(0, -10)
 
-	player.calculate_charge_time = function()
-		local level = player:charge_level()
-		return math.max(90, (140 - (level * 10)));
-	end
+	local ice_panel_aux = AuxProp.new()
+		:require_tile_state(TileState.Ice)
+		:require_card_damage(Compare.GT, 0)
+		:increase_card_damage(10)
+		:with_callback(function()
+			local tile = player:current_tile()
+			local component = player:create_component(Lifetime.ActiveBattle)
+			local timer = 5
+			component.on_update_func = function(self)
+				timer = timer - 1
+				if timer > 0 then return end
+				tile:set_state(TileState.Normal)
+				self:eject()
+			end
+		end)
+
+	local sea_panel_aux = AuxProp.new()
+		:require_tile_state(TileState.Sea)
+		:require_card_damage(Compare.GT, 0)
+		:increase_card_damage(10)
+		:with_callback(function()
+			local tile = player:current_tile()
+			local component = player:create_component(Lifetime.ActiveBattle)
+			local timer = 5
+			component.on_update_func = function(self)
+				timer = timer - 1
+				if timer > 0 then return end
+				tile:set_state(TileState.Normal)
+				self:eject()
+			end
+		end)
+
+	player:add_aux_prop(ice_panel_aux)
+	player:add_aux_prop(sea_panel_aux)
 
 	player.normal_attack_func = function(player)
 		return Buster.new(player, false, player:attack_level())
 	end
 
 	player.charged_attack_func = function(self)
-		local card_properties = CardProperties.from_package("dev.GladeWoodsgrove.Chips.FrostBomb")
-		card_properties.damage = player:attack_level() * 10
+		local props = CardProperties.from_package("NetworkTransmission.Chip052.IceSlasher")
+		props.damage = (player:attack_level() * 20) + 20
 
-		return Action.from_card(self, card_properties)
+		return Action.from_card(self, props)
+	end
+
+	player.calculate_card_charge_time_func = function(self, card_properties)
+		if card_properties.time_freeze == true then return end
+		if card_properties.element ~= Element.Aqua and card_properties.secondary_element ~= Element.Aqua then return end
+		if card_properties.damage == 0 then return end
+
+		return 100 - (2 * player:charge_level())
+	end
+
+	player.charged_card_func = function(self, card_properties)
+		local props = CardProperties.from_package("BattleNetwork2.Chip.252.FreezBom")
+		props.damage = math.min(100, math.ceil(card_properties.damage / 2))
+
+		local start_tile = self:current_tile():get_tile(self:facing(), 3)
+		local tiles = {
+			start_tile
+		}
+
+		for x = -1, 1, 1 do
+			for y = -1, 1, 1 do
+				if math.abs(x) == math.abs(y) then goto continue end
+
+				local tile = Field.tile_at(start_tile:x() + x, start_tile:y() + y)
+				if tile == nil or tile:is_walkable() == false then goto continue end
+
+				table.insert(tiles, tile)
+
+				::continue::
+			end
+		end
+
+		local action = Action.from_card(self, props)
+		action:on_end(function()
+			local component = player:create_component(Lifetime.ActiveBattle)
+			local timer = 45
+			component.on_update_func = function(self)
+				timer = timer - 1
+				if timer > 0 then return end
+				for i = 1, #tiles, 1 do
+					tiles[i]:set_state(TileState.Ice)
+				end
+				self:eject()
+			end
+		end)
+
+		return action
 	end
 
 	local snowman_spawned = false
@@ -49,6 +129,8 @@ function player_init(player)
 					snowman:set_texture(snowman_texture)
 					snowman:set_facing(user:facing())
 
+					snowman:add_aux_prop(AuxProp.new():declare_immunity(~Hit.Drag))
+
 					snowman:set_hit_props(
 						HitProps.new(
 							100,
@@ -59,28 +141,8 @@ function player_init(player)
 						)
 					)
 
-					local enemy_aux = StandardEnemyAux.new()
-
-					snowman:add_aux_prop(enemy_aux)
-
-					local snow_defense = DefenseRule.new(DefensePriority.Body, DefenseOrder.Always)
-
-					snow_defense.filter_func = function(hit_props)
-						hit_props.flags = hit_props.flags & ~Hit.Flinch
-						hit_props.flags = hit_props.flags & ~Hit.Flash
-						hit_props.flags = hit_props.flags & ~Hit.Freeze
-						hit_props.flags = hit_props.flags & ~Hit.Paralyze
-						hit_props.flags = hit_props.flags & ~Hit.Root
-						hit_props.flags = hit_props.flags & ~Hit.Blind
-						hit_props.flags = hit_props.flags & ~Hit.Confuse
-
-						return hit_props
-					end
-
-					snowman:add_defense_rule(snow_defense)
-
 					local animation = snowman:animation()
-					animation:load("snowman.animation")
+					animation:load(snowman_anim_path)
 					animation:set_state("SNOWMAN_APPEAR")
 
 					snowman:set_health(50)

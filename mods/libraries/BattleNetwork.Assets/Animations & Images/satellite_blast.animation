@@ -1,0 +1,61 @@
+imagePath="C:/Users/seven/OneDrive/Documents/My Games/Hub OS/mods/libraries/BattleNetwork.Assets/Animations & Images/battle_fx4E_animations.png"
+
+animation state="FORWARD_GREEN"
+frame duration="0.033" x="2" y="2" w="24" h="32" originx="13" originy="18" flipx="0" flipy="0"
+frame duration="0.033" x="30" y="2" w="24" h="26" originx="13" originy="15" flipx="0" flipy="0"
+frame duration="0.033" x="30" y="38" w="25" h="24" originx="13" originy="14" flipx="0" flipy="0"
+
+animation state="DOWN_GREEN"
+frame duration="0.033" x="2" y="67" w="32" h="24" originx="16" originy="15" flipx="0" flipy="0"
+frame duration="0.033" x="38" y="67" w="26" h="24" originx="13" originy="15" flipx="0" flipy="0"
+frame duration="0.033" x="58" y="2" w="24" h="25" originx="12" originy="15" flipx="0" flipy="0"
+
+animation state="UP_GREEN"
+frame duration="0.033" x="2" y="95" w="32" h="24" originx="16" originy="10" flipx="0" flipy="0"
+frame duration="0.033" x="38" y="95" w="26" h="24" originx="13" originy="10" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="38" w="24" h="25" originx="12" originy="11" flipx="0" flipy="0"
+
+animation state="FORWARD_BLUE"
+frame duration="0.033" x="86" y="2" w="24" h="32" originx="13" originy="18" flipx="0" flipy="0"
+frame duration="0.033" x="114" y="2" w="24" h="26" originx="13" originy="15" flipx="0" flipy="0"
+frame duration="0.033" x="114" y="38" w="25" h="24" originx="13" originy="14" flipx="0" flipy="0"
+
+animation state="DOWN_BLUE"
+frame duration="0.033" x="86" y="67" w="32" h="24" originx="16" originy="15" flipx="0" flipy="0"
+frame duration="0.033" x="122" y="67" w="26" h="24" originx="13" originy="15" flipx="0" flipy="0"
+frame duration="0.033" x="142" y="2" w="24" h="25" originx="12" originy="15" flipx="0" flipy="0"
+
+animation state="UP_BLUE"
+frame duration="0.033" x="86" y="95" w="32" h="24" originx="16" originy="10" flipx="0" flipy="0"
+frame duration="0.033" x="122" y="95" w="26" h="24" originx="13" originy="10" flipx="0" flipy="0"
+frame duration="0.033" x="86" y="38" w="24" h="25" originx="12" originy="11" flipx="0" flipy="0"
+
+animation state="FORWARD_PURPLE"
+frame duration="0.033" x="2" y="123" w="24" h="32" originx="13" originy="18" flipx="0" flipy="0"
+frame duration="0.033" x="30" y="123" w="24" h="26" originx="13" originy="15" flipx="0" flipy="0"
+frame duration="0.033" x="30" y="159" w="25" h="24" originx="13" originy="14" flipx="0" flipy="0"
+
+animation state="DOWN_PURPLE"
+frame duration="0.033" x="2" y="188" w="32" h="24" originx="16" originy="15" flipx="0" flipy="0"
+frame duration="0.033" x="38" y="188" w="26" h="24" originx="13" originy="15" flipx="0" flipy="0"
+frame duration="0.033" x="58" y="123" w="24" h="25" originx="12" originy="15" flipx="0" flipy="0"
+
+animation state="UP_PURPLE"
+frame duration="0.033" x="2" y="216" w="32" h="24" originx="16" originy="10" flipx="0" flipy="0"
+frame duration="0.033" x="38" y="216" w="26" h="24" originx="13" originy="10" flipx="0" flipy="0"
+frame duration="0.033" x="2" y="159" w="24" h="25" originx="12" originy="11" flipx="0" flipy="0"
+
+animation state="FORWARD_YELLOW"
+frame duration="0.033" x="86" y="123" w="24" h="32" originx="13" originy="18" flipx="0" flipy="0"
+frame duration="0.033" x="114" y="123" w="24" h="26" originx="13" originy="15" flipx="0" flipy="0"
+frame duration="0.033" x="114" y="159" w="25" h="24" originx="13" originy="14" flipx="0" flipy="0"
+
+animation state="DOWN_YELLOW"
+frame duration="0.033" x="86" y="188" w="32" h="24" originx="16" originy="15" flipx="0" flipy="0"
+frame duration="0.033" x="122" y="188" w="26" h="24" originx="13" originy="15" flipx="0" flipy="0"
+frame duration="0.033" x="58" y="2" w="24" h="25" originx="12" originy="15" flipx="0" flipy="0"
+
+animation state="UP_YELLOW"
+frame duration="0.033" x="86" y="216" w="32" h="24" originx="16" originy="10" flipx="0" flipy="0"
+frame duration="0.033" x="122" y="216" w="26" h="24" originx="13" originy="10" flipx="0" flipy="0"
+frame duration="0.033" x="86" y="159" w="24" h="25" originx="12" originy="11" flipx="0" flipy="0"

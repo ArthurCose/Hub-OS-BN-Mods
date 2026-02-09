@@ -1,0 +1,15 @@
+imagePath="C:/Users/seven/Desktop/ONB Play/Development/resources/mods/enemies/Alpha/virus/vulcan_fx.png"
+
+animation state="CANNON_BURST"
+frame duration="0.033" x="2" y="31" w="63" h="19" originx="52" originy="60" flipx="1"
+frame duration="0.033" x="2" y="54" w="59" h="19" originx="48" originy="58" flipx="1"
+frame duration="0.033" x="2" y="77" w="65" h="18" originx="50" originy="59" flipx="1"
+frame duration="0.033" x="29" y="2" w="60" h="20" originx="46" originy="58" flipx="1"
+
+animation state="TILE_BURST"
+frame duration="0.033" x="69" y="31" w="14" h="14" originx="-2" originy="13" flipx="1"
+frame duration="0.033" x="71" y="77" w="18" h="18" originx="-2" originy="17" flipx="1"
+frame duration="0.033" x="2" y="2" w="23" h="25" originx="-2" originy="24" flipx="1"
+frame duration="0.05" x="65" y="54" w="18" h="16" originx="-10" originy="27" flipx="1"
+frame duration="0.05" x="2" y="99" w="17" h="10" originx="-14" originy="30" flipx="1"
+frame duration="0.033" x="23" y="99" w="1" h="1" originx="192" originy="192" flipx="1"
