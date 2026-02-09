@@ -1,0 +1,44 @@
+animation state="DEFAULT"
+frame w=19 h=8 originx=9 originy=4
+
+animation state="CHARACTER_IDLE"
+frame w=19 h=8 originx=9 originy=4
+
+animation state="CHARACTER_MOVE"
+frame w=19 h=8 originx=9 originy=4
+
+animation state="CHARACTER_THROW"
+frame w=19 h=8 originx=9 originy=4
+
+animation state="CHARACTER_SHOOT"
+frame w=19 h=8 originx=16 originy=4 duration="0.017"
+frame w=19 h=8 originx=17 originy=4 duration="0.017"
+frame w=19 h=8 originx=18 originy=4 duration="0.017"
+frame w=19 h=8 originx=16 originy=4 duration="0.017"
+
+animation state="CHARACTER_SWING_HAND"
+frame w=19 h=8 originx=16 originy=4 duration="0.017"
+frame w=19 h=8 originx=17 originy=4 duration="0.017"
+frame w=19 h=8 originx=18 originy=4 duration="0.017"
+frame w=19 h=8 originx=16 originy=4 duration="0.017"
+
+animation state="CHARACTER_SWING_HILT"
+frame w=19 h=8 originx=16 originy=4 duration="0.017"
+frame w=19 h=8 originx=17 originy=4 duration="0.017"
+frame w=19 h=8 originx=18 originy=4 duration="0.017"
+frame w=19 h=8 originx=16 originy=4 duration="0.017"
+
+animation state="CHARACTER_HIT"
+frame w=19 h=8 originx=9 originy=4 duration="0.017"
+frame w=19 h=8 originx=11 originy=4 duration="0.017"
+frame w=19 h=8 originx=12 originy=4 duration="0.033"
+frame w=19 h=8 originx=11 originy=4 duration="0.017"
+
+animation state="SNAKE_BITE_START"
+frame w=19 h=8 originx=10 originy=4
+
+animation state="SNAKE_BITE_LOOP"
+frame w=19 h=8 originx=10 originy=4
+
+animation state="SNAKE_BITE_END"
+frame w=19 h=8 originx=10 originy=4

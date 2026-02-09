@@ -1,0 +1,35 @@
+animation state="IDLE_UL"
+frame x="1" y="45" w="25" h="22" originx="11" originy="19" duration="0.033"
+
+animation state="IDLE_DL"
+frame x="1" y="45" w="25" h="22" originx="11" originy="19" duration="0.033"
+
+animation state="IDLE_UR"
+frame x="1" y="45" w="25" h="22" originx="11" originy="19" duration="0.033" flipx="1"
+
+animation state="IDLE_DR"
+frame x="1" y="45" w="25" h="22" originx="11" originy="19" duration="0.033" flipx="1"
+
+animation state="WALK_UL"
+frame x="1" y="45" w="25" h="22" originx="11" originy="19" duration="0.117"
+frame x="1" y="22" w="35" h="21" originx="16" originy="18" duration="0.117"
+frame x="1" y="1" w="40" h="19" originx="22" originy="16" duration="0.117"
+frame x="43" y="1" w="31" h="20" originx="15" originy="17" duration="0.117"
+
+animation state="WALK_DL"
+frame x="1" y="45" w="25" h="22" originx="11" originy="19" duration="0.117"
+frame x="1" y="22" w="35" h="21" originx="16" originy="18" duration="0.117"
+frame x="1" y="1" w="40" h="19" originx="22" originy="16" duration="0.117"
+frame x="43" y="1" w="31" h="20" originx="15" originy="17" duration="0.117"
+
+animation state="WALK_UR"
+frame x="1" y="45" w="25" h="22" originx="11" originy="19" duration="0.117" flipx="1"
+frame x="1" y="22" w="35" h="21" originx="16" originy="18" duration="0.117" flipx="1"
+frame x="1" y="1" w="40" h="19" originx="22" originy="16" duration="0.117" flipx="1"
+frame x="43" y="1" w="31" h="20" originx="15" originy="17" duration="0.117" flipx="1"
+
+animation state="WALK_DR"
+frame x="1" y="45" w="25" h="22" originx="11" originy="19" duration="0.117" flipx="1"
+frame x="1" y="22" w="35" h="21" originx="16" originy="18" duration="0.117" flipx="1"
+frame x="1" y="1" w="40" h="19" originx="22" originy="16" duration="0.117" flipx="1"
+frame x="43" y="1" w="31" h="20" originx="15" originy="17" duration="0.117" flipx="1"

@@ -1,0 +1,25 @@
+[package]
+category = "player"
+id = "BattleNetwork2.SnakeMan"
+name = "SnakeMan"
+element = "Wood"
+description = "Let's get back in the game, shall we?"
+long_description = """
+Charged Attack = SnakeBite
+
+Charge Pure Wood = Add Wind
+
+Wood +30
+AirShoes
+"""
+preview_texture_path = "preview.png"
+overworld_animation_path = "overworld.animation"
+overworld_texture_path = "overworld.png"
+mugshot_texture_path = "mug.png"
+mugshot_animation_path = "mug.animation"
+health = 1000
+emotions_texture_path = "emotions.png"
+emotions_animation_path = "emotions.animation"
+
+[dependencies]
+libraries = ["BattleNetwork.Emotions"]
