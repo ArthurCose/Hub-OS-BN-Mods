@@ -1,0 +1,20 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class02.Mega.F07.AquaMan"
+name = "AquaMan"
+description = "Watr atk! Bhnd 2row power-up"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["A", "*"]
+damage = 50
+time_freeze = true
+element = "aqua"
+card_class = "mega"
+limit = 2
+can_boost = true
+hit_flags = ["Flinch", "Flash"]
+tags = ["BN6", "EXE6", "NAVI", "VERSION_FALZAR"]
+regular_allowed = true
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "BattleNetwork6.Libraries.ChipNavi"]
