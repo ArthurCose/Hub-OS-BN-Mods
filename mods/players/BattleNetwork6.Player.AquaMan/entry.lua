@@ -168,6 +168,12 @@ function player_init(player)
         end
 
         if not first_tile:is_walkable() then
+          spawn_bubbles(first_tile, false)
+          spawn_bubbles(first_tile:get_tile(Direction.Up, 1), false)
+          spawn_bubbles(first_tile:get_tile(Direction.Down, 1), false)
+          spawn_bubbles(first_tile:get_tile(Direction.Left, 1), false)
+          spawn_bubbles(first_tile:get_tile(Direction.Right, 1), false)
+
           local particle = bn_assets.MobMove.new("SMALL_END")
           Field.spawn(particle, first_tile)
 
