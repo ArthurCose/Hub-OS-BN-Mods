@@ -14,9 +14,10 @@ local SHADOW_TEXTURE = bn_assets.load_texture("bomb_shadow.png")
 local DIVE_AUDIO = bn_assets.load_audio("beat_dive.ogg")
 local GRAB_AUDIO = bn_assets.load_audio("beat_snatch.ogg")
 
-local aux_prop_list = {}
-
-local function track(entity, aug_owner)
+---@param entity Entity
+---@param aug_owner Entity
+---@param aux_prop_list table<EntityId, AuxProp>
+local function track(entity, aug_owner, aux_prop_list)
     local beat_prop = AuxProp.new()
         :require_card_not_class(CardClass.Standard)
         :require_card_not_class(CardClass.Recipe)
@@ -196,21 +197,18 @@ function augment_init(augment)
 
     local search_component = owner:create_component(Lifetime.ActiveBattle)
     local aug_timer = 0
+    local aux_prop_list = {}
     search_component.on_update_func = function(self)
         aug_timer = aug_timer + 1
 
         if aug_timer < 1 then return end
 
-        -- Only for pvp. Needs at least one player of the enemy team
         local enemy_team_list = Field.find_characters(function(entity)
-            return owner:team() ~= entity:team()
+            return owner:is_team(entity:team()) and entity ~= owner
         end)
 
-        -- If enemy players are not found, then do nothing
-        if #enemy_team_list == 0 then return end
-
         for i = 1, #enemy_team_list, 1 do
-            track(enemy_team_list[i], owner)
+            track(enemy_team_list[i], owner, aux_prop_list)
         end
 
         self:eject()
