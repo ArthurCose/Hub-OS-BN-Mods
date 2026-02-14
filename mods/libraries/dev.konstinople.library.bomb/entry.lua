@@ -20,6 +20,10 @@ function Bomb:set_bomb_shadow(texture)
   self._shadow_texture = texture
 end
 
+function Bomb:set_bomb_palette(texture)
+  self._bomb_palette = texture
+end
+
 --- Specifies a bomb animation that must be used.
 ---@param animation_path string
 function Bomb:set_bomb_animation_path(animation_path)
@@ -103,6 +107,10 @@ local function create_bomb(self)
   bomb_anim:load(self._bomb_animation_path)
   bomb_anim:set_state(self._bomb_held_animation_state or self._bomb_animation_state or "DEFAULT")
   bomb_anim:set_playback(Playback.Loop)
+
+  if self._bomb_palette then
+    bomb_sprite:set_palette(self._bomb_palette)
+  end
 
   return bomb
 end

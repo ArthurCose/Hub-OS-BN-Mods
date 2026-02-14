@@ -1,0 +1,22 @@
+[package]
+category = "card"
+id = "BattleChipChallenge.Ring.Card.050"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+name = "PanicSnd"
+description = "Panicstep enemies w/music"
+codes = ["*"]
+element = "summon"
+hit_flags = []
+time_freeze = true
+can_boost = false
+limit = 4
+
+[dependencies]
+libraries = [
+    "BattleNetwork.Assets",
+    "BattleChipChallenge.Libraries.Ring",
+    ]
+augments = [
+    "BattleChipChallenge.Ring.Bug.RandomStep",
+]

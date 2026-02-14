@@ -1,0 +1,9 @@
+[package]
+category = "augment"
+id = "BattleChipChallenge.Ring.Bug.RandomStep"
+name = "RndmStep"
+description = "May randomly move to a movable tile."
+tags = ["BUG"]
+
+[dependencies]
+augments = ["BattleNetwork.Bugs.EmotionFlicker"]

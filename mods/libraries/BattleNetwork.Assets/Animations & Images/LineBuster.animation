@@ -1,0 +1,21 @@
+imagePath="LineBuster.png"
+
+animation state="SPAWN"
+frame duration="0.1" x="28" y="60" w="28" h="28" originx="0" originy="18" flipx="0" flipy="0"
+frame duration="0.1" x="0" y="0" w="28" h="30" originx="0" originy="18" flipx="0" flipy="0"
+
+animation state="ATTACK_LOOP_WOOD"
+frame duration="0.05" x="28" y="0" w="28" h="30" originx="0" originy="18" flipx="0" flipy="0"
+frame duration="0.05" x="56" y="0" w="28" h="30" originx="0" originy="18" flipx="0" flipy="0"
+
+animation state="ATTACK_LOOP_AQUA"
+frame duration="0.05" x="84" y="0" w="28" h="30" originx="0" originy="18" flipx="0" flipy="0"
+frame duration="0.05" x="0" y="30" w="28" h="30" originx="0" originy="18" flipx="0" flipy="0"
+
+animation state="ATTACK_LOOP_FIRE"
+frame duration="0.05" x="28" y="30" w="28" h="30" originx="0" originy="18" flipx="0" flipy="0"
+frame duration="0.05" x="56" y="30" w="28" h="30" originx="0" originy="18" flipx="0" flipy="0"
+
+animation state="ATTACK_LOOP_ELEC"
+frame duration="0.05" x="84" y="30" w="28" h="30" originx="0" originy="18" flipx="0" flipy="0"
+frame duration="0.05" x="0" y="60" w="28" h="30" originx="0" originy="18" flipx="0" flipy="0"
