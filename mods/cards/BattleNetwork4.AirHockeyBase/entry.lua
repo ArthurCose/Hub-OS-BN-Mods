@@ -1,12 +1,17 @@
 ---@type dev.konstinople.library.sword
 local SwordLib = require("dev.konstinople.library.sword")
 
-local TEXTURE = Resources.load_texture("puck.png")
-local TEXTURE_ANIM = "puck.animation"
-local LAUNCH_AUDIO = Resources.load_audio("pucklaunch.ogg")
-local BOUNCE_AUDIO = Resources.load_audio("puckhit.ogg")
-local MOB_MOVE_TEXTURE = Resources.load_texture("mob_move.png")
-local PARTICLE_TEXTURE = Resources.load_texture("artifact_impact_fx.png")
+---@type BattleNetwork.Assets
+local bn_assets = require("BattleNetwork.Assets")
+
+local TEXTURE = bn_assets.load_texture("puck.png")
+local TEXTURE_ANIM = bn_assets.fetch_animation_path("puck.animation")
+local LAUNCH_AUDIO = bn_assets.load_audio("hockey_launch.ogg")
+
+local BOUNCE_AUDIO = {
+	bn_assets.load_audio("hockey1.ogg"),
+	bn_assets.load_audio("hockey2.ogg")
+}
 
 local sword = SwordLib.new_sword()
 sword:use_hand()
@@ -39,15 +44,107 @@ function card_init(user, props)
 	return action
 end
 
+local function drop_trace_fx(target_artifact, duration, direction, tile_count)
+	local team = target_artifact:team()
+
+	local fx = Artifact.new(team)
+
+	local texture = target_artifact:texture()
+
+	fx:set_facing(target_artifact:facing())
+	fx:set_texture(texture)
+
+	local fx_anim = fx:animation()
+	fx_anim:copy_from(target_artifact:animation())
+	fx_anim:set_state(target_artifact:animation():state())
+
+	local alpha = 255
+	local slide_wait = 5
+	local dest, play_bounce
+	local original_duration = duration
+
+	local color = Color.new(0, 8, 48, alpha)
+
+	fx.can_move_to_func = function(tile)
+		-- Can't move to tiles that don't exist
+		if not tile then return false end
+
+		-- Can't move to unwalkable tiles e.g. broken, missing, and edge tiles.
+		if not tile:is_walkable() then return false end
+		return true
+	end
+
+	fx:set_layer(2)
+
+	fx.on_update_func = function(self)
+		if slide_wait > 0 then
+			slide_wait = slide_wait - 1
+		else
+			if not self:is_sliding() then
+				local tile = self:current_tile()
+				if not tile or tile:is_edge() then
+					self:erase()
+					return
+				end
+
+				if tile_count == 0 then
+					self:erase()
+					return
+				end
+
+				dest, play_bounce, direction = Bounce(tile, self, direction, team)
+
+				if not dest then
+					self:erase()
+					return
+				end
+
+				self:slide(dest, 6, function()
+					tile_count = tile_count - 1
+				end)
+			end
+		end
+
+		duration = duration - 1
+
+		alpha = math.max(0, alpha * (duration / original_duration))
+
+		color = Color.new(0, 8, 48, alpha)
+
+		self:sprite():set_color_mode(ColorMode.Adopt)
+		self:set_color(color)
+
+		if duration == 0 then
+			self:erase()
+		end
+	end
+
+	local tile = target_artifact:current_tile()
+
+	Field.spawn(fx, tile)
+
+	return fx
+end
+
 function create_puck(user, props)
 	local spell = Spell.new(user:team())
 	local tile_count = 11
+	local afterimage = false
+
+	if props.card_class == CardClass.Recipe then
+		tile_count = 21
+		afterimage = true
+	end
+
 	local self_team = user:team()
 	local direction = Direction.join(user:facing(), Direction.Down)
+
+	local audio_index = 1
 
 	local anim = spell:animation()
 	anim:load(TEXTURE_ANIM)
 	anim:set_state("DEFAULT")
+
 	local sprite = spell:sprite()
 	sprite:set_texture(TEXTURE)
 	anim:apply(sprite)
@@ -71,9 +168,14 @@ function create_puck(user, props)
 			self:delete()
 			return
 		end
+
 		if not tile:is_walkable() then
 			self:delete()
 			return
+		end
+
+		if afterimage == true and tile_count > 1 then
+			drop_trace_fx(self, 8, direction, tile_count)
 		end
 
 		tile:attack_entities(self)
@@ -89,7 +191,8 @@ function create_puck(user, props)
 			if dest then
 				self:slide(dest, 6)
 				if play_bounce then
-					Resources.play_audio(BOUNCE_AUDIO)
+					Resources.play_audio(BOUNCE_AUDIO[audio_index])
+					if audio_index + 1 > #BOUNCE_AUDIO then audio_index = 1 else audio_index = 2 end
 				end
 			else
 				self:delete()
@@ -100,39 +203,21 @@ function create_puck(user, props)
 	end
 
 	spell.on_collision_func = function(self, other)
-		local fx = Artifact.new()
-		fx:set_texture(PARTICLE_TEXTURE)
-
-		local fx_anim = fx:animation()
-		fx_anim:load("artifact_impact_fx.animation")
-		fx_anim:set_state("BLUE")
-		fx_anim:apply(fx:sprite())
-		fx_anim:on_complete(function()
-			fx:erase()
-		end)
-		Field.spawn(fx, spell:current_tile())
+		local fx = bn_assets.HitParticle.new("BREAK", math.random(-1, 1), math.random(-1, 1))
+		Field.spawn(fx, other:current_tile())
 	end
 
 	spell.on_attack_func = function(self, other)
 	end
 
 	spell.on_delete_func = function(self)
-		if not spell:current_tile():is_edge() then
-			--if we're not on an edge tile, which happens mostly at the end of battle for some reason,
-			--then spawn a mob move to visually vanish the puck when it deletes.
-			--presentation!
-			local fx = Artifact.new()
+		local fx = bn_assets.MobMove.new("SMALL_END")
 
-			local fx_anim = fx:animation()
-			fx:set_texture(MOB_MOVE_TEXTURE)
-			fx_anim:load("mob_move.animation")
-			fx_anim:set_state("DEFAULT")
-			fx_anim:apply(fx:sprite())
-			fx_anim:on_complete(function()
-				fx:erase()
-			end)
-			Field.spawn(fx, spell:current_tile():x(), spell:current_tile():y())
-		end
+		local fx_anim = fx:animation()
+		fx_anim:on_complete(function() fx:erase() end)
+
+		Field.spawn(fx, spell:current_tile())
+
 		self:erase()
 	end
 
@@ -171,7 +256,9 @@ function Bounce(tile, spell, direction, self_team)
 			spell:delete()
 			return false
 		end
+
 		if teamcheck(new_tile) then return true end
+
 		return not spell:can_move_to(new_tile)
 	end
 

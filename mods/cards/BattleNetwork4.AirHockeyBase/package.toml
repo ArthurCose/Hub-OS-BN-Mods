@@ -14,10 +14,5 @@ limit = 0
 hidden = true
 hit_flags = ["Flinch", "PierceGuard"]
 
-[defines]
-characters = []
-
 [dependencies]
-characters = []
-libraries = ["dev.konstinople.library.sword"]
-cards = []
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]

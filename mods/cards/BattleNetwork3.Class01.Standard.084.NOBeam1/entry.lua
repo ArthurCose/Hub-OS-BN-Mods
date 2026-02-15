@@ -63,10 +63,10 @@ function card_init(actor, props)
 			fx:set_elevation(elevation)
 			fx:animation():apply(fx:sprite())
 			local remaining_ms = lifetime_ms
-			fx._slide_wait = 5
+			local slide_wait = 5
 			fx.on_update_func = function(self)
-				if self._slide_wait > 0 then
-					self._slide_wait = self._slide_wait - 1
+				if slide_wait > 0 then
+					slide_wait = slide_wait - 1
 				else
 					if not self:is_sliding() then
 						local tile = self:current_tile()
@@ -101,11 +101,11 @@ function card_init(actor, props)
 
 		local main_color = Color.new(0, 192, 192, 255)
 
-		spell._ghost_timer = 0
+		local ghost_timer = 0
 
 		spell.on_update_func = function(self)
-			self._ghost_timer = self._ghost_timer + 1
-			if self._ghost_timer % 4 == 0 then
+			ghost_timer = ghost_timer + 1
+			if ghost_timer % 4 == 0 then
 				drop_trace_fx(self, 40)
 			end
 			self:set_color(main_color)

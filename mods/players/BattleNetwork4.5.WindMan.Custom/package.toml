@@ -3,7 +3,14 @@ category = "player"
 id = "BattleNetwork4.5.WindMan.Custom"
 name = "WindMan"
 description = "God of Scissor Island"
-long_description = "Charged Attack =\nAirShot\n\nSpecial =\nWindRack\n\nFloatShoes"
+long_description = """Charged Attack = AirShot, Damage = Attack x 5
+Special = WindRack, Damage = 50, 3 second cooldown
+Chip Charge:
+* Requires Wind element
+* Increases card multiplier by 50%
+
+AirShoes (innate)
+FloatShoes (augment)"""
 preview_texture_path = "preview.png"
 overworld_animation_path = "overworld.animation"
 overworld_texture_path = "overworld.png"
@@ -13,13 +20,9 @@ mugshot_texture_path = "mug.png"
 health = 1000
 element = "Wind"
 
-[defines]
-characters = []
-
 [dependencies]
-characters = []
-libraries = []
 cards = [
     "BattleNetwork6.Class01.Standard.004",
     "BattleNetwork6.Class01.Standard.079"
 ]
+augments = ["BattleNetwork6.Program11.FloatShoes"]

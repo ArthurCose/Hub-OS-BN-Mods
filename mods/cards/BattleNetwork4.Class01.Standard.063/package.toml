@@ -13,10 +13,5 @@ long_description = "Bounce the puck off the walls!"
 limit = 4
 hit_flags = ["Flinch", "PierceGuard"]
 
-[defines]
-characters = []
-
 [dependencies]
-characters = []
-libraries = []
 cards = ["BattleNetwork4.AirHockeyBase"]

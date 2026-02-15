@@ -42,7 +42,9 @@ function player_init(player)
     -- Position charge effect.
     player:set_charge_position(-3, -35)
 
-    player:ignore_negative_tile_effects()
+    player:ignore_hole_tiles(true)
+
+    player:boost_augment("BattleNetwork6.Program11.FloatShoes", 1)
 
     -- Return the action for the Navi's default attack.
     -- Determines what happens when you press B.
@@ -112,18 +114,20 @@ function player_init(player)
         -- then given other criteria are met, the Battle Chip may be charged by this Navi.
         local is_wind = card_properties.element == Element.Wind or card_properties.secondary_element == Element.Wind
 
-        if not is_wind then
-            return
-        end
+        if not is_wind then return end
 
         return 50
     end
 
+
+    local charged_card_aux = AuxProp.new()
+        :require_charged_card()
+        :increase_card_multiplier(0.5)
+
+    player:add_aux_prop(charged_card_aux)
+
     -- Determines what happens when a Battle Chip is successfully "charged" by a Navi.
     player.charged_card_func = function(self, card_properties)
-        -- Increase the damage by one stage.
-        card_properties.damage = card_properties.damage + card_properties.damage
-
         -- Return the Action with the alterations from "charging" the Battle Chip.
         return Action.from_card(self, card_properties)
     end

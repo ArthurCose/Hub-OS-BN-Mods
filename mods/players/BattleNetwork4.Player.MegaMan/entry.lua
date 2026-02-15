@@ -700,16 +700,17 @@ function player_init(player)
         end
     end
 
-    local function handle_form_deactivation(form)
-        player:forget("PAUSE_KARMA_GAIN")
-        player:forget("PAUSE_KARMA_LOSS")
+    local function handle_form_deactivation(form, forget_gain, forget_loss, reset_karma)
+        if forget_gain == true then player:forget("PAUSE_KARMA_GAIN") end
+        if forget_loss == true then player:forget("PAUSE_KARMA_LOSS") end
+        if reset_karma == true then player:remember("KARMA_VALUE", 128) end
 
         change_visuals(base_texture, base_animation_path, true)
 
         player:set_emotions_texture(base_emotion_texture)
         player:load_emotions_animation(base_emotion_animation_path)
         player:set_element(pre_unison_element)
-        player:set_emotion(pre_unison_emotion)
+        player:set_emotion("DEFAULT")
 
         handle_aux_prop_removal()
 
@@ -763,7 +764,7 @@ function player_init(player)
             if should_end_form ~= true then return end
             if soul_cancel_aux ~= nil then player:remove_aux_prop(soul_cancel_aux) end
             should_end_form = false
-            handle_form_deactivation(active_form)
+            handle_form_deactivation(active_form, false, false, true)
         end
     end
 
@@ -796,10 +797,6 @@ function player_init(player)
 
         if soul_cancel_aux ~= nil then player:remove_aux_prop(soul_cancel_aux) end
 
-        player:remember("PAUSE_KARMA_GAIN", 0)
-        player:remember("PAUSE_KARMA_LOSS", 0)
-        player:remember("KARMA_VALUE", 128)
-
         soul_cancel_aux = AuxProp.new()
             :require_action(ActionType.Card)
             :require_card_class(CardClass.Dark)
@@ -810,6 +807,10 @@ function player_init(player)
             :once()
 
         player:add_aux_prop(soul_cancel_aux)
+
+        player:remember("PAUSE_KARMA_GAIN", 0)
+        player:remember("PAUSE_KARMA_LOSS", 0)
+        player:remember("KARMA_VALUE", 128)
 
         create_or_update_soul_turn_tracker()
     end

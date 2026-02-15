@@ -4,7 +4,7 @@ id = "BattleNetwork4.Class01.Standard.064"
 name = "AirHoc2"
 icon_texture_path = "icon.png"
 preview_texture_path = "preview.png"
-codes = ["I", "J", "K"]
+codes = ["L", "M", "N"]
 damage = 60
 time_freeze = false
 element = "break"
@@ -13,10 +13,5 @@ long_description = "Bounce the puck off the walls!"
 limit = 4
 hit_flags = ["Flinch", "PierceGuard"]
 
-[defines]
-characters = []
-
 [dependencies]
-characters = []
-libraries = []
 cards = ["BattleNetwork4.AirHockeyBase"]
