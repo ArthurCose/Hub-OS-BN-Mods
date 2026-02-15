@@ -204,7 +204,7 @@ function augment_init(augment)
         if aug_timer < 1 then return end
 
         local enemy_team_list = Field.find_characters(function(entity)
-            return owner:is_team(entity:team()) and entity ~= owner
+            return not owner:is_team(entity:team()) and entity ~= owner
         end)
 
         for i = 1, #enemy_team_list, 1 do
