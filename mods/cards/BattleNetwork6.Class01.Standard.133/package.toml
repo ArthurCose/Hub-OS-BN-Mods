@@ -13,4 +13,4 @@ limit = 3
 hit_flags = ["Flinch"]
 
 [dependencies]
-libraries = ["BattleNetwork.Assets", "dev.konstinople.library.sword"]
+cards = ["BattleNetwork6.Class01.Standard.131"]

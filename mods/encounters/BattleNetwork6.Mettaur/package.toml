@@ -12,3 +12,4 @@ path = "Mettaur"
 
 [dependencies]
 libraries = ["BattleNetwork.Assets"]
+tile_states = ["BattleNetwork6.TileStates.Poison"]

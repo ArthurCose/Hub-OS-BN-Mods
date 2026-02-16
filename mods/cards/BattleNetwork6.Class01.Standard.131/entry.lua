@@ -6,8 +6,8 @@ local SwordLib = require("dev.konstinople.library.sword")
 local sword = SwordLib.new_sword()
 sword:use_hand()
 
-local OBSTACLE_TEXTURE = Resources.load_texture("obstacle.png")
-local OBSTACLE_ANIMATION_PATH = "obstacle.animation"
+local OBSTACLE_TEXTURE = bn_assets.load_texture("air_spin.png")
+local OBSTACLE_ANIMATION_PATH = bn_assets.fetch_animation_path("air_spin.animation")
 local LAUNCH_SFX = bn_assets.load_audio("dust_launch.ogg")
 
 local AIR_TEXTURE = bn_assets.load_texture("airspin.png")
@@ -157,6 +157,12 @@ end
 ---@param user Entity
 ---@param props CardProperties
 function card_init(user, props)
+  if props.short_name == "AirSpin2" then
+    MIN_LIFETIME = 35
+  elseif props.short_name == "AirSpin3" then
+    MIN_LIFETIME = 45
+  end
+
   return sword:create_action(user, function()
     local tile = user:get_tile(user:facing(), 1)
 

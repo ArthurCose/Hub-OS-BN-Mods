@@ -1,8 +1,8 @@
 ---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
 
-local TEXTURE = Resources.load_texture("unit.png")
-local ANIM_PATH = "unit.animation"
+local TEXTURE = bn_assets.load_texture("wind_box.png")
+local ANIM_PATH = bn_assets.fetch_animation_path("wind_box.animation")
 local APPEAR_SFX = bn_assets.load_audio("appear.ogg")
 
 local GUST_TEXTURE = bn_assets.load_texture("wind_puff.png")
@@ -71,7 +71,7 @@ function card_init(user)
 
     local anim = unit:animation()
     anim:load(ANIM_PATH)
-    anim:set_state("DEFAULT")
+    anim:set_state("FAN")
     anim:set_playback(Playback.Loop)
 
     local gust_y = Field.height() // 2

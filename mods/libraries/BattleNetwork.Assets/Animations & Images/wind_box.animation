@@ -1,0 +1,13 @@
+imagePath="C:/Users/seven/OneDrive/Documents/My Games/Hub OS/mods/cards/BattleNetwork6.Class01.Standard.135.Fan/wind_box.png"
+
+animation state="FAN"
+frame duration="0.05" x="2" y="2" w="32" h="41" originx="16" originy="35" flipx="0" flipy="0"
+frame duration="0.05" x="2" y="47" w="32" h="40" originx="16" originy="34" flipx="0" flipy="0"
+frame duration="0.05" x="38" y="2" w="32" h="41" originx="16" originy="35" flipx="0" flipy="0"
+frame duration="0.05" x="38" y="47" w="32" h="40" originx="16" originy="34" flipx="0" flipy="0"
+
+animation state="WIND"
+frame duration="0.05" x="74" y="2" w="32" h="41" originx="16" originy="35" flipx="0" flipy="0"
+frame duration="0.05" x="74" y="47" w="32" h="40" originx="16" originy="34" flipx="0" flipy="0"
+frame duration="0.05" x="110" y="2" w="32" h="41" originx="16" originy="35" flipx="0" flipy="0"
+frame duration="0.05" x="110" y="47" w="32" h="40" originx="16" originy="34" flipx="0" flipy="0"

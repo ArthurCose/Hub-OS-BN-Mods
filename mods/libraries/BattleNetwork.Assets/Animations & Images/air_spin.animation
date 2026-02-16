@@ -1,0 +1,28 @@
+imagePath="C:/Users/seven/OneDrive/Documents/My Games/Hub OS/mods/cards/BattleNetwork6.Class01.Standard.133/obstacle.png"
+
+animation state="SPAWN_3"
+frame duration="0.017" x="1" y="1" w="45" h="30" originx="23" originy="22" flipx="0" flipy="0"
+frame duration="0.033" x="48" y="1" w="45" h="30" originx="23" originy="22" flipx="0" flipy="0"
+frame duration="0.033" x="1" y="33" w="45" h="30" originx="23" originy="22" flipx="0" flipy="0"
+
+animation state="SPAWN_2"
+frame duration="0.017" x="1" y="1" w="45" h="30" originx="23" originy="22" flipx="0" flipy="0"
+frame duration="0.033" x="48" y="1" w="45" h="30" originx="23" originy="22" flipx="0" flipy="0"
+frame duration="0.033" x="1" y="65" w="45" h="30" originx="23" originy="22" flipx="0" flipy="0"
+
+animation state="SPAWN_1"
+frame duration="0.017" x="1" y="1" w="45" h="30" originx="23" originy="22" flipx="0" flipy="0"
+frame duration="0.033" x="48" y="1" w="45" h="30" originx="23" originy="22" flipx="0" flipy="0"
+frame duration="0.033" x="1" y="97" w="45" h="30" originx="23" originy="22" flipx="0" flipy="0"
+
+animation state="SPIN_3"
+frame duration="0.033" x="48" y="33" w="45" h="30" originx="23" originy="22" flipx="0" flipy="0"
+frame duration="0.033" x="95" y="33" w="45" h="30" originx="22" originy="22" flipx="0" flipy="0"
+
+animation state="SPIN_2"
+frame duration="0.033" x="48" y="65" w="45" h="30" originx="23" originy="22" flipx="0" flipy="0"
+frame duration="0.033" x="95" y="65" w="45" h="30" originx="22" originy="22" flipx="0" flipy="0"
+
+animation state="SPIN_1"
+frame duration="0.033" x="48" y="97" w="45" h="30" originx="23" originy="22" flipx="0" flipy="0"
+frame duration="0.033" x="95" y="97" w="45" h="30" originx="22" originy="22" flipx="0" flipy="0"
