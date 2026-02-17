@@ -6,11 +6,11 @@ description = "I don't care about the NPCs, I CAST METEOR."
 preview_texture_path = "preview.png"
 
 [defines]
-characters = [
-  { id = "BattleNetwork3.Metrid.Enemy", path = "metrid" },
-  { id = "BattleNetwork3.Metrod.Enemy", path = "metrod" },
-  { id = "BattleNetwork3.Metrodo.Enemy", path = "metrodo" },
-]
+characters = [{ id = "BattleNetwork3.Metrid.Enemy", path = "metrid" }]
 
 [dependencies]
-libraries = ["BattleNetwork.Assets", "dev.konstinople.library.ai"]
+libraries = [
+  "BattleNetwork.Assets",
+  "dev.konstinople.library.turn_based",
+  "dev.konstinople.library.ai",
+]

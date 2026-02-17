@@ -1,0 +1,16 @@
+[package]
+category = "library"
+id = "dev.konstinople.library.turn_based"
+name = "TurnBased Lib"
+description = """
+Library for tracking turns within a character mod.
+
+Prevents deleted entities from blocking turn progression.
+
+Supports three turn tracking system:
+ - Basic Tracker, cycling between multiple entities
+ - Directional Tracker, allows entities with differing facing directions to take turns at the same time
+ - Lock, the first ready entity claims control
+
+Inspired by Keristero's turn tracking system for mettaurs
+"""

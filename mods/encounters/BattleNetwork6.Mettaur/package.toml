@@ -11,5 +11,5 @@ id = "BattleNetwork6.Mettaur.Enemy"
 path = "Mettaur"
 
 [dependencies]
-libraries = ["BattleNetwork.Assets"]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.turn_based"]
 tile_states = ["BattleNetwork6.TileStates.Poison"]

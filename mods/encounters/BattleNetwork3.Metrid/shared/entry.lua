@@ -2,6 +2,8 @@
 local Ai = require("dev.konstinople.library.ai")
 ---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
+---@type dev.konstinople.library.turn_based
+local TurnBasedLib = require("dev.konstinople.library.turn_based")
 
 local METEOR_TEXTURE = bn_assets.load_texture("meteor.png")
 local METEOR_ANIM_PATH = bn_assets.fetch_animation_path("meteor.animation")
@@ -10,19 +12,12 @@ local EXPLOSION_ANIM_PATH = bn_assets.fetch_animation_path("ring_explosion.anima
 local EXPLOSION_SFX = bn_assets.load_audio("explosion_defeatedboss")
 local LANDING_SFX = bn_assets.load_audio("meteor_land.ogg")
 
-local MobTracker = require("mob_tracker.lua")
-local mob_tracker = MobTracker:new()
-
-local attack = 0
-local cooldown = 16
-local minimum_meteors = 4
-local maximum_meteors = 8
-local meteor_cooldown = 0
-local accuracy_chance = 0
-local idle_max = 40
+local turn_tracker = TurnBasedLib.new_tracker()
 
 ---@class Metrid : Entity
+---@field _health number
 ---@field _attack number
+---@field _idle_max number
 ---@field _minimum_meteors number
 ---@field _maximum_meteors number
 ---@field _meteor_cooldown number
@@ -33,6 +28,7 @@ local function create_meteor(metrid)
     local meteor = Spell.new(metrid:team())
     meteor:set_tile_highlight(Highlight.Flash)
     meteor:set_facing(metrid:facing())
+
     local flags = Hit.Flash | Hit.Flinch | Hit.PierceGround
 
     if metrid:rank() == Rank.NM then
@@ -41,56 +37,74 @@ local function create_meteor(metrid)
 
     meteor:set_hit_props(
         HitProps.new(
-            attack,
+            metrid._attack,
             flags,
             Element.Fire,
             metrid:context(),
             Drag.None
         )
     )
+
     meteor:set_texture(METEOR_TEXTURE)
+
     local anim = meteor:animation()
     anim:load(METEOR_ANIM_PATH)
     anim:set_state("DEFAULT")
     anim:apply(meteor:sprite())
     meteor:sprite():set_layer(-2)
-    local boom = EXPLOSION_TEXTURE
 
-    local increment_x = 7
-    local increment_y = 7
-    meteor:set_offset(meteor:offset().x + 112, meteor:offset().y - 112)
+    local cooldown = 32
+    local increment_x = 14
+    local increment_y = 14
+
+    if metrid:facing() == Direction.Left then
+        increment_x = -increment_x
+    end
+
+    meteor:set_offset(
+        meteor:offset().x - increment_x * cooldown,
+        meteor:offset().y - increment_y * cooldown
+    )
+
     meteor.on_update_func = function(self)
-        if cooldown <= 0 then
-            local tile = self:current_tile()
-            if tile and tile:is_walkable() then
-                tile:attack_entities(self)
-                Field.shake(5, 18)
-                local explosion = Spell.new(self:team())
-                explosion:set_texture(boom)
-                local new_anim = explosion:animation()
-                new_anim:load(EXPLOSION_ANIM_PATH)
-                new_anim:set_state("DEFAULT")
-                new_anim:apply(explosion:sprite())
-                explosion:sprite():set_layer(-2)
-                Resources.play_audio(LANDING_SFX)
-                Field.spawn(explosion, tile)
-                new_anim:on_frame(3, function()
-                    Resources.play_audio(EXPLOSION_SFX)
-                end)
-                new_anim:on_complete(function()
-                    explosion:erase()
-                end)
-            end
-            self:erase()
-        else
+        if cooldown > 0 then
             local offset = self:offset()
-            self:set_offset(offset.x - increment_x, offset.y + increment_y)
+            self:set_offset(offset.x + increment_x, offset.y + increment_y)
             cooldown = cooldown - 1
+            return
         end
+
+        local tile = self:current_tile()
+
+        if tile and tile:is_walkable() then
+            tile:attack_entities(self)
+            Field.shake(5, 18)
+
+            local explosion = Spell.new(self:team())
+            explosion:set_texture(EXPLOSION_TEXTURE)
+            explosion:sprite():set_layer(-2)
+
+            local new_anim = explosion:animation()
+            new_anim:load(EXPLOSION_ANIM_PATH)
+            new_anim:set_state("DEFAULT")
+            new_anim:apply(explosion:sprite())
+
+            Resources.play_audio(LANDING_SFX)
+
+            Field.spawn(explosion, tile)
+
+            new_anim:on_frame(3, function()
+                Resources.play_audio(EXPLOSION_SFX)
+            end)
+
+            new_anim:on_complete(function()
+                explosion:erase()
+            end)
+        end
+
+        self:erase()
     end
-    meteor.can_move_to_func = function(tile)
-        return true
-    end
+
     return meteor
 end
 
@@ -138,8 +152,8 @@ local function create_meteor_action(metrid)
 
     local function create_component()
         local meteor_component = metrid:create_component(Lifetime.ActiveBattle)
-        local count = math.random(minimum_meteors, maximum_meteors)
-        local attack_cooldown_max = meteor_cooldown
+        local count = math.random(metrid._minimum_meteors, metrid._maximum_meteors)
+        local attack_cooldown_max = metrid._meteor_cooldown
         local highlight_cooldown_max = 24
         local highlight_cooldown = 24
         local attack_cooldown = 0
@@ -155,7 +169,7 @@ local function create_meteor_action(metrid)
             if count <= 0 then
                 metrid_anim:set_state("DRESS")
                 metrid_anim:on_complete(function()
-                    mob_tracker:advance_a_turn()
+                    turn_tracker:end_turn(metrid)
                     meteor_step:complete_step()
                 end)
                 meteor_component:eject()
@@ -175,7 +189,7 @@ local function create_meteor_action(metrid)
                 --Example: if a Metrid has an accuracy chance of 20, then a 1 to 100 roll will
                 --Only target the player's tile on a roll of 1-20, leading to an 80% chance of
                 --Targeting a random player tile.
-                if math.random(1, 100) <= accuracy_chance then
+                if math.random(1, 100) <= metrid._accuracy_chance then
                     local target = find_best_target(metrid)
                     if target ~= nil then
                         next_tile = target:current_tile()
@@ -297,15 +311,6 @@ end
 function character_init(self)
     self:set_height(38)
 
-    accuracy_chance = 20
-    meteor_cooldown = 32
-
-    attack = self._damage
-    idle_max = self._idle_max
-    minimum_meteors = self._minimum_meteors
-    maximum_meteors = self._maximum_meteors
-    accuracy_chance = self._accuracy_chance
-
     self:set_health(self._health)
 
     self:set_element(Element.Fire)
@@ -318,13 +323,8 @@ function character_init(self)
     anim:apply(self:sprite())
     anim:set_playback(Playback.Loop)
 
-    self.on_battle_start_func = function()
-        mob_tracker:add_by_id(self:id())
-    end
-
-    self.on_delete_func = function()
-        mob_tracker:remove_by_id(self:id())
-        self:default_character_delete()
+    self.on_spawn_func = function()
+        turn_tracker:add_entity(self)
     end
 
     self.on_idle_func = function()
@@ -335,7 +335,7 @@ function character_init(self)
     local ai = Ai.new_ai(self)
     local plan = ai:create_plan()
     local move_factory = create_move_factory(self)
-    local idle_factory = Ai.create_idle_action_factory(self, idle_max, idle_max)
+    local idle_factory = Ai.create_idle_action_factory(self, self._idle_max, self._idle_max)
     local setup_factory = create_setup_factory(self)
     local attack_factory = function()
         return create_meteor_action(self)
@@ -353,7 +353,7 @@ function character_init(self)
             Ai.IteratorLib.flatten(Ai.IteratorLib.take(1, function()
                 -- attempt attack
 
-                if mob_tracker:get_active_mob() ~= self:id() then
+                if not turn_tracker:request_turn(self) then
                     -- not our turn, return empty iterator
                     return function() return nil end
                 end

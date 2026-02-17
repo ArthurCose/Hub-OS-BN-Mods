@@ -1,10 +1,9 @@
 ---@type BattleNetwork.Assets
 local bn_assets = require("BattleNetwork.Assets")
+---@type dev.konstinople.library.turn_based
+local TurnBasedLib = require("dev.konstinople.library.turn_based")
 
-local MobTracker = require("mob_tracker.lua")
 local battle_helpers = require("battle_helpers.lua")
-local left_mob_tracker = MobTracker:new()
-local right_mob_tracker = MobTracker:new()
 
 local wave_texture = Resources.load_texture("shockwave.png")
 local wave_sfx = bn_assets.load_audio("shockwave.ogg")
@@ -19,37 +18,7 @@ local function debug_print(text)
     --print("[mettaur] " .. text)
 end
 
-function get_tracker_from_direction(facing)
-    if facing == Direction.Left then
-        return left_mob_tracker
-    elseif facing == Direction.Right then
-        return right_mob_tracker
-    end
-end
-
-function advance_a_turn_by_facing(facing)
-    local mob_tracker = get_tracker_from_direction(facing)
-    return mob_tracker:advance_a_turn()
-end
-
-function get_active_mob_id_for_same_direction(facing)
-    local mob_tracker = get_tracker_from_direction(facing)
-    return mob_tracker:get_active_mob()
-end
-
-function add_enemy_to_tracking(enemy)
-    local facing = enemy:facing()
-    local id = enemy:id()
-    local mob_tracker = get_tracker_from_direction(facing)
-    mob_tracker:add_by_id(id)
-end
-
-function remove_enemy_from_tracking(enemy)
-    local facing = enemy:facing()
-    local id = enemy:id()
-    local mob_tracker = get_tracker_from_direction(facing)
-    mob_tracker:remove_by_id(id)
-end
+local turn_tracker = TurnBasedLib.new_directional_tracker()
 
 local TEXTURE = Resources.load_texture("battle.greyscaled.png")
 
@@ -92,10 +61,7 @@ function character_init(self, character_info)
     end
 
     self.on_update_func = function(self)
-        local facing = self:facing()
-        local id = self:id()
-        local active_mob_id = get_active_mob_id_for_same_direction(facing)
-        if active_mob_id == id then
+        if turn_tracker:request_turn(self) then
             take_turn(self)
         else
             idle_action(self)
@@ -104,29 +70,24 @@ function character_init(self, character_info)
 
     self.on_battle_start_func = function(self)
         debug_print("battle_start_func called")
+        ---@param a Entity
+        ---@param b Entity
         local mob_sort_func = function(a, b)
-            local met_a_tile = Field.get_entity(a):current_tile()
-            local met_b_tile = Field.get_entity(b):current_tile()
+            local met_a_tile = a:current_tile()
+            local met_b_tile = b:current_tile()
             local var_a = (met_a_tile:x() * 3) + met_a_tile:y()
             local var_b = (met_b_tile:x() * 3) + met_b_tile:y()
             return var_a < var_b
         end
-        left_mob_tracker:sort_turn_order(mob_sort_func)
-        right_mob_tracker:sort_turn_order(mob_sort_func, true) --reverse sort direction
-    end
-    self.on_battle_end_func = function(self)
-        debug_print("battle_end_func called")
-        left_mob_tracker:clear()
-        right_mob_tracker:clear()
+        turn_tracker:sort_turn_order(mob_sort_func)
+        turn_tracker:sort_turn_order(function(a, b)
+            -- reversed sort direction
+            return mob_sort_func(b, a)
+        end)
     end
     self.on_spawn_func = function(self)
         debug_print("on_spawn_func called")
-        add_enemy_to_tracking(self)
-    end
-    self.on_delete_func = function(self)
-        debug_print("delete_func called")
-        self:default_character_delete()
-        remove_enemy_from_tracking(self)
+        turn_tracker:add_entity(self)
     end
 end
 
@@ -221,11 +182,10 @@ function take_turn(self)
     end
     self.shockwave_action = action_shockwave(self)
     self.shockwave_action.on_action_end_func = function()
-        local facing = self:facing()
         self.ai_wait = self.frames_between_actions
         self.ai_taken_turn = false
         self.shockwave_action = nil
-        advance_a_turn_by_facing(facing)
+        turn_tracker:end_turn(self)
     end
     self:queue_action(self.shockwave_action)
 end
