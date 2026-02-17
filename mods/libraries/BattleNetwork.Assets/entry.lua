@@ -89,7 +89,7 @@ Lib.MobMoveAction = {}
 
 ---@param user Entity
 ---@param size_prefix "BIG" | "MEDIUM" | "SMALL"
----@param target_tile_callback? fun(): Tile?
+---@param target_tile_callback? fun(): Tile?, Direction?
 function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
     local action = Action.new(user)
     action:set_lockout(ActionLockout.new_sequence())
@@ -157,11 +157,11 @@ function Lib.MobMoveAction.new(user, size_prefix, target_tile_callback)
             end_poof_anim:resume()
             end_poof_sprite:set_visible(true)
 
-            local tile = target_tile_callback()
+            local tile, facing = target_tile_callback()
 
             if tile and tile ~= start_tile and user:can_move_to(tile) and (not Living.from(user) or not user:is_immobile()) then
                 tile:add_entity(user)
-                user:set_facing(tile:facing())
+                user:set_facing(facing or tile:facing())
             end
 
             user:current_tile():add_entity(end_poof)
