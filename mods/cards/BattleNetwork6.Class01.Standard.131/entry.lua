@@ -8,6 +8,8 @@ sword:use_hand()
 
 local OBSTACLE_TEXTURE = bn_assets.load_texture("air_spin.png")
 local OBSTACLE_ANIMATION_PATH = bn_assets.fetch_animation_path("air_spin.animation")
+local SPAWN_STATE = "SPAWN_1"
+local SPIN_STATE = "SPIN_1"
 local LAUNCH_SFX = bn_assets.load_audio("dust_launch.ogg")
 
 local AIR_TEXTURE = bn_assets.load_texture("airspin.png")
@@ -74,7 +76,7 @@ local function create_obstacle(user, hit_props)
   obstacle:set_texture(OBSTACLE_TEXTURE)
   local animation = obstacle:animation()
   animation:load(OBSTACLE_ANIMATION_PATH)
-  animation:set_state("SPAWN")
+  animation:set_state(SPAWN_STATE)
 
   obstacle.on_spawn_func = function()
     Resources.play_audio(LAUNCH_SFX)
@@ -117,7 +119,7 @@ local function create_obstacle(user, hit_props)
     if sitting_time >= target_lifetime then
       obstacle.on_update_func = nil
       obstacle.on_collision_func = nil
-      animation:set_state("SPAWN")
+      animation:set_state(SPAWN_STATE)
       animation:set_playback(Playback.Reverse)
       animation:on_complete(function()
         obstacle:delete()
@@ -127,7 +129,7 @@ local function create_obstacle(user, hit_props)
     local spin_time = sitting_time - 16
 
     if spin_time == 0 then
-      animation:set_state("SPIN")
+      animation:set_state(SPIN_STATE)
       animation:set_playback(Playback.Loop)
     end
 
@@ -157,12 +159,6 @@ end
 ---@param user Entity
 ---@param props CardProperties
 function card_init(user, props)
-  if props.short_name == "AirSpin2" then
-    MIN_LIFETIME = 35
-  elseif props.short_name == "AirSpin3" then
-    MIN_LIFETIME = 45
-  end
-
   return sword:create_action(user, function()
     local tile = user:get_tile(user:facing(), 1)
 
