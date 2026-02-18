@@ -1,0 +1,17 @@
+[package]
+category = "encounter"
+id = "BattleNetwork6.Swordy"
+name = "Swordy"
+description = "Swordy encounter and enemy"
+preview_texture_path = "preview.png"
+
+[[defines.characters]]
+id = "BattleNetwork6.Swordy.Enemy"
+path = "swordy"
+
+[dependencies]
+libraries = [
+  "BattleNetwork.Assets",
+  "dev.konstinople.library.ai",
+  "dev.konstinople.library.turn_based"
+]

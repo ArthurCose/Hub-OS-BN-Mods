@@ -1,0 +1,32 @@
+animation state="CHARACTER_IDLE"
+frame x="1" y="53" w="38" h="55" originx="19" originy="50" duration="28f"
+
+animation state="WIDE_SWING_START"
+frame x="1" y="53" w="38" h="55" originx="19" originy="50" duration="3f"
+frame x="89" y="1" w="35" h="55" originx="22" originy="50" duration="3f"
+
+animation state="WIDE_SWING_WAIT"
+frame x="89" y="1" w="35" h="55" originx="22" originy="50" duration="2f"
+
+animation state="WIDE_SWING_END"
+frame x="89" y="1" w="35" h="55" originx="22" originy="50" duration="4f"
+frame x="1" y="1" w="51" h="50" originx="16" originy="45" duration="3f"
+frame x="1" y="110" w="38" h="47" originx="15" originy="42" duration="3f"
+frame x="1" y="110" w="38" h="47" originx="14" originy="42" duration="3f"
+frame x="1" y="110" w="38" h="47" originx="13" originy="42" duration="3f"
+frame x="1" y="110" w="38" h="47" originx="13" originy="42" duration="2f"
+
+animation state="LONG_SWING_START"
+frame x="161" y="1" w="33" h="56" originx="22" originy="51" duration="3f"
+frame x="126" y="1" w="33" h="58" originx="22" originy="53" duration="3f"
+
+animation state="LONG_SWING_WAIT"
+frame x="54" y="1" w="33" h="59" originx="22" originy="54" duration="2f"
+
+animation state="LONG_SWING_END"
+frame x="89" y="1" w="35" h="55" originx="22" originy="50" duration="4f"
+frame x="1" y="1" w="51" h="50" originx="16" originy="45" duration="3f"
+frame x="1" y="110" w="38" h="47" originx="15" originy="42" duration="3f"
+frame x="1" y="110" w="38" h="47" originx="14" originy="42" duration="3f"
+frame x="1" y="110" w="38" h="47" originx="13" originy="42" duration="3f"
+frame x="1" y="110" w="38" h="47" originx="13" originy="42" duration="2f"
