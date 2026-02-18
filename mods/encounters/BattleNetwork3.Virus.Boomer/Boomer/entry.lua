@@ -1,11 +1,11 @@
 local shared_character_init = require("./character.lua")
+
 function character_init(character)
     local character_info = {
         name = "Boomer",
         hp = 70,
         damage = 30,
         palette = Resources.load_texture("V1.png"),
-        height = 44,
         frames_between_actions = 78,
         boomer_speed = 8,
         move_speed = 90,

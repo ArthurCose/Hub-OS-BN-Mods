@@ -10,52 +10,135 @@ local BOOMERANG_ANIM = "boomer.animation"
 local effects_texture = Resources.load_texture("effect.png")
 local effects_anim = "effect.animation"
 
+---Checks if the tile in 2 given directions is free and returns that direction
+local function get_free_direction(tile, direction1, direction2)
+    if not tile:get_tile(direction1, 1):is_edge() then
+        return direction1
+    else
+        return direction2
+    end
+end
+
 --possible states for character
 local states = { IDLE = 1, MOVE = 2, WAIT = 3 }
-function character_init(self, character_info)
-    -- Required function, main package information
-    -- Load extra resources
-    local base_animation_path = CHARACTER_ANIMATION
-    self:set_texture(CHARACTER_TEXTURE)
-    self.animation = self:animation()
-    self.animation:load(base_animation_path)
+---Boomerang!
 
+---@param user Entity
+local function boomerang(user, character_info, callback)
+    local start_tile = user:get_tile(user:facing(), 1)
+
+    if not start_tile then
+        return
+    end
+
+    local spell = Spell.new(user:team())
+    spell:set_facing(user:facing())
+    spell:set_texture(BOOMERANG_SPRITE)
+    spell:sprite():set_layer(-2)
+
+    local spell_animation = spell:animation()
+    spell_animation:load(BOOMERANG_ANIM)
+    spell_animation:set_state("DEFAULT")
+    spell_animation:set_playback(Playback.Loop)
+
+    -- Spell Hit Properties
+    spell:set_hit_props(
+        HitProps.new(
+            character_info.damage,
+            Hit.Flinch,
+            Element.Wood,
+            user:context(),
+            Drag.None
+        )
+    )
+
+    -- Starting direction is user's facing
+    local direction = user:facing()
+    local userfacing = user:facing()
+    spell.on_update_func = function()
+        spell:current_tile():attack_entities(spell)
+
+        if spell:is_moving() then
+            return
+        end
+
+        local next_tile = spell:get_tile(direction, 1)
+
+        if not next_tile then
+            spell:erase()
+            callback()
+            return
+        end
+
+        if next_tile:is_edge() then
+            ---need to change a direction.
+            if (direction == Direction.Left or direction == Direction.Right) then
+                if direction == userfacing then
+                    --next direction is up or down
+                    direction = get_free_direction(spell:current_tile(), Direction.Up, Direction.Down)
+                end
+            else
+                if (direction == Direction.Up or direction == Direction.Down) then
+                    --next direction is left or right
+                    direction = get_free_direction(spell:current_tile(), Direction.Left, Direction.Right)
+                end
+            end
+
+            next_tile = spell:get_tile(direction, 1)
+        end
+
+        spell:slide(next_tile, character_info.boomer_speed)
+    end
+    spell.on_attack_func = function()
+        battle_helpers.spawn_visual_artifact(spell:get_tile(), effects_texture, effects_anim, "WOOD"
+        , 0, 0)
+    end
+    spell.on_delete_func = function()
+        spell:erase()
+    end
+
+    Field.spawn(spell, start_tile)
+end
+
+---@param self Entity
+local function shared_character_init(self, character_info)
     -- Set up character meta
     self:set_name(character_info.name)
     self:set_health(character_info.hp)
-    self:set_height(character_info.height)
-    self.damage = (character_info.damage)
-    self:enable_sharing_tile(false)
-    -- self:set_explosion_behavior(4, 1, false)
-    self:set_offset(0 * 0.5, 0 * 0.5)
-    self:set_palette(Resources.load_texture(character_info.palette))
-    self.shockwave_anim = character_info.shockwave_anim
-    self.panelgrabs = character_info.panelgrabs
-    self.boomer_speed = character_info.boomer_speed
-    self.animation:set_state("SPAWN")
-    self.frame_counter = 0
-    self.started = false
-    self.idle_frames = 45
-    --Select Boomer move direction
-    self.move_direction = Direction.Up
-    self.move_speed = character_info.move_speed
-    self:add_aux_prop(StandardEnemyAux.new())
-    self.reached_edge = false
-    self.has_attacked_once = false
-    self.guard = true
-    self.end_wait = false
+    self:set_height(44)
 
+    self:set_texture(CHARACTER_TEXTURE)
+
+    local animation = self:animation()
+    animation:load(CHARACTER_ANIMATION)
+    animation:set_state("SPAWN")
+
+    self:set_palette(Resources.load_texture(character_info.palette))
+
+    local frame_counter = 0
+    local started = false
+    local idle_frames = 45
+    local move_direction = Direction.Up
+    local reached_edge = false
+    local has_attacked_once = false
+    local guarding = true
+    local end_wait = false
+    local panelgrabs = character_info.panelgrabs
+    local state = states.IDLE
+
+    -- set up defenses
+    self:add_aux_prop(StandardEnemyAux.new())
     self:ignore_hole_tiles(true)
     self:ignore_negative_tile_effects(true)
 
-    self.defense_rule = DefenseRule.new(DefensePriority.Last, DefenseOrder.Always)
+    local defense_rule = DefenseRule.new(DefensePriority.Last, DefenseOrder.Always)
     local defense_texture = Resources.load_texture("guard_hit.png")
     local defense_animation = "guard_hit.animation"
     local defense_audio = Resources.load_audio("tink.ogg")
-    self.defense_rule.defense_func = function(defense, attacker, defender)
+    defense_rule.defense_func = function(defense, attacker, defender)
         local attacker_hit_props = attacker:copy_hit_props()
 
-        if (self.guard) then
+        if guarding then
             if attacker_hit_props.flags & Hit.PierceGuard ~= 0 then
                 --cant block breaking hits
                 return
@@ -66,8 +149,10 @@ function character_init(self, character_info)
             end
             defense:set_responded()
             defense:block_damage()
+
             local artifact = Spell.new(self:team())
             artifact:set_texture(defense_texture)
+
             local anim = artifact:animation()
             anim:load(defense_animation)
             anim:set_state("DEFAULT")
@@ -75,222 +160,148 @@ function character_init(self, character_info)
             anim:on_complete(function()
                 artifact:erase()
             end)
-            Field.spawn(artifact, self:get_tile())
+
+            Field.spawn(artifact, self:current_tile())
+
             Resources.play_audio(defense_audio, AudioBehavior.Default)
         end
     end
-    self:add_defense_rule(self.defense_rule)
 
+    self:add_defense_rule(defense_rule)
+
+    --utility to set the update state, and reset frame counter
+    local function set_state(s)
+        state = s
+        frame_counter = 0
+    end
 
     ---state idle
+    local function turn()
+        move_direction = Direction.reverse(move_direction)
 
-    self.action_idle = function(frame)
-        if (frame == self.idle_frames) then
+        set_state(states.MOVE)
+    end
+
+    local function action_idle(frame)
+        if (frame == idle_frames) then
             ---choose move direction.
-            self.animation:set_state("IDLE")
-            self.animation:set_playback(Playback.Loop)
-            self.end_wait = false
-            self.turn()
+            animation:set_state("IDLE")
+            animation:set_playback(Playback.Loop)
+            end_wait = false
+            turn()
         end
     end
 
-    self.turn = function()
-        self.move_direction = Direction.reverse(self.move_direction)
+    local throw_boomerang = function()
+        animation:set_state("THROW")
 
-        self.set_state(states.MOVE)
+        has_attacked_once = true
+
+        animation:on_frame(3, function()
+            guarding = false
+            self:set_counterable(true)
+        end)
+
+        animation:on_complete(function()
+            Resources.play_audio(BOOMERANG_SOUND, AudioBehavior.Default)
+            boomerang(self, character_info, function()
+                if not self:deleted() then
+                    self:animation():on_complete(function()
+                        end_wait = true
+                    end)
+                end
+            end)
+
+            set_state(states.WAIT)
+            animation:set_state("WAIT")
+            animation:set_playback(Playback.Loop)
+            end_wait = false
+        end)
     end
 
     ---state move
 
-    self.action_move = function(frame)
+    local function action_move(frame)
         if (frame == 1) then
-            local target_tile = self:get_tile(self.move_direction, 1)
+            local target_tile = self:get_tile(move_direction, 1)
             if (not self:can_move_to(target_tile)) then
-                if (target_tile:is_edge()) then
-                    self.reached_edge = true
+                if not target_tile or target_tile:is_edge() then
+                    reached_edge = true
                 elseif (not self:can_move_to(self:get_tile(Direction.Up, 1)) and
                         not self:can_move_to(self:get_tile(Direction.Down, 1))) then
                     --detect if stuck
-                    self.reached_edge = true
+                    reached_edge = true
                 else
-                    self.turn()
+                    turn()
                 end
             end
-            self:slide(target_tile, self.move_speed, 0, ActionOrder.Immediate, nil)
+            self:slide(target_tile, character_info.move_speed)
         end
         if (frame > 2 and not self:is_sliding()) then
-            if (self.reached_edge) then
+            if reached_edge then
                 -- if at the edge(or stuck), throw boomerang
-                self.throw_boomerang()
-                self.set_state(states.WAIT)
-                self.reached_edge = false
+                throw_boomerang()
+                set_state(states.WAIT)
+                reached_edge = false
             else
                 -- keep moving to edge.
-                if (self:get_tile():y() == 2 and self.has_attacked_once and self.panelgrabs > 0) then
+                if (self:get_tile():y() == 2 and has_attacked_once and panelgrabs > 0) then
                     local card_props = CardProperties.from_package("BattleNetwork6.Class01.Standard.164")
                     local action = Action.from_card(self, card_props)
-                    self:queue_action(action)
-                    self.panelgrabs = self.panelgrabs - 1
-                    self.has_attacked_once = false
+
+                    if action then
+                        self:queue_action(action)
+                    end
+
+                    panelgrabs = panelgrabs - 1
+                    has_attacked_once = false
                 end
-                self.set_state(states.MOVE)
-                self.reached_edge = false
+                set_state(states.MOVE)
+                reached_edge = false
             end
         end
     end
 
     ---state wait
 
-    self.action_wait = function(frame)
-        if (not self.end_wait) then
-            self.wait_frame_counter = 0
+    local wait_frame_counter = 0
+
+    local action_wait = function(frame)
+        if not end_wait then
+            wait_frame_counter = 0
         end
-        if (frame == 12) then
+
+        if frame == 12 then
             self:set_counterable(false)
         end
-        self.wait_frame_counter = self.wait_frame_counter + 1
-        if (self.wait_frame_counter == 60) then
-            self.animation:set_state("RECOVER")
-            self.set_state(states.IDLE)
-            self.guard = true
+
+        wait_frame_counter = wait_frame_counter + 1
+
+        if wait_frame_counter == 60 then
+            animation:set_state("RECOVER")
+            set_state(states.IDLE)
+            guarding = true
         end
     end
 
-    --utility to set the update state, and reset frame counter
-
-    self.set_state = function(state)
-        self.state = state
-        self.frame_counter = 0
-    end
-
-    local actions = { [1] = self.action_idle, [2] = self.action_move, [3] = self.action_wait }
+    local actions = { action_idle, action_move, action_wait }
 
     self.on_update_func = function()
         if self:has_actions() then
             return
         end
 
-        self.frame_counter = self.frame_counter + 1
-        if not self.started then
+        frame_counter = frame_counter + 1
+        if not started then
             --- this runs once the battle is started
-            self.current_direction = self:facing()
-            self.started = true
-            self.set_state(states.IDLE)
+            started = true
+            set_state(states.IDLE)
         else
             --- On every frame, we will call the state action func.
-            local action_func = actions[self.state]
-            action_func(self.frame_counter)
+            local action_func = actions[state]
+            action_func(frame_counter)
         end
-    end
-
-    self.throw_boomerang = function()
-        self.animation:set_state("THROW")
-
-        self.has_attacked_once = true
-        self.animation:on_frame(3, function()
-            self.guard = false
-            self:set_counterable(true)
-        end)
-        self.animation:on_complete(function()
-            Resources.play_audio(BOOMERANG_SOUND, AudioBehavior.Default)
-            boomerang(self)
-
-            self.set_state(states.WAIT)
-            self.animation:set_state("WAIT")
-            self.animation:set_playback(Playback.Loop)
-            self.end_wait = false
-        end)
-    end
-
-    function Tiletostring(tile)
-        return "Tile: [" .. tostring(tile:x()) .. "," .. tostring(tile:y()) .. "]"
-    end
-
-    ---Boomerang!
-
-    function boomerang(user)
-        local spell = Spell.new(user:team())
-        local spell_animation = spell:animation()
-        local start_tile = user:get_tile(user:facing(), 1)
-        -- Spell Hit Properties
-        spell:set_hit_props(
-            HitProps.new(
-                user.damage,
-                Hit.Flinch,
-                Element.Wood,
-                user:context(),
-                Drag.None
-            )
-        )
-        spell:set_facing(user:facing())
-        spell_animation:load(BOOMERANG_ANIM)
-        spell_animation:set_state("DEFAULT")
-        spell_animation:set_playback(Playback.Loop)
-        spell:set_texture(BOOMERANG_SPRITE)
-        spell_animation:apply(spell:sprite())
-        spell:sprite():set_layer(-2)
-        -- Starting direction is user's facing
-        spell.direction = user:facing()
-        spell.userfacing = user:facing()
-        spell.boomer_speed = user.boomer_speed
-        spell.on_update_func = function()
-            spell:current_tile():attack_entities(spell)
-
-            if spell:is_moving() then
-                return
-            end
-
-            local next_tile = spell:get_tile(spell.direction, 1)
-
-            if not next_tile then
-                spell:erase()
-
-                if not user:deleted() then
-                    user.animation:on_complete(function()
-                        user.end_wait = true
-                    end)
-                end
-
-                return
-            end
-
-            if next_tile:is_edge() then
-                ---need to change a direction.
-                if (spell.direction == Direction.Left or spell.direction == Direction.Right) then
-                    if spell.direction == spell.userfacing then
-                        --next direction is up or down
-                        spell.direction = get_free_direction(spell:current_tile(), Direction.Up, Direction.Down)
-                    end
-                else
-                    if (spell.direction == Direction.Up or spell.direction == Direction.Down) then
-                        --next direction is left or right
-                        spell.direction = get_free_direction(spell:current_tile(), Direction.Left, Direction.Right)
-                    end
-                end
-
-                next_tile = spell:get_tile(spell.direction, 1)
-            end
-
-            spell:slide(next_tile, spell.boomer_speed)
-        end
-        spell.on_attack_func = function()
-            battle_helpers.spawn_visual_artifact(spell:get_tile(), effects_texture, effects_anim, "WOOD"
-            , 0, 0)
-        end
-        spell.on_delete_func = function()
-            spell:erase()
-        end
-        Field.spawn(spell, start_tile)
     end
 end
 
----Checks if the tile in 2 given directions is free and returns that direction
-function get_free_direction(tile, direction1, direction2)
-    if (not tile:get_tile(direction1, 1):is_edge()) then
-        return direction1
-    else
-        return direction2
-    end
-end
-
-return character_init
+return shared_character_init
