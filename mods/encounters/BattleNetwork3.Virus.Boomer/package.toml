@@ -2,7 +2,7 @@
 category = "encounter"
 id = "BattleNetwork3.Virus.Boomer"
 name = "Boomer"
-description = "Bn3 Boomer"
+description = "BN3 Boomer"
 preview_texture_path = "preview.png"
 
 [defines]
@@ -11,6 +11,3 @@ characters = [
   { id = "BattleNetwork3.enemy.Gloomer", path = "Gloomer" },
   { id = "BattleNetwork3.enemy.Doomer", path = "Doomer" },
 ]
-
-[dependencies]
-cards = ["BattleNetwork6.Class01.Standard.164"]

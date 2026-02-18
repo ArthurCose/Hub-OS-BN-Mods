@@ -123,7 +123,6 @@ local function shared_character_init(self, character_info)
     local has_attacked_once = false
     local guarding = true
     local end_wait = false
-    local panelgrabs = character_info.panelgrabs
     local state = states.IDLE
 
     -- set up defenses
@@ -244,16 +243,15 @@ local function shared_character_init(self, character_info)
                 set_state(states.WAIT)
                 reached_edge = false
             else
-                -- keep moving to edge.
-                if (self:get_tile():y() == 2 and has_attacked_once and panelgrabs > 0) then
-                    local card_props = CardProperties.from_package("BattleNetwork6.Class01.Standard.164")
-                    local action = Action.from_card(self, card_props)
+                -- try using a field card
+                if self:get_tile():y() == 2 and has_attacked_once and self:field_card(1) then
+                    local action = Action.from_card(self, self:field_card(1))
+                    self:remove_field_card(1)
 
                     if action then
                         self:queue_action(action)
                     end
 
-                    panelgrabs = panelgrabs - 1
                     has_attacked_once = false
                 end
                 set_state(states.MOVE)

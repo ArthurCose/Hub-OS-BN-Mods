@@ -9,7 +9,6 @@ function character_init(character)
         frames_between_actions = 78,
         boomer_speed = 5,
         move_speed = 30,
-        panelgrabs = 2,
     }
 
     shared_character_init(character, character_info)
