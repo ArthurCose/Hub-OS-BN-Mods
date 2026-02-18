@@ -218,6 +218,73 @@ function Lock:end_turn(entity)
   return self:unlock(entity)
 end
 
+---First ready entity claims control
+---@class dev.konstinople.library.turn_based.PerTeamLock
+---@field package locks table<Team, dev.konstinople.library.turn_based.Lock>
+---@field package entity_teams table<EntityId, Team>
+local PerTeamLock = {}
+PerTeamLock.__index = PerTeamLock
+
+---@param entity Entity
+function PerTeamLock:request_lock(entity)
+  if entity:deleted() then
+    return false
+  end
+
+  local team = entity:team()
+  local lock = self.locks[team]
+
+  if not lock then
+    lock = TurnBasedLib.new_lock()
+    self.locks[team] = lock
+  end
+
+  if lock.entity then
+    if lock.entity:id() == entity:id() then
+      return true
+    end
+
+    if not lock.entity:deleted() and lock.entity:team() == team then
+      return false
+    end
+
+    -- clean up
+    self.entity_teams[lock.entity:id()] = nil
+  end
+
+  -- update lock
+  lock.entity = entity
+  self.entity_teams[entity:id()] = team
+
+  return true
+end
+
+---@param entity Entity
+function PerTeamLock:unlock(entity)
+  local team = self.entity_teams[entity:id()]
+
+  if not team then
+    return
+  end
+
+  self.entity_teams[entity:id()] = nil
+
+  local lock = self.locks[team]
+  lock:unlock(entity)
+end
+
+---Alias for request_lock
+---@param entity Entity
+function PerTeamLock:request_turn(entity)
+  return self:request_lock(entity)
+end
+
+---Alias for unlock
+---@param entity Entity
+function PerTeamLock:end_turn(entity)
+  return self:unlock(entity)
+end
+
 ---Turn tracker that cycles between multiple entities
 ---@return dev.konstinople.library.turn_based.TurnTracker
 function TurnBasedLib.new_tracker()
@@ -242,13 +309,21 @@ function TurnBasedLib.new_directional_tracker()
   return o
 end
 
----@return dev.konstinople.library.turn_based.DirectionalTurnTracker
+---@return dev.konstinople.library.turn_based.Lock
 function TurnBasedLib.new_lock()
+  local o = {}
+  setmetatable(o, Lock)
+
+  return o
+end
+
+---@return dev.konstinople.library.turn_based.PerTeamLock
+function TurnBasedLib.new_per_team_lock()
   local o = {
-    facing_directions = {},
-    turn_trackers = {}
+    locks = {},
+    entity_teams = {},
   }
-  setmetatable(o, DirectionalTurnTracker)
+  setmetatable(o, PerTeamLock)
 
   return o
 end
