@@ -200,9 +200,15 @@ ActionType = {
 
 ---@enum TimeFreezeChainLimit
 TimeFreezeChainLimit = {
-  OnePerTeam = 0,
-  OnePerEntity = 0,
-  Unlimited = 0,
+  Unlimited = {} --[[@as TimeFreezeChainLimit]],
+  PerTeam =
+  ---@param n number
+  ---@return TimeFreezeChainLimit
+      function(n) end,
+  PerEntity =
+  ---@param n number
+  ---@return TimeFreezeChainLimit
+      function(n) end,
 }
 
 ---@enum Shadow
@@ -985,7 +991,7 @@ function Entity:set_team(team) end
 
 --- Returns a boolean.
 ---
---- Same as `entity:team() == team`
+--- Same as `entity:team() == team and team ~= Team.Other`
 ---@param team Team
 ---@return boolean
 function Entity:is_team(team) end
@@ -1042,8 +1048,16 @@ function Entity:hittable() end
 function Entity:sharing_tile() end
 
 --- Allows other entities to stand on tiles reserved by this entity.
----@param share? boolean
-function Entity:enable_sharing_tile(share) end
+---@param enable? boolean
+function Entity:enable_sharing_tile(enable) end
+
+--- Returns true automatic tile reservation is enabled.
+---@return boolean
+function Entity:auto_reserves() end
+
+--- Controls whether tiles are automatically reserved when this entity changes tiles.
+---@param enable? boolean
+function Entity:set_auto_reserve(enable) end
 
 --- Returns true if negative tile effects should be ignored for this entity.
 ---
@@ -1210,7 +1224,6 @@ function Entity:animation() end
 function Entity:load_animation(path) end
 
 --- - `lifetime` affects when the component's update callback is called.
----
 ---   - `Lifetime.Local` when the entity update callback is called (affected by time freeze and status effects)
 ---   - `Lifetime.ActiveBattle` after every entity has updated and battle is active as long as time is not frozen.
 ---   - `Lifetime.Battle` after every entity has updated and battle is active.
@@ -1252,6 +1265,10 @@ function Entity:start_context(action_type) end
 --- Returns true if the entity has an executing action or pending actions.
 ---@return boolean
 function Entity:has_actions() end
+
+--- Returns true if the entity can queue a time freeze action on this frame to counter an opponent's time freeze action.
+---@return boolean
+function Entity:can_time_freeze_counter() end
 
 --- - `action`: [Action](https://docs.hubos.dev/client/lua-api/attack-api/action)
 ---
@@ -1530,7 +1547,7 @@ function Entity:set_remaining_status_time(hit_flag, duration) end
 ---@param callback fun()
 function Entity:register_status_callback(hit_flag, callback) end
 
---- Returns true if status effects that entity processing are applied.
+--- Returns true if status effects that block actions are applied.
 ---
 --- Throws if the Entity doesn't pass [Living.from()](https://docs.hubos.dev/client/lua-api/entity-api/living)
 ---@return boolean
@@ -2342,6 +2359,17 @@ function Character.from_package(package_id, team, rank) end
 ---@return Rank
 function Entity:rank() end
 
+--- Hides the character's rank when displaying names.
+---
+--- Throws if the Entity doesn't pass [Character.from()](https://docs.hubos.dev/client/lua-api/entity-api/character)
+function Entity:hide_rank() end
+
+--- Returns the namespace of the mod used to create the character.
+---
+--- Throws if the Entity doesn't pass [Character.from()](https://docs.hubos.dev/client/lua-api/entity-api/character)
+---@return Namespace
+function Entity:namespace() end
+
 --- Returns a list of [CardProperties](https://docs.hubos.dev/client/lua-api/attack-api/cards#cardproperties), the first card is the next card that can be used.
 ---
 --- Throws if the Entity doesn't pass [Character.from()](https://docs.hubos.dev/client/lua-api/entity-api/character)
@@ -2526,6 +2554,12 @@ function Resources.load_texture(path) end
 ---@return string
 function Resources.load_audio(path) end
 
+--- Returns the path to the folder containing the game files.
+---
+--- Useful for loading assets that ship by default.
+---@return string
+function Resources.game_folder() end
+
 --- - `path`: file path relative to script file, use values returned from `Resources.load_audio()` for better performance.
 --- - `audio_behavior`: [AudioBehavior](https://docs.hubos.dev/client/lua-api/resource-api/resources#audiobehavior)
 ---
@@ -2567,6 +2601,10 @@ function Resources.local_index() end
 ---@param player_index number
 ---@param input_query Input
 function Resources.input_has(player_index, input_query) end
+
+--- Returns the namespace of the VM the calling mod is currently loaded in.
+---@return Namespace
+function Resources.namespace() end
 
 --- Audio will play from the beginning (sample 0), looping back to `start_sample` when `end_sample` is reached.
 ---
@@ -2853,6 +2891,18 @@ function Sprite:height() end
 --- Sets the height of the sprite, updates the scale.
 ---@param height number
 function Sprite:set_height(height) end
+
+--- Returns the rotation of the sprite, in radians.
+---
+--- You can convert to degrees with `radians / math.pi * 180`
+---@return number
+function Sprite:rotation() end
+
+--- Sets the rotation of the sprite.
+---
+--- You can convert degrees to radians with `degrees / 180 * math.pi`
+---@param radians number
+function Sprite:set_rotation(radians) end
 
 --- Returns a [Color](https://docs.hubos.dev/client/lua-api/resource-api/sprite#color)
 ---@return Color
@@ -3203,7 +3253,9 @@ function Tile:original_facing() end
 --- - `highlight`
 ---   - `Highlight.None`
 ---   - `Highlight.Flash`
+---     - Used to warn players about an attack that will happen.
 ---   - `Highlight.Solid`
+---     - Used to let players know they will get hit if they are on this tile.
 ---@param highlight Highlight
 function Tile:set_highlight(highlight) end
 
@@ -3471,8 +3523,9 @@ function Encounter:enable_automatic_turn_end(enabled) end
 function Encounter:set_turn_limit(limit) end
 
 --- - `chain_limit`
----   - `TimeFreezeChainLimit.OnePerTeam` the default, only the last time freeze action from each team will be used.
----   - `TimeFreezeChainLimit.OnePerEntity` only the last time freeze action from each entity will be used.
+---   - `TimeFreezeChainLimit.PerTeam(n)` only up to `n` time freeze actions from each team will be used.
+---     - The default is `TimeFreezeChainLimit.PerTeam(1)`
+---   - `TimeFreezeChainLimit.PerEntity(n)` only up to `n` time freeze actions from each entity will be used.
 ---   - `TimeFreezeChainLimit.Unlimited` every time freeze action in the chain will be used.
 ---@param chain_limit TimeFreezeChainLimit
 function Encounter:set_time_freeze_chain_limit(chain_limit) end
@@ -4007,6 +4060,20 @@ function AuxProp:require_element(element) end
 ---@return AuxProp
 function AuxProp:require_negative_tile_interaction() end
 
+--- - Body priority
+---
+--- The AuxProp will check the tile state of the tile under the entity.
+---@param tile_state TileState
+---@return AuxProp
+function AuxProp:require_tile_state(tile_state) end
+
+--- - Body priority
+---
+--- The AuxProp will check the tile state of the tile under the entity.
+---@param tile_state TileState
+---@return AuxProp
+function AuxProp:require_tile_state_absent(tile_state) end
+
 --- - Body Priority
 ---
 --- Applies when a new `entity:context()` has started.
@@ -4035,6 +4102,20 @@ function AuxProp:require_action(action_types) end
 ---@param emotion string
 ---@return AuxProp
 function AuxProp:require_emotion(emotion) end
+
+--- - Body priority
+---
+--- The AuxProp will check the attached entity for a defense rule with a matching priority.
+---@param defense_priority DefensePriority
+---@return AuxProp
+function AuxProp:require_defense(defense_priority) end
+
+--- - Body priority
+---
+--- The AuxProp will check the attached entity for a defense rule with a matching priority.
+---@param defense_priority DefensePriority
+---@return AuxProp
+function AuxProp:require_defense_absent(defense_priority) end
 
 --- - Body priority
 ---
