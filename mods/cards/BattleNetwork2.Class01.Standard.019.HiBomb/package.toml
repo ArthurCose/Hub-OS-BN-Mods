@@ -1,0 +1,14 @@
+[package]
+category = "card"
+id = "BattleNetwork2.Class01.Standard.019.HiBomb"
+name = "HiBomb"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["O", "Q", "T","V", "Y"]
+damage = 120
+hit_flags = ["Flinch", "PierceGround"]
+description = "Bomb that explodes in I-shape"
+limit = 3
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.bomb"]

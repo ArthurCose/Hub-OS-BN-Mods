@@ -1,0 +1,14 @@
+[package]
+category = "card"
+id = "BattleNetwork2.Class01.Standard.018.CrossBomb"
+name = "CrosBomb"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["D", "J", "O", "Q", "T", "*"]
+damage = 140
+hit_flags = ["Flinch", "PierceGround"]
+description = "Bomb that explodes in a cross"
+limit = 4
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.bomb"]

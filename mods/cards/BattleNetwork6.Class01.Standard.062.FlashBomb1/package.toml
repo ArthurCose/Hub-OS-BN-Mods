@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.062.FlashBomb1"
+name = "FlshBom1"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["J", "L", "Q", "*"]
+damage = 40
+hit_flags = ["Flinch", "PierceInvis", "Paralyze"]
+status_durations = [
+  { flag_name = "Paralyze", duration = 60 }
+]
+description = "Thrw dlyd stun bomb 3sq fwd."
+limit = 3
+
+[dependencies]
+libraries = ["BattleNetwork.Assets", "dev.konstinople.library.bomb"]

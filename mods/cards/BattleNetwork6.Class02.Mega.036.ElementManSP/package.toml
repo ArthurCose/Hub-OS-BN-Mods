@@ -1,0 +1,34 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class02.Mega.036.ElementManSP"
+name = "ElmntMn\ue001"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["E"]
+damage = 240
+time_freeze = true
+element = "none"
+description = "Hit A to use elem by color!"
+long_description = """Use Chip again to
+perform the matching
+attack.
+Red is Fire. Attacks
+all foes with a
+Meteor strike.
+Blue is Aqua. Sets Ice,
+Attacks WideSwrd range,
+and Freezes foes.
+Yellow is Elec. Attacks
+with Lightning 3sq
+fwd & break tiles.
+Green is Wood. Sets all
+to Grass and sends out
+WoodTower ahead."""
+card_class = "Mega"
+limit = 1
+can_boost = true
+hit_flags = ["Flinch", "Flash"]
+tags = ["BN6", "EXE6", "NAVI"]
+
+[dependencies]
+cards = ["BattleNetwork6.Class02.Mega.034.ElementMan"]

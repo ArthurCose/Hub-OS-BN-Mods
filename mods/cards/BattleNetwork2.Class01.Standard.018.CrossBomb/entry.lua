@@ -1,0 +1,61 @@
+local bn_assets = require("BattleNetwork.Assets")
+
+---@type BombLib
+local BombLib = require("dev.konstinople.library.bomb")
+
+local bomb = BombLib.new_bomb()
+bomb:set_bomb_texture(bn_assets.load_texture("bomb.png"))
+bomb:set_bomb_animation_path(bn_assets.fetch_animation_path("bomb.animation"))
+bomb:set_bomb_shadow(bn_assets.load_texture("bomb_shadow.png"))
+bomb:set_execute_sfx(bn_assets.load_audio("lob_bomb.ogg"))
+
+local EXPLOSION_TEXTURE = bn_assets.load_texture("bn4_spell_explosion.png")
+local EXPLOSION_ANIMATION_PATH = bn_assets.fetch_animation_path("bn4_spell_explosion.animation")
+local PANEL_SFX = bn_assets.load_audio("explosion_defeatedmob.ogg")
+
+---@param team Team
+---@param tile? Tile
+local function spawn_explosion(team, hit_props, tile)
+	if not tile or tile:state() == TileState.Void then
+		return
+	end
+
+	-- create spell
+	local spell = Spell.new(team)
+	spell:set_hit_props(hit_props)
+	spell:set_texture(EXPLOSION_TEXTURE)
+
+	local spell_animation = spell:animation()
+	spell_animation:load(EXPLOSION_ANIMATION_PATH)
+	spell_animation:set_state("DEFAULT")
+	spell_animation:on_complete(function() spell:erase() end)
+
+	tile:attack_entities(spell)
+	Field.spawn(spell, tile)
+end
+
+---@param user Entity
+function card_init(user, props)
+	local team = user:team()
+
+	return bomb:create_action(user, function(tile)
+		if not tile or not tile:is_walkable() then
+			return
+		end
+
+		Resources.play_audio(PANEL_SFX)
+
+		-- spawn explosions
+		local hit_props = HitProps.from_card(
+			props,
+			user:context(),
+			Drag.None
+		)
+
+		spawn_explosion(team, hit_props, tile:get_tile(Direction.UpLeft, 1))
+		spawn_explosion(team, hit_props, tile)
+		spawn_explosion(team, hit_props, tile:get_tile(Direction.DownLeft, 1))
+		spawn_explosion(team, hit_props, tile:get_tile(Direction.UpRight, 1))
+		spawn_explosion(team, hit_props, tile:get_tile(Direction.DownRight, 1))
+	end)
+end

@@ -8,6 +8,8 @@ description = "Every chip in the BattleNetwork2 namespace"
 cards = [
   "BattleNetwork2.Class01.Standard.006.CrossGun",
   "BattleNetwork2.Class01.Standard.017.LittleBomb",
+  "BattleNetwork2.Class01.Standard.018.CrossBomb",
+  "BattleNetwork2.Class01.Standard.019.HiBomb",
   "BattleNetwork2.Class01.Standard.029",
   "BattleNetwork2.Class01.Standard.030",
   "BattleNetwork2.Class01.Standard.031",

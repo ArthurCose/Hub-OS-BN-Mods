@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork1.Class01.Standard.026.FireTower"
+name = "FireTowr"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "E", "F", "L", "M", "T" ]
+damage = 130
+time_freeze = false
+element = "fire"
+description = "Fire that can move up & down"
+limit = 10
+hit_flags = ["Flinch", "Flash"]
+
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

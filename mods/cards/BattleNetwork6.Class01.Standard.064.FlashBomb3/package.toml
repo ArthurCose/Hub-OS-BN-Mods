@@ -1,0 +1,18 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.064.FlashBomb3"
+name = "FlshBom3"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["H", "P", "S"]
+damage = 100
+hit_flags = ["Flinch", "PierceInvis", "Paralyze", "Blind"]
+status_durations = [
+  { flag_name = "Paralyze", duration = 150 },
+  { flag_name = "Blind", duration = 480 }
+]
+description = "Thrw dlyd stun bomb 3sq fwd."
+limit = 3
+
+[dependencies]
+cards = ["BattleNetwork6.Class01.Standard.062.FlashBomb1"]

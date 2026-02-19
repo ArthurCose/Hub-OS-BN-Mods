@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork1.Class01.Standard.028.WoodTower"
+name = "WoodTowr"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = [ "B", "C", "H", "K", "N" ]
+damage = 130
+time_freeze = false
+element = "wood"
+description = "Log that can move up & down"
+limit = 10
+hit_flags = ["Flinch", "Flash"]
+
+
+[dependencies]
+libraries = ["BattleNetwork.Assets"]

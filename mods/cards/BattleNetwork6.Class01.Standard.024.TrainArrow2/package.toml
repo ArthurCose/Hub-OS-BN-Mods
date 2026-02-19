@@ -1,0 +1,17 @@
+[package]
+category = "card"
+id = "BattleNetwork6.Class01.Standard.024.TrainArrow2"
+name = "TrnArrw2"
+icon_texture_path = "icon.png"
+preview_texture_path = "preview.png"
+codes = ["G", "M", "Z"]
+damage = 40
+time_freeze = false
+element = "aqua"
+description = "Hits enmy w/arrow. Use dstnc"
+long_description = "Spawns extra arrows on empty tiles, plus your own. Max 6 arrows."
+limit = 3
+hit_flags = ["Flinch"]
+
+[dependencies]
+cards = ["BattleNetwork6.Class01.Standard.023.TrainArrow1"]
