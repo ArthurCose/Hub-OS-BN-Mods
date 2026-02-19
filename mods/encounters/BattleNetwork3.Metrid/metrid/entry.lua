@@ -21,7 +21,7 @@ function character_init(character)
         character._idle_max = 40
 
         character:set_name("Metrod")
-        -- character:hide_rank()
+        character:hide_rank()
         character:set_texture(texture_metrod)
     elseif rank == Rank.V3 then
         character._accuracy_chance = 10
@@ -33,7 +33,7 @@ function character_init(character)
         character._idle_max = 35
 
         character:set_name("Metrodo")
-        -- character:hide_rank()
+        character:hide_rank()
         character:set_texture(texture_metrodo)
     elseif rank == Rank.Omega then
         character._health = 300
