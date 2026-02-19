@@ -6,12 +6,21 @@ description = "CustmScr\nShuffle\nchp once"
 preview_texture_path = "preview.png"
 colors = ["green"]
 flat = true
-shape = [
-    [0, 0, 0, 1, 0],
-    [1, 1, 0, 1, 1],
-    [1, 1, 1, 1, 1],
-    [1, 1, 0, 1, 0],
-    [0, 1, 0, 0, 0]
+shapes = [
+    [
+        [0, 0, 0, 1, 0],
+        [1, 1, 0, 1, 1],
+        [1, 1, 1, 1, 1],
+        [1, 1, 0, 1, 0],
+        [0, 1, 0, 0, 0]
+    ],
+    [
+        [0, 0, 0, 1, 1],
+        [1, 1, 0, 1, 1],
+        [1, 1, 1, 1, 1],
+        [1, 1, 0, 1, 1],
+        [1, 1, 0, 0, 0]
+    ],
 ]
 byproducts = ["BattleNetwork6.Bugs.CustomBug"]
 

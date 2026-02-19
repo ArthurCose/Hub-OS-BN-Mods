@@ -4,13 +4,22 @@ id = "BattleNetwork6.Program02.Custom1"
 name = "Custom1"
 flat = true
 description = "Custom Screen +1 chip"
-colors = [ "blue" ]
-shape = [
-  [ 0, 0, 0, 0, 0 ],
-  [ 0, 0, 1, 0, 0 ],
-  [ 0, 0, 1, 0, 0 ],
-  [ 0, 0, 1, 1, 0 ],
-  [ 0, 0, 0, 0, 0 ]
+colors = ["blue"]
+shapes = [
+  [
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 1, 1, 0],
+    [0, 0, 0, 0, 0]
+  ],
+  [
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 1, 1, 0],
+    [0, 0, 0, 0, 0]
+  ]
 ]
 health_boost = 0 # optional
 attack_boost = 0 # optional

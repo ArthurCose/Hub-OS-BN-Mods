@@ -4,13 +4,22 @@ id = "BattleNetwork6.Program05.M-Foldr2"
 name = "M-Foldr2"
 flat = true
 description = "Folder MegaChip +2"
-colors = [ "white" ]
-shape = [
-  [ 0, 0, 0, 0, 0 ],
-  [ 0, 0, 1, 0, 0 ],
-  [ 1, 1, 1, 1, 0 ],
-  [ 0, 1, 0, 0, 0 ],
-  [ 0, 0, 0, 0, 0 ]
+colors = ["white"]
+shapes = [
+  [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0],
+    [0, 1, 1, 1, 1],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0]
+  ],
+  [
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 1, 0],
+    [0, 1, 1, 1, 1],
+    [0, 0, 1, 1, 0],
+    [0, 0, 0, 0, 0]
+  ]
 ]
 health_boost = 0 # optional
 attack_boost = 0 # optional

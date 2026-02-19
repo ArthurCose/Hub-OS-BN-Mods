@@ -6,12 +6,21 @@ name = "Tango"
 flat = true
 description = "VS only! Heals low HP"
 colors = ["green"]
-shape = [
-  [0, 0, 0, 0, 0],
-  [0, 1, 1, 1, 0],
-  [0, 0, 1, 0, 0],
-  [0, 0, 1, 0, 0],
-  [0, 1, 1, 0, 0]
+shapes = [
+  [
+    [0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 1, 1, 0, 0]
+  ],
+  [
+    [0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 1, 1, 1, 0]
+  ],
 ]
 byproducts = ["BattleNetwork6.Bugs.TangoDisabled"]
 

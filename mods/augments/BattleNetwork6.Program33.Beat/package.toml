@@ -5,12 +5,21 @@ name = "Beat"
 flat = true
 description = "VS only! Snatches MegaChps"
 colors = ["blue"]
-shape = [
-  [0, 0, 0, 0, 0],
-  [0, 0, 0, 1, 0],
-  [0, 0, 1, 1, 0],
-  [0, 0, 1, 0, 0],
-  [0, 0, 0, 0, 0]
+shapes = [
+  [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0],
+    [0, 0, 1, 1, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0]
+  ],
+  [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0],
+    [0, 0, 1, 1, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 1, 0, 0]
+  ],
 ]
 byproducts = ["BattleNetwork6.Bugs.BeatDisabled"]
 

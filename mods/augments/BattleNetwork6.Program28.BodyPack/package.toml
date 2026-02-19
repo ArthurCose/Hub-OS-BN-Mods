@@ -6,12 +6,21 @@ name = "BodyPack"
 description = "Armr,Air\nFloat,\nShrt set"
 colors = ["pink"]
 flat = true
-shape = [
-    [0, 0, 1, 0, 0],
-    [1, 1, 1, 1, 1],
-    [0, 1, 1, 1, 0],
-    [0, 1, 1, 1, 0],
-    [0, 1, 1, 1, 0]
+shapes = [
+    [
+        [0, 0, 1, 0, 0],
+        [1, 1, 1, 1, 1],
+        [0, 1, 1, 1, 0],
+        [0, 1, 1, 1, 0],
+        [0, 1, 1, 1, 0]
+    ],
+    [
+        [0, 0, 1, 0, 0],
+        [1, 1, 1, 1, 1],
+        [0, 1, 1, 1, 0],
+        [0, 1, 1, 1, 0],
+        [1, 1, 1, 1, 1]
+    ]
 ]
 byproducts = ["BattleNetwork6.Bugs.WarpStep"]
 

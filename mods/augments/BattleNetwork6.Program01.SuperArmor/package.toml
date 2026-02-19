@@ -5,12 +5,21 @@ name = "SuprArmr"
 flat = true
 description = "Do not flinch when hit"
 colors = ["red"]
-shape = [
-  [0, 0, 0, 0, 0],
-  [0, 0, 1, 0, 0],
-  [0, 1, 1, 1, 0],
-  [0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0]
+shapes = [
+  [
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0]
+  ],
+  [
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 0, 0, 0]
+  ]
 ]
 tags = ["UNINSTALL"]
 byproducts = ["BattleNetwork6.Bugs.WarpStep"]

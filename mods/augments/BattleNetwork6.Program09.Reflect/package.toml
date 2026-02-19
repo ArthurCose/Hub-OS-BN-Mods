@@ -5,12 +5,21 @@ name = "Reflect"
 description = "Special=\nReflect\nattacks!"
 flat = true
 colors = ["green"]
-shape = [
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0]
+shapes = [
+    [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0]
+    ],
+    [
+        [0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0],
+        [1, 1, 1, 1, 1],
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0]
+    ]
 ]
 byproducts = ["BattleNetwork6.Bugs.WarpStep"]
 tags = ["UNINSTALL"]

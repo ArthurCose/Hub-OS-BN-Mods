@@ -5,18 +5,23 @@ name = "AttckMAX"
 description = "Buster\nAttack\nMAX!"
 colors = ["red"]
 attack_boost = 5
-shape = [
-    [0, 1, 1, 0, 0],
-    [0, 1, 1, 0, 0],
-    [0, 1, 1, 0, 0],
-    [0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0]
+shapes = [
+    [
+        [0, 1, 1, 0, 0],
+        [0, 1, 1, 0, 0],
+        [0, 1, 1, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0]
+    ],
+    [
+        [0, 1, 1, 0, 0],
+        [0, 1, 1, 0, 0],
+        [0, 1, 1, 0, 0],
+        [0, 1, 1, 0, 0],
+        [0, 0, 0, 0, 0]
+    ],
 ]
-byproducts = [
-    "BattleNetwork6.Bugs.BusterBug"
-]
+byproducts = ["BattleNetwork6.Bugs.BusterBug"]
 
 [dependencies]
-augments = [
-    "BattleNetwork6.Bugs.BusterBug"
-]
+augments = ["BattleNetwork6.Bugs.BusterBug"]
